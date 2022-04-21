@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { setUp } from '../../../store/store';
+// import { setUp } from '../../../store/store';
 import useOutsideClick from '../../../utils/clickOutside';
 import {
   useSetBodyScroll,
