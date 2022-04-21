@@ -1,0 +1,16 @@
+.title {
+  text-align: center;
+  line-height: 20px;
+  font-size: 17px;
+  margin-top: 40px;
+}
+
+@media (min-width: 810px) {
+  .title {
+    margin: 24px 0;
+  }
+}
+
+.apply_btn_wrapper {
+  margin: 20px;
+}
