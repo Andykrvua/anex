@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 // import { setUp } from '../../../store/store';
+import SimpleBar from 'simplebar-react';
 import { svgDown } from '../form-fields/svg';
 import useOutsideClick from '../../../utils/clickOutside';
 import {
@@ -39,9 +40,9 @@ export default function UpWindow({
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgDown} />
       <h3 className={styles.title}>{popupName}</h3>
-      <div className="popup_content">
+      <div className={`${styles.popup_content}`}>
         <div className="flex_container popup">
-          <div className="down_input_wrapper">
+          <div className={styles.down_input_wrapper}>
             <input
               // className={styles.down_input}
               type="text"
@@ -50,9 +51,17 @@ export default function UpWindow({
               placeholder="Страна / Курорт / Отель"
             />
           </div>
-          <h5 className={styles.down_content_title}>Популярные направления</h5>
-          <h5 className={styles.down_content_title}>Все страны (31)</h5>
-          <CountryList variant={countryListVariants.getSearch} />
+          <SimpleBar
+            autoHide={true}
+            style={{ maxHeight: 'calc(100vh - 280px)' }}
+            className="mobile_default"
+          >
+            <h5 className={styles.down_content_title}>
+              Популярные направления
+            </h5>
+            <h5 className={styles.down_content_title}>Все страны (31)</h5>
+            <CountryList variant={countryListVariants.getSearch} />
+          </SimpleBar>
         </div>
       </div>
     </div>
