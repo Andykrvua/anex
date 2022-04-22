@@ -14,7 +14,7 @@ import Header from './header';
 import styles from './down.module.css';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { enableBodyScroll } from 'body-scroll-lock';
 
 export default function UpWindow({
   setModalIsOpen,
