@@ -37,7 +37,6 @@ export default function UpWindow({
 
   // const ttt = setUp();
   enableBodyScroll('.popup_content_ddd');
-  enableBodyScroll('.test');
   return (
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgDown} />
