@@ -30,7 +30,7 @@ export default function MainFormBtn({
         onClick={clickHandler}
         aria-label={aria}
       >
-        <div>
+        <div className="main_formfield_inner">
           <span
             className="formfield_btn_icon"
             dangerouslySetInnerHTML={{ __html: svg }}
