@@ -36,7 +36,9 @@ export default function UpWindow({
   };
 
   const el = document.querySelector('.popup_content_ddd');
+  const el2 = document.querySelector('.test');
   unlock(el);
+  unlock(el2);
   // const ttt = setUp();
   // enableBodyScroll(el);
   return (
