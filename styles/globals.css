@@ -517,3 +517,11 @@ header.header .header_container {
   -webkit-overflow-scrolling: touch;
   background-color: blueviolet;
 }
+
+.popup_content_ddd {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}

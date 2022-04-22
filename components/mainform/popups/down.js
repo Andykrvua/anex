@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 // import { setUp } from '../../../store/store';
 // import SimpleBar from 'simplebar-react';
 import { svgDown } from '../form-fields/svg';
@@ -22,6 +22,14 @@ export default function UpWindow({
   cName,
   popupName,
 }) {
+  useEffect(() => {
+    const el = document.querySelector('.popup_content_ddd');
+    const el2 = document.querySelector('.test');
+    console.log(el);
+    unlock(el);
+    unlock(el2);
+  }, []);
+
   const width = getWidth();
   const wrapperRef = useRef(null);
 
@@ -35,10 +43,9 @@ export default function UpWindow({
     setModalIsOpen('');
   };
 
-  const el = document.querySelector('.popup_content_ddd');
-  const el2 = document.querySelector('.test');
-  unlock(el);
-  unlock(el2);
+  // const el = document.querySelector('.popup_content_ddd');
+  // const el2 = document.querySelector('.test');
+
   // const ttt = setUp();
   // enableBodyScroll(el);
   return (
