@@ -14,6 +14,7 @@ import Header from './header';
 import styles from './down.module.css';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 export default function UpWindow({
   setModalIsOpen,
@@ -35,7 +36,8 @@ export default function UpWindow({
   };
 
   // const ttt = setUp();
-
+  enableBodyScroll('.popup_content_ddd');
+  enableBodyScroll('.test');
   return (
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgDown} />
@@ -60,7 +62,7 @@ export default function UpWindow({
         malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
         vitae, ultricies eget, tempor sit amet,
       </div>
-      <div className={`${styles.popup_content}`}>
+      <div className={`${styles.popup_content} popup_content_ddd`}>
         {/* <div className="flex_container popup"> */}
         <div className={styles.down_input_wrapper}>
           <input
