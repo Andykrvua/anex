@@ -30,11 +30,13 @@ export default function MainFormBtn({
         onClick={clickHandler}
         aria-label={aria}
       >
-        <span
-          className="formfield_btn_icon"
-          dangerouslySetInnerHTML={{ __html: svg }}
-        ></span>
-        <span className="formfield_btn_title">{title}</span>
+        <div>
+          <span
+            className="formfield_btn_icon"
+            dangerouslySetInnerHTML={{ __html: svg }}
+          ></span>
+          <span className="formfield_btn_title">{title}</span>
+        </div>
       </button>
       {SecondaryBtn && <SecondaryBtn />}
       <DynamicWrapper modalIsOpen={modalIsOpen} cName={cName}>

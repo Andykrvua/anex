@@ -238,15 +238,27 @@ header.header .header_container {
 }
 
 .main_formfield {
-  display: grid;
-  grid-template-columns: var(--form-btn-icon-width) 1fr;
+  /* display: grid;
+  grid-template-columns: var(--form-btn-icon-width) 1fr; */
   width: 100%;
-  height: var(--form-btn-height);
-  align-items: center;
+  /* height: var(--form-btn-height);
+  align-items: center; */
   border: 1px solid var(--line);
   border-radius: var(--def-radius);
   background-color: var(--white);
   box-shadow: var(--formfield-shadow);
+}
+
+.main_formfield > div {
+  display: grid;
+  grid-template-columns: var(--form-btn-icon-width) 1fr;
+  /* width: 100%; */
+  height: var(--form-btn-height);
+  align-items: center;
+  /* border: 1px solid var(--line);
+  border-radius: var(--def-radius);
+  background-color: var(--white);
+  box-shadow: var(--formfield-shadow); */
 }
 
 .main_formfield:active,
@@ -269,7 +281,6 @@ header.header .header_container {
 .formfield_btn_title {
   justify-self: self-start;
   padding-left: 20px;
-  font-size: 15px;
   line-height: 18px;
   color: var(--primary);
 }
