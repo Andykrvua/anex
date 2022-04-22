@@ -509,3 +509,11 @@ header.header .header_container {
 }
 /* Popup end */
 /* Main form end */
+
+.test {
+  width: 300px;
+  height: 200px;
+  overflow-y: scroll; /* has to be scroll, not auto */
+  -webkit-overflow-scrolling: touch;
+  background-color: blueviolet;
+}

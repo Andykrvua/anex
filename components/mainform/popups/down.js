@@ -40,6 +40,26 @@ export default function UpWindow({
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgDown} />
       <h3 className={styles.title}>{popupName}</h3>
+      <div className="test">
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet,
+      </div>
       <div className={`${styles.popup_content}`}>
         {/* <div className="flex_container popup"> */}
         <div className={styles.down_input_wrapper}>
