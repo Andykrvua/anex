@@ -14,7 +14,7 @@ import Header from './header';
 import styles from './down.module.css';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
-import { enableBodyScroll } from 'body-scroll-lock';
+import { unlock } from 'tua-body-scroll-lock';
 
 export default function UpWindow({
   setModalIsOpen,
@@ -36,9 +36,9 @@ export default function UpWindow({
   };
 
   const el = document.querySelector('.popup_content_ddd');
-
+  unlock(el);
   // const ttt = setUp();
-  enableBodyScroll(el);
+  // enableBodyScroll(el);
   return (
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgDown} />

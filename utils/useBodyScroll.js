@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import viewPortSize from './getViewport';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+// import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
-export const enableScroll = enableBodyScroll;
+// export const enableScroll = enableBodyScroll;
+export const enableScroll = unlock;
 export const BODY = document.querySelector('body');
 export const maxWidth = 810;
 
@@ -16,11 +18,14 @@ export function useSetBodyScroll(modalIsOpen, maxWidth) {
 
   useEffect(() => {
     if (width < maxWidth && modalIsOpen) {
-      disableBodyScroll(BODY);
+      // disableBodyScroll(BODY);
+      lock(BODY);
     }
     console.log(width);
     return () => {
-      enableBodyScroll(BODY);
+      // enableBodyScroll(BODY);
+      unlock(BODY);
+      clearBodyLocks();
     };
   }, [width, modalIsOpen]);
 }
