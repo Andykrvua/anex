@@ -12,7 +12,7 @@ import {
 import Header from './header';
 import styles from './date.module.css';
 import { svgDate } from '../form-fields/svg';
-import SimpleBar from 'simplebar-react';
+// import SimpleBar from 'simplebar-react';
 
 export default function Date({
   setModalIsOpen,
