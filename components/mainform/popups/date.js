@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 // import { setUp } from '../../../store/store';
 import useOutsideClick from '../../../utils/clickOutside';
 import {
-  useSetBodyScroll,
+  // useSetBodyScroll,
   getWidth,
   enableScroll,
   // disableScroll,
@@ -13,6 +13,8 @@ import Header from './header';
 import styles from './date.module.css';
 import { svgDate } from '../form-fields/svg';
 // import SimpleBar from 'simplebar-react';
+// import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
+import { lock } from 'tua-body-scroll-lock';
 
 export default function Date({
   setModalIsOpen,
@@ -24,13 +26,12 @@ export default function Date({
   const wrapperRef = useRef(null);
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
-  useSetBodyScroll(modalIsOpen, maxWidth);
+  // useSetBodyScroll(modalIsOpen, maxWidth);
 
   const ref2 = useRef(null);
   useEffect(() => {
-    // disableScroll();
-    enableScroll(ref2);
-    console.log(ref2.current);
+    // enableScroll(ref2);
+    lock(ref2);
   }, []);
 
   const closeModalHandler = () => {
