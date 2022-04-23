@@ -28,8 +28,8 @@ export default function Date({
 
   const ref2 = useRef(null);
   useEffect(() => {
-    disableScroll();
-    enableScroll(ref2);
+    // disableScroll();
+    disableScroll(ref2);
     console.log(ref2.current);
   }, []);
 
