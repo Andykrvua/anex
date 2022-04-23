@@ -2,7 +2,7 @@ import { useRef } from 'react';
 // import { setUp } from '../../../store/store';
 import useOutsideClick from '../../../utils/clickOutside';
 import {
-  // useSetBodyScroll,
+  useSetBodyScroll,
   getWidth,
   enableScroll,
   maxWidth,
@@ -23,7 +23,7 @@ export default function Date({
   const wrapperRef = useRef(null);
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
-  // useSetBodyScroll(modalIsOpen, maxWidth);
+  useSetBodyScroll(modalIsOpen, maxWidth);
 
   const closeModalHandler = () => {
     if (width < maxWidth) {
