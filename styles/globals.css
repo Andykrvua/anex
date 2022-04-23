@@ -512,16 +512,16 @@ header.header .header_container {
 
 .test {
   width: 100%;
-  height: 400px;
-  overflow-y: scroll; /* has to be scroll, not auto */
-  /* -webkit-overflow-scrolling: touch; */
+  height: 150px;
   background-color: bisque;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .popup_content_ddd {
   display: flex;
   flex-direction: column;
   flex: 1 1;
-  overflow-y: scroll;
+  overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
