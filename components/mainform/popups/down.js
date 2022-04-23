@@ -14,7 +14,6 @@ import Header from './header';
 import styles from './down.module.css';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
-import { unlock } from 'tua-body-scroll-lock';
 
 export default function UpWindow({
   setModalIsOpen,
@@ -22,12 +21,14 @@ export default function UpWindow({
   cName,
   popupName,
 }) {
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+
   useEffect(() => {
-    const el = document.querySelector('.popup_content_ddd');
-    const el2 = document.querySelector('.test');
-    console.log(el);
-    unlock(el);
-    unlock(el2);
+    enableScroll(ref1);
+    enableScroll(ref2);
+    console.log(ref1.current);
+    console.log(ref2.current);
   }, []);
 
   const width = getWidth();
@@ -52,7 +53,7 @@ export default function UpWindow({
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgDown} />
       <h3 className={styles.title}>{popupName}</h3>
-      <div className="test">
+      <div ref={ref1} className="test">
         Smooth Pellentesque habitant morbi tristique senectus et netus et
         malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
         vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
@@ -70,9 +71,46 @@ export default function UpWindow({
         Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
         Smooth Pellentesque habitant morbi tristique senectus et netus et
         malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet,
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+        Smooth Pellentesque habitant morbi tristique senectus et netus et
+        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
       </div>
-      <div className={`${styles.popup_content} popup_content_ddd`}>
+      <div className={`${styles.popup_content} popup_content_ddd`} ref={ref2}>
         {/* <div className="flex_container popup"> */}
         <div className={styles.down_input_wrapper}>
           <input
