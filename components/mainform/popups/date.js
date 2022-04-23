@@ -31,7 +31,7 @@ export default function Date({
   const ref2 = useRef(null);
   useEffect(() => {
     // enableScroll(ref2);
-    lock(ref2);
+    lock(ref2.current);
   }, []);
 
   const closeModalHandler = () => {
