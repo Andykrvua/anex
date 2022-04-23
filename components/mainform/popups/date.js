@@ -5,6 +5,7 @@ import {
   useSetBodyScroll,
   getWidth,
   enableScroll,
+  disableScroll,
   maxWidth,
   BODY,
 } from '../../../utils/useBodyScroll';
@@ -28,6 +29,7 @@ export default function Date({
   const ref2 = useRef(null);
   useEffect(() => {
     enableScroll(ref2);
+    disableScroll();
     console.log(ref2.current);
   }, []);
 
@@ -47,7 +49,7 @@ export default function Date({
       <div className="popup_content">
         <SimpleBar
           autoHide={false}
-          style={{ maxHeight: 400 }}
+          style={{ maxHeight: '100%' }}
           className="ggg"
           ref={ref2}
         >
