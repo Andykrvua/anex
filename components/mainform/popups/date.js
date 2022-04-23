@@ -23,7 +23,7 @@ export default function Date({
   const wrapperRef = useRef(null);
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
-  useSetBodyScroll(modalIsOpen, maxWidth);
+  // useSetBodyScroll(modalIsOpen, maxWidth);
 
   const closeModalHandler = () => {
     if (width < maxWidth) {
@@ -39,7 +39,7 @@ export default function Date({
       <Header closeModalHandler={closeModalHandler} svg={svgDate} />
       <h3 className={styles.title}>{popupName}</h3>
       <div className="popup_content">
-        <SimpleBar autoHide={false} style={{ maxHeight: 300 }}>
+        <SimpleBar autoHide={false} style={{ maxHeight: 400 }}>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit earum
           atque perspiciatis vel molestiae, nostrum aperiam dolores adipisci cum
           nobis eligendi commodi temporibus? Sapiente error similique, molestiae
