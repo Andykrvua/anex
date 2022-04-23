@@ -47,7 +47,7 @@ export default function Date({
       <Header closeModalHandler={closeModalHandler} svg={svgDate} />
       <h3 className={styles.title}>{popupName}</h3>
       <div className="popup_content">
-        <SimpleBar
+        {/* <SimpleBar
           autoHide={false}
           style={{ maxHeight: '100%' }}
           className="ggg"
@@ -110,7 +110,65 @@ export default function Date({
           consequuntur architecto placeat, voluptas doloremque nostrum quas
           ullam dolorem quibusdam veritatis ipsum quod expedita eum maxime porro
           saepe vel eos minima molestiae tempore.
-        </SimpleBar>
+        </SimpleBar> */}
+        <div ref={ref2} className="test">
+          Smooth Pellentesque habitant morbi tristique senectus et netus et
+          malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
+          vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
+          morbi tristique senectus et netus et malesuada fames ac turpis
+          egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor
+          sit amet, Smooth Pellentesque habitant morbi tristique senectus et
+          netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet, Smooth Pellentesque habitant morbi tristique senectus
+          et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam,
+          feugiat vitae, ultricies eget, tempor sit amet, Smooth Pellentesque
+          habitant morbi tristique senectus et netus et malesuada fames ac
+          turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+          tempor sit amet,
+        </div>
       </div>
       <div className={styles.apply_btn_wrapper}>
         <button className="apply_btn" onClick={closeModalHandler}>
