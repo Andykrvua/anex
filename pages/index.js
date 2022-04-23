@@ -1,10 +1,66 @@
 import MainForm from '/components/mainform/mainForm.js';
+import SimpleBar from 'simplebar-react';
 
 export default function Home() {
   return (
     <div className="container">
       <MainForm />
       <h1>dsadsad</h1>
+      <SimpleBar style={{ maxHeight: 400 }} autoHide={false}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium
+        corporis quis voluptatibus laudantium quod facere neque recusandae.
+        Veniam et eaque reprehenderit accusantium repellat asperiores. Excepturi
+        culpa ducimus a vero? Quia iure aspernatur dolorem, ex ipsam,
+        repudiandae debitis placeat fugit iste laborum consectetur magni, vitae
+        eveniet aliquam et rerum aliquid praesentium ad? Repudiandae cupiditate
+        modi sunt dolores maxime, natus soluta voluptates labore a sit
+        consequatur est blanditiis et ratione corporis magni ea dolore fugit ad
+        obcaecati voluptas iure veniam! Adipisci placeat laudantium possimus
+        iste. Saepe, sit doloribus! Vero nulla iste ipsam dolore sunt aliquid
+        fuga consequatur id omnis facilis nostrum doloremque soluta et odit
+        fugit, natus saepe consectetur commodi qui! Repellendus totam deleniti
+        voluptates animi facilis magni magnam perferendis recusandae optio earum
+        nihil deserunt, doloremque facere voluptatem est! A delectus at quam
+        adipisci debitis molestiae esse beatae quae voluptatum quo cumque enim,
+        et suscipit explicabo reiciendis corporis quia. Perferendis, nemo
+        assumenda nihil laboriosam praesentium officiis vel neque et recusandae
+        quae quidem error pariatur ut omnis quas doloremque ab iure aut adipisci
+        laborum asperiores dicta ipsum. Quisquam assumenda autem maiores ipsum
+        rem accusantium, eligendi debitis doloremque quaerat maxime quibusdam
+        vero repellendus neque earum dolor. Magni nostrum itaque consequuntur,
+        quae ipsam quibusdam sed quos quam asperiores repellendus quisquam fuga
+        cupiditate autem nemo nulla dolorem. Dicta iste tempora consequatur
+        maiores eligendi eaque obcaecati eos ut illum hic voluptas quae,
+        necessitatibus vero neque quibusdam quisquam temporibus tempore aut illo
+        debitis. Fugit officiis quasi amet. Nemo quas quod vitae iusto quia
+        debitis accusantium beatae excepturi expedita, quasi est quos amet
+        voluptatum iure ea rerum tenetur error aliquam officiis ad velit neque?
+        Quasi sapiente aliquam atque tempore qui nobis soluta delectus omnis
+        quas! Velit corrupti laborum sunt, saepe, iste, aliquid magni vel quia
+        expedita laboriosam error sit in distinctio corporis earum consequatur
+        ad quasi assumenda? Adipisci facilis ratione accusamus quos?
+        Necessitatibus consequatur voluptates ad ducimus fugiat reiciendis quae
+        autem, cum doloremque alias similique totam eaque velit architecto
+        corporis quas quisquam, id officia? Ratione ullam veniam nobis sed
+        molestiae hic voluptatibus ipsum officiis voluptatem corporis adipisci
+        nesciunt rem delectus tenetur omnis vitae, quam eaque non placeat
+        deleniti, corrupti cum consequatur. Illum fuga tempora ratione veritatis
+        nemo in sunt adipisci nihil. Eos quod velit, doloremque commodi corporis
+        ea totam. Explicabo excepturi illum, expedita cupiditate ratione
+        praesentium atque fugiat repudiandae necessitatibus rem est, incidunt
+        ducimus eveniet! Iusto nobis minima odit ipsum vel, sit sequi velit
+        quasi iure vero recusandae, aut alias non eligendi fugiat repudiandae
+        ad! Eaque delectus explicabo debitis ab excepturi tenetur, repellat, cum
+        maiores provident consequatur ad in obcaecati quam animi, error eligendi
+        at dignissimos nemo aperiam. Est inventore, laudantium nobis minus ab a
+        esse non fugit cumque accusantium voluptatum iure reprehenderit. Sequi
+        reprehenderit voluptas delectus tempore beatae? Laboriosam minima maxime
+        ex corrupti, odio ea ipsum quis illum praesentium voluptatum debitis
+        tenetur tempora sapiente illo eum officia quae ipsam aperiam impedit
+        modi. Dolore amet natus ex numquam modi ipsam dolorem inventore deserunt
+        molestias, voluptate aut vero ratione, maxime error molestiae. Deserunt
+        cum veniam aspernatur nemo sequi natus dolores?
+      </SimpleBar>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
         obcaecati temporibus, consequuntur fuga nam atque dolorum quas sit.
