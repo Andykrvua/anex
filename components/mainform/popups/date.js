@@ -5,7 +5,7 @@ import {
   useSetBodyScroll,
   getWidth,
   enableScroll,
-  disableScroll,
+  // disableScroll,
   maxWidth,
   BODY,
 } from '../../../utils/useBodyScroll';
@@ -29,7 +29,7 @@ export default function Date({
   const ref2 = useRef(null);
   useEffect(() => {
     // disableScroll();
-    disableScroll(ref2);
+    enableScroll(ref2);
     console.log(ref2.current);
   }, []);
 
