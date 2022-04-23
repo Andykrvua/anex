@@ -7,6 +7,7 @@ import {
   useSetBodyScroll,
   getWidth,
   enableScroll,
+  disableScroll,
   maxWidth,
   BODY,
 } from '../../../utils/useBodyScroll';
@@ -25,8 +26,8 @@ export default function UpWindow({
   const ref2 = useRef(null);
 
   useEffect(() => {
-    enableScroll(ref1);
-    enableScroll(ref2);
+    disableScroll(ref1);
+    disableScroll(ref2);
     console.log(ref1.current);
     console.log(ref2.current);
   }, []);

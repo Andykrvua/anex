@@ -5,6 +5,7 @@ import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
 // export const enableScroll = enableBodyScroll;
 export const enableScroll = unlock;
+export const disableScroll = lock;
 export const BODY = document.querySelector('body');
 export const maxWidth = 810;
 
