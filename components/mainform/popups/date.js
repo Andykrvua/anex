@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 // import { setUp } from '../../../store/store';
 import useOutsideClick from '../../../utils/clickOutside';
 import {
@@ -25,6 +25,12 @@ export default function Date({
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth);
 
+  const ref2 = useRef(null);
+  useEffect(() => {
+    enableScroll(ref2);
+    console.log(ref2.current);
+  }, []);
+
   const closeModalHandler = () => {
     if (width < maxWidth) {
       enableScroll(BODY);
@@ -39,7 +45,12 @@ export default function Date({
       <Header closeModalHandler={closeModalHandler} svg={svgDate} />
       <h3 className={styles.title}>{popupName}</h3>
       <div className="popup_content">
-        <SimpleBar autoHide={false} style={{ maxHeight: 400 }}>
+        <SimpleBar
+          autoHide={false}
+          style={{ maxHeight: 400 }}
+          className="ggg"
+          ref={ref2}
+        >
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit earum
           atque perspiciatis vel molestiae, nostrum aperiam dolores adipisci cum
           nobis eligendi commodi temporibus? Sapiente error similique, molestiae
