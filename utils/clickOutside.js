@@ -13,6 +13,7 @@ export default function useOutsideClick(
 
     function handleClickOutside(event) {
       if (event.target.closest('.main_formfield')) {
+        // modal open and click btn other modal
         document.removeEventListener('mousedown', handleClickOutside);
         return null;
       }
@@ -24,5 +25,7 @@ export default function useOutsideClick(
     if (!modalIsOpen) {
       document.removeEventListener('mousedown', handleClickOutside);
     }
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [modalIsOpen]);
 }

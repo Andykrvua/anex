@@ -5,7 +5,7 @@ const NavContent = () => {
   return (
     <ul className="header_nav">
       <li>
-        <Link href="/">
+        <Link href="/index2">
           <a className="header_nav_link">Туры</a>
         </Link>
       </li>
@@ -37,7 +37,7 @@ export default function Nav({ location }) {
   return (
     <nav className={`header_nav_container ${location}`}>
       {location === 'mobile' ? (
-        <SimpleBar style={{ maxWidth: 500, height: 30 }} autoHide={false}>
+        <SimpleBar style={{ maxWidth: 600, height: 30 }} autoHide={false}>
           <NavContent />
         </SimpleBar>
       ) : (

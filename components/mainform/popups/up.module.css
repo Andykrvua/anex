@@ -1,14 +1,9 @@
-.title {
-  margin-top: 40px;
-  text-align: center;
-  font-size: 17px;
-  line-height: 20px;
+.popup_scrollable_content {
+  margin: 0;
 }
 
-@media (min-width: 810px) {
-  .title {
-    margin: 24px 0;
-  }
+.popup_scrollable_content.center {
+  justify-content: center;
 }
 
 .input_label {
@@ -33,8 +28,4 @@
   font-weight: bold;
   color: var(--font-white);
   background-color: var(--secondary);
-}
-
-.apply_btn_wrapper {
-  margin: 20px;
 }

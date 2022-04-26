@@ -1,15 +1,17 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useLayoutEffect, useState } from 'react';
+import useOutsideClick from '../../../utils/clickOutside';
 import {
   useSetBodyScroll,
-  getWidth,
+  getSize,
   enableScroll,
+  clear,
+  disableScroll,
   maxWidth,
   BODY,
 } from '../../../utils/useBodyScroll';
-import useOutsideClick from '../../../utils/clickOutside';
-import { setUp } from '../../../store/store';
 import Header from './header';
 import { svgUp } from '../form-fields/svg';
+import { setUp } from '../../../store/store';
 import styles from './up.module.css';
 
 export default function UpWindow({
@@ -18,14 +20,39 @@ export default function UpWindow({
   cName,
   popupName,
 }) {
-  const width = getWidth();
+  const size = getSize();
   const wrapperRef = useRef(null);
+  const scrollable = useRef(null);
+  const scrollableContent = useRef(null);
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
-  useSetBodyScroll(modalIsOpen, maxWidth);
+  useSetBodyScroll(modalIsOpen, maxWidth, size.width);
+
+  const [contentStyle, setContentStyle] = useState(false);
+
+  useLayoutEffect(() => {
+    if (
+      scrollable.current.clientHeight > scrollableContent.current.clientHeight
+    ) {
+      setContentStyle(true);
+    } else {
+      setContentStyle(false);
+    }
+  }, [size.height]);
+
+  useEffect(() => {
+    if (size.width < maxWidth) {
+      if (modalIsOpen) {
+        disableScroll(scrollable.current);
+      }
+    }
+    return () => {
+      clear();
+    };
+  }, [modalIsOpen, size.width]);
 
   const closeModalHandler = () => {
-    if (width < maxWidth) {
+    if (size.width < maxWidth) {
       enableScroll(BODY);
     }
     setModalIsOpen('');
@@ -42,9 +69,13 @@ export default function UpWindow({
   return (
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgUp} />
-      <h3 className={styles.title}>{popupName}</h3>
-      <div className="popup_content">
-        <div className={styles.input_wrapper}>
+      <h3 className="title">{popupName}</h3>
+      <div
+        className={`${styles.popup_scrollable_content} popup_scrollable_content`}
+        ref={scrollable}
+        style={{ justifyContent: contentStyle ? 'center' : 'start' }}
+      >
+        <div className={styles.input_wrapper} ref={scrollableContent}>
           {upPoints.map((item, i) => {
             return (
               <label className={styles.input_label} key={i}>
@@ -63,7 +94,7 @@ export default function UpWindow({
           })}
         </div>
       </div>
-      <div className={styles.apply_btn_wrapper}>
+      <div className="apply_btn_wrapper">
         <button className="apply_btn" onClick={closeModalHandler}>
           Применить
         </button>

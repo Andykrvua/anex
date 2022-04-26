@@ -1,7 +1,7 @@
 :root {
   --page-m-width: 1110px; /* макс ширина страницы */
   --cont-padding: 0 20px; /* отступ у контейнера */
-  /* --cont-padding-popup: 0 20px; отступ у контейнера всплывающего окна */
+  --cont-padding-popup: 20px; /* отступ у контейнера всплывающего окна */
   --header-height: 81px; /* высота шапки */
   --header-compensation: 0; /* компенсация высоты шапки */
   --form-btn-icon-width: 58px; /* ширина блока иконки в форме */

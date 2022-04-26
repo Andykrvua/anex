@@ -1,16 +1,17 @@
-import { useRef } from 'react';
-// import { setUp } from '../../../store/store';
+import { useRef, useEffect } from 'react';
 import useOutsideClick from '../../../utils/clickOutside';
 import {
   useSetBodyScroll,
-  getWidth,
+  getSize,
   enableScroll,
+  clear,
+  disableScroll,
   maxWidth,
   BODY,
 } from '../../../utils/useBodyScroll';
 import Header from './header';
-import styles from './night.module.css';
 import { svgNight } from '../form-fields/svg';
+// import styles from './night.module.css';
 
 export default function Night({
   setModalIsOpen,
@@ -18,27 +19,37 @@ export default function Night({
   cName,
   popupName,
 }) {
-  const width = getWidth();
+  const size = getSize();
   const wrapperRef = useRef(null);
+  const scrollable = useRef(null);
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
-  useSetBodyScroll(modalIsOpen, maxWidth);
+  useSetBodyScroll(modalIsOpen, maxWidth, size.width);
+
+  useEffect(() => {
+    if (size.width < maxWidth) {
+      if (modalIsOpen) {
+        disableScroll(scrollable.current);
+      }
+    }
+    return () => {
+      clear();
+    };
+  }, [modalIsOpen, size.width]);
 
   const closeModalHandler = () => {
-    if (width < maxWidth) {
+    if (size.width < maxWidth) {
       enableScroll(BODY);
     }
     setModalIsOpen('');
   };
 
-  // const ttt = setUp();
-
   return (
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgNight} />
-      <h3 className={styles.title}>{popupName}</h3>
-      <div className="popup_content"></div>
-      <div className={styles.apply_btn_wrapper}>
+      <h3 className="title">{popupName}</h3>
+      <div className="popup_scrollable_content" ref={scrollable}></div>
+      <div className="apply_btn_wrapper">
         <button className="apply_btn" onClick={closeModalHandler}>
           Применить
         </button>

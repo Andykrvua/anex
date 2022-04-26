@@ -1,136 +1,123 @@
-import { useRef, useEffect } from 'react';
-// import { setUp } from '../../../store/store';
-// import SimpleBar from 'simplebar-react';
-import { svgDown } from '../form-fields/svg';
+import { useRef, useEffect, useState } from 'react';
 import useOutsideClick from '../../../utils/clickOutside';
 import {
   useSetBodyScroll,
-  getWidth,
+  getSize,
   enableScroll,
+  clear,
+  disableScroll,
   maxWidth,
   BODY,
 } from '../../../utils/useBodyScroll';
 import Header from './header';
+import { svgDown } from '../form-fields/svg';
 import styles from './down.module.css';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
 
-export default function UpWindow({
+export default function Down({
   setModalIsOpen,
   modalIsOpen,
   cName,
   popupName,
 }) {
-  const ref1 = useRef(null);
-  const ref2 = useRef(null);
-
-  useEffect(() => {
-    enableScroll(ref1);
-    enableScroll(ref2);
-    console.log(ref1.current);
-    console.log(ref2.current);
-  }, []);
-
-  const width = getWidth();
+  const size = getSize();
   const wrapperRef = useRef(null);
+  const scrollable = useRef(null);
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
-  useSetBodyScroll(modalIsOpen, maxWidth);
+  useSetBodyScroll(modalIsOpen, maxWidth, size.width);
+
+  const [iosView, setIosView] = useState(0);
+  const [inputTranslateY, setInputTranslateY] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+      window.visualViewport.addEventListener('resize', resizeHandler);
+      return () =>
+        window.visualViewport.removeEventListener('resize', resizeHandler);
+      // }
+    }
+  }, []);
+
+  function resizeHandler() {
+    console.log('resize');
+    // ios 13+ get height when keyboard is open
+    setIosView(window.visualViewport.height);
+    console.log('ss', window.visualViewport.height);
+  }
+
+  useEffect(() => {
+    if (size.width < maxWidth) {
+      if (modalIsOpen) {
+        disableScroll(scrollable.current);
+      }
+    }
+    return () => {
+      clear();
+    };
+  }, [modalIsOpen, size.width]);
 
   const closeModalHandler = () => {
-    if (width < maxWidth) {
+    if (size.width < maxWidth) {
       enableScroll(BODY);
     }
     setModalIsOpen('');
   };
 
-  // const el = document.querySelector('.popup_content_ddd');
-  // const el2 = document.querySelector('.test');
+  const inputOnchange = (e) => {
+    console.log(e.target.value);
+    const x = e.target.value;
+    console.log(x.length);
+    if (x.length) {
+      setInputTranslateY(60);
+      setIosView((prev) => prev + 60);
+    } else {
+      setInputTranslateY(0);
+      setIosView(0);
+    }
+  };
 
-  // const ttt = setUp();
-  // enableBodyScroll(el);
   return (
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgDown} />
-      <h3 className={styles.title}>{popupName}</h3>
-      <div ref={ref1} className="test">
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-        Smooth Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat
-        vitae, ultricies eget, tempor sit amet, Smooth Pellentesque habitant
-        morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
+      <h3 className="title">{popupName}</h3>
+      <div className={styles.down_input_wrapper}>
+        <input
+          // className={styles.down_input}
+          type="text"
+          name=""
+          id=""
+          placeholder="Страна / Курорт / Отель"
+          onChange={(e) => inputOnchange(e)}
+          style={
+            iosView
+              ? {
+                  transform: `translateY(-${inputTranslateY}px)`,
+                  transition: 'transform 0.3s',
+                }
+              : {}
+          }
+        />
       </div>
-      <div className={`${styles.popup_content} popup_content_ddd`} ref={ref2}>
-        {/* <div className="flex_container popup"> */}
-        <div className={styles.down_input_wrapper}>
-          <input
-            // className={styles.down_input}
-            type="text"
-            name=""
-            id=""
-            placeholder="Страна / Курорт / Отель"
-          />
-        </div>
-        {/* <SimpleBar
-            autoHide={true}
-            style={{ maxHeight: 'calc(100vh - 280px)' }}
-            className="mobile_default"
-          > */}
+      <div
+        className="popup_scrollable_content"
+        ref={scrollable}
+        style={
+          iosView
+            ? {
+                flex: `0 0 ${iosView - 243}px`,
+                transform: `translateY(-${inputTranslateY}px)`,
+              }
+            : {}
+        }
+      >
+        {iosView}
         <h5 className={styles.down_content_title}>Популярные направления</h5>
+        <CountryList variant={countryListVariants.getSearchPopular} />
         <h5 className={styles.down_content_title}>Все страны (31)</h5>
         <CountryList variant={countryListVariants.getSearch} />
-        {/* </SimpleBar> */}
-        {/* </div> */}
       </div>
     </div>
   );
