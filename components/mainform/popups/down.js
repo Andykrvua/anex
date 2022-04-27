@@ -31,7 +31,7 @@ export default function Down({
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
   const [iosView, setIosView] = useState(0);
-  const [inputTranslateY, setInputTranslateY] = useState(0);
+  // const [inputTranslateY, setInputTranslateY] = useState(0);
   const [country, setCountry] = useState('');
   const [countryData, setCountryData] = useState(false);
   console.log('ss', countryData);

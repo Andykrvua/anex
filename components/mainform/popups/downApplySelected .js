@@ -1,20 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
-import useOutsideClick from '../../../utils/clickOutside';
-import { allCountry } from '../../../utils/allCountry';
-import {
-  useSetBodyScroll,
-  getSize,
-  enableScroll,
-  clear,
-  disableScroll,
-  maxWidth,
-  BODY,
-} from '../../../utils/useBodyScroll';
-import Header from './header';
-import { svgDown } from '../form-fields/svg';
 import styles from './downApplySelected.module.css';
-import CountryList from 'components/countryList';
-import { countryListVariants } from 'utils/constants';
 
 export default function DownApplySelected({ item, closeDownApplySelected }) {
   return (
