@@ -1,0 +1,52 @@
+.down_selected_block {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 176px;
+  border-top: 1px solid var(--line);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.country_item {
+  display: grid;
+  grid-template-columns: 60px max-content;
+  column-gap: 10px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.country_item_img {
+  grid-row: 2 span;
+}
+
+.country_item_name {
+  align-self: center;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.country_item_price {
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--primary-light);
+}
+
+.popup_close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.apply_btn_wrapper {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

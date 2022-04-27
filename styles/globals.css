@@ -36,6 +36,14 @@ body {
   color: var(--primary);
   background-color: var(--bg);
 }
+body.iosfix {
+  /* hide scroll while drag window */
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
 
 h1,
 h2,
@@ -432,10 +440,15 @@ header.header .header_container {
   position: fixed;
   top: 0;
   right: 0;
-  width: 100%;
+
+  bottom: 0;
+  left: 0;
+
+  /* width: 100%; */
   /* height: 100vh; */
   /* height: 100%; */
-  height: calc(100% + 100px);
+
+  /* height: calc(100% + 100px); */
   background-color: var(--popup-bg);
   transform: translateX(-100%);
   transition: transform var(--base-transition);
@@ -443,7 +456,7 @@ header.header .header_container {
 }
 
 .popup_wrapper {
-  height: calc(100% - 100px);
+  /* height: calc(100% - 100px); */
 }
 
 .main_form_popup.open {
@@ -454,6 +467,7 @@ header.header .header_container {
   .main_form_popup {
     position: absolute;
     top: calc(100% - 1px);
+    bottom: initial;
     height: initial;
     transform: scaleY(0);
     transform-origin: top;
@@ -498,6 +512,19 @@ header.header .header_container {
     flex-direction: column;
     height: 100%;
   }
+
+  .popup_wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    max-height: 20000px;
+    overflow: auto;
+  }
 }
 /* Popup content start */
 .title {
@@ -518,7 +545,7 @@ header.header .header_container {
     display: flex;
     flex-direction: column;
     flex: 1 1;
-    margin: 0 var(--cont-padding-popup);
+    padding: 0 var(--cont-padding-popup);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }

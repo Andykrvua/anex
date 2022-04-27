@@ -2,13 +2,18 @@ import { allCountry } from 'utils/allCountry';
 import { countryListVariants } from '../utils/constants';
 import styles from './countryList.module.css';
 
-const CountryListGetSearch = ({ limit = 100 }) => {
+const CountryListGetSearch = ({ clickCountryItem, limit = 100 }) => {
   return (
     <div className={styles.all_country_wrapper}>
       {allCountry.map((item, i) => {
         if (i < limit) {
           return (
-            <div className={styles.country_item} key={item.code}>
+            <div
+              className={`${styles.country_item} country_item`}
+              key={item.code}
+              onClick={(e) => clickCountryItem(e)}
+              data-code={item.code}
+            >
               <div className={styles.country_item_img}>
                 <img src={item.img} alt={item.name} width="60" height="43" />
               </div>
@@ -22,15 +27,17 @@ const CountryListGetSearch = ({ limit = 100 }) => {
   );
 };
 
-export default function countryList({ variant }) {
+export default function countryList({ variant, clickCountryItem }) {
   switch (variant) {
     case countryListVariants.getSearch:
       console.log('getSearch');
-      return <CountryListGetSearch />;
+      return <CountryListGetSearch clickCountryItem={clickCountryItem} />;
 
     case countryListVariants.getSearchPopular:
       console.log('getSearchPopular');
-      return <CountryListGetSearch limit={8} />;
+      return (
+        <CountryListGetSearch clickCountryItem={clickCountryItem} limit={8} />
+      );
 
     case countryListVariants.getCountryPage:
       console.log('getCountryPage');

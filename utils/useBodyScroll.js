@@ -22,11 +22,13 @@ export function useSetBodyScroll(modalIsOpen, maxWidth, width) {
     if (width < maxWidth && modalIsOpen) {
       // disableBodyScroll(BODY);
       lock(BODY);
+      BODY.classList.add('iosfix');
     }
     console.log(width);
     return () => {
       // enableBodyScroll(BODY);
       unlock(BODY);
+      BODY.classList.remove('iosfix');
       clearBodyLocks();
     };
   }, [width, modalIsOpen]);
