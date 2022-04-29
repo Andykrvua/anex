@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import useOutsideClick from '../../../utils/clickOutside';
 import { allCountry } from '../../../utils/allCountry';
 import {
@@ -15,7 +16,43 @@ import { svgDown } from '../form-fields/svg';
 import styles from './down.module.css';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
-import DownApplySelected from './downApplySelected ';
+import LoadingPlaceholder from '../form-fields/loadingPlaceholder';
+import SimpleBar from 'simplebar-react';
+import {
+  maxHeightDesktopFormPopup,
+  transitionTime,
+} from '../../../utils/constants';
+import { setDown } from '../../../store/store';
+
+// change scroll depending on mobile or desktop
+const SimpleBarWrapper = ({ size, children }) => {
+  return (
+    <>
+      {size.width >= maxWidth ? (
+        <SimpleBar
+          className="mobile_default"
+          style={{ maxHeight: maxHeightDesktopFormPopup }}
+          autoHide={true}
+        >
+          {children}
+        </SimpleBar>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
+};
+
+// selected item confirmation block
+const DownApplySelected = dynamic(
+  () => import(/* webpackChunkName: "downApply" */ './downApplySelected'),
+  {
+    ssr: false,
+    loading: () => {
+      return <LoadingPlaceholder />;
+    },
+  }
+);
 
 export default function Down({
   setModalIsOpen,
@@ -23,22 +60,33 @@ export default function Down({
   cName,
   popupName,
 }) {
+  const selectDown = setDown();
+  const selectDownHandler = (name) => {
+    selectDown(name);
+    setCountry(name);
+    closeModalHandler();
+    setTimeout(() => {
+      setCountryData(false);
+    }, transitionTime);
+  };
+
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
+  const input = useRef(null);
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
   const [iosView, setIosView] = useState(0);
-  // const [inputTranslateY, setInputTranslateY] = useState(0);
   const [country, setCountry] = useState('');
   const [countryData, setCountryData] = useState(false);
-  console.log('ss', countryData);
 
+  // get viewport height when opening keyboard
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+        if (!window.visualViewport) return;
         window.visualViewport.addEventListener('resize', resizeHandler);
         return () =>
           window.visualViewport.removeEventListener('resize', resizeHandler);
@@ -47,10 +95,27 @@ export default function Down({
   }, []);
 
   function resizeHandler() {
-    console.log('resize');
     // ios 13+ get height when keyboard is open
+    // need fix for ios > 13
     setIosView(window.visualViewport.height);
   }
+
+  // close keyboard when scroll result
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     scrollable.current.addEventListener('scroll', closeKeyboard);
+  //     return () => window.removeEventListener('scroll', closeKeyboard);
+  //   }
+  // }, []);
+
+  // function closeKeyboard() {
+  //   setTimeout(() => {
+  //     console.log('resize');
+  //     input.current.blur();
+  //     // ios 13+ get height when keyboard is open
+  //     setIosView('sssss');
+  //   }, 500);
+  // }
 
   useEffect(() => {
     if (size.width < maxWidth) {
@@ -72,83 +137,75 @@ export default function Down({
 
   const inputOnchange = (e) => {
     setCountry(e.target.value);
-    console.log(e.target.value);
-    const x = e.target.value;
-    console.log(x.length);
-    // if (x.length) {
-    //   setInputTranslateY(60);
-    //   setIosView((prev) => prev + 60);
-    // } else {
-    //   setInputTranslateY(0);
-    //   setIosView(0);
-    // }
   };
 
   const clickCountryItem = (e) => {
     const selected = allCountry.find(
       (item) => item.code === e.target.closest('.country_item').dataset.code
     );
-    setCountry(selected.name);
-    setCountryData(selected);
-  };
-
-  const closeDownApplySelected = () => {
-    setCountryData(false);
+    if (size.width >= maxWidth) {
+      selectDownHandler(selected.name);
+    } else {
+      setCountry(selected.name);
+      setCountryData(selected);
+    }
   };
 
   return (
-    <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
-      <Header closeModalHandler={closeModalHandler} svg={svgDown} />
-      <h3 className="title">{popupName}</h3>
-      <div className={styles.down_input_wrapper}>
-        <input
-          // className={styles.down_input}
-          type="text"
-          name=""
-          id=""
-          placeholder="Страна / Курорт / Отель"
-          onChange={(e) => inputOnchange(e)}
-          // style={
-          //   iosView
-          //     ? {
-          //         transform: `translateY(-${inputTranslateY}px)`,
-          //         transition: 'transform 0.3s',
-          //       }
-          //     : {}
-          // }
-          value={country}
-        />
+    <SimpleBarWrapper size={size}>
+      <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
+        <Header closeModalHandler={closeModalHandler} svg={svgDown} />
+        <h3 className="title">{popupName}</h3>
+        <div className={styles.down_input_wrapper}>
+          <input
+            ref={input}
+            type="text"
+            name=""
+            id=""
+            placeholder="Страна / Курорт / Отель"
+            onChange={(e) => inputOnchange(e)}
+            // style={
+            //   iosView
+            //     ? {
+            //         transform: `translateY(-${inputTranslateY}px)`,
+            //         transition: 'transform 0.3s',
+            //       }
+            //     : {}
+            // }
+            value={country}
+          />
+        </div>
+        <div
+          className="popup_scrollable_content"
+          ref={scrollable}
+          style={
+            iosView
+              ? {
+                  flex: `0 0 ${iosView - 243}px`,
+                }
+              : {}
+          }
+        >
+          {iosView}
+          <h5 className={styles.down_content_title}>Популярные направления</h5>
+          <CountryList
+            variant={countryListVariants.getSearchPopular}
+            clickCountryItem={clickCountryItem}
+          />
+          <h5 className={styles.down_content_title}>Все страны (31)</h5>
+          <CountryList
+            variant={countryListVariants.getSearch}
+            clickCountryItem={clickCountryItem}
+          />
+        </div>
+        {countryData && (
+          <DownApplySelected
+            item={countryData}
+            setCountryData={setCountryData}
+            selectDownHandler={selectDownHandler}
+          />
+        )}
       </div>
-      <div
-        className="popup_scrollable_content"
-        ref={scrollable}
-        style={
-          iosView
-            ? {
-                flex: `0 0 ${iosView - 243}px`,
-                // transform: `translateY(-${inputTranslateY}px)`,
-              }
-            : {}
-        }
-      >
-        {iosView}
-        <h5 className={styles.down_content_title}>Популярные направления</h5>
-        <CountryList
-          variant={countryListVariants.getSearchPopular}
-          clickCountryItem={clickCountryItem}
-        />
-        <h5 className={styles.down_content_title}>Все страны (31)</h5>
-        <CountryList
-          variant={countryListVariants.getSearch}
-          clickCountryItem={clickCountryItem}
-        />
-      </div>
-      {countryData && (
-        <DownApplySelected
-          item={countryData}
-          closeDownApplySelected={closeDownApplySelected}
-        />
-      )}
-    </div>
+    </SimpleBarWrapper>
   );
 }

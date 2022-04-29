@@ -30,21 +30,21 @@ const CountryListGetSearch = ({ clickCountryItem, limit = 100 }) => {
 export default function countryList({ variant, clickCountryItem }) {
   switch (variant) {
     case countryListVariants.getSearch:
-      console.log('getSearch');
+      // console.log('getSearch');
       return <CountryListGetSearch clickCountryItem={clickCountryItem} />;
 
     case countryListVariants.getSearchPopular:
-      console.log('getSearchPopular');
+      // console.log('getSearchPopular');
       return (
         <CountryListGetSearch clickCountryItem={clickCountryItem} limit={8} />
       );
 
     case countryListVariants.getCountryPage:
-      console.log('getCountryPage');
+      // console.log('getCountryPage');
       return <CountryListGetSearch limit={8} />;
 
     case countryListVariants.getCountryHotels:
-      console.log('getCountryHotels');
+      // console.log('getCountryHotels');
       break;
 
     default:

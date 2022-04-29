@@ -20,6 +20,12 @@ export default function DateField({
   setModalIsOpen,
   popupName,
 }) {
+  // не могу получить дату во внутреннем компоненте, хз
+  const tomorrow = new Date();
+  // tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setDate(tomorrow.getDate() - 15);
+  const initialDate = tomorrow;
+
   const SecondaryBtn = () => {
     return (
       <div className="second_btn_date">
@@ -43,6 +49,7 @@ export default function DateField({
         modalIsOpen={modalIsOpen}
         cName={'btn_date'}
         popupName={popupName}
+        initialDate={initialDate}
       />
     </MainFormBtn>
   );

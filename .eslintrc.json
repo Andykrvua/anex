@@ -1,7 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "eslint:recommended"],
   "rules": {
-    "no-unused-vars": "error",
+    "no-unused-vars": "warn",
     "prefer-const": "warn",
     "no-console": "warn"
   }

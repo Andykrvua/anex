@@ -25,10 +25,13 @@ export default function UpWindow({
   const scrollable = useRef(null);
   const scrollableContent = useRef(null);
 
+  const selectUp = setUp();
+
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
   const [contentStyle, setContentStyle] = useState(false);
+  const [selectedUp, setSelectedUp] = useState(false);
 
   useLayoutEffect(() => {
     if (
@@ -58,10 +61,16 @@ export default function UpWindow({
     setModalIsOpen('');
   };
 
-  const selectUp = setUp();
-
   const inputHandler = (e) => {
-    selectUp(e.target.value);
+    setSelectedUp(e.target.value);
+  };
+
+  const selectedHandler = () => {
+    selectUp(selectedUp);
+    if (size.width < maxWidth) {
+      enableScroll(BODY);
+    }
+    setModalIsOpen('');
   };
 
   const upPoints = ['Запорожье', 'Киев', 'Львов', 'Одесса', 'Харьков'];
@@ -95,7 +104,7 @@ export default function UpWindow({
         </div>
       </div>
       <div className="apply_btn_wrapper">
-        <button className="apply_btn" onClick={closeModalHandler}>
+        <button className="apply_btn" onClick={selectedHandler}>
           Применить
         </button>
       </div>

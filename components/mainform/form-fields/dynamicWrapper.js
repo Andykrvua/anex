@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { transitionTime } from '../../../utils/constants';
 
 export default function DynamicWrapper({ modalIsOpen, cName, children }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function DynamicWrapper({ modalIsOpen, cName, children }) {
     } else {
       setTimeout(() => {
         setIsOpenHelper(modalIsOpen);
-      }, 300);
+      }, transitionTime);
     }
   }, [modalIsOpen]);
 

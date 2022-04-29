@@ -1,6 +1,18 @@
 import styles from './downApplySelected.module.css';
+import CloseSvg from '../../common/closeSvg';
 
-export default function DownApplySelected({ item, closeDownApplySelected }) {
+export default function DownApplySelected({
+  item,
+  setCountryData,
+  selectDownHandler,
+}) {
+  const selected = () => {
+    selectDownHandler(item.name);
+  };
+
+  const closeDownApplySelected = () => {
+    setCountryData(false);
+  };
   return (
     <div className={styles.down_selected_block}>
       <div
@@ -19,23 +31,12 @@ export default function DownApplySelected({ item, closeDownApplySelected }) {
         aria-label="Закрыть"
         onClick={closeDownApplySelected}
       >
-        <svg
-          width="42"
-          height="42"
-          viewBox="0 0 42 42"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M26.657 15.343 15.343 26.657M26.657 26.657 15.343 15.343"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <CloseSvg />
       </button>
       <div className={`${styles.apply_btn_wrapper} apply_btn_wrapper`}>
-        <button className="apply_btn">Применить</button>
+        <button onClick={selected} className="apply_btn">
+          Применить
+        </button>
       </div>
     </div>
   );

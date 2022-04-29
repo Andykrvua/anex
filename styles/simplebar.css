@@ -158,9 +158,9 @@
   width: 11px;
 }
 
-/* .mobile_default .simplebar-track.simplebar-vertical {
+.mobile_default .simplebar-track.simplebar-vertical {
   width: 7px;
-} */
+}
 
 .simplebar-scrollbar:before {
   top: 2px;
@@ -171,10 +171,10 @@
   background: var(--scroll-red);
 }
 
-/* .mobile_default .simplebar-scrollbar:before {
+.mobile_default .simplebar-scrollbar:before {
   border-radius: 0;
   background: var(--scroll-default);
-} */
+}
 
 .simplebar-track.simplebar-horizontal {
   left: 0;
@@ -216,4 +216,9 @@
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+.simplebar-content-wrapper::-webkit-scrollbar {
+  /* ios 13+ fix */
+  display: none;
 }

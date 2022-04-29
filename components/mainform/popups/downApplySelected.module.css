@@ -8,7 +8,7 @@
   left: 0;
   height: 176px;
   border-top: 1px solid var(--line);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--white-09);
 }
 
 .country_item {

@@ -1,6 +1,7 @@
 @import url('./variables.css');
 @import url('./normalize.css');
 @import url('./simplebar.css');
+/* @import 'react-datepicker/dist/react-datepicker.css'; */
 
 /* max mobile size */
 @media (max-width: 767px) {
@@ -37,7 +38,7 @@ body {
   background-color: var(--bg);
 }
 body.iosfix {
-  /* hide scroll while drag window */
+  /* ios hide scroll while drag window */
   position: fixed;
   top: 0;
   left: 0;
@@ -103,7 +104,7 @@ a {
   outline: none;
 }
 
-input {
+input[type='text'] {
   width: 100%;
   margin: 0;
   padding: 20px;
@@ -479,13 +480,16 @@ header.header .header_container {
   }
 
   .popup_wrapper {
-    height: initial;
+    /* height: initial; */
+    max-height: 530px;
+    overflow: auto;
   }
 }
 
 @media (min-width: 1110px) {
   .main_form_popup {
     top: 100%;
+    left: initial;
     right: -6px;
     width: 360px;
   }
@@ -506,7 +510,7 @@ header.header .header_container {
   }
 }
 
-@media (max-width: 810px) {
+@media (max-width: 809px) {
   .main_form_popup_mobile_wrapper {
     display: flex;
     flex-direction: column;
@@ -527,6 +531,10 @@ header.header .header_container {
   }
 }
 /* Popup content start */
+.popup_scrollable_content {
+  padding: 0 var(--cont-padding-popup);
+}
+
 .title {
   text-align: center;
   line-height: 20px;
@@ -540,12 +548,11 @@ header.header .header_container {
   }
 }
 
-@media (max-width: 810px) {
+@media (max-width: 809px) {
   .popup_scrollable_content {
     display: flex;
     flex-direction: column;
     flex: 1 1;
-    padding: 0 var(--cont-padding-popup);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }

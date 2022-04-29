@@ -11,6 +11,7 @@
   grid-template-columns: 60px max-content;
   column-gap: 10px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .country_item_img {
@@ -35,6 +36,12 @@
 @media (min-width: 450px) {
   .country_item_name {
     width: 135px;
+  }
+}
+
+@media (min-width: 1110px) {
+  .country_item_name {
+    width: 85px;
   }
 }
 
