@@ -6,5 +6,4 @@ export const countryListVariants = {
   getCountryHotels: 'getCountryHotels',
 };
 
-export const maxHeightDesktopFormPopup = 530;
 export const transitionTime = 300;

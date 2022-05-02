@@ -4,6 +4,9 @@ import { transitionTime } from '../../../utils/constants';
 export default function DynamicWrapper({ modalIsOpen, cName, children }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenHelper, setIsOpenHelper] = useState(false);
+  const [destroy, setDestroy] = useState(true);
+
+  const unmountTime = transitionTime * 2;
 
   useEffect(() => {
     // need for close animation
@@ -17,13 +20,32 @@ export default function DynamicWrapper({ modalIsOpen, cName, children }) {
     }
   }, [modalIsOpen]);
 
+  function Unmount() {
+    if (!modalIsOpen) {
+      setDestroy(false);
+    }
+  }
+
+  useEffect(() => {
+    // unmount component
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        Unmount();
+      }, unmountTime);
+    } else {
+      setDestroy(true);
+    }
+  }, [modalIsOpen]);
+
   return (
     <div
       className={
         isOpenHelper === cName ? 'main_form_popup open' : 'main_form_popup'
       }
     >
-      {isOpen === cName && <div className="popup_wrapper">{children}</div>}
+      {isOpen === cName && (
+        <div className="popup_wrapper">{destroy && children}</div>
+      )}
     </div>
   );
 }

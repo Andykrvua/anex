@@ -92,6 +92,12 @@ button:active {
   box-shadow: var(--btn-focus);
 }
 
+button:disabled,
+button[disabled] {
+  cursor: default;
+  box-shadow: none;
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -481,7 +487,7 @@ header.header .header_container {
 
   .popup_wrapper {
     /* height: initial; */
-    max-height: 530px;
+    max-height: var(--mainform-desktop-maxheight);
     overflow: auto;
   }
 }

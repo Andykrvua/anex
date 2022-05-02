@@ -1,1 +1,33 @@
+.plus_minus_btns {
+  display: flex;
+  align-items: center;
+  margin: 5px auto 0;
+}
 
+.plus_minus_btn {
+  width: 40px;
+  height: 40px;
+  margin: 0 6px;
+  border: 0;
+  background-color: transparent;
+}
+
+.plus_minus_btn:disabled svg,
+.plus_minus_btn[disabled] svg {
+  stroke: var(--placeholder);
+}
+
+.plus_minus_btn svg {
+  stroke: var(--secondary);
+}
+
+.plus_days_value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--def-radius);
+  background-color: var(--white);
+}

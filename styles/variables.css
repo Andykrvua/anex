@@ -6,6 +6,7 @@
   --header-compensation: 0; /* компенсация высоты шапки */
   --form-btn-icon-width: 58px; /* ширина блока иконки в форме */
   --form-btn-height: 58px; /* высота кнопки в форме */
+  --mainform-desktop-maxheight: 610px; /* максимальная высота попапа формы на десктопе */
 
   --primary: #53536e; /* основной цвет */
   --secondary: #ff9400; /* вторичный цвет */
@@ -35,14 +36,15 @@
   --red-btn-shadow: 0px 8px 16px rgba(255, 89, 16, 0.38); /* тень главной кнопки формы */
   --base-btn-shadow: 0px 8px 16px rgba(83, 83, 110, 0.38); /* тень главной кнопки формы */
   --arrow-btn-shadow: 0px 2px 4px rgba(229, 229, 235, 0.58); /* тень arrow кнопок */
+  --arrow-btn-shadow-up: 0px -2px 4px rgba(229, 229, 235, 0.58); /* тень arrow кнопок вверх */
 
   --base-transition: 0.3s ease; /* базовый переход */
   --letter: -0.02em; /* межбуквенный интервал для заголовков меню */
   --svg-btn-padding: 0; /* отступ у кнопок с svg иконками */
   --def-radius: 4px; /* радиус по умолчанию */
 
-  --header-wrapper-z: 5; /* z-index шапки */
-  --main-form-popup-z: 10; /* z-index шапки */
+  --header-wrapper-z: 10; /* z-index шапки */
+  --main-form-popup-z: 5; /* z-index шапки */
 }
 
 /* size tablet or bigger */

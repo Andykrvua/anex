@@ -3,7 +3,8 @@ import { devtools } from 'zustand/middleware';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
-const date = tomorrow.toISOString().slice(0, 10).split('-').reverse().join('.');
+// const date = tomorrow.toISOString().slice(0, 10).split('-').reverse().join('.');
+const rawDate = tomorrow;
 
 const useStore = create(
   devtools((set) => ({
@@ -11,7 +12,7 @@ const useStore = create(
     setUp: (up) => set({ up }),
     down: 'Сейшельские о-ва',
     setDown: (down) => set({ down }),
-    date: date,
+    date: { rawDate, plusDays: 3 },
     setDate: (date) => set({ date }),
     night: '10 - 15 ночей',
     setNight: (night) => set({ night }),

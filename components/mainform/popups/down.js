@@ -18,10 +18,7 @@ import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
 import LoadingPlaceholder from '../form-fields/loadingPlaceholder';
 import SimpleBar from 'simplebar-react';
-import {
-  maxHeightDesktopFormPopup,
-  transitionTime,
-} from '../../../utils/constants';
+import { transitionTime } from '../../../utils/constants';
 import { setDown } from '../../../store/store';
 
 // change scroll depending on mobile or desktop
@@ -31,7 +28,7 @@ const SimpleBarWrapper = ({ size, children }) => {
       {size.width >= maxWidth ? (
         <SimpleBar
           className="mobile_default"
-          style={{ maxHeight: maxHeightDesktopFormPopup }}
+          style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
           autoHide={true}
         >
           {children}
@@ -82,7 +79,7 @@ export default function Down({
   const [country, setCountry] = useState('');
   const [countryData, setCountryData] = useState(false);
 
-  // get viewport height when opening keyboard
+  // get viewport height when opening momile keyboard
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
@@ -99,23 +96,6 @@ export default function Down({
     // need fix for ios > 13
     setIosView(window.visualViewport.height);
   }
-
-  // close keyboard when scroll result
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     scrollable.current.addEventListener('scroll', closeKeyboard);
-  //     return () => window.removeEventListener('scroll', closeKeyboard);
-  //   }
-  // }, []);
-
-  // function closeKeyboard() {
-  //   setTimeout(() => {
-  //     console.log('resize');
-  //     input.current.blur();
-  //     // ios 13+ get height when keyboard is open
-  //     setIosView('sssss');
-  //   }, 500);
-  // }
 
   useEffect(() => {
     if (size.width < maxWidth) {
@@ -164,14 +144,6 @@ export default function Down({
             id=""
             placeholder="Страна / Курорт / Отель"
             onChange={(e) => inputOnchange(e)}
-            // style={
-            //   iosView
-            //     ? {
-            //         transform: `translateY(-${inputTranslateY}px)`,
-            //         transition: 'transform 0.3s',
-            //       }
-            //     : {}
-            // }
             value={country}
           />
         </div>

@@ -11,7 +11,8 @@ import {
 } from '../../../utils/useBodyScroll';
 import Header from './header';
 import { svgNight } from '../form-fields/svg';
-// import styles from './night.module.css';
+import styles from './night.module.css';
+import { getNight, setNight } from '../../../store/store';
 
 export default function Night({
   setModalIsOpen,
