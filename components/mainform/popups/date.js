@@ -19,6 +19,8 @@ import styles from './date.module.css';
 import { setDate } from '../../../store/store';
 import DatePickerGlobalStyle from '../../../styles/datePickerGlobalStyle';
 import declension from 'utils/declension';
+import SvgPlus from 'components/svgPlus';
+import SvgMinus from 'components/svgMinus';
 
 const PlusMinusBtns = ({ setPlusDays, plusDays }) => {
   const [dayText, setDayText] = useState('');
@@ -34,22 +36,7 @@ const PlusMinusBtns = ({ setPlusDays, plusDays }) => {
         onClick={() => setPlusDays((prev) => prev - 1)}
         disabled={plusDays === 0}
       >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <line
-            x1="25"
-            y1="21"
-            x2="15"
-            y2="21"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
+        <SvgMinus />
       </button>
       <span className={styles.plus_days_value}>{plusDays}</span>
       <button
@@ -57,30 +44,7 @@ const PlusMinusBtns = ({ setPlusDays, plusDays }) => {
         onClick={() => setPlusDays((prev) => prev + 1)}
         disabled={plusDays === 6}
       >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <line
-            x1="20"
-            y1="15"
-            x2="20"
-            y2="25"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <line
-            x1="25"
-            y1="20"
-            x2="15"
-            y2="20"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
+        <SvgPlus />
       </button>
       <span>{dayText}</span>
     </div>

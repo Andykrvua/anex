@@ -14,7 +14,7 @@
 
 .plus_minus_btn:disabled svg,
 .plus_minus_btn[disabled] svg {
-  stroke: var(--placeholder);
+  stroke: var(--secondary-disabled);
 }
 
 .plus_minus_btn svg {

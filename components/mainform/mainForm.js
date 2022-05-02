@@ -47,7 +47,7 @@ export default function MainForm() {
         popupName={fieldsNames.date}
       />
       <NightField
-        title={night}
+        title={`${night.from} - ${night.to} ночей`}
         aria={'Количество ночей'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}

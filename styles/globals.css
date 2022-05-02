@@ -112,6 +112,7 @@ a {
 
 input[type='text'] {
   width: 100%;
+  height: 60px; /* firefox line-height fix */
   margin: 0;
   padding: 20px;
   border-radius: var(--def-radius);
@@ -120,11 +121,13 @@ input[type='text'] {
   font-size: 16px;
   line-height: 18px;
   color: var(--primary);
+  -webkit-text-fill-color: var(--primary); /* ios disabled-input fix */
   background-color: var(--white);
   background-image: linear-gradient(
     transparent,
     transparent
   ); /* ios top shadow fix */
+  opacity: 1; /* ios disabled-input fix */
   box-shadow: var(--formfield-shadow);
   outline: none;
 }

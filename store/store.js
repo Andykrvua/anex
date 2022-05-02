@@ -14,7 +14,7 @@ const useStore = create(
     setDown: (down) => set({ down }),
     date: { rawDate, plusDays: 3 },
     setDate: (date) => set({ date }),
-    night: '10 - 15 ночей',
+    night: { from: 10, to: 15 },
     setNight: (night) => set({ night }),
     person: '2 туриста',
     setPerson: (person) => set({ person }),

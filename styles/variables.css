@@ -10,6 +10,7 @@
 
   --primary: #53536e; /* основной цвет */
   --secondary: #ff9400; /* вторичный цвет */
+  --secondary-disabled: #ffd499; /* вторичный у отключенных кнопок */
   --bg: #f6f6f8; /* основной фон */
   --line: #e5e5eb; /* светло-серая линия (пример, линия под шапкой) */
   --white: #fff; /* белый */
@@ -18,6 +19,7 @@
   --popup-bg: var(--bg); /* фон попапа главной формы */
   --placeholder: #c3c3d0; /* цвет плейсхолдера */
   --primary-light: #8989a2; /* основной светлый */
+  --primary-soft-light: #8f9aac; /* основной очень светлый */
   --scroll-red: linear-gradient(
     99.91deg,
     #ff9400 17.57%,
@@ -43,8 +45,8 @@
   --svg-btn-padding: 0; /* отступ у кнопок с svg иконками */
   --def-radius: 4px; /* радиус по умолчанию */
 
-  --header-wrapper-z: 10; /* z-index шапки */
-  --main-form-popup-z: 5; /* z-index шапки */
+  --header-wrapper-z: 5; /* z-index шапки */
+  --main-form-popup-z: 10; /* z-index шапки */
 }
 
 /* size tablet or bigger */
@@ -58,6 +60,9 @@
 @media (min-width: 810px) {
   :root {
     --popup-bg: var(--white); /* фон попапа главной формы */
+
+    --header-wrapper-z: 10; /* z-index шапки */
+    --main-form-popup-z: 5; /* z-index шапки */
   }
 }
 
