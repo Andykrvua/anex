@@ -43,3 +43,13 @@
 .plus_btn {
   right: 10px;
 }
+
+.age_label {
+  display: block;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.night_input_age_wrapper + .night_input_age_wrapper {
+  margin-top: 10px;
+}

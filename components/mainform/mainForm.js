@@ -12,6 +12,7 @@ import {
   getPerson,
   getFieldsNames,
 } from '../../store/store';
+import declension from 'utils/declension';
 
 export default function MainForm() {
   const [modalIsOpen, setModalIsOpen] = useState('');
@@ -22,6 +23,15 @@ export default function MainForm() {
   const night = getNight();
   const person = getPerson();
   const fieldsNames = getFieldsNames();
+
+  const sumPerson = person.adult + person.child;
+  const declensionPerson = declension(
+    sumPerson,
+    'турист',
+    'туриста',
+    'туристов'
+  );
+  const personTitle = `${sumPerson} ${declensionPerson}`;
 
   return (
     <div className={modalIsOpen ? 'main_form open' : 'main_form'}>
@@ -54,7 +64,7 @@ export default function MainForm() {
         popupName={fieldsNames.night}
       />
       <PersonField
-        title={person}
+        title={personTitle}
         aria={'Количество туристов'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}

@@ -1,5 +1,6 @@
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { mainFormPersonValidationRange as personVal } from '../utils/constants';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -16,7 +17,11 @@ const useStore = create(
     setDate: (date) => set({ date }),
     night: { from: 10, to: 15 },
     setNight: (night) => set({ night }),
-    person: '2 туриста',
+    person: {
+      adult: 2,
+      child: 0,
+      childAge: new Array(personVal.childMax).fill(0),
+    },
     setPerson: (person) => set({ person }),
     fieldsNames: {
       up: 'Откуда вылет',

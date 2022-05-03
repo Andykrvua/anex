@@ -15,6 +15,27 @@ import styles from './person.module.css';
 import SvgPlus from 'components/svgPlus';
 import SvgMinus from 'components/svgMinus';
 import { mainFormPersonValidationRange as valRange } from '../../../utils/constants';
+import { getPerson, setPerson } from '../../../store/store';
+import SimpleBar from 'simplebar-react';
+
+// change scroll depending on mobile or desktop
+const SimpleBarWrapper = ({ size, children }) => {
+  return (
+    <>
+      {size.width >= maxWidth ? (
+        <SimpleBar
+          className="mobile_default"
+          style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
+          autoHide={true}
+        >
+          {children}
+        </SimpleBar>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
+};
 
 export default function Person({
   setModalIsOpen,
@@ -26,8 +47,12 @@ export default function Person({
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
 
-  const [adult, setAdult] = useState(2);
-  const [child, setChild] = useState(0);
+  const initialPerson = getPerson();
+  const selectedPerson = setPerson();
+
+  const [adult, setAdult] = useState(initialPerson.adult);
+  const [child, setChild] = useState(initialPerson.child);
+  const [childAge, setChildAge] = useState(initialPerson.childAge);
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
@@ -51,10 +76,8 @@ export default function Person({
   };
 
   const ChildAge = () => {
-    const [childAge, setChildAge] = useState(new Array(child).fill(0));
-    // console.log(childAge);
-    const updateField = (index, operator) => {
-      let newArr = [...childAge];
+    const updateFieldsAge = (index, operator) => {
+      const newArr = [...childAge];
       if (operator === '+') {
         newArr[index] = newArr[index] + 1;
       } else {
@@ -64,14 +87,17 @@ export default function Person({
     };
     return (
       <>
-        <label>Возраст</label>
+        <label className={styles.age_label}>Возраст</label>
         {[...new Array(child).fill(0)].map((_, i) => {
           return (
-            <div className={styles.night_input_wrapper} key={_ + i}>
+            <div
+              className={`${styles.night_input_wrapper} ${styles.night_input_age_wrapper}`}
+              key={_ + i}
+            >
               <input
                 className={styles.night_input}
                 type="text"
-                // disabled
+                disabled
                 value={childAge[i]}
                 onChange={() => {
                   return null;
@@ -79,14 +105,14 @@ export default function Person({
               />
               <button
                 className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-                onClick={() => updateField(i, '-')}
+                onClick={() => updateFieldsAge(i, '-')}
                 disabled={childAge[i] + 1 === valRange.childAgeMin}
               >
                 <SvgMinus />
               </button>
               <button
                 className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-                onClick={() => updateField(i, '+')}
+                onClick={() => updateFieldsAge(i, '+')}
                 disabled={childAge[i] === valRange.childAgeMax}
               >
                 <SvgPlus />
@@ -98,7 +124,7 @@ export default function Person({
     );
   };
 
-  const onClick = (operation, input) => {
+  const updateFieldsPerson = (operation, input) => {
     if (operation === '+') {
       if (input === 'adult') {
         setAdult((prev) => prev + 1);
@@ -113,67 +139,78 @@ export default function Person({
       }
     }
   };
-  console.log(child);
+
+  const selectedHandler = () => {
+    const newPerson = { adult, child, childAge };
+    selectedPerson(newPerson);
+    if (size.width < maxWidth) {
+      enableScroll(BODY);
+    }
+    setModalIsOpen('');
+  };
+
   return (
-    <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
-      <Header closeModalHandler={closeModalHandler} svg={svgPerson} />
-      <h3 className="title">{popupName}</h3>
-      <div className="popup_scrollable_content" ref={scrollable}>
-        <div className={styles.night_input_wrapper}>
-          <label htmlFor="adult">Взрослые</label>
-          <input
-            className={styles.night_input}
-            id="adult"
-            type="text"
-            disabled
-            value={adult}
-          />
-          <button
-            className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-            onClick={() => onClick('-', 'adult')}
-            disabled={adult === valRange.adultMin}
-          >
-            <SvgMinus />
-          </button>
-          <button
-            className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-            onClick={() => onClick('+', 'adult')}
-            disabled={adult === valRange.adultMax}
-          >
-            <SvgPlus />
+    <SimpleBarWrapper size={size}>
+      <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
+        <Header closeModalHandler={closeModalHandler} svg={svgPerson} />
+        <h3 className="title">{popupName}</h3>
+        <div className="popup_scrollable_content" ref={scrollable}>
+          <div className={styles.night_input_wrapper}>
+            <label htmlFor="adult">Взрослые</label>
+            <input
+              className={styles.night_input}
+              id="adult"
+              type="text"
+              disabled
+              value={adult}
+            />
+            <button
+              className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
+              onClick={() => updateFieldsPerson('-', 'adult')}
+              disabled={adult === valRange.adultMin}
+            >
+              <SvgMinus />
+            </button>
+            <button
+              className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
+              onClick={() => updateFieldsPerson('+', 'adult')}
+              disabled={adult === valRange.adultMax}
+            >
+              <SvgPlus />
+            </button>
+          </div>
+          <div className={styles.night_input_wrapper}>
+            <label htmlFor="child">Дети</label>
+            <input
+              className={styles.night_input}
+              type="text"
+              id="child"
+              disabled
+              value={child}
+            />
+            <button
+              className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
+              onClick={() => updateFieldsPerson('-', 'child')}
+              disabled={child === valRange.childMin}
+            >
+              <SvgMinus />
+            </button>
+            <button
+              className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
+              onClick={() => updateFieldsPerson('+', 'child')}
+              disabled={child === valRange.childMax}
+            >
+              <SvgPlus />
+            </button>
+          </div>
+          {child ? <ChildAge /> : null}
+        </div>
+        <div className="apply_btn_wrapper">
+          <button className="apply_btn" onClick={selectedHandler}>
+            Применить
           </button>
         </div>
-        <div className={styles.night_input_wrapper}>
-          <label htmlFor="child">Дети</label>
-          <input
-            className={styles.night_input}
-            type="text"
-            id="child"
-            disabled
-            value={child}
-          />
-          <button
-            className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-            onClick={() => onClick('-', 'child')}
-            disabled={child === valRange.childMin}
-          >
-            <SvgMinus />
-          </button>
-          <button
-            className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-            onClick={() => onClick('+', 'child')}
-            disabled={child === valRange.childMax}
-          >
-            <SvgPlus />
-          </button>
-        </div>
-        {child ? <ChildAge /> : null}
       </div>
-      <div className="apply_btn_wrapper">
-        <button className="apply_btn" onClick={closeModalHandler}>
-          Применить
-        </button>
-      </div>
-    </div>
+    </SimpleBarWrapper>
   );
 }
