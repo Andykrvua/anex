@@ -7,6 +7,7 @@ export default function Layout({ children }) {
   return (
     <div className="wrapper">
       <Header />
+
       <main className="content">{children}</main>
       <Footer />
       <Burger />
