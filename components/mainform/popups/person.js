@@ -15,8 +15,10 @@ import styles from './person.module.css';
 import SvgPlus from 'components/svgPlus';
 import SvgMinus from 'components/svgMinus';
 import { mainFormPersonValidationRange as valRange } from '../../../utils/constants';
-import { getPerson, setPerson } from '../../../store/store';
+import { useGetPerson, useSetPerson, useSetModal } from '../../../store/store';
 import SimpleBar from 'simplebar-react';
+import InfoSvg from '../../common/infoSvg';
+import { childTxt } from '../../../utils/modalInfo';
 
 // change scroll depending on mobile or desktop
 const SimpleBarWrapper = ({ size, children }) => {
@@ -47,8 +49,9 @@ export default function Person({
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
 
-  const initialPerson = getPerson();
-  const selectedPerson = setPerson();
+  const initialPerson = useGetPerson();
+  const selectedPerson = useSetPerson();
+  const setModal = useSetModal();
 
   const [adult, setAdult] = useState(initialPerson.adult);
   const [child, setChild] = useState(initialPerson.child);
@@ -180,7 +183,15 @@ export default function Person({
             </button>
           </div>
           <div className={styles.night_input_wrapper}>
-            <label htmlFor="child">Дети</label>
+            <label htmlFor="child">
+              <button
+                className={styles.info_btn}
+                onClick={() => setModal(childTxt)}
+              >
+                Дети
+                <InfoSvg />
+              </button>
+            </label>
             <input
               className={styles.night_input}
               type="text"

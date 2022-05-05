@@ -30,6 +30,10 @@ const useStore = create(
       night: 'Длительность',
       person: 'Туристы',
     },
+    modal: false,
+    setModal: (modal) => set({ modal }),
+    burger: false,
+    setBurger: (burger) => set({ burger }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -63,22 +67,28 @@ const useStore = create(
 // export const useSetAnyModalIsOpen = () =>
 //   useStore((state) => state.setAnyModalIsOpen);
 
-export const getUp = () => useStore((state) => state.up);
-export const setUp = (up) => useStore((state) => state.setUp);
+export const useGetUp = () => useStore((state) => state.up);
+export const useSetUp = () => useStore((state) => state.setUp);
 
-export const getDown = () => useStore((state) => state.down);
-export const setDown = (down) => useStore((state) => state.setDown);
+export const useGetDown = () => useStore((state) => state.down);
+export const useSetDown = () => useStore((state) => state.setDown);
 
-export const getDate = () => useStore((state) => state.date);
-export const setDate = (date) => useStore((state) => state.setDate);
+export const useGetDate = () => useStore((state) => state.date);
+export const useSetDate = () => useStore((state) => state.setDate);
 
-export const getNight = () => useStore((state) => state.night);
-export const setNight = (night) => useStore((state) => state.setNight);
+export const useGetNight = () => useStore((state) => state.night);
+export const useSetNight = () => useStore((state) => state.setNight);
 
-export const getPerson = () => useStore((state) => state.person);
-export const setPerson = (person) => useStore((state) => state.setPerson);
+export const useGetPerson = () => useStore((state) => state.person);
+export const useSetPerson = () => useStore((state) => state.setPerson);
 
-export const getFieldsNames = () => useStore((state) => state.fieldsNames);
+export const useGetFieldsNames = () => useStore((state) => state.fieldsNames);
+
+export const useGetModal = () => useStore((state) => state.modal);
+export const useSetModal = () => useStore((state) => state.setModal);
+
+export const useGetBurger = () => useStore((state) => state.burger);
+export const useSetBurger = () => useStore((state) => state.setBurger);
 
 // example
 // export const useLogin = () => useStore((state) => state.login);

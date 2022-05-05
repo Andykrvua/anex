@@ -28,7 +28,6 @@ export default function DateField({
   // // tomorrow.setDate(tomorrow.getDate() + 1);
   // tomorrow.setDate(tomorrow.getDate() - 15);
   // const initialDate = tomorrow;
-
   const initialDate = title.rawDate;
   const plusDays = title.plusDays;
 

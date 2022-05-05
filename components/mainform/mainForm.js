@@ -5,24 +5,24 @@ import NightField from './form-fields/nightField';
 import PersonField from './form-fields/personField';
 import { useState } from 'react';
 import {
-  getUp,
-  getDown,
-  getDate,
-  getNight,
-  getPerson,
-  getFieldsNames,
+  useGetUp,
+  useGetDown,
+  useGetDate,
+  useGetNight,
+  useGetPerson,
+  useGetFieldsNames,
 } from '../../store/store';
 import declension from 'utils/declension';
 
 export default function MainForm() {
   const [modalIsOpen, setModalIsOpen] = useState('');
 
-  const up = getUp();
-  const down = getDown();
-  const date = getDate();
-  const night = getNight();
-  const person = getPerson();
-  const fieldsNames = getFieldsNames();
+  const up = useGetUp();
+  const down = useGetDown();
+  const date = useGetDate();
+  const night = useGetNight();
+  const person = useGetPerson();
+  const fieldsNames = useGetFieldsNames();
 
   const sumPerson = person.adult + person.child;
   const declensionPerson = declension(

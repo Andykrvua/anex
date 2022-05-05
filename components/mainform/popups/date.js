@@ -16,7 +16,7 @@ import { addYears, addDays } from 'date-fns';
 import ru from 'date-fns/locale/ru';
 import uk from 'date-fns/locale/uk';
 import styles from './date.module.css';
-import { setDate } from '../../../store/store';
+import { useSetDate } from '../../../store/store';
 import DatePickerGlobalStyle from '../../../styles/datePickerGlobalStyle';
 import declension from 'utils/declension';
 import SvgPlus from 'components/svgPlus';
@@ -62,7 +62,7 @@ export default function Date({
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
-  const selectedDate = setDate();
+  const selectedDate = useSetDate();
 
   const [startDate, setStartDate] = useState(initialDate);
   const [plusDays, setPlusDays] = useState(initialPlusDays);

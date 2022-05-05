@@ -53,3 +53,17 @@
 .night_input_age_wrapper + .night_input_age_wrapper {
   margin-top: 10px;
 }
+
+.info_btn {
+  position: relative;
+  padding-right: 22px;
+  padding-left: 2px; /* ios visible fix */
+  background-color: transparent;
+}
+
+.info_btn svg {
+  position: absolute;
+  top: -3px;
+  right: 0;
+  fill: var(--primary);
+}

@@ -1,7 +1,7 @@
-import Logo from './Logo';
-import UserArea from './UserArea';
-import BurgerBtn from './BurgerBtn';
-import Nav from './Nav';
+import Logo from './logo';
+import UserArea from './userArea';
+import BurgerBtn from './burgerBtn';
+import Nav from './nav';
 
 // import { useUser, useLogin, useAddToCart } from 'store/store';
 

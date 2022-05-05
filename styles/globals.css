@@ -26,6 +26,8 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* disable mobile highlight */
+  -webkit-tap-highlight-color: transparent; /* disable mobile highlight */
 }
 
 body {
@@ -58,6 +60,7 @@ button {
   padding: 0;
   border: 0;
   border-radius: var(--def-radius);
+  color: inherit;
   outline: none;
   cursor: pointer;
   transition: box-shadow var(--base-transition);
@@ -244,6 +247,32 @@ header.header .header_container {
   margin-left: 5px;
 }
 /* Header end */
+/* Burger logo start */
+.logo.burger {
+  width: 98px;
+}
+
+.logo.burger img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-top: 5px;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+@media (min-width: 810px) {
+  .logo.burger {
+    width: 150px;
+  }
+  .logo.burger img {
+    margin-top: 0;
+  }
+}
+/* Burger logo end */
 
 /* Main form start */
 .main_form {

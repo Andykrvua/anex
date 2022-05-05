@@ -17,7 +17,11 @@ export default function useOutsideClick(
         document.removeEventListener('mousedown', handleClickOutside);
         return null;
       }
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !event.target.closest('.modal')
+      ) {
         setModalIsOpen('');
         document.removeEventListener('mousedown', handleClickOutside);
       }

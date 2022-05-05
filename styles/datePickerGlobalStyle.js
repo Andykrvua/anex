@@ -1,4 +1,4 @@
-export default function Test() {
+export default function datePickerStyle() {
   return (
     <style global jsx>{`
       .react-datepicker {

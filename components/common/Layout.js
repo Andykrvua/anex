@@ -1,5 +1,7 @@
-import Header from './header/Header';
-import Footer from './footer/Footer';
+import Header from './header/header';
+import Footer from './footer/footer';
+import Modal from './modal';
+import Burger from './burger/burger';
 
 export default function Layout({ children }) {
   return (
@@ -7,6 +9,8 @@ export default function Layout({ children }) {
       <Header />
       <main className="content">{children}</main>
       <Footer />
+      <Burger />
+      <Modal />
     </div>
   );
 }

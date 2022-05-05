@@ -1,7 +1,14 @@
+import { useSetBurger } from 'store/store';
+
 export default function BuregrBtn() {
+  const setBurger = useSetBurger();
   return (
     <div className="burger_menu">
-      <button className="burger_btn svg_btn" aria-label="Меню">
+      <button
+        className="burger_btn svg_btn"
+        aria-label="Меню"
+        onClick={() => setBurger(true)}
+      >
         <svg
           width="42"
           height="42"

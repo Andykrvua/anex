@@ -1,0 +1,36 @@
+.burger_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.burger_header > div {
+  margin-right: 22px;
+}
+
+@media (min-width: 810px) {
+  .burger_header > div {
+    margin-right: 0;
+    margin-left: 20px;
+  }
+}
+
+.burger_close,
+.burger_close_not_mobile {
+  margin: 10px;
+}
+
+.burger_close_not_mobile.svg_btn {
+  display: none;
+}
+
+@media (min-width: 810px) {
+  .burger_close.svg_btn {
+    display: none;
+  }
+
+  .burger_close_not_mobile.svg_btn {
+    display: flex;
+  }
+}

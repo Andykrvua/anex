@@ -12,7 +12,7 @@ import {
 import Header from './header';
 import { svgNight } from '../form-fields/svg';
 import styles from './night.module.css';
-import { getNight, setNight } from '../../../store/store';
+import { useGetNight, useSetNight } from '../../../store/store';
 import { mainFormNightValidationRange as valRange } from '../../../utils/constants';
 import SvgPlus from 'components/svgPlus';
 import SvgMinus from 'components/svgMinus';
@@ -27,8 +27,8 @@ export default function Night({
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
 
-  const defaultNight = getNight();
-  const selectedNight = setNight();
+  const defaultNight = useGetNight();
+  const selectedNight = useSetNight();
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
@@ -82,8 +82,8 @@ export default function Night({
 
   const inputFromOnchange = (val) => {
     if (isNaN(parseInt(val))) {
-      setFromNight(7);
-      setToNight(9);
+      setFromNight(valRange.defaultFrom);
+      setToNight(valRange.defaultTo);
     } else {
       setFromNight(parseInt(val));
     }
@@ -91,8 +91,8 @@ export default function Night({
 
   const inputToOnchange = (val) => {
     if (isNaN(parseInt(val))) {
-      setFromNight(7);
-      setToNight(9);
+      setFromNight(valRange.defaultFrom);
+      setToNight(valRange.defaultTo);
     } else {
       setToNight(parseInt(val));
     }
@@ -102,8 +102,8 @@ export default function Night({
     if (validate(val, valRange.fromMin, valRange.fromMax)) {
       setFromNight(parseInt(val));
     } else {
-      setFromNight(7);
-      setToNight(9);
+      setFromNight(valRange.defaultFrom);
+      setToNight(valRange.defaultTo);
     }
   };
 
@@ -111,8 +111,8 @@ export default function Night({
     if (validate(val, valRange.toMin, valRange.toMax)) {
       setToNight(parseInt(val));
     } else {
-      setFromNight(7);
-      setToNight(9);
+      setFromNight(valRange.defaultFrom);
+      setToNight(valRange.defaultTo);
     }
   };
 

@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
-export default function Logo() {
+export default function Logo({ location = '', closeBurgerHandler = null }) {
   return (
-    <div className="logo">
+    <div className={`logo ${location}`}>
       <Link href="/">
-        <a className="logo_link">
+        <a className="logo_link" onClick={closeBurgerHandler}>
           <picture>
             <source
               srcSet="/assets/img/logo.webp"

@@ -11,7 +11,7 @@ import {
 } from '../../../utils/useBodyScroll';
 import Header from './header';
 import { svgUp } from '../form-fields/svg';
-import { setUp } from '../../../store/store';
+import { useSetUp } from '../../../store/store';
 import styles from './up.module.css';
 
 export default function UpWindow({
@@ -25,7 +25,7 @@ export default function UpWindow({
   const scrollable = useRef(null);
   const scrollableContent = useRef(null);
 
-  const selectUp = setUp();
+  const selectUp = useSetUp();
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);

@@ -20,6 +20,7 @@
   --placeholder: #c3c3d0; /* цвет плейсхолдера */
   --primary-light: #8989a2; /* основной светлый */
   --primary-soft-light: #8f9aac; /* основной очень светлый */
+  --primary-03: rgba(83, 83, 110, 0.3); /* основной opacity 0.3 */
   --scroll-red: linear-gradient(
     99.91deg,
     #ff9400 17.57%,
@@ -47,19 +48,21 @@
 
   --header-wrapper-z: 5; /* z-index шапки */
   --main-form-popup-z: 10; /* z-index шапки */
+  --modal: 99; /* z-index модального окна */
 }
 
 /* size tablet or bigger */
 @media (min-width: 768px) {
   :root {
     --cont-padding: 0 30px; /* отступ у контейнера */
-    --svg-btn-padding: 5px; /* отступ у кнопок с svg иконками */
   }
 }
 
 @media (min-width: 810px) {
   :root {
     --popup-bg: var(--white); /* фон попапа главной формы */
+
+    --svg-btn-padding: 5px; /* отступ у кнопок с svg иконками */
 
     --header-wrapper-z: 10; /* z-index шапки */
     --main-form-popup-z: 5; /* z-index шапки */

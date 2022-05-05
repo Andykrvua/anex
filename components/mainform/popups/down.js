@@ -19,7 +19,7 @@ import { countryListVariants } from 'utils/constants';
 import LoadingPlaceholder from '../form-fields/loadingPlaceholder';
 import SimpleBar from 'simplebar-react';
 import { transitionTime } from '../../../utils/constants';
-import { setDown } from '../../../store/store';
+import { useSetDown } from '../../../store/store';
 
 // change scroll depending on mobile or desktop
 const SimpleBarWrapper = ({ size, children }) => {
@@ -57,7 +57,7 @@ export default function Down({
   cName,
   popupName,
 }) {
-  const selectDown = setDown();
+  const selectDown = useSetDown();
   const selectDownHandler = (name) => {
     selectDown(name);
     setCountry(name);

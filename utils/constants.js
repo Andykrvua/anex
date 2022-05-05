@@ -13,6 +13,8 @@ export const mainFormNightValidationRange = {
   fromMax: 28,
   toMin: 3,
   toMax: 30,
+  defaultFrom: 7,
+  defaultTo: 9,
 };
 
 export const mainFormPersonValidationRange = {
@@ -22,4 +24,10 @@ export const mainFormPersonValidationRange = {
   childMax: 4,
   childAgeMin: 1,
   childAgeMax: 16,
+};
+
+export const location = {
+  logo: {
+    burger: 'burger',
+  },
 };
