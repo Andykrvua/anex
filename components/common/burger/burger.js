@@ -5,12 +5,24 @@ import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 import BurgerHeader from './burgerHeader';
 import Link from 'next/link';
 import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
+import { useRouter } from 'next/router';
 
 export default function Burger() {
   const setBurger = useSetBurger();
   const getBurger = useGetBurger();
 
+  const router = useRouter();
+  const { pathname, asPath, query, locale } = router;
+
   const [isOpen, setIsOpen] = useState(false);
+  const [lang, setLang] = useState(locale);
+
+  useEffect(() => {
+    if (locale === lang) {
+      return;
+    }
+    router.push({ pathname, query }, asPath, { locale: lang });
+  }, [lang]);
 
   useEffect(() => {
     const BODY = document.querySelector('body');
@@ -95,7 +107,13 @@ export default function Burger() {
           </ul>
           <div className={styles.right_column}>
             <div>
-              <SwitchMenu items={[{ name: 'RU' }, { name: 'UA' }]} />
+              <SwitchMenu
+                items={[
+                  { name: 'RU', value: 'ru' },
+                  { name: 'UA', value: 'uk' },
+                ]}
+                callback={setLang}
+              />
             </div>
             <div>2</div>
             <div>3</div>

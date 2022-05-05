@@ -1,10 +1,30 @@
 import MainForm from '/components/mainform/mainForm.js';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
+import Link from 'next/link';
 
 export default function Home() {
+  const intl = useIntl();
+
+  const title = intl.formatMessage({ id: 'page.home.head.title' });
+  const description = intl.formatMessage({
+    id: 'page.home.head.meta.description',
+  });
+
   return (
     <div className="container">
       <MainForm />
-      <h1>dsadsad</h1>
+      <Link href="/" locale={'ru'}>
+        <a style={{ padding: '20px' }}>ru</a>
+      </Link>
+      <Link href="/" locale={'uk'}>
+        <a style={{ padding: '20px' }}>uk</a>
+      </Link>
+      <h1>
+        {title} {description}
+        <span>
+          <FM id="page.home.description" />
+        </span>
+      </h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
         obcaecati temporibus, consequuntur fuga nam atque dolorum quas sit.

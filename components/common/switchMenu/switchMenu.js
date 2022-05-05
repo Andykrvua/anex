@@ -1,7 +1,7 @@
 import styles from './switchMenu.module.css';
 import { useRef, useEffect, useState, Fragment } from 'react';
 
-export default function SwitchMenu({ items }) {
+export default function SwitchMenu({ items, callback }) {
   const [width, setWidth] = useState([]);
   const [strJsx, setStrJsx] = useState('');
 
@@ -52,8 +52,7 @@ export default function SwitchMenu({ items }) {
   }, [width]);
 
   const handleChange = (e) => {
-    // console.log(e.target.value);
-    return e;
+    callback(e.target.value);
   };
 
   return (
@@ -68,7 +67,7 @@ export default function SwitchMenu({ items }) {
               className={`el${i}`}
               defaultChecked={i === 0}
               onChange={handleChange}
-              value={item.name}
+              value={item.value}
             />
             <label
               style={{ '--test': 'test' }}
