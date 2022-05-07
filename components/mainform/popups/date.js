@@ -21,16 +21,30 @@ import DatePickerGlobalStyle from '../../../styles/datePickerGlobalStyle';
 import declension from 'utils/declension';
 import SvgPlus from 'components/svgPlus';
 import SvgMinus from 'components/svgMinus';
+import { useRouter } from 'next/router';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 
 const PlusMinusBtns = ({ setPlusDays, plusDays }) => {
   const [dayText, setDayText] = useState('');
+  const intl = useIntl();
+  const dTxt1 = intl.formatMessage({
+    id: 'common.day1',
+  });
+  const dTxt2 = intl.formatMessage({
+    id: 'common.day2',
+  });
+  const dTxt5 = intl.formatMessage({
+    id: 'common.day5',
+  });
 
   useEffect(() => {
-    setDayText(declension(plusDays, 'день', 'дня', 'дней'));
+    setDayText(declension(plusDays, dTxt1, dTxt2, dTxt5));
   }, [plusDays]);
   return (
     <div className={styles.plus_minus_btns}>
-      <span>Выбранная дата</span>
+      <span>
+        <FM id="mainform.date.t2" />
+      </span>
       <button
         className={styles.plus_minus_btn}
         onClick={() => setPlusDays((prev) => prev - 1)}
@@ -67,6 +81,7 @@ export default function Date({
   const [startDate, setStartDate] = useState(initialDate);
   const [plusDays, setPlusDays] = useState(initialPlusDays);
 
+  const { locale } = useRouter();
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
@@ -101,7 +116,7 @@ export default function Date({
 
   registerLocale('ru', ru);
   registerLocale('uk', uk);
-  setDefaultLocale('ru');
+  setDefaultLocale(locale);
 
   const selectedHandler = () => {
     const newDate = { rawDate: startDate, plusDays };
@@ -133,7 +148,7 @@ export default function Date({
       </div>
       <div className="apply_btn_wrapper">
         <button className="apply_btn" onClick={selectedHandler}>
-          Применить
+          <FM id="common.apply" />
         </button>
       </div>
       <DatePickerGlobalStyle />

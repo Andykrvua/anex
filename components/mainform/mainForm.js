@@ -13,6 +13,7 @@ import {
   useGetFieldsNames,
 } from '../../store/store';
 import declension from 'utils/declension';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 
 export default function MainForm() {
   const [modalIsOpen, setModalIsOpen] = useState('');
@@ -24,13 +25,19 @@ export default function MainForm() {
   const person = useGetPerson();
   const fieldsNames = useGetFieldsNames();
 
+  const intl = useIntl();
+  const tTxt1 = intl.formatMessage({
+    id: 'common.tourist1',
+  });
+  const tTxt2 = intl.formatMessage({
+    id: 'common.tourist2',
+  });
+  const tTxt5 = intl.formatMessage({
+    id: 'common.tourist5',
+  });
+
   const sumPerson = person.adult + person.child;
-  const declensionPerson = declension(
-    sumPerson,
-    'турист',
-    'туриста',
-    'туристов'
-  );
+  const declensionPerson = declension(sumPerson, tTxt1, tTxt2, tTxt5);
   const personTitle = `${sumPerson} ${declensionPerson}`;
 
   return (
@@ -70,7 +77,9 @@ export default function MainForm() {
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.person}
       />
-      <button className="main_form_btn">Поиск</button>
+      <button className="main_form_btn">
+        <FM id="common.search" />
+      </button>
     </div>
   );
 }

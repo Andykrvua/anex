@@ -18,7 +18,7 @@ import { mainFormPersonValidationRange as valRange } from '../../../utils/consta
 import { useGetPerson, useSetPerson, useSetModal } from '../../../store/store';
 import SimpleBar from 'simplebar-react';
 import InfoSvg from '../../common/infoSvg';
-import { childTxt } from '../../../utils/modalInfo';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 
 // change scroll depending on mobile or desktop
 const SimpleBarWrapper = ({ size, children }) => {
@@ -52,6 +52,11 @@ export default function Person({
   const initialPerson = useGetPerson();
   const selectedPerson = useSetPerson();
   const setModal = useSetModal();
+
+  const intl = useIntl();
+  const childTxt = intl.formatMessage({
+    id: 'mainform.person.child.modal',
+  });
 
   const [adult, setAdult] = useState(initialPerson.adult);
   const [child, setChild] = useState(initialPerson.child);
@@ -90,7 +95,9 @@ export default function Person({
     };
     return (
       <>
-        <label className={styles.age_label}>Возраст</label>
+        <label className={styles.age_label}>
+          <FM id="mainform.person.age" />
+        </label>
         {[...new Array(child).fill(0)].map((_, i) => {
           return (
             <div
@@ -159,7 +166,9 @@ export default function Person({
         <h3 className="title">{popupName}</h3>
         <div className="popup_scrollable_content" ref={scrollable}>
           <div className={styles.night_input_wrapper}>
-            <label htmlFor="adult">Взрослые</label>
+            <label htmlFor="adult">
+              <FM id="mainform.person.adult" />
+            </label>
             <input
               className={styles.night_input}
               id="adult"
@@ -188,7 +197,7 @@ export default function Person({
                 className={styles.info_btn}
                 onClick={() => setModal(childTxt)}
               >
-                Дети
+                <FM id="mainform.person.child" />
                 <InfoSvg />
               </button>
             </label>
@@ -218,7 +227,7 @@ export default function Person({
         </div>
         <div className="apply_btn_wrapper">
           <button className="apply_btn" onClick={selectedHandler}>
-            Применить
+            <FM id="common.apply" />
           </button>
         </div>
       </div>

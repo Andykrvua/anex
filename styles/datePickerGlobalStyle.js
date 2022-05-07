@@ -30,7 +30,7 @@ export default function datePickerStyle() {
         cursor: pointer;
         overflow: hidden;
         z-index: 1;
-        background: url(assets/img/svg/arrow.svg) var(--font-white) no-repeat;
+        background: url(/assets/img/svg/arrow.svg) var(--font-white) no-repeat;
       }
 
       .react-datepicker__navigation--previous {

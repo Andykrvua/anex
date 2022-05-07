@@ -1,9 +1,12 @@
 import styles from './switchMenu.module.css';
 import { useRef, useEffect, useState, Fragment } from 'react';
+import { switchMenuMargins } from '../../../utils/constants';
 
-export default function SwitchMenu({ items, callback }) {
+export default function SwitchMenu({ items, name, callback = null }) {
   const [width, setWidth] = useState([]);
   const [strJsx, setStrJsx] = useState('');
+
+  const [get, set] = callback;
 
   const itemsRef = useRef([]);
 
@@ -16,17 +19,16 @@ export default function SwitchMenu({ items, callback }) {
   function step(arr, i) {
     // calculate translate for moving label
     if (i === 0) {
-      return 5;
+      return switchMenuMargins.lrMargin;
     } else {
-      let removed = 0;
+      let indent = 0;
       arr.forEach((el, j) => {
         if (i > j) {
-          removed = removed + el;
+          indent = indent + el;
         }
       });
-      removed += i * 10;
-      removed += 5;
-      return removed;
+      indent += i * switchMenuMargins.insideMargin + switchMenuMargins.lrMargin;
+      return indent;
     }
   }
 
@@ -37,14 +39,15 @@ export default function SwitchMenu({ items, callback }) {
         width
           .map((item, i, arr) => {
             return `
-              .switch input.el${i}:checked ~ .switch_indicator {
-                transform: translate3d(${step(arr, i)}px, 0, 0);
-                width: ${item}px;
-              }        
-              .switch input.el${i}:checked ~ .switch_label.el${i} {
-                color: var(--font-white);
-              }        
-            `;
+              .switch input.${
+                items[i].value
+              }:checked ~ .switch_indicator_${name}{transform: translate3d(${step(
+              arr,
+              i
+            )}px, 0, 0); width: ${item}px;}        
+              .switch input.${items[i].value}:checked ~ .switch_label.${
+              items[i].value
+            }{color: var(--font-white);}`;
           })
           .join(' ')
       );
@@ -52,7 +55,9 @@ export default function SwitchMenu({ items, callback }) {
   }, [width]);
 
   const handleChange = (e) => {
-    callback(e.target.value);
+    if (callback) {
+      set(e.target.value);
+    }
   };
 
   return (
@@ -61,18 +66,17 @@ export default function SwitchMenu({ items, callback }) {
         return (
           <Fragment key={i}>
             <input
-              name="switch"
-              id={`el${i}`}
+              name={name}
+              id={`${item.value}`}
               type="radio"
-              className={`el${i}`}
-              defaultChecked={i === 0}
+              className={`${item.value}`}
+              checked={get === item.value}
               onChange={handleChange}
               value={item.value}
             />
             <label
-              style={{ '--test': 'test' }}
-              htmlFor={`el${i}`}
-              className={`${styles.switch_label} el${i} switch_label`}
+              htmlFor={`${item.value}`}
+              className={`${styles.switch_label} ${item.value} switch_label`}
               ref={(el) => (itemsRef.current[i] = el)}
             >
               {item.name}
@@ -80,8 +84,10 @@ export default function SwitchMenu({ items, callback }) {
           </Fragment>
         );
       })}
-      <div className={`${styles.switch_indicator} switch_indicator `}></div>
-      {strJsx && <style jsx>{strJsx}</style>}
+      <div
+        className={`${styles.switch_indicator} switch_indicator_${name} `}
+      ></div>
+      {strJsx && <style>{strJsx}</style>}
     </div>
   );
 }

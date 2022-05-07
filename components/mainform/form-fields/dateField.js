@@ -5,6 +5,7 @@ import { svgDate } from './svg';
 import LoadingPlaceholder from './loadingPlaceholder';
 import { formattedDate } from '../../../utils/formattedDate';
 import declension from '../../../utils/declension';
+import { useIntl } from 'react-intl';
 
 const DynamicUpWindow = dynamic(
   () => import(/* webpackChunkName: "Date" */ '../popups/date'),
@@ -31,10 +32,21 @@ export default function DateField({
   const initialDate = title.rawDate;
   const plusDays = title.plusDays;
 
-  const [dayText, setDayText] = useState('дня');
+  const intl = useIntl();
+  const dTxt1 = intl.formatMessage({
+    id: 'common.day1',
+  });
+  const dTxt2 = intl.formatMessage({
+    id: 'common.day2',
+  });
+  const dTxt5 = intl.formatMessage({
+    id: 'common.day5',
+  });
+
+  const [dayText, setDayText] = useState(dTxt2);
 
   useEffect(() => {
-    setDayText(declension(plusDays, 'день', 'дня', 'дней'));
+    setDayText(declension(plusDays, dTxt1, dTxt2, dTxt5));
   }, [plusDays]);
 
   title = formattedDate(title.rawDate);

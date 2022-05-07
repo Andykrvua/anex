@@ -16,6 +16,7 @@ import { useGetNight, useSetNight } from '../../../store/store';
 import { mainFormNightValidationRange as valRange } from '../../../utils/constants';
 import SvgPlus from 'components/svgPlus';
 import SvgMinus from 'components/svgMinus';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default function Night({
   setModalIsOpen,
@@ -134,7 +135,9 @@ export default function Night({
         ref={scrollable}
       >
         <div className={styles.night_input_wrapper}>
-          <label htmlFor="fromNight">От</label>
+          <label htmlFor="fromNight">
+            <FM id="mainform.night.from" />
+          </label>
           <input
             className={styles.night_input}
             id="fromNight"
@@ -161,7 +164,9 @@ export default function Night({
           </button>
         </div>
         <div className={styles.night_input_wrapper}>
-          <label htmlFor="toNight">До</label>
+          <label htmlFor="toNight">
+            <FM id="mainform.night.to" />
+          </label>
           <input
             className={styles.night_input}
             type="text"
@@ -188,15 +193,20 @@ export default function Night({
           </button>
         </div>
         <span className={styles.nights_count}>
-          От <b>{parseInt(fromNight)}</b> до <b>{parseInt(toNight)}</b> ночей
+          <FM id="mainform.night.from" /> <b>{parseInt(fromNight)}</b>{' '}
+          <span className="tolower">
+            <FM id="mainform.night.to" />
+          </span>{' '}
+          <b>{parseInt(toNight)}</b> ночей
         </span>
         <span className={styles.days_count}>
-          ({parseInt(fromNight) + 1} - {parseInt(toNight) + 1} дней)
+          ({parseInt(fromNight) + 1} - {parseInt(toNight) + 1}{' '}
+          <FM id="common.day5" />)
         </span>
       </div>
       <div className="apply_btn_wrapper">
         <button className="apply_btn" onClick={selectedHandler}>
-          Применить
+          <FM id="common.apply" />
         </button>
       </div>
     </div>

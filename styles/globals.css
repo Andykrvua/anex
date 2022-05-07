@@ -138,6 +138,10 @@ input[type='text'] {
 input::placeholder {
   color: var(--placeholder);
 }
+
+.tolower {
+  text-transform: lowercase;
+}
 /* Utils end */
 
 /* Layout start */
@@ -237,6 +241,11 @@ header.header .header_container {
   line-height: 19px;
   letter-spacing: var(--letter);
   text-transform: uppercase;
+  transition: color var(--base-transition);
+}
+
+.header_nav_link:hover {
+  color: var(--menu-hover);
 }
 
 .header_nav li + li {
@@ -602,3 +611,66 @@ header.header .header_container {
 /* Popup content end */
 /* Popup end */
 /* Main form end */
+
+/* Mobile touch carousel start */
+.carousel-container {
+  display: none;
+  position: relative;
+  height: 300px;
+  max-width: 960px;
+  margin: 0 auto;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+@media (max-width: 810px) {
+  .carousel-container {
+    display: block;
+  }
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+}
+
+.carousel-card {
+  flex: 0 0 300px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.carousel-card-inner > span {
+  /* position: absolute !important; */
+}
+
+.carousel-card-inner {
+  /* position: relative; */
+
+  flex-direction: column;
+  width: 290px;
+  height: 290px;
+  border-radius: var(--def-radius);
+  /* background-size: cover; */
+  /* background-position: center; */
+}
+
+.carousel-title {
+  margin-top: 20px;
+  font-size: 1.5em;
+}
+
+.carousel-text {
+  padding: 1em;
+  font-size: 14px;
+  white-space: pre-wrap;
+  text-align: left;
+  font-family: sans-serif;
+}
+/* Mobile touch carousel end */

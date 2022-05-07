@@ -6,6 +6,9 @@ import BurgerHeader from './burgerHeader';
 import Link from 'next/link';
 import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
 import { useRouter } from 'next/router';
+import SvgTelegram from '/components/svgTelegram.js';
+import SvgViber from '/components/svgViber.js';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default function Burger() {
   const setBurger = useSetBurger();
@@ -66,42 +69,58 @@ export default function Burger() {
           <ul className={styles.burger_nav}>
             <li>
               <Link href="/index2">
-                <a className={styles.burger_nav_link}>Главная</a>
+                <a className={styles.burger_nav_link}>
+                  <FM id="main" />
+                </a>
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a className={styles.burger_nav_link}>Туры</a>
+                <a className={styles.burger_nav_link}>
+                  <FM id="nav.tour" />
+                </a>
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a className={styles.burger_nav_link}>Страны</a>
+                <a className={styles.burger_nav_link}>
+                  <FM id="nav.country" />
+                </a>
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a className={styles.burger_nav_link}>Горящие туры</a>
+                <a className={`${styles.burger_nav_link} ${styles.hot}`}>
+                  <FM id="nav.hot_tour" />
+                </a>
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a className={styles.burger_nav_link}>Блог</a>
+                <a className={styles.burger_nav_link}>
+                  <FM id="nav.blog" />
+                </a>
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a className={styles.burger_nav_link}>Отзывы</a>
+                <a className={styles.burger_nav_link}>
+                  <FM id="nav.review" />
+                </a>
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a className={styles.burger_nav_link}>Сертификаты</a>
+                <a className={styles.burger_nav_link}>
+                  <FM id="nav.certificates" />
+                </a>
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a className={styles.burger_nav_link}>Контакты</a>
+                <a className={styles.burger_nav_link}>
+                  <FM id="nav.contacts" />
+                </a>
               </Link>
             </li>
           </ul>
@@ -112,12 +131,32 @@ export default function Burger() {
                   { name: 'RU', value: 'ru' },
                   { name: 'UA', value: 'uk' },
                 ]}
-                callback={setLang}
+                name={'lang_switcher'}
+                callback={[lang, setLang]}
               />
             </div>
-            <div>2</div>
-            <div>3</div>
+            <div>
+              <button className={styles.circle_btn}>
+                <FM id="nav.pick_tour" />
+              </button>
+            </div>
+            <div className={styles.burger_messendger}>
+              <Link href="/">
+                <a>
+                  <SvgTelegram />
+                </a>
+              </Link>
+
+              <Link href="/">
+                <a>
+                  <SvgViber />
+                </a>
+              </Link>
+            </div>
           </div>
+          <p className={styles.buregr_copyright}>
+            © 2022 <FM id="nav.copyright" />
+          </p>
         </div>
       </div>
     </div>

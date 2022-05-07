@@ -6,8 +6,10 @@ export const countryListVariants = {
   getCountryHotels: 'getCountryHotels',
 };
 
+// base css transition
 export const transitionTime = 300;
 
+// night popup validation range
 export const mainFormNightValidationRange = {
   fromMin: 1,
   fromMax: 28,
@@ -17,6 +19,7 @@ export const mainFormNightValidationRange = {
   defaultTo: 9,
 };
 
+// person popup validation range
 export const mainFormPersonValidationRange = {
   adultMin: 1,
   adultMax: 8,
@@ -26,8 +29,20 @@ export const mainFormPersonValidationRange = {
   childAgeMax: 16,
 };
 
+// component location
 export const location = {
   logo: {
     burger: 'burger',
   },
+};
+
+// switch menu margin
+export const switchMenuMargins = {
+  lrMargin: 5,
+  insideMargin: 10,
+};
+
+// blog and country cards width
+export const bcCardsWidth = {
+  cardSize: 300,
 };

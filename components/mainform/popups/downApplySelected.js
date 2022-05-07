@@ -1,5 +1,6 @@
 import styles from './downApplySelected.module.css';
 import CloseSvg from '../../common/closeSvg';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default function DownApplySelected({
   item,
@@ -35,7 +36,7 @@ export default function DownApplySelected({
       </button>
       <div className={`${styles.apply_btn_wrapper} apply_btn_wrapper`}>
         <button onClick={selected} className="apply_btn">
-          Применить
+          <FM id="common.apply" />
         </button>
       </div>
     </div>

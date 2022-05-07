@@ -13,6 +13,7 @@ import Header from './header';
 import { svgUp } from '../form-fields/svg';
 import { useSetUp } from '../../../store/store';
 import styles from './up.module.css';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default function UpWindow({
   setModalIsOpen,
@@ -105,7 +106,7 @@ export default function UpWindow({
       </div>
       <div className="apply_btn_wrapper">
         <button className="apply_btn" onClick={selectedHandler}>
-          Применить
+          <FM id="common.apply" />
         </button>
       </div>
     </div>

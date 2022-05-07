@@ -20,6 +20,7 @@ import LoadingPlaceholder from '../form-fields/loadingPlaceholder';
 import SimpleBar from 'simplebar-react';
 import { transitionTime } from '../../../utils/constants';
 import { useSetDown } from '../../../store/store';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 
 // change scroll depending on mobile or desktop
 const SimpleBarWrapper = ({ size, children }) => {
@@ -71,6 +72,10 @@ export default function Down({
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
   const input = useRef(null);
+  const intl = useIntl();
+  const placeholderTxt = intl.formatMessage({
+    id: 'mainform.down.placeholder',
+  });
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
@@ -142,7 +147,7 @@ export default function Down({
             type="text"
             name=""
             id=""
-            placeholder="Страна / Курорт / Отель"
+            placeholder={placeholderTxt}
             onChange={(e) => inputOnchange(e)}
             value={country}
           />
@@ -159,12 +164,16 @@ export default function Down({
           }
         >
           {iosView}
-          <h5 className={styles.down_content_title}>Популярные направления</h5>
+          <h5 className={styles.down_content_title}>
+            <FM id="mainform.down.t2" />
+          </h5>
           <CountryList
             variant={countryListVariants.getSearchPopular}
             clickCountryItem={clickCountryItem}
           />
-          <h5 className={styles.down_content_title}>Все страны (31)</h5>
+          <h5 className={styles.down_content_title}>
+            <FM id="mainform.down.t3" /> (31)
+          </h5>
           <CountryList
             variant={countryListVariants.getSearch}
             clickCountryItem={clickCountryItem}

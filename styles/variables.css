@@ -10,6 +10,7 @@
 
   --primary: #53536e; /* основной цвет */
   --secondary: #ff9400; /* вторичный цвет */
+  --menu-hover: var(--secondary); /* цвет ссылок при наведении */
   --secondary-disabled: #ffd499; /* вторичный у отключенных кнопок */
   --bg: #f6f6f8; /* основной фон */
   --line: #e5e5eb; /* светло-серая линия (пример, линия под шапкой) */
@@ -21,9 +22,16 @@
   --primary-light: #8989a2; /* основной светлый */
   --primary-soft-light: #8f9aac; /* основной очень светлый */
   --primary-03: rgba(83, 83, 110, 0.3); /* основной opacity 0.3 */
+  --green-badge: rgba(85, 181, 74, 0.8); /* зеленый бейдж */
+  --orange-badge: rgba(255, 148, 0, 0.8); /* оранжевый бейдж */
+  --blue-badge: linear-gradient(
+    95.77deg,
+    rgba(0, 107, 214, 0.8) -24%,
+    rgba(0, 128, 255, 0.8) 146%
+  ); /* голубой бейдж */
   --scroll-red: linear-gradient(
     99.91deg,
-    #ff9400 17.57%,
+    var(--secondary) 17.57%,
     #ff1821 112.75%
   ); /* скролбар красный градиент */
   --scroll-default: rgba(0, 0, 0, 0.3); /* скролбар по -умолчанию */
@@ -33,7 +41,7 @@
 
   --red-btn: linear-gradient(
     99.91deg,
-    #ff9400 17.57%,
+    var(--secondary) 17.57%,
     #ff1821 112.75%
   ); /* главная кнопка формы */
   --red-btn-shadow: 0px 8px 16px rgba(255, 89, 16, 0.38); /* тень главной кнопки формы */
@@ -41,14 +49,17 @@
   --arrow-btn-shadow: 0px 2px 4px rgba(229, 229, 235, 0.58); /* тень arrow кнопок */
   --arrow-btn-shadow-up: 0px -2px 4px rgba(229, 229, 235, 0.58); /* тень arrow кнопок вверх */
 
-  --base-transition: 0.3s ease; /* базовый переход */
+  --base-transition: 0.3s cubic-bezier(0.3, 0.9, 0.3, 1); /* базовый переход */
+  --back-transition: 0.3s cubic-bezier(0.9, -0.35, 0.57, 1.35); /* switch переход */
   --letter: -0.02em; /* межбуквенный интервал для заголовков меню */
   --svg-btn-padding: 0; /* отступ у кнопок с svg иконками */
   --def-radius: 4px; /* радиус по умолчанию */
 
+  --switch-menu-label-z: 1; /* z-index подписи к switch меню */
   --header-wrapper-z: 5; /* z-index шапки */
   --main-form-popup-z: 10; /* z-index шапки */
-  --modal: 99; /* z-index модального окна */
+  --burger-z: 15; /* z-index шапки */
+  --modal-z: 99; /* z-index модального окна */
 }
 
 /* size tablet or bigger */

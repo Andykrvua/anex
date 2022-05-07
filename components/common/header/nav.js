@@ -1,32 +1,43 @@
 import Link from 'next/link';
 import SimpleBar from 'simplebar-react';
+import { FormattedMessage as FM } from 'react-intl';
 
 const NavContent = () => {
   return (
     <ul className="header_nav">
       <li>
         <Link href="/index2">
-          <a className="header_nav_link">Туры</a>
+          <a className="header_nav_link">
+            <FM id="nav.tour" />
+          </a>
         </Link>
       </li>
       <li>
         <Link href="/">
-          <a className="header_nav_link">Страны</a>
+          <a className="header_nav_link">
+            <FM id="nav.country" />
+          </a>
         </Link>
       </li>
       <li>
         <Link href="/">
-          <a className="header_nav_link">Горящие туры</a>
+          <a className="header_nav_link">
+            <FM id="nav.hot_tour" />
+          </a>
         </Link>
       </li>
       <li>
         <Link href="/">
-          <a className="header_nav_link">Блог</a>
+          <a className="header_nav_link">
+            <FM id="nav.blog" />
+          </a>
         </Link>
       </li>
       <li>
         <Link href="/">
-          <a className="header_nav_link">Подберите мне тур</a>
+          <a className="header_nav_link">
+            <FM id="nav.pick_tour" />
+          </a>
         </Link>
       </li>
     </ul>

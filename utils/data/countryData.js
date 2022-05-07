@@ -1,0 +1,42 @@
+export const data = [
+  {
+    title: 'Доминикана',
+    price: 'от 63 144 грн',
+    txt_background: 'var(--green-badge)',
+    badge: 'Лучшая цена',
+    link: '/',
+    image: '/assets/img/fake_data/country1.jpg',
+  },
+  {
+    title: 'Турция',
+    price: 'от 45 200 грн',
+    txt_background: 'var(--blue-badge)',
+    badge: 'Лучшая цена',
+    link: '/',
+    image: '/assets/img/fake_data/country2.jpg',
+  },
+  {
+    title: 'Мальдивы',
+    price: 'от 27 700 грн',
+    txt_background: 'var(--green-badge)',
+    badge: '',
+    link: '/',
+    image: '/assets/img/fake_data/country3.jpg',
+  },
+  {
+    title: 'ОАЭ',
+    price: 'от 52 425 грн',
+    txt_background: 'var(--orange-badge)',
+    badge: '',
+    link: '/',
+    image: '/assets/img/fake_data/country4.jpg',
+  },
+  {
+    title: 'Египет',
+    price: 'от 112 300 грн',
+    txt_background: 'var(--orange-badge)',
+    badge: '',
+    link: '/',
+    image: '/assets/img/fake_data/country5.jpg',
+  },
+];

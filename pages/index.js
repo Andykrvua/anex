@@ -1,29 +1,23 @@
 import MainForm from '/components/mainform/mainForm.js';
-import { FormattedMessage as FM, useIntl } from 'react-intl';
-import Link from 'next/link';
+import { useIntl } from 'react-intl';
+import PopularCountry from '/components/mainpage/popularCountry.js';
+import { data } from '/utils/data/countryData';
 
 export default function Home() {
   const intl = useIntl();
 
-  const title = intl.formatMessage({ id: 'page.home.head.title' });
+  //нужно для передачи в HEAD
+  const title = intl.formatMessage({ id: 'nav.tour' });
   const description = intl.formatMessage({
-    id: 'page.home.head.meta.description',
+    id: 'nav.country',
   });
 
   return (
     <div className="container">
       <MainForm />
-      <Link href="/" locale={'ru'}>
-        <a style={{ padding: '20px' }}>ru</a>
-      </Link>
-      <Link href="/" locale={'uk'}>
-        <a style={{ padding: '20px' }}>uk</a>
-      </Link>
+      <PopularCountry data={data} />
       <h1>
         {title} {description}
-        <span>
-          <FM id="page.home.description" />
-        </span>
       </h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates

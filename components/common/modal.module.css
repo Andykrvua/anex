@@ -10,7 +10,7 @@
   bottom: 0;
   left: 0;
   background-color: var(--primary-03);
-  z-index: var(--modal);
+  z-index: var(--modal-z);
 }
 
 .modal.open .modal_content {

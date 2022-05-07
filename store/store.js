@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { mainFormPersonValidationRange as personVal } from '../utils/constants';
+import { FormattedMessage as FM } from 'react-intl';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -24,11 +25,11 @@ const useStore = create(
     },
     setPerson: (person) => set({ person }),
     fieldsNames: {
-      up: 'Откуда вылет',
-      down: 'Куда отправляемся',
-      date: 'Дата вылета',
-      night: 'Длительность',
-      person: 'Туристы',
+      up: <FM id="mainform.up.t" />,
+      down: <FM id="mainform.down.t" />,
+      date: <FM id="mainform.date.t" />,
+      night: <FM id="mainform.night.t" />,
+      person: <FM id="mainform.person.t" />,
     },
     modal: false,
     setModal: (modal) => set({ modal }),

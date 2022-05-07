@@ -7,29 +7,30 @@
 
 .switch_label {
   display: inline-block;
-  padding: 10px 12px;
-  margin: 0 5px;
   text-align: center;
-  cursor: pointer;
+  margin: 0 5px;
+  padding: 10px 12px;
   font-size: 14px;
   line-height: 16px;
+  cursor: pointer;
   color: var(--primary-light);
-  transition: color 200ms ease-out;
-  z-index: 1;
+  transition: color var(--base-transition);
+  z-index: var(--switch-menu-label-z);
 }
 
 .switch_label:hover {
   color: var(--primary);
 }
+
 .switch_indicator {
-  height: 28px;
   position: absolute;
   top: 4px;
   left: 0;
+  height: 28px;
   border-radius: 50px;
   background-color: var(--primary);
-  transition: transform 600ms cubic-bezier(0.02, 0.94, 0.09, 0.97);
   transform: translate3d(5px, 0, 0);
+  transition: transform var(--back-transition);
 }
 
 .switch input[type='radio']:not(:checked),
