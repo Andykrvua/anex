@@ -53,17 +53,18 @@ export default function Carousel({ data }) {
 
         <div
           className="carousel-card-inner"
-          style={{ backgroundImage: `url(${item.image})` }}
+          // style={{ backgroundImage: `url(${item.image})` }}
           // style={{ backgroundColor: item.txt_background }}
         >
-          {/* <Image
+          <Image
             src={item.image}
             alt="Picture of the author"
             width={290}
             height={290}
-            layout="responsive"
+            // layout="responsive"
             objectFit="cover"
-          /> */}
+            objectPosition="center"
+          />
           <div className="carousel-title">{item.title}</div>
           <div className="carousel-text">{item.text}</div>
         </div>
