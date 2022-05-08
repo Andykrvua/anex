@@ -1,6 +1,7 @@
 :root {
   --page-m-width: 1110px; /* макс ширина страницы */
   --cont-padding: 0 20px; /* отступ у контейнера */
+  --helper-margin: -20px; /* отступ при растягивании контейнер на всю ширину */
   --cont-padding-popup: 20px; /* отступ у контейнера всплывающего окна */
   --header-height: 81px; /* высота шапки */
   --header-compensation: 0; /* компенсация высоты шапки */
@@ -22,13 +23,18 @@
   --primary-light: #8989a2; /* основной светлый */
   --primary-soft-light: #8f9aac; /* основной очень светлый */
   --primary-03: rgba(83, 83, 110, 0.3); /* основной opacity 0.3 */
-  --green-badge: rgba(85, 181, 74, 0.8); /* зеленый бейдж */
-  --orange-badge: rgba(255, 148, 0, 0.8); /* оранжевый бейдж */
+  --green-badge: rgba(85, 181, 74, 0.8); /* зеленый бейдж country text */
+  --orange-badge: rgba(255, 148, 0, 0.8); /* оранжевый бейдж country text */
   --blue-badge: linear-gradient(
     95.77deg,
     rgba(0, 107, 214, 0.8) -24%,
     rgba(0, 128, 255, 0.8) 146%
-  ); /* голубой бейдж */
+  ); /* голубой бейд жcountry text */
+  --orange-red-badge: linear-gradient(
+    99.9deg,
+    rgba(255, 148, 0, 0.8) 17.57%,
+    rgba(255, 24, 33, 0.8) 112.75%
+  ); /* оранжево-красный бейдж country badge */
   --scroll-red: linear-gradient(
     99.91deg,
     var(--secondary) 17.57%,
@@ -66,6 +72,7 @@
 @media (min-width: 768px) {
   :root {
     --cont-padding: 0 30px; /* отступ у контейнера */
+    --helper-margin: -30px; /* отступ при растягивании контейнер на всю ширину */
   }
 }
 

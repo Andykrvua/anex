@@ -4,7 +4,7 @@ export const data = [
     price: 'от 63 144 грн',
     txt_background: 'var(--green-badge)',
     badge: 'Лучшая цена',
-    link: '/',
+    link: '/index2',
     image: '/assets/img/fake_data/country1.jpg',
   },
   {
@@ -12,7 +12,7 @@ export const data = [
     price: 'от 45 200 грн',
     txt_background: 'var(--blue-badge)',
     badge: 'Лучшая цена',
-    link: '/',
+    link: '/index2',
     image: '/assets/img/fake_data/country2.jpg',
   },
   {
@@ -20,7 +20,7 @@ export const data = [
     price: 'от 27 700 грн',
     txt_background: 'var(--green-badge)',
     badge: '',
-    link: '/',
+    link: '/index2',
     image: '/assets/img/fake_data/country3.jpg',
   },
   {
@@ -28,7 +28,7 @@ export const data = [
     price: 'от 52 425 грн',
     txt_background: 'var(--orange-badge)',
     badge: '',
-    link: '/',
+    link: '/index2',
     image: '/assets/img/fake_data/country4.jpg',
   },
   {
@@ -36,7 +36,7 @@ export const data = [
     price: 'от 112 300 грн',
     txt_background: 'var(--orange-badge)',
     badge: '',
-    link: '/',
+    link: '/index2',
     image: '/assets/img/fake_data/country5.jpg',
   },
 ];

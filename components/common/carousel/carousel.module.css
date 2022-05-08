@@ -1,0 +1,96 @@
+.carousel_container {
+  position: relative;
+  display: none;
+  max-width: 960px;
+  height: 390px;
+  margin: 0 auto;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+@media (max-width: 810px) {
+  .carousel_container {
+    display: block;
+  }
+}
+
+.carousel_track {
+  display: flex;
+  height: 100%;
+}
+
+.carousel_card {
+  display: flex;
+  flex: 0 0 300px;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.carousel_card:first-child {
+  flex: 0 0 295px;
+  justify-content: flex-start;
+}
+
+.carousel_card a {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+.carousel_card_inner {
+  position: relative;
+  width: 290px;
+  height: 380px;
+  border-radius: var(--def-radius);
+  overflow: hidden;
+}
+
+.carousel_text_content {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel_text {
+  position: absolute;
+  display: inline-block;
+  bottom: 20px;
+  left: 20px;
+  padding: 13px 18px 10px;
+  border-radius: var(--def-radius);
+}
+
+.carousel_text h3 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--bg);
+}
+
+.carousel_text span {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--line);
+}
+
+.carousel_badge {
+  position: absolute;
+  display: inline-block;
+  top: 20px;
+  right: 20px;
+  padding: 5px 7px;
+  font-size: 12px;
+  line-height: 13px;
+  border-radius: var(--def-radius);
+  color: var(--bg);
+  background: var(--orange-red-badge);
+}
