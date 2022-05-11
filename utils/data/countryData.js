@@ -5,7 +5,7 @@ export const data = [
     txt_background: 'var(--green-badge)',
     badge: 'Лучшая цена',
     link: '/index2',
-    image: '/assets/img/fake_data/country1.jpg',
+    image: '/assets/img/fake_data/country1.webp',
   },
   {
     title: 'Турция',
@@ -13,7 +13,7 @@ export const data = [
     txt_background: 'var(--blue-badge)',
     badge: 'Лучшая цена',
     link: '/index2',
-    image: '/assets/img/fake_data/country2.jpg',
+    image: '/assets/img/fake_data/country2.webp',
   },
   {
     title: 'Мальдивы',
@@ -21,7 +21,7 @@ export const data = [
     txt_background: 'var(--green-badge)',
     badge: '',
     link: '/index2',
-    image: '/assets/img/fake_data/country3.jpg',
+    image: '/assets/img/fake_data/country3.webp',
   },
   {
     title: 'ОАЭ',
@@ -29,7 +29,7 @@ export const data = [
     txt_background: 'var(--orange-badge)',
     badge: '',
     link: '/index2',
-    image: '/assets/img/fake_data/country4.jpg',
+    image: '/assets/img/fake_data/country4.webp',
   },
   {
     title: 'Египет',
@@ -37,7 +37,7 @@ export const data = [
     txt_background: 'var(--orange-badge)',
     badge: '',
     link: '/index2',
-    image: '/assets/img/fake_data/country5.jpg',
+    image: '/assets/img/fake_data/country5.webp',
   },
   {
     title: 'еще 26 стран',
@@ -45,6 +45,6 @@ export const data = [
     txt_background: '',
     badge: '',
     link: '/index2',
-    image: '/assets/img/fake_data/country-all-link.jpg',
+    image: '/assets/img/fake_data/country-all-link.webp',
   },
 ];
