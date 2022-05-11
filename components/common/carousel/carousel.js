@@ -5,28 +5,52 @@ import { bcCardsWidth } from '/utils/constants';
 import Image from 'next/image';
 import styles from './carousel.module.css';
 import Link from 'next/link';
+import { memo } from 'react';
+import { shimmer, toBase64 } from '/utils/blurImage';
+
+const Card = ({ index, item }) => {
+  return (
+    <div key={index} className={styles.carousel_card}>
+      <Link href={item.link}>
+        <a>
+          <div className={styles.carousel_card_inner}>
+            <Image
+              src={item.image}
+              alt={item.title}
+              width={290}
+              height={380}
+              layout="responsive" //to fix blur, but bigger img size
+              objectFit="cover"
+              objectPosition="center"
+              placeholder="blur"
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                shimmer(290, 380)
+              )}`}
+              quality="100"
+            />
+            <div className={styles.carousel_text_content}>
+              <div
+                className={styles.carousel_text}
+                style={{ background: item.txt_background }}
+              >
+                <h3>{item.title}</h3>
+                <span>{item.price}</span>
+              </div>
+              {item.badge && (
+                <span className={styles.carousel_badge}>{item.badge}</span>
+              )}
+            </div>
+          </div>
+        </a>
+      </Link>
+    </div>
+  );
+};
+
+const MemoizedCard = memo(Card);
 
 export default function Carousel({ data }) {
   const cardSize = bcCardsWidth.cardSize;
-
-  const shimmer = (w, h) => `
-  <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-      <linearGradient id="g">
-        <stop stop-color="#53536e" offset="20%" />
-        <stop stop-color="#222" offset="50%" />
-        <stop stop-color="#53536e" offset="70%" />
-      </linearGradient>
-    </defs>
-    <rect width="${w}" height="${h}" fill="#53536e" />
-    <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-    <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-  </svg>`;
-
-  const toBase64 = (str) =>
-    typeof window === 'undefined'
-      ? Buffer.from(str).toString('base64')
-      : window.btoa(str);
 
   function CarouselContainer(props) {
     const {
@@ -34,11 +58,6 @@ export default function Carousel({ data }) {
       carouselState: { active, dragging },
       ...rest
     } = props;
-
-    let current = -Math.round(cursor) % data.length;
-    while (current < 0) {
-      current += data.length;
-    }
 
     const translateX = cursor * cardSize + 20;
 
@@ -71,46 +90,7 @@ export default function Carousel({ data }) {
   function renderCard(index, modIndex) {
     const item = data[modIndex];
 
-    return (
-      <div key={index} className={styles.carousel_card}>
-        <Link href={item.link}>
-          <a>
-            <div
-              className={styles.carousel_card_inner}
-              // style={{ backgroundImage: `url(${item.image})` }}
-              // style={{ backgroundColor: item.txt_background }}
-            >
-              <Image
-                src={item.image}
-                alt="Picture of the author"
-                width={290}
-                height={370}
-                layout="responsive" //to fix blur, but bigger img size
-                objectFit="cover"
-                objectPosition="center"
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(290, 290)
-                )}`}
-                quality="100"
-              />
-              <div className={styles.carousel_text_content}>
-                <div
-                  className={styles.carousel_text}
-                  style={{ background: item.txt_background }}
-                >
-                  <h3>{item.title}</h3>
-                  <span>{item.price}</span>
-                </div>
-                {item.badge && (
-                  <span className={styles.carousel_badge}>{item.badge}</span>
-                )}
-              </div>
-            </div>
-          </a>
-        </Link>
-      </div>
-    );
+    return <MemoizedCard index={index} item={item} />;
   }
 
   return (

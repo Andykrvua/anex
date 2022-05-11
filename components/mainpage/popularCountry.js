@@ -2,6 +2,7 @@ import styles from './popularCountry.module.css';
 import Carousel from '../common/carousel/carousel';
 import viewPortSize from '/utils/getViewport';
 import { useLayoutEffect, useState } from 'react';
+import PopCountryDesctopContent from './popCountryDesctopContent';
 
 // change layout on mobile or desktop
 const PopCountryCards = ({ size, data }) => {
@@ -15,7 +16,15 @@ const PopCountryCards = ({ size, data }) => {
     }
   }, [size]);
 
-  return <>{show ? <div>dsdd242</div> : <Carousel data={data} />}</>;
+  return (
+    <>
+      {show ? (
+        <PopCountryDesctopContent data={data} />
+      ) : (
+        <Carousel data={data} />
+      )}
+    </>
+  );
 };
 
 export default function PopularCountry({ data }) {
@@ -23,7 +32,7 @@ export default function PopularCountry({ data }) {
 
   return (
     <div className={styles.popcountry_wrapper}>
-      <h2>Популярные направления</h2>
+      <h2 className={styles.title}>Популярные направления</h2>
       <div className={styles.carousel_wrapper}>
         <PopCountryCards size={size} data={data} />
       </div>

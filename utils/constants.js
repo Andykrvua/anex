@@ -44,5 +44,5 @@ export const switchMenuMargins = {
 
 // blog and country cards width
 export const bcCardsWidth = {
-  cardSize: 300,
+  cardSize: 310,
 };

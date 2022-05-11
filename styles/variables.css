@@ -8,7 +8,8 @@
   --form-btn-icon-width: 58px; /* ширина блока иконки в форме */
   --form-btn-height: 58px; /* высота кнопки в форме */
   --mainform-desktop-maxheight: 610px; /* максимальная высота попапа формы на десктопе */
-
+  --block-title-top-margin: 33px; /* отступ сверху блока от тайтла */
+  --block-top-margin: 15px; /* отступ сверху блока до тайтла */
   --primary: #53536e; /* основной цвет */
   --secondary: #ff9400; /* вторичный цвет */
   --menu-hover: var(--secondary); /* цвет ссылок при наведении */
@@ -78,6 +79,9 @@
 
 @media (min-width: 810px) {
   :root {
+    --block-title-top-margin: 40px; /* отступ сверху блока от тайтла */
+    --block-top-margin: 20px; /* отступ сверху блока до тайтла */
+
     --popup-bg: var(--white); /* фон попапа главной формы */
 
     --svg-btn-padding: 5px; /* отступ у кнопок с svg иконками */
