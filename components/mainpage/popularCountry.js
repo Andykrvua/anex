@@ -6,6 +6,7 @@ import PopCountryDesctopContent from './popCountryDesctopContent';
 
 // change layout on mobile or desktop
 const PopCountryCards = ({ size, data }) => {
+  // image: min-width 691, min-height 380
   const [show, setShow] = useState(false);
 
   useLayoutEffect(() => {

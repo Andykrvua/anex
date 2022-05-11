@@ -39,4 +39,12 @@ export const data = [
     link: '/index2',
     image: '/assets/img/fake_data/country5.jpg',
   },
+  {
+    title: 'еще 26 стран',
+    price: '',
+    txt_background: '',
+    badge: '',
+    link: '/index2',
+    image: '/assets/img/fake_data/country-all-link.jpg',
+  },
 ];

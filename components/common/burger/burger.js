@@ -56,11 +56,21 @@ export default function Burger() {
     <div
       className={
         isOpen
-          ? `${styles.burger_overlay} ${styles.open} burger_overlay`
-          : `${styles.burger_overlay}`
+          ? `${styles.burger_overlay} ${styles.open} burger_overlay open`
+          : `${styles.burger_overlay} burger_overlay`
       }
       onClick={(e) => closeBurgerOverlayHandler(e)}
     >
+      {/* fix blinking reload */}
+      <style jsx>{`
+        .burger_overlay {
+          transform: translateX(-100%);
+        }
+        .burger_overlay.open {
+          transform: translateX(0);
+        }
+      `}</style>
+
       <div className={styles.burger}>
         <BurgerHeader closeBurgerHandler={closeBurgerHandler} />
         <div

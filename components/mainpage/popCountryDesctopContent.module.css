@@ -1,51 +1,42 @@
-.carousel_container {
-  /* --shadow-compensation: 30px; */
-  position: relative;
-  display: none;
-  max-width: 960px;
-  /* height: calc(390px + var(--shadow-compensation)); */
-  height: 380px;
-  margin: 0 auto;
-  /* overflow: hidden; */
-  touch-action: pan-y;
-}
-
-@media (max-width: 810px) {
-  .carousel_container {
-    display: block;
-  }
-}
-
-.carousel_track {
-  display: flex;
-  height: 100%;
+.popcountry_desktop {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 25px;
 }
 
 .carousel_card {
-  display: flex;
+  /* display: flex;
   flex: 0 0 310px;
   height: 100%;
   justify-content: center;
   align-items: center;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent; */
+}
+
+.carousel_card img {
+  /* transform: scale(1); */
+  transition: transform var(--base-transition);
+}
+
+.carousel_card:nth-child(4n + 1) {
+  grid-column: 1/3;
+}
+.carousel_card:nth-child(4n + 4) {
+  grid-column: 2/4;
+}
+
+.carousel_card:not(:last-child):hover img {
+  transform: scale(1.1);
 }
 
 .carousel_card:first-child {
-  flex: 0 0 300px;
-  justify-content: flex-start;
-}
-
-.carousel_card a {
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-  user-drag: none;
+  /* flex: 0 0 300px;
+  justify-content: flex-start; */
 }
 
 .carousel_card_inner {
   position: relative;
-  width: 290px;
+  /* width: 290px; */
   height: 380px;
   border-radius: var(--def-radius);
   overflow: hidden;
@@ -96,4 +87,19 @@
   border-radius: var(--def-radius);
   color: var(--bg);
   background: var(--orange-red-badge);
+}
+
+.last_card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.last_card h3 {
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  text-decoration: underline;
+  color: var(--bg);
 }

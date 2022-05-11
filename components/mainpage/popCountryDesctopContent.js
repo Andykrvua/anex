@@ -1,11 +1,12 @@
-import styles from '/components/common/carousel/carousel.module.css';
+import styles from './popCountryDesctopContent.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { shimmer, toBase64 } from '/utils/blurImage';
 
 export default function PopCountryDesctopContent({ data }) {
+  console.log('render');
   return (
-    <div className="desktop">
+    <div className={styles.popcountry_desktop}>
       {data.map((item, index) => {
         return (
           <div key={index} className={styles.carousel_card}>
@@ -15,9 +16,9 @@ export default function PopCountryDesctopContent({ data }) {
                   <Image
                     src={item.image}
                     alt={item.title}
-                    width={290}
-                    height={380}
-                    layout="responsive" //to fix blur, but bigger img size
+                    // width={333}
+                    // height={380}
+                    layout="fill" //to fix blur, but bigger img size
                     objectFit="cover"
                     objectPosition="center"
                     placeholder="blur"
@@ -28,7 +29,9 @@ export default function PopCountryDesctopContent({ data }) {
                   />
                   <div className={styles.carousel_text_content}>
                     <div
-                      className={styles.carousel_text}
+                      className={
+                        item.price ? styles.carousel_text : styles.last_card
+                      }
                       style={{ background: item.txt_background }}
                     >
                       <h3>{item.title}</h3>

@@ -30,8 +30,10 @@ const Card = ({ index, item }) => {
             />
             <div className={styles.carousel_text_content}>
               <div
-                className={styles.carousel_text}
-                style={{ background: item.txt_background }}
+                className={item.price ? styles.carousel_text : styles.last_card}
+                style={
+                  item.txt_background ? { background: item.txt_background } : {}
+                }
               >
                 <h3>{item.title}</h3>
                 <span>{item.price}</span>

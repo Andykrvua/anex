@@ -43,6 +43,8 @@
 
   .burger_content_wrapper {
     height: calc(100vh - 115px);
+    margin-left: 40px;
+    margin-right: 40px;
   }
 }
 
