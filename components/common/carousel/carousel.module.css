@@ -1,7 +1,7 @@
 .carousel_container {
   /* --shadow-compensation: 30px; */
   position: relative;
-  display: none;
+  /* display: none; */
   max-width: 960px;
   /* height: calc(390px + var(--shadow-compensation)); */
   height: 380px;
@@ -11,9 +11,9 @@
 }
 
 @media (max-width: 810px) {
-  .carousel_container {
+  /* .carousel_container {
     display: block;
-  }
+  } */
 }
 
 .carousel_track {

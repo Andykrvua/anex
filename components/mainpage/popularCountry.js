@@ -19,23 +19,25 @@ const PopCountryCards = ({ size, data }) => {
 
   return (
     <>
-      {show ? (
+      <Carousel data={data} />
+      {/* {show ? (
         <PopCountryDesctopContent data={data} />
       ) : (
         <Carousel data={data} />
-      )}
+      )} */}
     </>
   );
 };
 
 export default function PopularCountry({ data }) {
-  const size = viewPortSize();
+  // const size = viewPortSize();
 
   return (
     <div className={styles.popcountry_wrapper}>
       <h2 className={styles.title}>Популярные направления</h2>
       <div className={styles.carousel_wrapper}>
-        <PopCountryCards size={size} data={data} />
+        {/* <PopCountryCards size={size} data={data} /> */}
+        <Carousel data={data} />
       </div>
     </div>
   );

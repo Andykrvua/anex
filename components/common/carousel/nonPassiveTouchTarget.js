@@ -27,6 +27,7 @@ class NonPassiveTouchTarget extends React.Component {
   };
 
   render() {
+    /* eslint-disable-next-line */
     const { component: Component, onTouchMove, ...rest } = this.props;
     return <Component ref={this.ref} {...rest} />;
   }

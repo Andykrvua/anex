@@ -48,6 +48,7 @@ export default function countryList({ variant, clickCountryItem }) {
       break;
 
     default:
+      /* eslint-disable-next-line */
       console.log('countryList component error');
       return null;
   }

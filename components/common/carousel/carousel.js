@@ -7,6 +7,8 @@ import styles from './carousel.module.css';
 import Link from 'next/link';
 import { memo } from 'react';
 import { shimmer, toBase64 } from '/utils/blurImage';
+import viewPortSize from '/utils/getViewport';
+import { useState, useLayoutEffect } from 'react';
 
 const Card = ({ index, item }) => {
   return (
@@ -52,6 +54,18 @@ const Card = ({ index, item }) => {
 const MemoizedCard = memo(Card);
 
 export default function Carousel({ data }) {
+  const size = viewPortSize();
+  console.log(size);
+  const [carousel, setCarousel] = useState(true);
+
+  useLayoutEffect(() => {
+    if (size.width >= 810) {
+      setCarousel(false);
+    } else {
+      setCarousel(true);
+    }
+  }, [carousel]);
+
   const cardSize = bcCardsWidth.cardSize;
 
   function CarouselContainer(props) {
@@ -94,6 +108,7 @@ export default function Carousel({ data }) {
 
     return <MemoizedCard index={index} item={item} />;
   }
+  console.log('render');
 
   return (
     <TouchCarousel

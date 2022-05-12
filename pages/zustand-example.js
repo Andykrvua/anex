@@ -7,7 +7,7 @@
 //   usefirstName,
 //   useSetFirstName,
 // } from '../store/store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // const LoginSection = () => {
 //   const login = useLogin();
@@ -43,15 +43,16 @@ import { useEffect } from 'react';
 //   console.log(cartCount);
 //   return <div>Cart: {cartCount}</div>;
 // };
-
 export default function Home() {
+  const [content, setContent] = useState([]);
+
   useEffect(async () => {
     fetch('https://a-k.name/directus/items/posts')
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        setContent(data.data);
       });
   }, []);
 
@@ -65,6 +66,7 @@ export default function Home() {
       <button>+</button>
       <button>-</button>
       <button>lllll</button>
+      <div>{content.map((item) => item.content)}</div>
     </div>
   );
 }

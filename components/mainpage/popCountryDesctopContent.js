@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { shimmer, toBase64 } from '/utils/blurImage';
 
 export default function PopCountryDesctopContent({ data }) {
-  console.log('render');
   return (
     <div className={styles.popcountry_desktop}>
       {data.map((item, index) => {
