@@ -112,3 +112,40 @@
   text-decoration: underline;
   color: var(--bg);
 }
+
+@media (min-width: 810px) {
+  .carousel_container {
+    border: 1px solid red;
+    height: initial;
+  }
+
+  .carousel_track {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+  }
+
+  .carousel_card {
+    display: block;
+  }
+
+  .carousel_card_inner {
+    width: 100%;
+  }
+
+  .carousel_card img {
+    /* transform: scale(1); */
+    transition: transform var(--base-transition);
+  }
+
+  .carousel_card:nth-child(4n + 1) {
+    grid-column: 1/3;
+  }
+  .carousel_card:nth-child(4n + 4) {
+    grid-column: 2/4;
+  }
+
+  .carousel_card:not(:last-child):hover img {
+    transform: scale(1.1);
+  }
+}

@@ -19,9 +19,10 @@ const Card = ({ index, item }) => {
             <Image
               src={item.image}
               alt={item.title}
-              width={290}
-              height={380}
-              layout="responsive" //to fix blur, but bigger img size
+              // width={290}
+              // height={380}
+              // layout="responsive" //to fix blur, but bigger img size
+              layout="fill" //to fix blur, but bigger img size
               objectFit="cover"
               objectPosition="center"
               placeholder="blur"
@@ -54,21 +55,22 @@ const Card = ({ index, item }) => {
 const MemoizedCard = memo(Card);
 
 export default function Carousel({ data }) {
-  const size = viewPortSize();
-  console.log(size);
-  const [carousel, setCarousel] = useState(true);
-
-  useLayoutEffect(() => {
-    if (size.width >= 810) {
-      setCarousel(false);
-    } else {
-      setCarousel(true);
-    }
-  }, [carousel]);
-
   const cardSize = bcCardsWidth.cardSize;
+  console.log('carousel render');
 
   function CarouselContainer(props) {
+    const size = viewPortSize();
+
+    const [carousel, setCarousel] = useState(false);
+
+    useLayoutEffect(() => {
+      if (size.width >= 810) {
+        setCarousel(false);
+      } else {
+        setCarousel(true);
+      }
+    }, [size]);
+
     const {
       cursor,
       carouselState: { active, dragging },
@@ -93,7 +95,9 @@ export default function Carousel({ data }) {
       >
         <NonPassiveTouchTarget
           className={styles.carousel_track}
-          style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
+          style={
+            carousel ? { transform: `translate3d(${translateX}px, 0, 0)` } : {}
+          }
           {...rest}
         />
       </NonPassiveTouchTarget>
