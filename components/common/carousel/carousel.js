@@ -11,18 +11,19 @@ import viewPortSize from '/utils/getViewport';
 import { useState, useLayoutEffect } from 'react';
 
 const Card = ({ index, item }) => {
+  // image: min-width 691, min-height 380
   return (
-    <div key={index} className={styles.carousel_card}>
+    <div key={index} className={styles.card}>
       <Link href={item.link}>
         <a>
-          <div className={styles.carousel_card_inner}>
+          <div className={styles.card_inner}>
             <Image
               src={item.image}
               alt={item.title}
               // width={290}
               // height={380}
               // layout="responsive" //to fix blur, but bigger img size
-              layout="fill" //to fix blur, but bigger img size
+              layout="fill"
               objectFit="cover"
               objectPosition="center"
               placeholder="blur"
@@ -31,9 +32,9 @@ const Card = ({ index, item }) => {
               )}`}
               quality="100"
             />
-            <div className={styles.carousel_text_content}>
+            <div className={styles.card_text_content}>
               <div
-                className={item.price ? styles.carousel_text : styles.last_card}
+                className={item.price ? styles.card_text : styles.last_card}
                 style={
                   item.txt_background ? { background: item.txt_background } : {}
                 }
@@ -42,7 +43,7 @@ const Card = ({ index, item }) => {
                 <span>{item.price}</span>
               </div>
               {item.badge && (
-                <span className={styles.carousel_badge}>{item.badge}</span>
+                <span className={styles.card_badge}>{item.badge}</span>
               )}
             </div>
           </div>
@@ -56,12 +57,15 @@ const MemoizedCard = memo(Card);
 
 export default function Carousel({ data }) {
   const cardSize = bcCardsWidth.cardSize;
-  console.log('carousel render');
 
   function CarouselContainer(props) {
     const size = viewPortSize();
-
-    const [carousel, setCarousel] = useState(false);
+    const [carousel, setCarousel] = useState(true);
+    const {
+      cursor,
+      carouselState: { active, dragging },
+      ...rest
+    } = props;
 
     useLayoutEffect(() => {
       if (size.width >= 810) {
@@ -70,12 +74,6 @@ export default function Carousel({ data }) {
         setCarousel(true);
       }
     }, [size]);
-
-    const {
-      cursor,
-      carouselState: { active, dragging },
-      ...rest
-    } = props;
 
     const translateX = cursor * cardSize + 20;
 
@@ -91,10 +89,14 @@ export default function Carousel({ data }) {
     }
     return (
       <NonPassiveTouchTarget
-        className={`${styles.carousel_container} ${classes}`}
+        className={
+          carousel
+            ? `${styles.cards_container} ${classes}`
+            : `${styles.cards_container}`
+        }
       >
         <NonPassiveTouchTarget
-          className={styles.carousel_track}
+          className={styles.cards_track}
           style={
             carousel ? { transform: `translate3d(${translateX}px, 0, 0)` } : {}
           }
@@ -112,7 +114,6 @@ export default function Carousel({ data }) {
 
     return <MemoizedCard index={index} item={item} />;
   }
-  console.log('render');
 
   return (
     <TouchCarousel
