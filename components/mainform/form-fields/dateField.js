@@ -29,7 +29,7 @@ export default function DateField({
   // // tomorrow.setDate(tomorrow.getDate() + 1);
   // tomorrow.setDate(tomorrow.getDate() - 15);
   // const initialDate = tomorrow;
-  const initialDate = title.rawDate;
+  const storeDate = title.rawDate;
   const plusDays = title.plusDays;
 
   const intl = useIntl();
@@ -76,7 +76,7 @@ export default function DateField({
         modalIsOpen={modalIsOpen}
         cName={'btn_date'}
         popupName={popupName}
-        initialDate={initialDate}
+        storeDate={storeDate}
         initialPlusDays={plusDays}
       />
     </MainFormBtn>

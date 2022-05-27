@@ -3,7 +3,7 @@ import DownField from './form-fields/downField';
 import DateField from './form-fields/dateField';
 import NightField from './form-fields/nightField';
 import PersonField from './form-fields/personField';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import {
   useGetUp,
   useGetDown,
@@ -40,37 +40,43 @@ export default function MainForm() {
   const declensionPerson = declension(sumPerson, tTxt1, tTxt2, tTxt5);
   const personTitle = `${sumPerson} ${declensionPerson}`;
 
+  const MemoUpField = memo(UpField);
+  const MemoDownField = memo(DownField);
+  const MemoDateField = memo(DateField);
+  const MemoNightField = memo(NightField);
+  const MemoPersonField = memo(PersonField);
+
   return (
     <div className={modalIsOpen ? 'main_form open' : 'main_form'}>
-      <UpField
+      <MemoUpField
         title={up}
         aria={'Город вылета'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.up}
       />
-      <DownField
+      <MemoDownField
         title={down}
         aria={'Город прибытия'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.down}
       />
-      <DateField
+      <MemoDateField
         title={date}
         aria={'Дата вылета'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.date}
       />
-      <NightField
+      <MemoNightField
         title={`${night.from} - ${night.to} ночей`}
         aria={'Количество ночей'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.night}
       />
-      <PersonField
+      <MemoPersonField
         title={personTitle}
         aria={'Количество туристов'}
         modalIsOpen={modalIsOpen}

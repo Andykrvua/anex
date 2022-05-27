@@ -16,7 +16,7 @@ import { addYears, addDays } from 'date-fns';
 import ru from 'date-fns/locale/ru';
 import uk from 'date-fns/locale/uk';
 import styles from './date.module.css';
-import { useSetDate } from '../../../store/store';
+import { useSetDate, useGetInitialDate } from '../../../store/store';
 import DatePickerGlobalStyle from '../../../styles/datePickerGlobalStyle';
 import declension from 'utils/declension';
 import SvgPlus from 'components/svgPlus';
@@ -70,15 +70,16 @@ export default function Date({
   modalIsOpen,
   cName,
   popupName,
-  initialDate,
+  storeDate,
   initialPlusDays,
 }) {
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
   const selectedDate = useSetDate();
+  const initialDate = useGetInitialDate();
 
-  const [startDate, setStartDate] = useState(initialDate);
+  const [startDate, setStartDate] = useState(storeDate);
   const [plusDays, setPlusDays] = useState(initialPlusDays);
 
   const { locale } = useRouter();

@@ -14,6 +14,7 @@ const useStore = create(
     setUp: (up) => set({ up }),
     down: 'Сейшельские о-ва',
     setDown: (down) => set({ down }),
+    initialDate: rawDate,
     date: { rawDate, plusDays: 3 },
     setDate: (date) => set({ date }),
     night: { from: 10, to: 15 },
@@ -74,6 +75,7 @@ export const useSetUp = () => useStore((state) => state.setUp);
 export const useGetDown = () => useStore((state) => state.down);
 export const useSetDown = () => useStore((state) => state.setDown);
 
+export const useGetInitialDate = () => useStore((state) => state.initialDate);
 export const useGetDate = () => useStore((state) => state.date);
 export const useSetDate = () => useStore((state) => state.setDate);
 

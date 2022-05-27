@@ -1,5 +1,6 @@
 {
   "main": "Главная",
+  "main.pop_country": "Популярные направления",
   "common.apply": "Применить",
   "common.search": "Поиск",
   "common.loading": "Загрузка...",
@@ -32,5 +33,7 @@
   "nav.review": "Отзывы",
   "nav.certificates": "Сертификаты",
   "nav.contacts": "Контакты",
-  "nav.copyright": "Турагентство ANEX Tour Украина"
+  "nav.copyright": "Турагентство ANEX Tour Украина",
+  "blog": "Блог",
+  "blog.links": "Все записи"
 }

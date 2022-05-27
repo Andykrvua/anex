@@ -34,16 +34,19 @@ const Card = ({ index, item }) => {
             />
             <div className={styles.card_text_content}>
               <div
-                className={item.price ? styles.card_text : styles.last_card}
-                style={
-                  item.txt_background ? { background: item.txt_background } : {}
-                }
+                className={item.lastCard ? styles.last_card : styles.card_text}
+                style={item.txt_bg ? { background: item.txt_bg } : {}}
               >
                 <h3>{item.title}</h3>
                 <span>{item.price}</span>
               </div>
               {item.badge && (
-                <span className={styles.card_badge}>{item.badge}</span>
+                <span
+                  className={styles.card_badge}
+                  style={{ background: item.badge_bg }}
+                >
+                  {item.badge}
+                </span>
               )}
             </div>
           </div>
@@ -55,7 +58,7 @@ const Card = ({ index, item }) => {
 
 const MemoizedCard = memo(Card);
 
-export default function Carousel({ data }) {
+export default function Carousel({ data, instance }) {
   const cardSize = bcCardsWidth.cardSize;
 
   function CarouselContainer(props) {
@@ -96,7 +99,7 @@ export default function Carousel({ data }) {
         }
       >
         <NonPassiveTouchTarget
-          className={styles.cards_track}
+          className={`${styles.cards_track} ${styles[instance]}`}
           style={
             carousel ? { transform: `translate3d(${translateX}px, 0, 0)` } : {}
           }

@@ -1,7 +1,9 @@
 import MainForm from '/components/mainform/mainForm.js';
 import { useIntl } from 'react-intl';
 import PopularCountry from '/components/mainpage/popularCountry.js';
-import { data } from '/utils/data/countryData';
+import Blog from '/components/mainpage/blog.js';
+import { countryData, blogData } from '/utils/data/countryData';
+import Faq from '/components/mainpage/faq.js';
 
 export default function Home() {
   const intl = useIntl();
@@ -15,7 +17,9 @@ export default function Home() {
   return (
     <div className="container">
       <MainForm />
-      <PopularCountry data={data} />
+      <PopularCountry data={countryData} />
+      <Blog data={blogData} />
+      <Faq />
       <h1>
         {title} {description}
       </h1>

@@ -46,3 +46,8 @@ export const switchMenuMargins = {
 export const bcCardsWidth = {
   cardSize: 310,
 };
+
+export const carouselInstance = {
+  blog: 'blog',
+  popularCountry: 'popular_country',
+};

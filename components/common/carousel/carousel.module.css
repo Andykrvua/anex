@@ -48,6 +48,14 @@
   height: 100%;
 }
 
+.blog .card_text_content {
+  background: linear-gradient(
+    360deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0) 50%
+  );
+}
+
 .card_text {
   position: absolute;
   display: inline-block;
@@ -55,6 +63,11 @@
   left: 20px;
   padding: 13px 18px 10px;
   border-radius: var(--def-radius);
+}
+
+.blog .card_text {
+  right: 20px;
+  padding: 0;
 }
 
 .card_text h3 {
@@ -66,12 +79,24 @@
   color: var(--bg);
 }
 
+.blog .card_text h3 {
+  font-size: 16px;
+  line-height: 19px;
+  text-transform: none;
+  color: var(--font-white);
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
 .card_text span {
   display: inline-block;
   margin-top: 3px;
   font-size: 14px;
   line-height: 16px;
   color: var(--line);
+}
+
+.blog .card_text span {
+  display: none;
 }
 
 .card_badge {
@@ -84,6 +109,9 @@
   line-height: 13px;
   border-radius: var(--def-radius);
   color: var(--bg);
+}
+
+.popular_country .card_badge {
   background: var(--orange-red-badge);
 }
 
@@ -107,9 +135,15 @@
     height: initial;
   }
 
-  .cards_track {
+  .cards_track.popular_country {
     display: grid;
     grid-template-columns: 333px 1fr 333px;
+    gap: 25px;
+  }
+
+  .cards_track.blog {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 25px;
   }
 
@@ -117,11 +151,11 @@
     display: block;
   }
 
-  .card:nth-child(4n + 1) {
+  .cards_track.popular_country .card:nth-child(4n + 1) {
     grid-column: 1/3;
   }
 
-  .card:nth-child(4n + 4) {
+  .cards_track.popular_country .card:nth-child(4n + 4) {
     grid-column: 2/4;
   }
 
@@ -133,7 +167,7 @@
     transition: transform var(--base-transition);
   }
 
-  .card:not(:last-child):hover img {
+  .card:hover img {
     transform: scale(1.1);
   }
 }
