@@ -6,7 +6,7 @@ import { FormattedMessage as FM } from 'react-intl';
 export default function PopularCountry({ data }) {
   return (
     <div className={styles.popcountry_wrapper}>
-      <h2 className={styles.title}>
+      <h2 className={`${styles.title} block_title`}>
         <FM id="main.pop_country" />
       </h2>
       <div className={styles.carousel_wrapper}>

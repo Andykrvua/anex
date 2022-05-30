@@ -14,9 +14,4 @@
 
 .title {
   margin-bottom: var(--block-top-margin);
-  font-size: 20px;
-  line-height: 23px;
-  font-weight: 400;
-  letter-spacing: var(--letter);
-  text-transform: uppercase;
 }

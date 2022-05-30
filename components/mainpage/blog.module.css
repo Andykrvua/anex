@@ -12,11 +12,6 @@
 
 .title {
   display: inline-block;
-  font-size: 20px;
-  line-height: 23px;
-  font-weight: 400;
-  letter-spacing: var(--letter);
-  text-transform: uppercase;
 }
 
 .blog_link {

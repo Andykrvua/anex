@@ -1,6 +1,9 @@
 {
   "main": "Головна",
   "main.pop_country": "Популярні напрямки",
+  "main.seo.title_a": "Турагенція ",
+  "main.seo.title_b": "АНЕКС Тур",
+  "main.seo.title_c": " Київ",
   "common.apply": "Застосувати",
   "common.search": "Пошук",
   "common.loading": "Завантаження...",
@@ -35,5 +38,8 @@
   "nav.contacts": "Контакти",
   "nav.copyright": "Турагенція ANEX Tour Україна",
   "blog": "Блог",
-  "blog.links": "Всі записи"
+  "blog.links": "Всі записи",
+  "faq.title": "Питання-відповідь",
+  "faq.link_a": "Ще  ",
+  "faq.link_b": " відповіді на ваші питання"
 }

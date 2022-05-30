@@ -186,6 +186,18 @@ input::placeholder {
 .flex_container.popup {
   padding: 0 var(--cont-padding-popup);
 }
+
+.block_title {
+  font-size: var(--title-fz);
+  line-height: var(--title-lh);
+  font-weight: var(--title-fw);
+  letter-spacing: var(--title-ls);
+  text-transform: var(--title-tt);
+}
+
+.prg {
+  margin: 0 0 10px;
+}
 /* Layout end */
 
 /* Header start */
@@ -623,39 +635,3 @@ header.header .header_container {
 /* Popup content end */
 /* Popup end */
 /* Main form end */
-
-/* ------------------- */
-
-/* ul li i:before,
-ul li i:after,
-div {
-  transition: all 0.25s ease-in-out;
-}
-
-ul li i {
-  position: absolute;
-  transform: translate(-6px, 0);
-  margin-top: 16px;
-  right: 0;
-}
-ul li i:before,
-ul li i:after {
-  content: '';
-  position: absolute;
-  background-color: #ff6873;
-  width: 3px;
-  height: 9px;
-}
-ul li i:before {
-  transform: translate(-2px, 0) rotate(45deg);
-}
-ul li i:after {
-  transform: translate(2px, 0) rotate(-45deg);
-}
-
-ul li input[type='checkbox']:checked ~ i:before {
-  transform: translate(2px, 0) rotate(45deg);
-}
-ul li input[type='checkbox']:checked ~ i:after {
-  transform: translate(-2px, 0) rotate(-45deg);
-} */

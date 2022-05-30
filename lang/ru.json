@@ -1,6 +1,9 @@
 {
   "main": "Главная",
   "main.pop_country": "Популярные направления",
+  "main.seo.title_a": "Турагентство ",
+  "main.seo.title_b": "АНЕКС Тур",
+  "main.seo.title_c": " Киев",
   "common.apply": "Применить",
   "common.search": "Поиск",
   "common.loading": "Загрузка...",
@@ -35,5 +38,8 @@
   "nav.contacts": "Контакты",
   "nav.copyright": "Турагентство ANEX Tour Украина",
   "blog": "Блог",
-  "blog.links": "Все записи"
+  "blog.links": "Все записи",
+  "faq.title": "Вопрос-ответ",
+  "faq.link_a": "Еще  ",
+  "faq.link_b": " ответа на ваши вопросы"
 }

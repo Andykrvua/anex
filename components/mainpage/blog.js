@@ -8,7 +8,7 @@ export default function Blog({ data }) {
   return (
     <div className={styles.blog_wrapper}>
       <div className={styles.blog_header}>
-        <h2 className={styles.title}>
+        <h2 className={`${styles.title} block_title`}>
           <FM id="blog" />
         </h2>
         <Link href="/">

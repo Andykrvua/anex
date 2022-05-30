@@ -1,11 +1,30 @@
 .faq {
   margin-top: var(--block-title-top-margin);
 }
-.faq_title {
+
+.title {
   margin-bottom: var(--block-top-margin);
-  font-size: 20px;
-  line-height: 23px;
-  font-weight: 400;
-  letter-spacing: var(--letter);
-  text-transform: uppercase;
+}
+
+.link_wrapper {
+  margin-top: 15px;
+  text-align: right;
+}
+
+.link {
+  font-size: 14px;
+  line-height: 16px;
+  text-decoration: underline;
+}
+
+@media (min-width: 810px) {
+  .link_wrapper {
+    margin-top: 20px;
+    text-align: left;
+  }
+
+  .link {
+    font-size: 16px;
+    line-height: 19px;
+  }
 }

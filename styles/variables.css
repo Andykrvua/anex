@@ -23,6 +23,7 @@
   --placeholder: #c3c3d0; /* цвет плейсхолдера */
   --primary-light: #8989a2; /* основной светлый */
   --primary-soft-light: #8f9aac; /* основной очень светлый */
+  --footer-bg: #292933; /* фон подвала */
   --primary-03: rgba(83, 83, 110, 0.3); /* основной opacity 0.3 */
   --green-badge: rgba(85, 181, 74, 0.8); /* зеленый бейдж country text */
   --orange-badge: rgba(255, 148, 0, 0.8); /* оранжевый бейдж country text */
@@ -67,6 +68,12 @@
   --main-form-popup-z: 10; /* z-index шапки */
   --burger-z: 15; /* z-index шапки */
   --modal-z: 99; /* z-index модального окна */
+
+  --title-fz: 20px;
+  --title-lh: 23px;
+  --title-fw: 400;
+  --title-ls: var(--letter);
+  --title-tt: uppercase;
 }
 
 /* size tablet or bigger */
