@@ -128,6 +128,28 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+        <div className={styles.copyright}>
+          <a href={links.telegram}>
+            <img
+              src="assets/img/svg/telegram.svg"
+              alt="Telegram"
+              width="37"
+              height="37"
+            />
+          </a>
+          <a href={links.viber}>
+            <img
+              src="assets/img/svg/viber.svg"
+              alt="Viber"
+              width="37"
+              height="37"
+            />
+          </a>
+          <p>
+            © 2022 Турагентство ANEX Tour Украина
+            <span>Все права защищены</span>
+          </p>
+        </div>
       </div>
     </footer>
   );

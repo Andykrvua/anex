@@ -46,6 +46,26 @@
   color: var(--secondary);
 }
 
+.copyright {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.copyright a + a {
+  margin-left: 25px;
+}
+
+.copyright p {
+  margin-top: 30px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--font-white);
+}
+
+.copyright p span {
+  display: block;
+}
+
 @media (min-width: 810px) {
   .footer {
     margin-top: 60px;
@@ -59,5 +79,17 @@
 
   .contacts {
     margin-top: 0;
+  }
+
+  .copyright {
+    margin-top: 60px;
+  }
+
+  .copyright p span {
+    display: inline;
+  }
+
+  .copyright p span::before {
+    content: ' | ';
   }
 }

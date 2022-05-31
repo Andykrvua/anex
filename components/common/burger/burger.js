@@ -6,9 +6,8 @@ import BurgerHeader from './burgerHeader';
 import Link from 'next/link';
 import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
 import { useRouter } from 'next/router';
-import SvgTelegram from '/components/svgTelegram.js';
-import SvgViber from '/components/svgViber.js';
 import { FormattedMessage as FM } from 'react-intl';
+import { links } from 'utils/links';
 
 export default function Burger() {
   const setBurger = useSetBurger();
@@ -151,17 +150,22 @@ export default function Burger() {
               </button>
             </div>
             <div className={styles.burger_messendger}>
-              <Link href="/">
-                <a>
-                  <SvgTelegram />
-                </a>
-              </Link>
-
-              <Link href="/">
-                <a>
-                  <SvgViber />
-                </a>
-              </Link>
+              <a href={links.telegram}>
+                <img
+                  src="assets/img/svg/telegram.svg"
+                  alt="Telegram"
+                  width="37"
+                  height="37"
+                />
+              </a>
+              <a href={links.viber}>
+                <img
+                  src="assets/img/svg/viber.svg"
+                  alt="Viber"
+                  width="37"
+                  height="37"
+                />
+              </a>
             </div>
           </div>
           <p className={styles.buregr_copyright}>

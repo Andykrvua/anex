@@ -9,4 +9,6 @@ export const links = {
   reviews: '/reviews',
   certificates: '/certificates',
   contacts: '/contacts',
+  telegram: '/',
+  viber: 'viber://chat?number=0635914144',
 };
