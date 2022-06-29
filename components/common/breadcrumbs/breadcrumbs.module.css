@@ -1,0 +1,19 @@
+.breadcrumbs_list li {
+  display: inline-block;
+}
+
+.breadcrumbs_list li:not(:first-child)::before {
+  content: '/';
+  margin: 0 3px;
+  color: var(--primary-light);
+}
+
+.breadcrumbs_list a {
+  color: var(--primary-light);
+  text-decoration: underline;
+  transition: color var(--base-transition);
+}
+
+.breadcrumbs_list a:hover:not(.current) {
+  color: var(--primary);
+}

@@ -1,31 +1,22 @@
 import MainForm from '/components/mainform/mainForm.js';
-import { useIntl } from 'react-intl';
-import PopularCountry from '/components/mainpage/popularCountry.js';
+import CountryList from '/components/country/countryList.js';
 import Blog from '/components/mainpage/blog.js';
-import { countryData, blogData } from '/utils/data/countryData';
+import { blogData } from '/utils/data/countryData';
 import Faq from '/components/mainpage/faq.js';
 import { accordionData } from 'utils/data/accordionData';
 import SeoBlock from '/components/mainpage/seoBlock.js';
 import Head from 'next/head';
 
 export default function Home() {
-  const intl = useIntl();
-
-  //нужно для передачи в HEAD
-  const title = intl.formatMessage({ id: 'nav.tour' });
-  const description = intl.formatMessage({
-    id: 'nav.country',
-  });
-
   return (
     <>
       <Head>
-        <title>Anex Main</title>
-        <meta name="description" content="Anex Main" />
+        <title>Anex Country</title>
+        <meta name="description" content="Anex Country" />
       </Head>
       <div className="container">
         <MainForm />
-        <PopularCountry data={countryData} />
+        <CountryList />
         <Blog data={blogData} />
         <Faq data={accordionData} />
         <SeoBlock />

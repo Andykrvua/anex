@@ -1,7 +1,5 @@
 import styles from './seoBlock.module.css';
 import { FormattedMessage as FM } from 'react-intl';
-import Image from 'next/image';
-import seoImg from 'public/assets/img/seo-text.png';
 
 export default function SeoBlock() {
   return (
@@ -13,17 +11,6 @@ export default function SeoBlock() {
         </span>
         <FM id="main.seo.title_c" />
       </h3>
-      <div className={styles.img_wrapper}>
-        <Image
-          src={seoImg}
-          alt="Анекс Тур"
-          width={92}
-          height={92}
-          className={styles.img}
-          placeholder="blur"
-          quality="100"
-        />
-      </div>
       <p className="prg">
         Уважаемые туристы, рады приветствовать Вас на сайте турагентства АНЕКС
         Тур Украина. Мы являемся официальным офисом продаж от туроператора ANEX

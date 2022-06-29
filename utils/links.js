@@ -6,6 +6,7 @@ export const links = {
   hotTours: '/hot-tours',
   hotels: '/hotels',
   blog: '/blog',
+  blog_category: '/blog/category',
   reviews: '/reviews',
   certificates: '/certificates',
   contacts: '/contacts',

@@ -8,6 +8,7 @@ import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM } from 'react-intl';
 import { links } from 'utils/links';
+import MessendgersLinks from 'components/common/other/messendgersLinks';
 
 export default function Burger() {
   const setBurger = useSetBurger();
@@ -77,56 +78,56 @@ export default function Burger() {
         >
           <ul className={styles.burger_nav}>
             <li>
-              <Link href="/index2">
+              <Link href={links.main}>
                 <a className={styles.burger_nav_link}>
                   <FM id="main" />
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href={links.tours}>
                 <a className={styles.burger_nav_link}>
                   <FM id="nav.tour" />
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href={links.countries}>
                 <a className={styles.burger_nav_link}>
                   <FM id="nav.country" />
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href={links.tours}>
                 <a className={`${styles.burger_nav_link} ${styles.hot}`}>
                   <FM id="nav.hot_tour" />
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href={links.blog}>
                 <a className={styles.burger_nav_link}>
                   <FM id="nav.blog" />
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href={links.reviews}>
                 <a className={styles.burger_nav_link}>
                   <FM id="nav.review" />
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href={links.certificates}>
                 <a className={styles.burger_nav_link}>
                   <FM id="nav.certificates" />
                 </a>
               </Link>
             </li>
             <li>
-              <Link href="/">
+              <Link href={links.contacts}>
                 <a className={styles.burger_nav_link}>
                   <FM id="nav.contacts" />
                 </a>
@@ -150,22 +151,7 @@ export default function Burger() {
               </button>
             </div>
             <div className={styles.burger_messendger}>
-              <a href={links.telegram}>
-                <img
-                  src="assets/img/svg/telegram.svg"
-                  alt="Telegram"
-                  width="37"
-                  height="37"
-                />
-              </a>
-              <a href={links.viber}>
-                <img
-                  src="assets/img/svg/viber.svg"
-                  alt="Viber"
-                  width="37"
-                  height="37"
-                />
-              </a>
+              <MessendgersLinks />
             </div>
           </div>
           <p className={styles.buregr_copyright}>

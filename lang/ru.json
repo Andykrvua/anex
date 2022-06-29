@@ -41,5 +41,7 @@
   "blog.links": "Все записи",
   "faq.title": "Вопрос-ответ",
   "faq.link_a": "Еще  ",
-  "faq.link_b": " ответа на ваши вопросы"
+  "faq.link_b": " ответа на ваши вопросы",
+  "links.main": "ANEX Tour",
+  "links.blog": "Блог"
 }

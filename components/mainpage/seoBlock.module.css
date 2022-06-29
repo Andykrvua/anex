@@ -11,21 +11,8 @@
   color: var(--secondary);
 }
 
-.img_wrapper {
-  position: absolute;
-  top: -30px;
-  left: 180px;
-}
-
 @media (max-width: 809px) {
   .title {
     max-width: 180px;
-  }
-}
-
-@media (min-width: 810px) {
-  .img_wrapper {
-    top: -40px;
-    left: 405px;
   }
 }

@@ -154,6 +154,12 @@ input::placeholder {
 .tolower {
   text-transform: lowercase;
 }
+
+.responsive {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}
 /* Utils end */
 
 /* Layout start */

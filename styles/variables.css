@@ -9,6 +9,8 @@
   --form-btn-height: 58px; /* высота кнопки в форме */
   --mainform-desktop-maxheight: 610px; /* максимальная высота попапа формы на десктопе */
   --block-title-top-margin: 33px; /* отступ сверху блока от тайтла */
+  --block-top: 25px; /* отступ сверху от блока */
+  --before-brcrumbs: 20px; /* отступ сверху до крошек */
   --block-top-margin: 15px; /* отступ сверху блока до тайтла */
   --primary: #53536e; /* основной цвет */
   --secondary: #ff9400; /* вторичный цвет */
@@ -56,6 +58,7 @@
   --base-btn-shadow: 0px 8px 16px rgba(83, 83, 110, 0.38); /* тень главной кнопки формы */
   --arrow-btn-shadow: 0px 2px 4px rgba(229, 229, 235, 0.58); /* тень arrow кнопок */
   --arrow-btn-shadow-up: 0px -2px 4px rgba(229, 229, 235, 0.58); /* тень arrow кнопок вверх */
+  --cards-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* тень карточек */
 
   --base-transition: 0.3s cubic-bezier(0.3, 0.9, 0.3, 1); /* базовый переход */
   --back-transition: 0.3s cubic-bezier(0.9, -0.35, 0.57, 1.35); /* switch переход */
@@ -87,6 +90,7 @@
 @media (min-width: 810px) {
   :root {
     --block-title-top-margin: 40px; /* отступ сверху блока от тайтла */
+    --block-top: 40px; /* отступ сверху от блока */
     --block-top-margin: 20px; /* отступ сверху блока до тайтла */
 
     --popup-bg: var(--white); /* фон попапа главной формы */
@@ -103,6 +107,7 @@
     --header-compensation: calc(
       var(--header-height) + 25px
     ); /* компенсация высоты шапки */
+    --before-brcrumbs: 40px; /* отступ сверху до крошек */
   }
 }
 

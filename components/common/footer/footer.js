@@ -1,6 +1,7 @@
 import styles from './footer.module.css';
 import { links } from 'utils/links';
 import Link from 'next/link';
+import MessendgersLinks from 'components/common/other/messendgersLinks';
 
 export default function Footer() {
   return (
@@ -129,22 +130,7 @@ export default function Footer() {
           </div>
         </div>
         <div className={styles.copyright}>
-          <a href={links.telegram}>
-            <img
-              src="assets/img/svg/telegram.svg"
-              alt="Telegram"
-              width="37"
-              height="37"
-            />
-          </a>
-          <a href={links.viber}>
-            <img
-              src="assets/img/svg/viber.svg"
-              alt="Viber"
-              width="37"
-              height="37"
-            />
-          </a>
+          <MessendgersLinks />
           <p>
             © 2022 Турагентство ANEX Tour Украина
             <span>Все права защищены</span>

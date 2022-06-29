@@ -17,15 +17,15 @@ function debounce(func, wait, immediate) {
   };
 }
 
+function getSize() {
+  return {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+}
+
 export default function useWindowSize() {
   if (typeof window !== 'undefined') {
-    function getSize() {
-      return {
-        width: window.innerWidth,
-        height: window.innerHeight,
-      };
-    }
-
     const [windowSize, setWindowSize] = useState(getSize);
 
     useEffect(() => {

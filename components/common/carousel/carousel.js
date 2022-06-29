@@ -63,7 +63,7 @@ export default function Carousel({ data, instance }) {
 
   function CarouselContainer(props) {
     const size = viewPortSize();
-    const [carousel, setCarousel] = useState(true);
+    const [carousel, setCarousel] = useState(false);
     const {
       cursor,
       carouselState: { active, dragging },

@@ -51,3 +51,12 @@ export const carouselInstance = {
   blog: 'blog',
   popularCountry: 'popular_country',
 };
+
+export const languages = {
+  ru: 'ru',
+  uk: 'uk',
+};
+
+export const blogApi = {
+  announceLimit: 1,
+};

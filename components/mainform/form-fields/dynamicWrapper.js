@@ -18,6 +18,9 @@ export default function DynamicWrapper({ modalIsOpen, cName, children }) {
         setIsOpenHelper(modalIsOpen);
       }, transitionTime);
     }
+    return () => {
+      setIsOpenHelper(modalIsOpen);
+    };
   }, [modalIsOpen]);
 
   function Unmount() {
@@ -35,6 +38,9 @@ export default function DynamicWrapper({ modalIsOpen, cName, children }) {
     } else {
       setDestroy(true);
     }
+    return () => {
+      setDestroy(true);
+    };
   }, [modalIsOpen]);
 
   return (

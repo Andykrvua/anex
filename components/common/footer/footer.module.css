@@ -51,10 +51,6 @@
   text-align: center;
 }
 
-.copyright a + a {
-  margin-left: 25px;
-}
-
 .copyright p {
   margin-top: 30px;
   font-size: 12px;
