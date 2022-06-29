@@ -1,2 +1,3 @@
 const dev = process.env.NODE_ENV !== 'production';
-export const server = dev ? 'http://localhost:3000' : process.env.HOST;
+// export const server = dev ? 'http://localhost:3000' : process.env.HOST;
+export const server = process.env.HOST;
