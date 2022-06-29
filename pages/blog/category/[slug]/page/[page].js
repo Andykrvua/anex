@@ -72,7 +72,7 @@ export default function Post({ postsList, categoryList, loc, current, slug }) {
 export async function getStaticPaths({ locales }) {
   const resCatSlug = await fetch(`${server}/api/category`);
   const objCatSlug = await resCatSlug.json();
-
+  console.log('ssasdsda');
   // const pagesCount = Math.ceil(
   //   postsList?.meta.filter_count / blogApi.announceLimit
   // );
