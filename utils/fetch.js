@@ -2,30 +2,56 @@ import { blogApi } from './constants';
 
 export const getPostsList = async (current = 1) => {
   const offset = (current - 1) * blogApi.announceLimit;
-  const resPosts = await fetch(
+  const posts = await fetch(
     `${process.env.API}posts?fields=*,categories.categories_id.translations.name,categories.categories_id.translations.languages_id,categories.categories_id.bg_color,translations.title,translations.languages_code&filter[status]=published&deep[categories][_filter][categories_id][status][_eq]=published&meta=*&limit=${blogApi.announceLimit}&offset=${offset}&sort=sort,-date_created`
-  );
-  const posts = await resPosts.json();
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Something went wrong');
+    })
+    .catch((errors) => {
+      return { errors };
+    });
 
   return posts;
 };
 
 export const getPostsMeta = async () => {
-  const resPostsMeta = await fetch(
+  const postsMeta = await fetch(
     `${process.env.API}posts?meta=*&limit=0&filter[status]=published`
-  );
-  const postsMeta = await resPostsMeta.json();
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Something went wrong');
+    })
+    .catch((errors) => {
+      return { errors };
+    });
 
-  return postsMeta;
+  const filter_count = postsMeta.meta.filter_count;
+  console.log('filter_count: ', filter_count);
+  return filter_count;
 };
 
 export const getCategories = async () => {
-  const resPostsMeta = await fetch(
+  const categories = await fetch(
     `${process.env.API}categories?fields=status,slug,bg_color,translations.languages_id,translations.name&filter[status]=published`
-  );
-  const postsMeta = await resPostsMeta.json();
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Something went wrong');
+    })
+    .catch((errors) => {
+      return { errors };
+    });
 
-  return postsMeta;
+  return categories;
 };
 
 export const getCategoriesSlug = async () => {

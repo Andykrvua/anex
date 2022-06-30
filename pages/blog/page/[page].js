@@ -5,7 +5,7 @@ import { blogApi } from 'utils/constants';
 import { useRouter } from 'next/router';
 import BlogContent from 'components/blog/blog';
 import DefaultErrorPage from 'next/error';
-import { server } from 'utils/utils';
+import { getPostsMeta, getPostsList, getCategories } from 'utils/fetch';
 
 export default function Blog({ postsList, categoryList, loc, current }) {
   const intl = useIntl();
@@ -69,10 +69,19 @@ export default function Blog({ postsList, categoryList, loc, current }) {
 }
 
 export async function getStaticPaths({ locales }) {
-  const resPostsMeta = await fetch(`${server}/api/posts`);
-  const postsMeta = await resPostsMeta.json();
+  const filter_count = await getPostsMeta();
+  console.log('filter_count', filter_count);
 
-  const pages = Math.ceil(postsMeta.filter_count / blogApi.announceLimit);
+  if (filter_count.errors) {
+    // if server down and incorrect request
+    console.log('error: ', filter_count.errors);
+    throw new Error('TEST ERROR');
+    // return {
+    //   notFound: true,
+    // };
+  }
+
+  const pages = Math.ceil(filter_count / blogApi.announceLimit);
 
   const paths = [];
   Array(pages)
@@ -92,29 +101,22 @@ export async function getStaticPaths({ locales }) {
 export async function getStaticProps(context) {
   const current = context.params.page;
   const loc = context.locale;
-  const resPosts = await fetch(`${server}/api/posts/${current}`);
 
-  if (resPosts.status !== 200) {
-    // if server down
-    console.log('error: ', resPosts.status);
-    return {
-      notFound: true,
-    };
-  }
+  const postsList = await getPostsList(current);
+  const categoryList = await getCategories();
+  console.log('categoryList', categoryList);
 
-  const posts = await resPosts.json();
-  const { postsList, categoryList } = posts;
-
-  if (postsList.errors) {
-    // if incorrect slug
-    console.log('error: ', posts.postsList.errors);
-    return {
-      notFound: true,
-    };
+  if (postsList.errors || categoryList.errors) {
+    // if server down and incorrect request
+    console.log('error: ', postsList.errors);
+    throw new Error('TEST ERROR');
+    // return {
+    //   notFound: true,
+    // };
   }
 
   return {
-    props: { postsList, categoryList, loc, current },
+    props: { postsList, categoryList: categoryList.data, loc, current },
     revalidate: 30,
   };
 }

@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { links } from 'utils/links';
 import { blogApi } from 'utils/constants';
 import BlogContent from 'components/blog/blog';
-import { server } from 'utils/utils';
+import { getPostsList, getCategories } from 'utils/fetch';
 
 export default function Blog({ postsList, categoryList, loc }) {
   const intl = useIntl();
@@ -63,29 +63,21 @@ export default function Blog({ postsList, categoryList, loc }) {
 
 export async function getStaticProps(context) {
   const loc = context.locale;
-  const resPosts = await fetch(`${server}/api/posts/1`);
+  const page = 1;
+  const postsList = await getPostsList(page);
+  const categoryList = await getCategories();
 
-  if (resPosts.status !== 200) {
-    // if server down
-    console.log('error: ', resPosts.status);
-    return {
-      notFound: true,
-    };
-  }
-
-  const posts = await resPosts.json();
-  const { postsList, categoryList } = posts;
-
-  if (postsList.errors) {
-    // if incorrect slug
-    console.log('error: ', posts.postsList.errors);
-    return {
-      notFound: true,
-    };
+  if (postsList.errors || categoryList.errors) {
+    // if server down and incorrect request
+    console.log('error: ', postsList.errors);
+    throw new Error('TEST ERROR');
+    // return {
+    //   notFound: true,
+    // };
   }
 
   return {
-    props: { postsList, categoryList, loc },
+    props: { postsList, categoryList: categoryList.data, loc },
     revalidate: 30,
   };
 }
