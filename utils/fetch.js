@@ -33,7 +33,6 @@ export const getPostsMeta = async () => {
     });
 
   const filter_count = postsMeta.meta.filter_count;
-  console.log('filter_count: ', filter_count);
   return filter_count;
 };
 
@@ -55,22 +54,36 @@ export const getCategories = async () => {
 };
 
 export const getCategoriesSlug = async () => {
-  const resCatSlug = await fetch(
+  const categoriesSlug = await fetch(
     `${process.env.API}categories?fields=slug,status,posts.posts_id&filter[status]=published&deep[posts][_filter][posts_id][_neq]=null`
-  );
-  const catSlug = await resCatSlug.json();
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Something went wrong');
+    })
+    .catch((errors) => {
+      return { errors };
+    });
 
-  return catSlug;
+  return categoriesSlug;
 };
 
 export const getPostsFromCategory = async (slug, current = 1) => {
-  console.log('current', current);
   const offset = (current - 1) * blogApi.announceLimit;
-  console.log('offset', offset);
-  const resPostsCat = await fetch(
+  const postsCat = await fetch(
     `${process.env.API}posts?fields=*,categories.categories_id.translations.name,categories.categories_id.translations.languages_id,categories.categories_id.bg_color,translations.title,translations.languages_code,categories.categories_id.slug&filter[categories][categories_id][slug][_eq]=${slug}&filter[status][_eq]=published&meta=*&limit=${blogApi.announceLimit}&offset=${offset}&sort=sort,-date_created`
-  );
-  const postsCat = await resPostsCat.json();
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Something went wrong');
+    })
+    .catch((errors) => {
+      return { errors };
+    });
 
   return postsCat;
 };

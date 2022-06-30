@@ -1,20 +1,18 @@
 import { useIntl } from 'react-intl';
 import Head from 'next/head';
-import { links } from 'utils/links';
-import { blogApi } from 'utils/constants';
 import { useRouter } from 'next/router';
+import { links } from 'utils/links';
 import BlogContent from 'components/blog/blog';
 import DefaultErrorPage from 'next/error';
-import { getPostsMeta, getPostsList, getCategories } from 'utils/fetch';
+import { blogApi } from 'utils/constants';
+import {
+  getCategoriesSlug,
+  getPostsFromCategory,
+  getCategories,
+} from 'utils/fetch';
 
-export default function Blog({ postsList, categoryList, loc, current }) {
+export default function Post({ postsList, categoryList, loc, current, slug }) {
   const intl = useIntl();
-
-  //нужно для передачи в HEAD
-  const title = intl.formatMessage({ id: 'nav.tour' });
-  const description = intl.formatMessage({
-    id: 'nav.country',
-  });
 
   const router = useRouter();
 
@@ -25,6 +23,12 @@ export default function Blog({ postsList, categoryList, loc, current }) {
       </div>
     );
   }
+
+  //нужно для передачи в HEAD
+  const title = intl.formatMessage({ id: 'nav.tour' });
+  const description = intl.formatMessage({
+    id: 'nav.country',
+  });
 
   const br_arr = [{ url: links.blog, title: 'links.blog' }];
 
@@ -47,7 +51,7 @@ export default function Blog({ postsList, categoryList, loc, current }) {
   return (
     <>
       <Head>
-        <title>Anex Blog</title>
+        <title>Anex Main</title>
         <meta name="description" content="Anex Main" />
       </Head>
       {!router.isFallback && (!postsList?.meta || pagesCount < current) ? (
@@ -61,7 +65,7 @@ export default function Blog({ postsList, categoryList, loc, current }) {
           loc={loc}
           curr={current}
           pagesCount={pagesCount}
-          firstPageUrl={links.blog}
+          firstPageUrl={`${links.blog_category}/${slug}`}
         />
       )}
     </>
@@ -69,38 +73,52 @@ export default function Blog({ postsList, categoryList, loc, current }) {
 }
 
 export async function getStaticPaths({ locales }) {
-  const filter_count = await getPostsMeta();
+  const objCatSlug = await getCategoriesSlug();
 
-  if (filter_count.errors) {
+  if (objCatSlug.errors) {
     // if server down and incorrect request
-    console.log('error: ', filter_count.errors);
+    console.log('error: ', objCatSlug.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,
     // };
   }
+  const rawCatSlugs = objCatSlug.data;
 
-  const pages = Math.ceil(filter_count / blogApi.announceLimit);
+  for (let i = 0; i < rawCatSlugs.length; i++) {
+    const pagesCount = Math.ceil(
+      rawCatSlugs[i].posts.length / blogApi.announceLimit
+    );
+
+    rawCatSlugs[i].posts = [];
+
+    Array(pagesCount)
+      .fill(null)
+      .map((_, ind) => {
+        return rawCatSlugs[i].posts.push(ind + 2);
+      });
+    rawCatSlugs[i].posts.pop();
+  }
 
   const paths = [];
-  Array(pages)
-    .fill(null)
-    .map((_, ind) => {
+  rawCatSlugs.map((item) => {
+    return item.posts.map((posts) => {
       return locales.map((locale) => {
         return paths.push({
-          params: { page: (ind + 1).toString() },
+          params: { slug: item.slug, page: posts.toString() },
           locale,
         });
       });
     });
+  });
 
   return { paths, fallback: true };
 }
 
 export async function getStaticProps(context) {
-  const current = context.params.page;
+  const { page, slug } = context.params;
 
-  if (isNaN(current)) {
+  if (isNaN(page)) {
     return {
       notFound: true,
     };
@@ -108,21 +126,23 @@ export async function getStaticProps(context) {
 
   const loc = context.locale;
 
-  const postsList = await getPostsList(current);
-  const categoryList = await getCategories();
+  const postsList = await getPostsFromCategory(slug, page);
+  const resCategoryList = await getCategories();
 
-  if (postsList.errors || categoryList.errors) {
+  if (postsList.errors || resCategoryList.errors) {
     // if server down and incorrect request
-    console.log('error: ', postsList?.errors);
-    console.log('error: ', postsList?.errors);
+    console.log('error: ', postsList.errors);
+    console.log('error: ', resCategoryList.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,
     // };
   }
 
+  const categoryList = resCategoryList.data;
+
   return {
-    props: { postsList, categoryList: categoryList.data, loc, current },
+    props: { postsList, categoryList, loc, current: page, slug },
     revalidate: 30,
   };
 }

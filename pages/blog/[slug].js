@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 
 export default function Post({ post }) {
   const intl = useIntl();
-  console.log(post);
 
   const router = useRouter();
 

@@ -69,7 +69,8 @@ export async function getStaticProps(context) {
 
   if (postsList.errors || categoryList.errors) {
     // if server down and incorrect request
-    console.log('error: ', postsList.errors);
+    console.log('error: ', postsList?.errors);
+    console.log('error: ', postsList?.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,
