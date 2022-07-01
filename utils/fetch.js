@@ -125,7 +125,7 @@ export const getPostsFromCountry = async (slug, current = 1) => {
 
 export const getCountries = async () => {
   const categories = await fetch(
-    `${process.env.API}countries?fields=status,slug,translations.languages_code,translations.name&filter[status]=published`
+    `${process.env.API}countries?fields=status,code,slug,translations.languages_code,translations.name&filter[status]=published`
   )
     .then((response) => {
       if (response.status === 200) {

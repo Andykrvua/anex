@@ -17,3 +17,7 @@
 .breadcrumbs_list a:hover:not(.current) {
   color: var(--primary);
 }
+
+.breadcrumbs_list a.current {
+  text-decoration: none;
+}

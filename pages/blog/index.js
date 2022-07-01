@@ -59,13 +59,13 @@ export async function getStaticProps(context) {
   const loc = context.locale;
   const page = 1;
   const postsList = await getPostsList(page);
-  const categoryList = await getCategories();
+  const resCategoryList = await getCategories();
   const resCountryList = await getCountries();
 
-  if (postsList.errors || categoryList.errors || resCountryList.errors) {
+  if (postsList.errors || resCategoryList.errors || resCountryList.errors) {
     // if server down and incorrect request
     console.log('error: ', postsList?.errors);
-    console.log('error: ', categoryList?.errors);
+    console.log('error: ', resCategoryList?.errors);
     console.log('error: ', resCountryList.errors);
     throw new Error('TEST ERROR');
     // return {
@@ -73,10 +73,11 @@ export async function getStaticProps(context) {
     // };
   }
 
+  const categoryList = resCategoryList.data;
   const countryList = resCountryList.data;
 
   return {
-    props: { postsList, categoryList: categoryList.data, loc, countryList },
+    props: { postsList, categoryList, loc, countryList },
     revalidate: 30,
   };
 }

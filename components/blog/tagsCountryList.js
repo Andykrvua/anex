@@ -6,7 +6,6 @@ import { GetLangField } from 'utils/getLangField';
 import { links } from 'utils/links';
 
 export default function TagsCountryList({ countryListItems, loc }) {
-  console.log(countryListItems);
   const [isVisible, setIsVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const windowSize = getViewport();
@@ -51,7 +50,7 @@ export default function TagsCountryList({ countryListItems, loc }) {
                     src={`/assets/img/svg/flags/${item.code}.svg`}
                     width="60"
                     height="43"
-                    alt={item.title}
+                    alt=""
                   />
                   <span className={styles.tagscountry_item_title}>
                     {GetLangField(
