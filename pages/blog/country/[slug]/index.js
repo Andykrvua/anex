@@ -6,14 +6,14 @@ import BlogContent from 'components/blog/blog';
 import DefaultErrorPage from 'next/error';
 import { blogApi } from 'utils/constants';
 import {
-  getCategoriesSlug,
-  getPostsFromCategory,
-  getCategories,
+  getCountrySlug,
+  getPostsFromCountry,
   getCountries,
+  getCategories,
 } from 'utils/fetch';
 import { GetLangField } from 'utils/getLangField';
 
-export default function Category({
+export default function Country({
   postsList,
   categoryList,
   loc,
@@ -39,11 +39,11 @@ export default function Category({
   });
 
   let name;
-  categoryList.map((item) => {
+  countryList.map((item) => {
     if (item.slug === slug) {
       return (name = GetLangField(
         item.translations,
-        'languages_id',
+        'languages_code',
         'name',
         loc
       ));
@@ -73,7 +73,7 @@ export default function Category({
   );
 
   const current = 1;
-  const searchSlug = categoryList.map((item) => item.slug === slug);
+  const searchSlug = countryList.map((item) => item.slug === slug);
 
   return (
     <>
@@ -92,7 +92,7 @@ export default function Category({
           loc={loc}
           curr={current}
           pagesCount={pagesCount}
-          firstPageUrl={`${links.blog_category}/${slug}`}
+          firstPageUrl={`${links.blog_country}/${slug}`}
           active={slug}
         />
       )}
@@ -101,36 +101,36 @@ export default function Category({
 }
 
 export async function getStaticPaths({ locales }) {
-  const objCatSlug = await getCategoriesSlug();
+  const objCountrySlug = await getCountrySlug();
 
-  if (objCatSlug.errors) {
+  if (objCountrySlug.errors) {
     // if server down and incorrect request
-    console.log('error: ', objCatSlug.errors);
+    console.log('error: ', objCountrySlug.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,
     // };
   }
 
-  const rawCatSlugs = objCatSlug.data;
+  const rawCountrySlugs = objCountrySlug.data;
 
-  for (let i = 0; i < rawCatSlugs.length; i++) {
+  for (let i = 0; i < rawCountrySlugs.length; i++) {
     const pagesCount = Math.ceil(
-      rawCatSlugs[i].posts.length / blogApi.announceLimit
+      rawCountrySlugs[i].posts.length / blogApi.announceLimit
     );
 
-    rawCatSlugs[i].posts = [];
+    rawCountrySlugs[i].posts = [];
 
     Array(pagesCount)
       .fill(null)
       .map((_, ind) => {
-        return rawCatSlugs[i].posts.push(ind + 2);
+        return rawCountrySlugs[i].posts.push(ind + 2);
       });
-    rawCatSlugs[i].posts.pop();
+    rawCountrySlugs[i].posts.pop();
   }
 
   const paths = [];
-  rawCatSlugs.map((item) => {
+  rawCountrySlugs.map((item) => {
     return locales.map((locale) => {
       return paths.push({
         params: { slug: item.slug },
@@ -147,7 +147,7 @@ export async function getStaticProps(context) {
   const loc = context.locale;
   const page = 1;
 
-  const postsList = await getPostsFromCategory(slug, page);
+  const postsList = await getPostsFromCountry(slug, page);
   const resCategoryList = await getCategories();
   const resCountryList = await getCountries();
 
@@ -155,7 +155,7 @@ export async function getStaticProps(context) {
     // if server down and incorrect request
     console.log('error: ', postsList?.errors);
     console.log('error: ', resCategoryList?.errors);
-    console.log('error: ', resCountryList.errors);
+    console.log('error: ', resCountryList?.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,

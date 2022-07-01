@@ -6,17 +6,18 @@ import BlogContent from 'components/blog/blog';
 import DefaultErrorPage from 'next/error';
 import { blogApi } from 'utils/constants';
 import {
-  getCategoriesSlug,
-  getPostsFromCategory,
+  getCountrySlug,
+  getPostsFromCountry,
   getCategories,
   getCountries,
 } from 'utils/fetch';
 import { GetLangField } from 'utils/getLangField';
 
-export default function Category({
+export default function Post({
   postsList,
   categoryList,
   loc,
+  current,
   slug,
   countryList,
 }) {
@@ -39,11 +40,11 @@ export default function Category({
   });
 
   let name;
-  categoryList.map((item) => {
+  countryList.map((item) => {
     if (item.slug === slug) {
       return (name = GetLangField(
         item.translations,
-        'languages_id',
+        'languages_code',
         'name',
         loc
       ));
@@ -53,7 +54,11 @@ export default function Category({
   // if el > 1, last el need only title
   const br_arr = [
     { url: links.blog, title: intl.formatMessage({ id: 'links.blog' }) },
-    { title: name },
+    {
+      url: `${links.blog}/country/${slug}`,
+      title: name,
+    },
+    { title: intl.formatMessage({ id: 'page' }) + ' ' + current },
   ];
 
   const tagsCountryListItems = [
@@ -69,11 +74,8 @@ export default function Category({
   ];
 
   const pagesCount = Math.ceil(
-    postsList?.meta.filter_count / blogApi.announceLimit
+    postsList?.meta?.filter_count / blogApi.announceLimit
   );
-
-  const current = 1;
-  const searchSlug = categoryList.map((item) => item.slug === slug);
 
   return (
     <>
@@ -81,7 +83,7 @@ export default function Category({
         <title>Anex Main</title>
         <meta name="description" content="Anex Main" />
       </Head>
-      {!router.isFallback && !searchSlug.includes(true) ? (
+      {!router.isFallback && (!postsList?.meta || pagesCount < current) ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
         <BlogContent
@@ -92,8 +94,7 @@ export default function Category({
           loc={loc}
           curr={current}
           pagesCount={pagesCount}
-          firstPageUrl={`${links.blog_category}/${slug}`}
-          active={slug}
+          firstPageUrl={`${links.blog_country}/${slug}`}
         />
       )}
     </>
@@ -101,60 +102,66 @@ export default function Category({
 }
 
 export async function getStaticPaths({ locales }) {
-  const objCatSlug = await getCategoriesSlug();
+  const objCountrySlug = await getCountrySlug();
 
-  if (objCatSlug.errors) {
+  if (objCountrySlug.errors) {
     // if server down and incorrect request
-    console.log('error: ', objCatSlug.errors);
+    console.log('error: ', objCountrySlug.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,
     // };
   }
+  const rawCountrySlugs = objCountrySlug.data;
 
-  const rawCatSlugs = objCatSlug.data;
-
-  for (let i = 0; i < rawCatSlugs.length; i++) {
+  for (let i = 0; i < rawCountrySlugs.length; i++) {
     const pagesCount = Math.ceil(
-      rawCatSlugs[i].posts.length / blogApi.announceLimit
+      rawCountrySlugs[i].posts.length / blogApi.announceLimit
     );
 
-    rawCatSlugs[i].posts = [];
+    rawCountrySlugs[i].posts = [];
 
     Array(pagesCount)
       .fill(null)
       .map((_, ind) => {
-        return rawCatSlugs[i].posts.push(ind + 2);
+        return rawCountrySlugs[i].posts.push(ind + 2);
       });
-    rawCatSlugs[i].posts.pop();
+    rawCountrySlugs[i].posts.pop();
   }
 
   const paths = [];
-  rawCatSlugs.map((item) => {
-    return locales.map((locale) => {
-      return paths.push({
-        params: { slug: item.slug },
-        locale,
+  rawCountrySlugs.map((item) => {
+    return item.posts.map((posts) => {
+      return locales.map((locale) => {
+        return paths.push({
+          params: { slug: item.slug, page: posts.toString() },
+          locale,
+        });
       });
     });
   });
-
   return { paths, fallback: true };
 }
 
 export async function getStaticProps(context) {
-  const slug = context.params.slug;
-  const loc = context.locale;
-  const page = 1;
+  const { page, slug } = context.params;
 
-  const postsList = await getPostsFromCategory(slug, page);
+  if (isNaN(page)) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const loc = context.locale;
+
+  const postsList = await getPostsFromCountry(slug, page);
   const resCategoryList = await getCategories();
   const resCountryList = await getCountries();
 
   if (postsList.errors || resCategoryList.errors || resCountryList.errors) {
     // if server down and incorrect request
-    console.log('error: ', postsList?.errors);
-    console.log('error: ', resCategoryList?.errors);
+    console.log('error: ', postsList.errors);
+    console.log('error: ', resCategoryList.errors);
     console.log('error: ', resCountryList.errors);
     throw new Error('TEST ERROR');
     // return {
@@ -166,7 +173,7 @@ export async function getStaticProps(context) {
   const countryList = resCountryList.data;
 
   return {
-    props: { postsList, categoryList, loc, slug, countryList },
+    props: { postsList, categoryList, loc, current: page, slug, countryList },
     revalidate: 30,
   };
 }

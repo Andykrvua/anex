@@ -7,6 +7,7 @@ export const links = {
   hotels: '/hotels',
   blog: '/blog',
   blog_category: '/blog/category',
+  blog_country: '/blog/country',
   reviews: '/reviews',
   certificates: '/certificates',
   contacts: '/contacts',

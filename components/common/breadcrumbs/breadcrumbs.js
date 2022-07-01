@@ -7,15 +7,13 @@ const LinkItem = ({ data, ind, length }) => {
   if (ind === length - 1) {
     return (
       <a className={styles.current} aria-current="page">
-        <FM id={data.title} />
+        {data.title}
       </a>
     );
   } else {
     return (
       <Link href={data.url}>
-        <a>
-          <FM id={data.title} />
-        </a>
+        <a>{data.title}</a>
       </Link>
     );
   }

@@ -5,9 +5,20 @@ import { blogApi } from 'utils/constants';
 import { useRouter } from 'next/router';
 import BlogContent from 'components/blog/blog';
 import DefaultErrorPage from 'next/error';
-import { getPostsMeta, getPostsList, getCategories } from 'utils/fetch';
+import {
+  getPostsMeta,
+  getPostsList,
+  getCategories,
+  getCountries,
+} from 'utils/fetch';
 
-export default function Blog({ postsList, categoryList, loc, current }) {
+export default function Blog({
+  postsList,
+  categoryList,
+  loc,
+  current,
+  countryList,
+}) {
   const intl = useIntl();
 
   //нужно для передачи в HEAD
@@ -26,7 +37,11 @@ export default function Blog({ postsList, categoryList, loc, current }) {
     );
   }
 
-  const br_arr = [{ url: links.blog, title: 'links.blog' }];
+  // if el > 1, last el need only title
+  const br_arr = [
+    { url: links.blog, title: intl.formatMessage({ id: 'links.blog' }) },
+    { title: intl.formatMessage({ id: 'page' }) + ' ' + current },
+  ];
 
   const tagsCountryListItems = [
     { code: 'DO', title: 'Доминикана', count: 1, url: '/' },
@@ -56,7 +71,7 @@ export default function Blog({ postsList, categoryList, loc, current }) {
         <BlogContent
           br_arr={br_arr}
           categoryListItems={categoryList}
-          tagsCountryListItems={tagsCountryListItems}
+          countryListItems={countryList}
           postsList={postsList}
           loc={loc}
           curr={current}
@@ -110,19 +125,29 @@ export async function getStaticProps(context) {
 
   const postsList = await getPostsList(current);
   const categoryList = await getCategories();
+  const resCountryList = await getCountries();
 
-  if (postsList.errors || categoryList.errors) {
+  if (postsList.errors || categoryList.errors || resCountryList.errors) {
     // if server down and incorrect request
     console.log('error: ', postsList?.errors);
     console.log('error: ', postsList?.errors);
+    console.log('error: ', resCountryList.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,
     // };
   }
 
+  const countryList = resCountryList.data;
+
   return {
-    props: { postsList, categoryList: categoryList.data, loc, current },
+    props: {
+      postsList,
+      categoryList: categoryList.data,
+      loc,
+      current,
+      countryList,
+    },
     revalidate: 30,
   };
 }

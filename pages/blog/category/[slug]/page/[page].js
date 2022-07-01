@@ -9,9 +9,18 @@ import {
   getCategoriesSlug,
   getPostsFromCategory,
   getCategories,
+  getCountries,
 } from 'utils/fetch';
+import { GetLangField } from 'utils/getLangField';
 
-export default function Post({ postsList, categoryList, loc, current, slug }) {
+export default function Category({
+  postsList,
+  categoryList,
+  loc,
+  current,
+  slug,
+  countryList,
+}) {
   const intl = useIntl();
 
   const router = useRouter();
@@ -30,7 +39,27 @@ export default function Post({ postsList, categoryList, loc, current, slug }) {
     id: 'nav.country',
   });
 
-  const br_arr = [{ url: links.blog, title: 'links.blog' }];
+  let name;
+  categoryList.map((item) => {
+    if (item.slug === slug) {
+      return (name = GetLangField(
+        item.translations,
+        'languages_id',
+        'name',
+        loc
+      ));
+    }
+  });
+
+  // if el > 1, last el need only title
+  const br_arr = [
+    { url: links.blog, title: intl.formatMessage({ id: 'links.blog' }) },
+    {
+      url: `${links.blog}/category/${slug}`,
+      title: name,
+    },
+    { title: intl.formatMessage({ id: 'page' }) + ' ' + current },
+  ];
 
   const tagsCountryListItems = [
     { code: 'DO', title: 'Доминикана', count: 1, url: '/' },
@@ -60,7 +89,7 @@ export default function Post({ postsList, categoryList, loc, current, slug }) {
         <BlogContent
           br_arr={br_arr}
           categoryListItems={categoryList}
-          tagsCountryListItems={tagsCountryListItems}
+          countryListItems={countryList}
           postsList={postsList}
           loc={loc}
           curr={current}
@@ -128,11 +157,13 @@ export async function getStaticProps(context) {
 
   const postsList = await getPostsFromCategory(slug, page);
   const resCategoryList = await getCategories();
+  const resCountryList = await getCountries();
 
-  if (postsList.errors || resCategoryList.errors) {
+  if (postsList.errors || resCategoryList.errors || resCountryList.errors) {
     // if server down and incorrect request
-    console.log('error: ', postsList.errors);
-    console.log('error: ', resCategoryList.errors);
+    console.log('error: ', postsList?.errors);
+    console.log('error: ', resCategoryList?.errors);
+    console.log('error: ', resCountryList.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,
@@ -140,9 +171,10 @@ export async function getStaticProps(context) {
   }
 
   const categoryList = resCategoryList.data;
+  const countryList = resCountryList.data;
 
   return {
-    props: { postsList, categoryList, loc, current: page, slug },
+    props: { postsList, categoryList, loc, current: page, slug, countryList },
     revalidate: 30,
   };
 }

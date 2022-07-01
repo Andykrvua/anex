@@ -58,5 +58,5 @@ export const languages = {
 };
 
 export const blogApi = {
-  announceLimit: 6,
+  announceLimit: 1,
 };

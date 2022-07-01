@@ -19,6 +19,11 @@
   background-color: var(--primary);
 }
 
+.category_item.active {
+  color: var(--font-white);
+  background-color: var(--primary);
+}
+
 .category_item {
   display: inline-block;
   margin-bottom: 10px;

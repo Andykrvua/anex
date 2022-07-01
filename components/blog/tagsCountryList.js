@@ -2,8 +2,11 @@ import styles from './tagsCountryList.module.css';
 import Link from 'next/link';
 import { useLayoutEffect, useRef, useState } from 'react';
 import getViewport from 'utils/getViewport';
+import { GetLangField } from 'utils/getLangField';
+import { links } from 'utils/links';
 
-export default function TagsCountryList({ data }) {
+export default function TagsCountryList({ countryListItems, loc }) {
+  console.log(countryListItems);
   const [isVisible, setIsVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const windowSize = getViewport();
@@ -39,10 +42,10 @@ export default function TagsCountryList({ data }) {
   return (
     <div className={styles.tagscountry_list_wrapper}>
       <ul className={styles.tagscountry_list} ref={list}>
-        {data.map((item, ind) => {
+        {countryListItems.map((item, ind) => {
           return (
             <li key={ind} ref={ind === 0 ? first : last}>
-              <Link href={item.url}>
+              <Link href={`${links.blog_country}/${item.slug}`}>
                 <a className={styles.tagscountry_item}>
                   <img
                     src={`/assets/img/svg/flags/${item.code}.svg`}
@@ -51,10 +54,15 @@ export default function TagsCountryList({ data }) {
                     alt={item.title}
                   />
                   <span className={styles.tagscountry_item_title}>
-                    {item.title}
+                    {GetLangField(
+                      item.translations,
+                      'languages_code',
+                      'name',
+                      loc
+                    )}
                   </span>
                   <span className={styles.tagscountry_item_count}>
-                    {item.count}
+                    {item.slug}
                   </span>
                 </a>
               </Link>
