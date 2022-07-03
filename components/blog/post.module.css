@@ -1,0 +1,146 @@
+.post {
+  margin-top: var(--before-brcrumbs);
+}
+
+.header {
+  position: relative;
+  height: 320px;
+  border-radius: var(--def-radius);
+  box-shadow: var(--cards-shadow);
+  overflow: hidden;
+}
+
+.header:hover img {
+  transform: scale(1.1);
+}
+
+.img {
+  transition: transform var(--base-transition);
+}
+
+.category,
+.date,
+.title {
+  position: absolute;
+  z-index: 1;
+  --offset: 20px;
+}
+
+.category,
+.date {
+  padding: 5px 7px;
+  border-radius: var(--def-radius);
+  font-size: 12px;
+}
+
+.category {
+  top: var(--offset);
+  left: var(--offset);
+  color: var(--bg);
+  background-color: rgba(85, 181, 74, 0.8);
+}
+
+.date {
+  top: var(--offset);
+  right: var(--offset);
+  background-color: rgba(229, 229, 235, 0.75);
+}
+
+.title {
+  right: var(--offset);
+  bottom: var(--offset);
+  left: var(--offset);
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 700;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+  color: var(--font-white);
+}
+
+.content {
+  margin-top: var(--before-brcrumbs);
+}
+
+.content p,
+.content li {
+  font-size: 16px;
+  line-height: 20px;
+  margin: 10px 0 0;
+}
+.content h2 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 700;
+  margin-top: 25px;
+}
+.content ul {
+  list-style: disc;
+  padding-left: 18px;
+}
+.content img {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border-radius: var(--def-radius);
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 500px) {
+  .header {
+    margin: 0 var(--helper-margin);
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .header {
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    column-gap: 50px;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .img_wrapper,
+  .header_text {
+    position: relative;
+  }
+
+  .img_wrapper {
+    border-radius: var(--def-radius);
+    box-shadow: var(--cards-shadow);
+    overflow: hidden;
+  }
+
+  .header_text {
+    display: grid;
+    align-self: center;
+  }
+
+  .header_text_wrapper > * {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 23px;
+    color: var(--primary);
+    text-shadow: none;
+  }
+
+  .category,
+  .date {
+    margin-top: 15px;
+    display: inline-block;
+  }
+
+  .date {
+    margin-left: 15px;
+  }
+}

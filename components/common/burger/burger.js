@@ -19,6 +19,7 @@ export default function Burger() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [lang, setLang] = useState(locale);
+  const [offsetTop, setOffsetTop] = useState(0);
 
   useEffect(() => {
     if (locale === lang) {
@@ -31,12 +32,21 @@ export default function Burger() {
     const BODY = document.querySelector('body');
     const SCROLLABLE = document.querySelector('.burger_content_wrapper');
     if (getBurger) {
+      BODY.style.top = `-${window.scrollY}px`;
+      setOffsetTop(window.scrollY);
       setIsOpen(true);
       lock(BODY);
       unlock(SCROLLABLE);
       BODY.classList.add('iosfix');
     } else {
       BODY.classList.remove('iosfix');
+      BODY.style.top = '0px';
+      if (offsetTop) {
+        window.scrollTo({
+          top: offsetTop,
+        });
+        setOffsetTop(0);
+      }
       clearBodyLocks();
       setIsOpen(false);
     }
@@ -71,7 +81,7 @@ export default function Burger() {
         }
       `}</style>
 
-      <div className={styles.burger}>
+      <div className={styles.burger} style={{ top: offsetTop }}>
         <BurgerHeader closeBurgerHandler={closeBurgerHandler} />
         <div
           className={`${styles.burger_content_wrapper} burger_content_wrapper`}

@@ -57,6 +57,11 @@ export const languages = {
   uk: 'uk',
 };
 
+export const languagesApi = {
+  ru: 'ru-RU',
+  uk: 'uk-UA',
+};
+
 export const blogApi = {
   announceLimit: 6,
 };

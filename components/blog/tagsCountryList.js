@@ -61,7 +61,7 @@ export default function TagsCountryList({ countryListItems, loc }) {
                     )}
                   </span>
                   <span className={styles.tagscountry_item_count}>
-                    {item.slug}
+                    {item.posts.length}
                   </span>
                 </a>
               </Link>

@@ -1,15 +1,18 @@
-import MainForm from '/components/mainform/mainForm.js';
 import { useIntl } from 'react-intl';
-import PopularCountry from '/components/mainpage/popularCountry.js';
-import Blog from '/components/mainpage/blog.js';
-import { countryData, blogData } from '/utils/data/countryData';
-import Faq from '/components/mainpage/faq.js';
-import { accordionData } from 'utils/data/accordionData';
-import SeoBlock from '/components/mainpage/seoBlock.js';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { getPostsSlugs, getPostFromSlug, getPostsList } from 'utils/fetch';
+import { links } from 'utils/links';
+import DefaultErrorPage from 'next/error';
+import Image from 'next/image';
+import { shimmer, toBase64 } from '/utils/blurImage';
+import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
+import styles from 'components/blog/postList.module.css';
+import { directusFormattedDate } from 'utils/formattedDate';
+import { GetLangField } from 'utils/getLangField';
+import PostContent from 'components/blog/post';
 
-export default function Post({ post }) {
+export default function Post({ post, postsList, loc, postsSlugs, slug }) {
   const intl = useIntl();
 
   const router = useRouter();
@@ -28,26 +31,36 @@ export default function Post({ post }) {
     id: 'nav.country',
   });
 
+  const searchSlug = postsSlugs.data.map((item) => item.slug === slug);
+
+  const br_arr = [
+    { url: links.blog, title: intl.formatMessage({ id: 'links.blog' }) },
+    { title: post.translations[0].title },
+  ];
+
   return (
     <>
       <Head>
         <title>Anex Main</title>
         <meta name="description" content="Anex Main" />
       </Head>
-      <div className="container">{post.data[0].slug}</div>
+      {!router.isFallback && !searchSlug.includes(true) ? (
+        <DefaultErrorPage statusCode={404} />
+      ) : (
+        <div className="container">
+          <Breadcrumbs data={br_arr} />
+          <PostContent post={post} loc={loc} />
+        </div>
+      )}
     </>
   );
 }
 
 export async function getStaticPaths({ locales }) {
-  const resSlugs = await fetch(
-    `https://a-k.name/directus/items/posts?fields=slug,id`
-  );
-  const slugs = await resSlugs.json();
-  // console.log(slugs.data);
+  const postsSlugs = await getPostsSlugs();
 
   const paths = [];
-  slugs.data.map((item) => {
+  postsSlugs.data.map((item) => {
     return locales.map((locale) => {
       return paths.push({
         params: { slug: item.slug },
@@ -55,7 +68,6 @@ export async function getStaticPaths({ locales }) {
       });
     });
   });
-  // console.log(paths);
   return { paths, fallback: true };
 }
 
@@ -63,19 +75,29 @@ export async function getStaticProps(context) {
   const slug = context.params.slug;
   const loc = context.locale;
 
-  const resPost = await fetch(
-    `https://a-k.name/directus/items/posts?fields=*,translations.title,translations.languages_code&filter[slug][_eq]=${slug}&filter[status][_eq]=published`
-  );
-  const post = await resPost.json();
+  const post = await getPostFromSlug(slug, loc);
+  const postsList = await getPostsList();
+  const postsSlugs = await getPostsSlugs();
 
-  if (!post.data.length) {
-    return {
-      notFound: true,
-    };
+  if (post.errors || postsList.errors || postsSlugs.errors) {
+    // if server down and incorrect request
+    console.log('error: ', post?.errors);
+    console.log('error: ', postsList?.errors);
+    console.log('error: ', postsSlugs?.errors);
+    throw new Error('TEST ERROR');
+    // return {
+    //   notFound: true,
+    // };
   }
 
   return {
-    props: { post, loc },
+    props: {
+      post: post.data[0],
+      postsList,
+      loc,
+      postsSlugs,
+      slug,
+    },
     revalidate: 30,
   };
 }

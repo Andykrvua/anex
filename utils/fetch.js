@@ -1,9 +1,10 @@
 import { blogApi } from './constants';
+import { languagesApi } from './constants';
 
 export const getPostsList = async (current = 1) => {
   const offset = (current - 1) * blogApi.announceLimit;
   const posts = await fetch(
-    `${process.env.API}posts?fields=*,categories.categories_id.translations.name,categories.categories_id.translations.languages_id,categories.categories_id.bg_color,translations.title,translations.languages_code&filter[status]=published&deep[categories][_filter][categories_id][status][_eq]=published&meta=*&limit=${blogApi.announceLimit}&offset=${offset}&sort=sort,-date_created`
+    `${process.env.API}posts?fields=status,img,date_created,slug,categories.categories_id.translations.name,categories.categories_id.translations.languages_id,categories.categories_id.bg_color,translations.title,translations.languages_code&filter[status]=published&deep[categories][_filter][categories_id][status][_eq]=published&meta=*&limit=${blogApi.announceLimit}&offset=${offset}&sort=sort,-date_created`
   )
     .then((response) => {
       if (response.status === 200) {
@@ -73,7 +74,7 @@ export const getCategoriesSlug = async () => {
 export const getPostsFromCategory = async (slug, current = 1) => {
   const offset = (current - 1) * blogApi.announceLimit;
   const postsCat = await fetch(
-    `${process.env.API}posts?fields=*,categories.categories_id.translations.name,categories.categories_id.translations.languages_id,categories.categories_id.bg_color,translations.title,translations.languages_code,categories.categories_id.slug&filter[categories][categories_id][slug][_eq]=${slug}&filter[status][_eq]=published&deep[categories][_filter][categories_id][status][_eq]=published&meta=*&limit=${blogApi.announceLimit}&offset=${offset}&sort=sort,-date_created`
+    `${process.env.API}posts?fields=status,img,date_created,slug,categories.categories_id.translations.name,categories.categories_id.translations.languages_id,categories.categories_id.bg_color,translations.title,translations.languages_code,categories.categories_id.slug&filter[categories][categories_id][slug][_eq]=${slug}&filter[status][_eq]=published&deep[categories][_filter][categories_id][status][_eq]=published&meta=*&limit=${blogApi.announceLimit}&offset=${offset}&sort=sort,-date_created`
   )
     .then((response) => {
       if (response.status === 200) {
@@ -108,7 +109,7 @@ export const getCountrySlug = async () => {
 export const getPostsFromCountry = async (slug, current = 1) => {
   const offset = (current - 1) * blogApi.announceLimit;
   const postsCountry = await fetch(
-    `${process.env.API}posts?fields=*,countries.countries_id.translations.name,countries.countries_id.translations.languages_id,countries.countries_id.slug,countries.countries_id.status,categories.categories_id.translations.name,categories.categories_id.translations.languages_id,categories.categories_id.bg_color,translations.title,translations.languages_code,categories.categories_id.slug&filter[countries][countries_id][slug][_eq]=${slug}&filter[status][_eq]=published&deep[categories][_filter][categories_id][status][_eq]=published&deep[countries][_filter][countries_id][status][_eq]=published&meta=*&limit=${blogApi.announceLimit}&offset=${offset}&sort=sort,-date_created`
+    `${process.env.API}posts?fields=status,img,date_created,slug,countries.countries_id.translations.name,countries.countries_id.translations.languages_id,countries.countries_id.slug,countries.countries_id.status,categories.categories_id.translations.name,categories.categories_id.translations.languages_id,categories.categories_id.bg_color,translations.title,translations.languages_code,categories.categories_id.slug&filter[countries][countries_id][slug][_eq]=${slug}&filter[status][_eq]=published&deep[categories][_filter][categories_id][status][_eq]=published&deep[countries][_filter][countries_id][status][_eq]=published&meta=*&limit=${blogApi.announceLimit}&offset=${offset}&sort=sort,-date_created`
   )
     .then((response) => {
       if (response.status === 200) {
@@ -125,7 +126,7 @@ export const getPostsFromCountry = async (slug, current = 1) => {
 
 export const getCountries = async () => {
   const categories = await fetch(
-    `${process.env.API}countries?fields=status,code,slug,translations.languages_code,translations.name&filter[status]=published`
+    `${process.env.API}countries?fields=posts.posts_id,status,code,slug,translations.languages_code,translations.name&filter[status]=published`
   )
     .then((response) => {
       if (response.status === 200) {
@@ -138,4 +139,40 @@ export const getCountries = async () => {
     });
 
   return categories;
+};
+
+export const getPostsSlugs = async () => {
+  const posts = await fetch(
+    `${process.env.API}posts?fields=slug,status&filter[status][_eq]=published`
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Something went wrong');
+    })
+    .catch((errors) => {
+      return { errors };
+    });
+
+  return posts;
+};
+
+export const getPostFromSlug = async (slug, loc) => {
+  const locale = languagesApi[loc];
+
+  const post = await fetch(
+    `${process.env.API}posts?fields=status,img,date_created,slug,translations.languages_id,translations.title,translations.content,translations.languages_code,categories.categories_id.status,categories.categories_id.translations.name,categories.categories_id.translations.languages_id&filter[slug][_eq]=${slug}&deep[translations][_filter][languages_code][_eq]=${locale}&deep[categories][_filter][categories_id][status][_neq]=draft`
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Something went wrong');
+    })
+    .catch((errors) => {
+      return { errors };
+    });
+
+  return post;
 };
