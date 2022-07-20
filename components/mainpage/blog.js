@@ -17,9 +17,7 @@ export default function Blog({ data }) {
           </a>
         </Link>
       </div>
-      <div className={styles.carousel_wrapper}>
-        <Carousel data={data} instance={carouselInstance.blog} />
-      </div>
+      <Carousel data={data} instance={carouselInstance.blog} />
     </div>
   );
 }

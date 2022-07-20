@@ -9,9 +9,7 @@ export default function PopularCountry({ data }) {
       <h2 className={`${styles.title} block_title`}>
         <FM id="main.pop_country" />
       </h2>
-      <div className={styles.carousel_wrapper}>
-        <Carousel data={data} instance={carouselInstance.popularCountry} />
-      </div>
+      <Carousel data={data} instance={carouselInstance.popularCountry} />
     </div>
   );
 }

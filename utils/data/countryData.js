@@ -5,8 +5,15 @@ export const countryData = [
     txt_bg: 'var(--green-badge)',
     badge: 'Лучшая цена',
     badge_bg: 'var(--green-badge)',
-    link: '/index2',
+    slug: '/index2',
     image: '/assets/img/fake_data/country1.webp',
+    categories: [
+      {
+        categories_id: {
+          translations: [{ name: 'test' }],
+        },
+      },
+    ],
   },
   {
     title: 'Турция',
@@ -14,8 +21,15 @@ export const countryData = [
     txt_bg: 'var(--blue-badge)',
     badge: 'Лучшая цена',
     badge_bg: 'var(--green-badge)',
-    link: '/index2',
+    slug: '/index2',
     image: '/assets/img/fake_data/country2.webp',
+    categories: [
+      {
+        categories_id: {
+          translations: [{ name: 'test' }],
+        },
+      },
+    ],
   },
   {
     title: 'Мальдивы',
@@ -23,8 +37,15 @@ export const countryData = [
     txt_bg: 'var(--green-badge)',
     badge: '',
     badge_bg: 'var(--green-badge)',
-    link: '/index2',
+    slug: '/index2',
     image: '/assets/img/fake_data/country3.webp',
+    categories: [
+      {
+        categories_id: {
+          translations: [{ name: 'test' }],
+        },
+      },
+    ],
   },
   {
     title: 'ОАЭ',
@@ -32,8 +53,15 @@ export const countryData = [
     txt_bg: 'var(--orange-badge)',
     badge: '',
     badge_bg: 'var(--green-badge)',
-    link: '/index2',
+    slug: '/index2',
     image: '/assets/img/fake_data/country4.webp',
+    categories: [
+      {
+        categories_id: {
+          translations: [{ name: 'test' }],
+        },
+      },
+    ],
   },
   {
     title: 'Египет',
@@ -41,8 +69,15 @@ export const countryData = [
     txt_bg: 'var(--orange-badge)',
     badge: '',
     badge_bg: 'var(--green-badge)',
-    link: '/index2',
+    slug: '/index2',
     image: '/assets/img/fake_data/country5.webp',
+    categories: [
+      {
+        categories_id: {
+          translations: [{ name: 'test' }],
+        },
+      },
+    ],
   },
   {
     title: 'еще 26 стран',
@@ -50,54 +85,15 @@ export const countryData = [
     txt_bg: '',
     badge: '',
     badge_bg: 'var(--green-badge)',
-    link: '/index2',
-    image: '/assets/img/fake_data/country-all-link.webp',
+    slug: '/index2',
+    image: '/assets/img/fake_data/country-all-slug.webp',
+    categories: [
+      {
+        categories_id: {
+          translations: [{ name: 'test' }],
+        },
+      },
+    ],
     lastCard: true,
-  },
-];
-
-export const blogData = [
-  {
-    title: 'Хургада или Шарм-эль-Шейх: где лучше отдыхать?',
-    badge: 'Полезные советы',
-    badge_bg: 'var(--green-badge)',
-    link: '/index2',
-    image: '/assets/img/fake_data/country1.webp',
-  },
-  {
-    title:
-      'Бали открывается для туристов c 4 февраля: какие ограничения действуют?',
-    badge: 'Новости',
-    badge_bg: 'var(--orange-badge)',
-    link: '/index2',
-    image: '/assets/img/fake_data/country2.webp',
-  },
-  {
-    title: 'Летим исследовать Таиланд',
-    badge: 'Акции',
-    badge_bg: 'var(--blue-badge)',
-    link: '/index2',
-    image: '/assets/img/fake_data/country3.webp',
-  },
-  {
-    title: '5 нестандартных курортов Египта, где вы еще не побывали',
-    badge: 'Полезные советы',
-    badge_bg: 'var(--green-badge)',
-    link: '/index2',
-    image: '/assets/img/fake_data/country4.webp',
-  },
-  {
-    title: 'Полетка расширяется: летим почти на 100 курортов этим летом!',
-    badge: 'Новости',
-    badge_bg: 'var(--orange-badge)',
-    link: '/index2',
-    image: '/assets/img/fake_data/country5.webp',
-  },
-  {
-    title: 'Хургада или Шарм-эль-Шейх: где лучше отдыхать?',
-    badge: 'Полезные советы',
-    badge_bg: 'var(--green-badge)',
-    link: '/index2',
-    image: '/assets/img/fake_data/country1.webp',
   },
 ];

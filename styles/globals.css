@@ -3,20 +3,6 @@
 @import url('./simplebar.css');
 /* @import 'react-datepicker/dist/react-datepicker.css'; */
 
-/* max mobile size */
-@media (max-width: 767px) {
-}
-h1 {
-  color: red;
-}
-
-/* size tablet or bigger */
-@media (min-width: 768px) {
-  h1 {
-    color: green;
-  }
-}
-
 /* Utils start */
 html {
   box-sizing: border-box;

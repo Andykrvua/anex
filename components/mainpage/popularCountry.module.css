@@ -2,16 +2,6 @@
   margin-top: var(--block-title-top-margin);
 }
 
-.carousel_wrapper {
-  margin: 0 var(--helper-margin);
-}
-
-@media (min-width: 810px) {
-  .carousel_wrapper {
-    margin: 0;
-  }
-}
-
 .title {
   margin-bottom: var(--block-top-margin);
 }

@@ -1,0 +1,26 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-gap: 25px;
+}
+
+.card {
+  border-radius: var(--def-radius);
+  box-shadow: var(--formfield-shadow);
+  overflow: hidden;
+}
+
+.img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .img {
+  transform: scale(1.1);
+}
+
+.name {
+  padding: 25px;
+  text-align: center;
+  font-size: 16px;
+  background-color: var(--font-white);
+}

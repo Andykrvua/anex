@@ -17,18 +17,6 @@ export default function Blog({ postsList, categoryList, loc, countryList }) {
   // if el > 1, last el need only title
   const br_arr = [{ title: intl.formatMessage({ id: 'links.blog' }) }];
 
-  const tagsCountryListItems = [
-    { code: 'DO', title: 'Доминикана', count: 1, url: '/' },
-    { code: 'CH', title: 'Швейцария', count: 5, url: '/' },
-    { code: 'BG', title: 'Болгария', count: 4, url: '/' },
-    { code: 'DO', title: 'Доминикана', count: 1, url: '/' },
-    { code: 'CN', title: 'Китай', count: 17, url: '/' },
-    { code: 'DO', title: 'Доминикана', count: 1, url: '/' },
-    { code: 'AE', title: 'ОАЭ', count: 2, url: '/' },
-    { code: 'CH', title: 'Швейцария', count: 5, url: '/' },
-    { code: 'DO', title: 'Доминикана', count: 1, url: '/' },
-  ];
-
   const pagesCount = Math.ceil(
     postsList?.meta.filter_count / blogApi.announceLimit
   );

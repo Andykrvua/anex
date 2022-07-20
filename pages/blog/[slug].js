@@ -1,18 +1,78 @@
 import { useIntl } from 'react-intl';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { getPostsSlugs, getPostFromSlug, getPostsList } from 'utils/fetch';
+import { getPostsSlugs, getPostFromSlug, getLastPost } from 'utils/fetch';
 import { links } from 'utils/links';
 import DefaultErrorPage from 'next/error';
 import Image from 'next/image';
 import { shimmer, toBase64 } from '/utils/blurImage';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
-import styles from 'components/blog/postList.module.css';
 import { directusFormattedDate } from 'utils/formattedDate';
 import { GetLangField } from 'utils/getLangField';
 import PostContent from 'components/blog/post';
+import Blog from '/components/mainpage/blog.js';
+import Carousel from '/components/common/carousel/carousel';
+import { carouselInstance } from '/utils/constants';
+
+const blogData = [
+  {
+    title: 'Хургада или Шарм-эль-Шейх: где лучше отдыхать?',
+    badge: 'Полезные советы',
+    badge_bg: 'var(--green-badge)',
+    link: '/index2',
+    image: '/assets/img/fake_data/country1.webp',
+  },
+  {
+    title:
+      'Бали открывается для туристов c 4 февраля: какие ограничения действуют?',
+    badge: 'Новости',
+    badge_bg: 'var(--orange-badge)',
+    link: '/index2',
+    image: '/assets/img/fake_data/country2.webp',
+  },
+  {
+    title: 'Летим исследовать Таиланд',
+    badge: 'Акции',
+    badge_bg: 'var(--blue-badge)',
+    link: '/index2',
+    image: '/assets/img/fake_data/country3.webp',
+  },
+  {
+    title: '5 нестандартных курортов Египта, где вы еще не побывали',
+    badge: 'Полезные советы',
+    badge_bg: 'var(--green-badge)',
+    link: '/index2',
+    image: '/assets/img/fake_data/country4.webp',
+  },
+  {
+    title: 'Полетка расширяется: летим почти на 100 курортов этим летом!',
+    badge: 'Новости',
+    badge_bg: 'var(--orange-badge)',
+    link: '/index2',
+    image: '/assets/img/fake_data/country5.webp',
+  },
+  {
+    title: 'Хургада или Шарм-эль-Шейх: где лучше отдыхать?',
+    badge: 'Полезные советы',
+    badge_bg: 'var(--green-badge)',
+    link: '/index2',
+    image: '/assets/img/fake_data/country1.webp',
+  },
+];
+
+const styles = {
+  marginTop: 'var(--block-title-top-margin)',
+  marginBottom: 'var(--block-top-margin)',
+  fontSize: 'var(--title-fz)',
+  lineHeight: 'var(--title-lh)',
+  fontWeight: 'var(--title-fw)',
+  letterSpacing: 'var(--title-ls)',
+  textTransform: 'var(--title-tt)',
+};
 
 export default function Post({ post, postsList, loc, postsSlugs, slug }) {
+  console.log(postsList);
+  console.log(blogData);
   const intl = useIntl();
 
   const router = useRouter();
@@ -35,7 +95,7 @@ export default function Post({ post, postsList, loc, postsSlugs, slug }) {
 
   const br_arr = [
     { url: links.blog, title: intl.formatMessage({ id: 'links.blog' }) },
-    { title: post.translations[0].title },
+    { title: post?.translations[0].title },
   ];
 
   return (
@@ -50,6 +110,10 @@ export default function Post({ post, postsList, loc, postsSlugs, slug }) {
         <div className="container">
           <Breadcrumbs data={br_arr} />
           <PostContent post={post} loc={loc} />
+          <h3 style={styles}>Читайте также</h3>
+          {postsList.length && (
+            <Carousel data={postsList} instance={carouselInstance.blog} />
+          )}
         </div>
       )}
     </>
@@ -76,7 +140,8 @@ export async function getStaticProps(context) {
   const loc = context.locale;
 
   const post = await getPostFromSlug(slug, loc);
-  const postsList = await getPostsList();
+  const limit = 3;
+  const postsList = await getLastPost(limit, loc, slug);
   const postsSlugs = await getPostsSlugs();
 
   if (post.errors || postsList.errors || postsSlugs.errors) {
@@ -92,8 +157,8 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      post: post.data[0],
-      postsList,
+      post: post.data[0] || null,
+      postsList: postsList.data,
       loc,
       postsSlugs,
       slug,

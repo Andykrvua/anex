@@ -11,7 +11,7 @@ export default function Post({ post, loc }) {
         <div className={styles.img_wrapper}>
           <Image
             className={styles.img}
-            src={`https://a-k.name/directus/assets/${post.img}`}
+            src={`${process.env.NEXT_PUBLIC_API_img}${post.img}`}
             alt=""
             layout="fill"
             objectFit="cover"

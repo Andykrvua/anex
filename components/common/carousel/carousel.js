@@ -10,19 +10,17 @@ import { shimmer, toBase64 } from '/utils/blurImage';
 import viewPortSize from '/utils/getViewport';
 import { useState, useLayoutEffect } from 'react';
 
-const Card = ({ index, item }) => {
+const Card = ({ index, item, instance }) => {
   // image: min-width 691, min-height 380
   return (
     <div key={index} className={styles.card}>
-      <Link href={item.link}>
+      <Link href={`/${instance}/${item.slug}`}>
         <a>
           <div className={styles.card_inner}>
             <Image
-              src={item.image}
-              alt={item.title}
-              // width={290}
-              // height={380}
-              // layout="responsive" //to fix blur, but bigger img size
+              src={`${process.env.NEXT_PUBLIC_API_img}${item.img}`}
+              // alt={item.title}
+              alt=""
               layout="fill"
               objectFit="cover"
               objectPosition="center"
@@ -37,15 +35,19 @@ const Card = ({ index, item }) => {
                 className={item.lastCard ? styles.last_card : styles.card_text}
                 style={item.txt_bg ? { background: item.txt_bg } : {}}
               >
-                <h3>{item.title}</h3>
+                <h3>{item.title || item.translations[0].title}</h3>
                 <span>{item.price}</span>
               </div>
-              {item.badge && (
+              {item.categories.length && (
                 <span
                   className={styles.card_badge}
-                  style={{ background: item.badge_bg }}
+                  style={{
+                    background:
+                      item.categories[0].categories_id.bg_color ||
+                      'var(--green-badge)',
+                  }}
                 >
-                  {item.badge}
+                  {item.categories[0].categories_id.translations[0].name}
                 </span>
               )}
             </div>
@@ -59,6 +61,7 @@ const Card = ({ index, item }) => {
 const MemoizedCard = memo(Card);
 
 export default function Carousel({ data, instance }) {
+  console.log(data);
   const cardSize = bcCardsWidth.cardSize;
 
   function CarouselContainer(props) {
@@ -115,16 +118,18 @@ export default function Carousel({ data, instance }) {
   function renderCard(index, modIndex) {
     const item = data[modIndex];
 
-    return <MemoizedCard index={index} item={item} />;
+    return <MemoizedCard index={index} item={item} instance={instance} />;
   }
 
   return (
-    <TouchCarousel
-      component={Container}
-      cardSize={cardSize}
-      cardCount={data.length}
-      loop={false}
-      renderCard={renderCard}
-    />
+    <div className={styles.carousel_wrapper}>
+      <TouchCarousel
+        component={Container}
+        cardSize={cardSize}
+        cardCount={data.length}
+        loop={false}
+        renderCard={renderCard}
+      />
+    </div>
   );
 }
