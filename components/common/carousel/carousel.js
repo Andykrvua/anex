@@ -1,7 +1,7 @@
 import TouchCarousel from 'react-touch-carousel';
 import touchWithMouseHOC from 'react-touch-carousel/lib/touchWithMouseHOC';
 import NonPassiveTouchTarget from './nonPassiveTouchTarget'; /* ios fix */
-import { bcCardsWidth } from '/utils/constants';
+import { bcCardsWidth, carouselInstance } from '/utils/constants';
 import Image from 'next/image';
 import styles from './carousel.module.css';
 import Link from 'next/link';
@@ -10,15 +10,21 @@ import { shimmer, toBase64 } from '/utils/blurImage';
 import viewPortSize from '/utils/getViewport';
 import { useState, useLayoutEffect } from 'react';
 
-const Card = ({ index, item, instance }) => {
+const Card = ({ index, item, instance, length }) => {
   // image: min-width 691, min-height 380
+
   return (
     <div key={index} className={styles.card}>
-      <Link href={`/${instance}/${item.slug}`}>
+      <Link href={item.lastCard ? `/${instance}` : `/${instance}/${item.slug}`}>
         <a>
           <div className={styles.card_inner}>
             <Image
-              src={`${process.env.NEXT_PUBLIC_API_img}${item.img}`}
+              src={
+                item.lastCard
+                  ? item.img
+                  : `${process.env.NEXT_PUBLIC_API_img}${item.img}`
+              }
+              // src={item.image}
               // alt={item.title}
               alt=""
               layout="fill"
@@ -33,12 +39,22 @@ const Card = ({ index, item, instance }) => {
             <div className={styles.card_text_content}>
               <div
                 className={item.lastCard ? styles.last_card : styles.card_text}
-                style={item.txt_bg ? { background: item.txt_bg } : {}}
+                style={
+                  instance === carouselInstance.blog || item.lastCard
+                    ? {}
+                    : { background: item.name_color || 'var(--green-badge)' }
+                }
               >
-                <h3>{item.title || item.translations[0].title}</h3>
-                <span>{item.price}</span>
+                <h3>
+                  {item.title ||
+                    item.translations[0].name ||
+                    item.translations[0].title}
+                </h3>
+                {instance === carouselInstance.popularCountry && (
+                  <span>{item.lastCard ? '' : 'от 27 700 грн'}</span>
+                )}
               </div>
-              {item.categories.length && (
+              {item.categories?.length && (
                 <span
                   className={styles.card_badge}
                   style={{
@@ -48,6 +64,16 @@ const Card = ({ index, item, instance }) => {
                   }}
                 >
                   {item.categories[0].categories_id.translations[0].name}
+                </span>
+              )}
+              {item.badge_color && (
+                <span
+                  className={styles.card_badge}
+                  style={{
+                    background: item.badge_color || 'var(--green-badge)',
+                  }}
+                >
+                  {item.translations[0].badge}
                 </span>
               )}
             </div>
@@ -61,7 +87,6 @@ const Card = ({ index, item, instance }) => {
 const MemoizedCard = memo(Card);
 
 export default function Carousel({ data, instance }) {
-  console.log(data);
   const cardSize = bcCardsWidth.cardSize;
 
   function CarouselContainer(props) {
@@ -118,7 +143,14 @@ export default function Carousel({ data, instance }) {
   function renderCard(index, modIndex) {
     const item = data[modIndex];
 
-    return <MemoizedCard index={index} item={item} instance={instance} />;
+    return (
+      <MemoizedCard
+        index={index}
+        item={item}
+        instance={instance}
+        length={data.length}
+      />
+    );
   }
 
   return (

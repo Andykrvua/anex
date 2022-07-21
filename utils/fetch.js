@@ -247,3 +247,22 @@ export const getCountryFromSlug = async (slug, loc) => {
 
   return post;
 };
+
+export const getPopularCountry = async (loc) => {
+  const locale = languagesApi[loc];
+
+  const posts = await fetch(
+    `${process.env.API}api_countries?fields=status,badge_color,name_color,img,date_created,slug,translations.name,translations.badge,translations.languages_code&filter[status]=published&deep[translations][_filter][languages_code][_eq]=${locale}&filter[show_popular][_eq]=true&meta=*&sort=sort,-date_created`
+  )
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Something went wrong');
+    })
+    .catch((errors) => {
+      return { errors };
+    });
+
+  return posts;
+};

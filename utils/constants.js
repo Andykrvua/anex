@@ -49,7 +49,7 @@ export const bcCardsWidth = {
 
 export const carouselInstance = {
   blog: 'blog',
-  popularCountry: 'country',
+  popularCountry: 'countries',
 };
 
 export const languages = {

@@ -115,7 +115,7 @@
   color: var(--bg);
 }
 
-.country .card_badge {
+.countries .card_badge {
   background: var(--orange-red-badge);
 }
 
@@ -143,7 +143,7 @@
     height: initial;
   }
 
-  .cards_track.country {
+  .cards_track.countries {
     display: grid;
     grid-template-columns: 333px 1fr 333px;
     gap: 25px;
@@ -159,11 +159,11 @@
     display: block;
   }
 
-  .cards_track.country .card:nth-child(4n + 1) {
+  .cards_track.countries .card:nth-child(4n + 1) {
     grid-column: 1/3;
   }
 
-  .cards_track.country .card:nth-child(4n + 4) {
+  .cards_track.countries .card:nth-child(4n + 4) {
     grid-column: 2/4;
   }
 
