@@ -1,5 +1,6 @@
-import styles from './orderList.module.css';
+import styles from './tourList.module.css';
 import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
+import TourCards from '/components/common/tourCards/tourCards.js';
 import { useState } from 'react';
 
 export default function OrderList() {
@@ -17,6 +18,7 @@ export default function OrderList() {
         name={'order_switcher'}
         callback={[name, setName]}
       />
+      <TourCards />
     </>
   );
 }

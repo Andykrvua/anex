@@ -1,16 +1,10 @@
 import { useIntl } from 'react-intl';
-import Head from 'next/head';
+import SeoHead from '/components/common/seoHead/seoHead.js';
 import { useRouter } from 'next/router';
 import { getAPICountryListSlugs, getCountryFromSlug } from 'utils/fetch';
 import { links } from 'utils/links';
 import DefaultErrorPage from 'next/error';
-import Image from 'next/image';
-import { shimmer, toBase64 } from '/utils/blurImage';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
-import styles from 'components/blog/postList.module.css';
-import { directusFormattedDate } from 'utils/formattedDate';
-import { GetLangField } from 'utils/getLangField';
-import PostContent from 'components/blog/post';
 import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
@@ -26,11 +20,6 @@ export default function Country({ country, countrySlugs, slug }) {
       </div>
     );
   }
-  //нужно для передачи в HEAD
-  const title = intl.formatMessage({ id: 'nav.tour' });
-  const description = intl.formatMessage({
-    id: 'nav.country',
-  });
 
   const searchSlug = countrySlugs.data.map((item) => item.slug === slug);
 
@@ -44,10 +33,7 @@ export default function Country({ country, countrySlugs, slug }) {
 
   return (
     <>
-      <Head>
-        <title>Anex Main</title>
-        <meta name="description" content="Anex Main" />
-      </Head>
+      <SeoHead content={country} />
       {!router.isFallback && !searchSlug.includes(true) ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
@@ -86,13 +72,10 @@ export async function getStaticProps(context) {
   const countrySlugs = await getAPICountryListSlugs();
 
   if (country.errors || countrySlugs.errors) {
-    // if server down and incorrect request
+    // if incorrect request
     console.log('error: ', country?.errors);
     console.log('error: ', countrySlugs?.errors);
     throw new Error('TEST ERROR');
-    // return {
-    //   notFound: true,
-    // };
   }
 
   return {

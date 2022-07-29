@@ -1,5 +1,5 @@
 import styles from './countryPageContent.module.css';
-import OrderList from 'components/country/orderList';
+import TourList from 'components/country/tourList';
 
 const CountryPropertys = ({ country }) => {
   return (
@@ -24,10 +24,10 @@ const CountryPropertys = ({ country }) => {
   );
 };
 
-const FakeOrders = ({ code }) => {
+const TourBlock = ({ code }) => {
   return (
     <div className={styles.orders_wrapper}>
-      <OrderList />
+      <TourList />
     </div>
   );
 };
@@ -41,7 +41,7 @@ export default function CountryPageContent({ country }) {
       {country.translations[0].property_list && (
         <CountryPropertys country={country} />
       )}
-      <FakeOrders code={country.code} />
+      <TourBlock code={country.code} />
     </section>
   );
 }

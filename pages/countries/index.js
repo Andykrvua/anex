@@ -15,7 +15,7 @@ export default function Countries({
 }) {
   const intl = useIntl();
   if (allCountriesPageSettings.status === 'draft') {
-    console.log('Page settings not active');
+    console.log('Page settings not set');
   }
 
   const br_arr = [{ title: intl.formatMessage({ id: 'links.countries' }) }];

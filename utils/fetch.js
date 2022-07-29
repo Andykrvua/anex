@@ -94,7 +94,7 @@ export const getAPICountryListSlugs = async () => {
 
 export const getCountryFromSlug = async (slug, loc) => {
   const locale = languagesApi[loc];
-  const url = `api_countries?fields=status,code,img,date_created,slug,translations.languages_code,translations.name,translations.h1,translations.declension_title,translations.property_list&filter[slug][_eq]=${slug}&deep[translations][_filter][languages_code][_eq]=${locale}`;
+  const url = `api_countries?fields=status,code,img,date_created,slug,translations.languages_code,translations.name,translations.h1,translations.declension_title,translations.property_list,translations.title,translations.description&filter[slug][_eq]=${slug}&deep[translations][_filter][languages_code][_eq]=${locale}`;
   return req(url);
 };
 
