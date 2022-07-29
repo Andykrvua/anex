@@ -87,12 +87,9 @@ export async function getStaticPaths({ locales }) {
   const filter_count = await getPostsMeta();
 
   if (filter_count.errors) {
-    // if server down and incorrect request
+    // if incorrect request
     console.log('error: ', filter_count.errors);
     throw new Error('TEST ERROR');
-    // return {
-    //   notFound: true,
-    // };
   }
 
   const pages = Math.ceil(filter_count / blogApi.announceLimit);

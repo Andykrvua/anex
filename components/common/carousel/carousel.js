@@ -10,7 +10,7 @@ import { shimmer, toBase64 } from '/utils/blurImage';
 import viewPortSize from '/utils/getViewport';
 import { useState, useLayoutEffect } from 'react';
 
-const Card = ({ index, item, instance, length }) => {
+const Card = ({ index, item, instance }) => {
   // image: min-width 691, min-height 380
 
   return (
@@ -22,7 +22,11 @@ const Card = ({ index, item, instance, length }) => {
               src={
                 item.lastCard
                   ? item.img
-                  : `${process.env.NEXT_PUBLIC_API_img}${item.img}`
+                  : `${process.env.NEXT_PUBLIC_API_img}${
+                      instance === carouselInstance.popularCountry
+                        ? item.popular_img
+                        : item.img
+                    }`
               }
               // src={item.image}
               // alt={item.title}

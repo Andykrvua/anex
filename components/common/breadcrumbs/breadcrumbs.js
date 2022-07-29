@@ -19,9 +19,15 @@ const LinkItem = ({ data, ind, length }) => {
   }
 };
 
-export default function Breadcrumbs({ data }) {
+export default function Breadcrumbs({ data, beforeMainFrom }) {
   return (
-    <ul className={styles.breadcrumbs_list}>
+    <ul
+      className={
+        beforeMainFrom
+          ? `${styles.breadcrumbs_list} ${styles.mb20}`
+          : styles.breadcrumbs_list
+      }
+    >
       <li>
         <Link href={links.main}>
           <a>

@@ -1,37 +1,26 @@
 import MainForm from '/components/mainform/mainForm.js';
-import { useIntl } from 'react-intl';
 import PopularCountry from '/components/mainpage/popularCountry.js';
 import Blog from '/components/mainpage/blog.js';
-import { countryData } from '/utils/data/countryData';
 import Faq from '/components/mainpage/faq.js';
 import { accordionData } from 'utils/data/accordionData';
-import SeoBlock from '/components/mainpage/seoBlock.js';
-import Head from 'next/head';
-import { getLastPost, getPopularCountry } from 'utils/fetch';
-import { links } from 'utils/links';
+import SeoBlock from '/components/common/pageSeoBlock/seoBlock.js';
+import { getLastPost, getPopularCountry, getPageSettings } from 'utils/fetch';
 import declension from 'utils/declension';
+import SeoHead from '/components/common/seoHead/seoHead.js';
 
-export default function Home({ postsList, popularCountry }) {
-  const intl = useIntl();
-
-  //нужно для передачи в HEAD
-  const title = intl.formatMessage({ id: 'nav.tour' });
-  const description = intl.formatMessage({
-    id: 'nav.country',
-  });
-
+export default function Home({ postsList, popularCountry, mainPageSettings }) {
   return (
     <>
-      <Head>
-        <title>Anex Main</title>
-        <meta name="description" content="Anex Main" />
-      </Head>
+      <SeoHead content={mainPageSettings} />
       <div className="container">
         <MainForm />
         <PopularCountry data={popularCountry} />
         <Blog data={postsList} />
         <Faq data={accordionData} />
         <SeoBlock />
+        {mainPageSettings.translations && (
+          <SeoBlock text={mainPageSettings.translations[0].seo_block} />
+        )}
       </div>
     </>
   );
@@ -43,11 +32,13 @@ export async function getStaticProps(context) {
   const limit = 6;
   const postsList = await getLastPost(limit, loc);
   const popularCountry = await getPopularCountry(loc);
+  const mainPageSettings = await getPageSettings('main_page', loc);
 
-  if (postsList.errors || popularCountry.errors) {
-    // if server down and incorrect request
+  if (postsList.errors || popularCountry.errors || mainPageSettings.errors) {
+    // if incorrect request
     console.log('error: ', postsList?.errors);
     console.log('error: ', popularCountry?.errors);
+    console.log('error: ', mainPageSettings?.errors);
     throw new Error('TEST ERROR');
   }
 
@@ -71,6 +62,7 @@ export async function getStaticProps(context) {
       postsList: postsList.data,
       loc,
       popularCountry: popularCountry.data,
+      mainPageSettings: mainPageSettings.data,
     },
     revalidate: 30,
   };

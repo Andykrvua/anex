@@ -11,14 +11,15 @@ import styles from 'components/blog/postList.module.css';
 import { directusFormattedDate } from 'utils/formattedDate';
 import { GetLangField } from 'utils/getLangField';
 import PostContent from 'components/blog/post';
+import MainForm from '/components/mainform/mainForm.js';
+import H1 from 'components/country/countryPageH1';
+import CountryPageContent from 'components/country/countryPageContent';
 
 export default function Country({ country, countrySlugs, slug }) {
   const intl = useIntl();
-
   const router = useRouter();
 
   if (router.isFallback) {
-    console.log('searchSlug: ');
     return (
       <div className="container">
         <div>loading...</div>
@@ -34,8 +35,11 @@ export default function Country({ country, countrySlugs, slug }) {
   const searchSlug = countrySlugs.data.map((item) => item.slug === slug);
 
   const br_arr = [
-    { url: links.blog, title: intl.formatMessage({ id: 'links.blog' }) },
-    { title: country?.translations[0].title },
+    {
+      url: links.countries,
+      title: intl.formatMessage({ id: 'links.countries' }),
+    },
+    { title: country?.translations[0].name },
   ];
 
   return (
@@ -48,8 +52,10 @@ export default function Country({ country, countrySlugs, slug }) {
         <DefaultErrorPage statusCode={404} />
       ) : (
         <div className="container">
-          <Breadcrumbs data={br_arr} />
-          {/* <CountryContent country={country} /> */}
+          <Breadcrumbs data={br_arr} beforeMainFrom />
+          <H1>{country.translations[0].h1}</H1>
+          <MainForm />
+          <CountryPageContent country={country} />
         </div>
       )}
     </>
@@ -79,9 +85,10 @@ export async function getStaticProps(context) {
   const country = await getCountryFromSlug(slug, loc);
   const countrySlugs = await getAPICountryListSlugs();
 
-  if (country.errors) {
+  if (country.errors || countrySlugs.errors) {
     // if server down and incorrect request
     console.log('error: ', country?.errors);
+    console.log('error: ', countrySlugs?.errors);
     throw new Error('TEST ERROR');
     // return {
     //   notFound: true,

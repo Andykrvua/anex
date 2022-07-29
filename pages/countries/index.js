@@ -2,22 +2,34 @@ import MainForm from '/components/mainform/mainForm.js';
 import CountryList from '/components/country/countryList.js';
 import Faq from '/components/mainpage/faq.js';
 import { accordionData } from 'utils/data/accordionData';
-import SeoBlock from '/components/mainpage/seoBlock.js';
-import Head from 'next/head';
-import { getAPICountryList } from 'utils/fetch';
+import SeoBlock from '/components/common/pageSeoBlock/seoBlock.js';
+import { getAPICountryList, getPageSettings } from 'utils/fetch';
+import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
+import { useIntl } from 'react-intl';
+import SeoHead from '/components/common/seoHead/seoHead.js';
 
-export default function Countries({ countryList, loc }) {
+export default function Countries({
+  countryList,
+  loc,
+  allCountriesPageSettings,
+}) {
+  const intl = useIntl();
+  if (allCountriesPageSettings.status === 'draft') {
+    console.log('Page settings not active');
+  }
+
+  const br_arr = [{ title: intl.formatMessage({ id: 'links.countries' }) }];
   return (
     <>
-      <Head>
-        <title>Anex Country</title>
-        <meta name="description" content="Anex Country" />
-      </Head>
+      <SeoHead content={allCountriesPageSettings} />
       <div className="container">
+        <Breadcrumbs data={br_arr} beforeMainFrom />
         <MainForm />
         <CountryList countryList={countryList} loc={loc} />
         <Faq data={accordionData} />
-        <SeoBlock />
+        {allCountriesPageSettings.translations && (
+          <SeoBlock text={allCountriesPageSettings.translations[0].seo_block} />
+        )}
       </div>
     </>
   );
@@ -27,18 +39,24 @@ export async function getStaticProps(context) {
   const loc = context.locale;
 
   const countryList = await getAPICountryList();
+  const allCountriesPageSettings = await getPageSettings(
+    'all_countries_page',
+    loc
+  );
 
-  if (countryList.errors) {
-    // if server down and incorrect request
+  if (countryList.errors || allCountriesPageSettings.errors) {
+    // if incorrect request
     console.log('error: ', countryList?.errors);
+    console.log('error: ', allCountriesPageSettings?.errors);
     throw new Error('TEST ERROR');
-    // return {
-    //   notFound: true,
-    // };
   }
 
   return {
-    props: { countryList, loc },
+    props: {
+      countryList,
+      loc,
+      allCountriesPageSettings: allCountriesPageSettings.data,
+    },
     revalidate: 30,
   };
 }

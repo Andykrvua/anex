@@ -1,5 +1,5 @@
 .breadcrumbs_list li {
-  display: inline-block;
+  display: inline;
 }
 
 .breadcrumbs_list li:not(:first-child)::before {
@@ -20,4 +20,8 @@
 
 .breadcrumbs_list a.current {
   text-decoration: none;
+}
+
+.mb20 {
+  margin-bottom: 20px;
 }
