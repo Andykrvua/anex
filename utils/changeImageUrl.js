@@ -1,7 +1,8 @@
 import { location } from 'utils/constants';
 
 function Change(str) {
-  if (str === null) {
+  console.log(str);
+  if (!str) {
     return null;
   }
   return str.replaceAll(`http://a-k.name:8055`, `https://a-k.name/directus`);
