@@ -1,21 +1,24 @@
-// import { location } from 'utils/constants';
+import { location } from 'utils/constants';
 
-// function Change(str) {
-//   // console.log(str);
-//   if (!str) {
-//     return null;
-//   }
-//   return str.replaceAll(`http://a-k.name:8055`, `https://a-k.name/directus`);
-// }
+function Change(str) {
+  if (!str) {
+    return null;
+  }
 
-// export default function ChangeImageUrl(str, variant) {
-//   let content;
+  const search = `http://a-k.name:8055`;
+  const replacer = new RegExp(search, 'g');
 
-//   if (variant === location.postContent.countryPage) {
-//     content = Change(str.translations[0].post_content);
-//   } else {
-//     content = Change(str.translations[0].content);
-//   }
-//   // console.log(content);
-//   return content;
-// }
+  return str.replace(replacer, `https://a-k.name/directus`);
+}
+
+export default function ChangeImageUrl(str, variant) {
+  let content;
+
+  if (variant === location.postContent.countryPage) {
+    content = Change(str.translations[0].post_content);
+  } else {
+    content = Change(str.translations[0].content);
+  }
+
+  return content;
+}
