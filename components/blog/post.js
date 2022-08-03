@@ -11,7 +11,7 @@ import changeImageUrl from 'utils/changeImageUrl';
 // variant null = post content
 // variant countryPage = country page post content
 export default function Post({ post, loc, variant = null }) {
-  const content = changeImageUrl(post, variant);
+  // const content = changeImageUrl(post, variant);
 
   return (
     <article className={`${styles.post} ${styles[variant]}`}>
@@ -85,7 +85,10 @@ export default function Post({ post, loc, variant = null }) {
       <div
         className={styles.content}
         dangerouslySetInnerHTML={{
-          __html: content,
+          __html:
+            variant === null
+              ? post.translations[0].content
+              : post.translations[0].post_content,
         }}
       />
     </article>
