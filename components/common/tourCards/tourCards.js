@@ -1,85 +1,15 @@
 import styles from './tourCards.module.css';
 import Image from 'next/image';
 import { shimmer, toBase64 } from '/utils/blurImage';
+import { useSetModal } from 'store/store';
+import ratingColor from 'utils/ratingColor';
 
-// img width = 360
-export const cards = [
-  {
-    id: 0,
-    img: '/assets/img/fakedata/1.jpg',
-    hotelName: 'Carmen Suite Hotel',
-    stars: '5',
-    country: 'Турция',
-    district: 'Алания',
-    rating: '7.4',
-    reviews: '113',
-    propertys: [
-      { icon: '3line', title: '1-я линия' },
-      { icon: 'sand-beach', title: 'песчаный пляж' },
-    ],
-    description: 'Завтрак, за 2-х с перелетом',
-    order: [{ duration: '7 ночей', people: '3 туриста', price: '35 249 грн' }],
-    link: 'https://www.google.com/',
-  },
-  {
-    id: 1,
-    img: '/assets/img/fakedata/2.jpg',
-    hotelName: 'Grand Atilla',
-    stars: '2',
-    country: 'Египет',
-    district: 'Шейх Аль-Фараби',
-    rating: '6.2',
-    reviews: '1',
-    propertys: [
-      { icon: '2line', title: '2-я линия' },
-      { icon: 'sandy-pebble-beach', title: 'песчано галечный пляж' },
-    ],
-    description: 'Всё включено, за 2-х с перелетом',
-    order: [{ duration: '9 ночей', people: '5 туристов', price: '42 157 грн' }],
-    link: 'https://www.google.com/',
-  },
-  {
-    id: 2,
-    img: '/assets/img/fakedata/3.jpg',
-    hotelName:
-      'Maldives Beach Hotel (Your Ideal Hotel in Baa Atoll at a Great Price)',
-    stars: '4',
-    country: 'Китай',
-    district: 'Пхеньян',
-    rating: '9.6',
-    reviews: null,
-    propertys: [
-      { icon: '1line', title: '3-я и дальше' },
-      { icon: 'sandy-pebble-beach', title: 'песчано галечный пляж' },
-    ],
-    description: 'Без питания, за 2-х с перелетом',
-    order: [{ duration: '4 ночи', people: '2 туриста', price: '64 200 грн' }],
-    link: 'https://www.google.com/',
-  },
-  {
-    id: 3,
-    img: '/assets/img/fakedata/3.jpg',
-    hotelName:
-      'Maldives Beach Hotel (Your Ideal Hotel in Baa Atoll at a Great Price)',
-    stars: '4',
-    country: 'Китай',
-    district: 'Пхеньян',
-    rating: '9.6',
-    reviews: null,
-    propertys: [
-      { icon: '1line', title: '3-я и дальше' },
-      { icon: 'sandy-pebble-beach', title: 'песчано галечный пляж' },
-    ],
-    description: 'Без питания, за 2-х с перелетом',
-    order: [{ duration: '4 ночи', people: '2 туриста', price: '64 200 грн' }],
-    link: 'https://www.google.com/',
-  },
-];
+export default function TourCards({ current, cards }) {
+  const setModal = useSetModal();
 
-export default function TourCards() {
   return (
     <div className={styles.cards_wrapper}>
-      {cards.map((item) => {
+      {cards[current].map((item) => {
         return (
           <div className={styles.card} key={item.id}>
             <div className={styles.card_img}>
@@ -130,8 +60,44 @@ export default function TourCards() {
                   );
                 })}
               </div>
-              <div></div>
+              <div className={styles.maps_and_options}>
+                <button onClick={() => setModal(true)} className={styles.maps}>
+                  <img src="/assets/img/svg/tour/map-marker.svg" alt="map" />
+                  <span>Отель на карте</span>
+                </button>
+                <p className={styles.options}>{item.description}</p>
+              </div>
+              {item.rating && (
+                <div className={styles.review}>
+                  {!item.reviews && <p>Рейтинг</p>}
+                  <p
+                    className={styles.review__number}
+                    style={{ color: ratingColor(parseFloat(item.rating)) }}
+                  >
+                    {item.rating}
+                  </p>
+                  {item.reviews && <p>Отзывов:</p>}
+                  {item.reviews && (
+                    <p className={styles.review__medium}>{item.reviews}</p>
+                  )}
+                </div>
+              )}
             </div>
+            <a className={styles.card_order} href="">
+              <span className={styles.order_text_wrapper}>
+                <span className={styles.order_text__duration}>
+                  {item.order[0].duration} <span>ночи</span>
+                </span>
+                <span className={styles.order_text__people}>
+                  {item.order[0].people} <span> туриста</span>
+                </span>
+              </span>
+              <span className={styles.order_price}>
+                {item.order[0].price}
+                <span>&nbsp;грн</span>
+                <img src="/assets/img/svg/arrow.svg" alt="" />
+              </span>
+            </a>
           </div>
         );
       })}

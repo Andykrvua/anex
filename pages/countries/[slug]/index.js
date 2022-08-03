@@ -9,7 +9,7 @@ import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
 
-export default function Country({ country, countrySlugs, slug }) {
+export default function Country({ country, countrySlugs, slug, loc }) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -41,7 +41,7 @@ export default function Country({ country, countrySlugs, slug }) {
           <Breadcrumbs data={br_arr} beforeMainFrom />
           <H1>{country.translations[0].h1}</H1>
           <MainForm />
-          <CountryPageContent country={country} />
+          <CountryPageContent country={country} loc={loc} />
         </div>
       )}
     </>
@@ -83,6 +83,7 @@ export async function getStaticProps(context) {
       country: country.data[0] || null,
       countrySlugs,
       slug,
+      loc,
     },
     revalidate: 30,
   };

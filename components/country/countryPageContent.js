@@ -1,5 +1,7 @@
 import styles from './countryPageContent.module.css';
 import TourList from 'components/country/tourList';
+import CountryPostContent from 'components/blog/post';
+import { location } from 'utils/constants';
 
 const CountryPropertys = ({ country }) => {
   return (
@@ -32,7 +34,7 @@ const TourBlock = ({ code }) => {
   );
 };
 
-export default function CountryPageContent({ country }) {
+export default function CountryPageContent({ country, loc }) {
   return (
     <section className={styles.page_wrapper}>
       <h2 className={styles.title}>
@@ -42,6 +44,11 @@ export default function CountryPageContent({ country }) {
         <CountryPropertys country={country} />
       )}
       <TourBlock code={country.code} />
+      <CountryPostContent
+        post={country}
+        loc={loc}
+        variant={location.postContent.countryPage}
+      />
     </section>
   );
 }

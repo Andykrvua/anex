@@ -34,6 +34,9 @@ export const location = {
   logo: {
     burger: 'burger',
   },
+  postContent: {
+    countryPage: 'countryPage',
+  },
 };
 
 // switch menu margin
