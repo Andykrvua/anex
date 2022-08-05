@@ -92,6 +92,11 @@ button:active {
   box-shadow: var(--btn-focus);
 }
 
+a.touch:active {
+  border-radius: var(--def-radius);
+  box-shadow: var(--btn-focus);
+}
+
 button:disabled,
 button[disabled] {
   cursor: default;
@@ -145,6 +150,10 @@ input::placeholder {
   max-width: 100%;
   display: block;
   height: auto;
+}
+
+.mark {
+  color: var(--secondary);
 }
 /* Utils end */
 

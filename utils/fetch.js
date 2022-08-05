@@ -94,7 +94,7 @@ export const getAPICountryListSlugs = async () => {
 
 export const getCountryFromSlug = async (slug, loc) => {
   const locale = languagesApi[loc];
-  const url = `api_countries?fields=status,code,img,date_created,slug,translations.languages_code,translations.name,translations.h1,translations.declension_title,translations.property_list,translations.title,translations.description,translations.badge,translations.post_title,translations.post_content&filter[slug][_eq]=${slug}&deep[translations][_filter][languages_code][_eq]=${locale}`;
+  const url = `api_countries?fields=status,code,img,date_created,slug,translations.languages_code,translations.name,translations.h1,translations.declension_title,translations.property_list,translations.title,translations.description,translations.badge,translations.post_title,translations.post_content,translations.faq,translations.from_month_country_name&filter[slug][_eq]=${slug}&deep[translations][_filter][languages_code][_eq]=${locale}`;
   return req(url);
 };
 
@@ -103,3 +103,19 @@ export const getPopularCountry = async (loc) => {
   const url = `api_countries?fields=status,badge_color,name_color,img,popular_img,date_created,slug,translations.name,translations.badge,translations.languages_code&filter[status]=published&deep[translations][_filter][languages_code][_eq]=${locale}&filter[show_popular][_eq]=true&meta=*&sort=sort,-date_created`;
   return req(url);
 };
+
+export const getCountrySlugsAndSubpagesSlugs = async () => {
+  const url = `api_countries_subpage?fields=country_slug.slug,status,subpage_slug&filter[status]=published`;
+  return req(url);
+};
+
+export const getSubpagesSlugsFromCountry = async (slug) => {
+  const url = `api_countries_subpage?fields=country_slug.slug,status,subpage_slug,temp_from,temp_to&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
+  return req(url);
+};
+
+// export const getSubpageSlugFromCountry = async (loc, slug) => {
+//   const locale = languagesApi[loc];
+//   const url = `api_countries_subpage?fields=country_slug.slug,status,subpage_slug,translations.languages_code,translations.post_title,translations.post_content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
+//   return req(url);
+// };

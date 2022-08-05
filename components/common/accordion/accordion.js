@@ -12,7 +12,7 @@ export default function Accordion({ data }) {
   return (
     <ul className={styles.accordion_wrapper}>
       {data.map((item, ind) => (
-        <li key={item.id} className={styles.accordion_item}>
+        <li key={ind} className={styles.accordion_item}>
           <input
             className={styles.accordion_input}
             type="checkbox"
@@ -44,9 +44,9 @@ export default function Accordion({ data }) {
               <circle cx="11" cy="11" r="10" stroke="#C3C3D0" strokeWidth="2" />
             </svg>
             <span className={styles.accordion_title_emojii}>{item.emojii}</span>
-            {item.title}
+            {item.question}
           </h3>
-          <div className={styles.text_content}>{item.descr}</div>
+          <div className={styles.text_content}>{item.answer}</div>
         </li>
       ))}
     </ul>

@@ -6,7 +6,7 @@ export default function SeoHead({ content }) {
   return (
     <Head>
       <title>
-        {content.translations
+        {content?.translations
           ? content.translations[0].title ||
             intl.formatMessage({ id: 'default.title' })
           : intl.formatMessage({ id: 'default.title' })}
@@ -14,7 +14,7 @@ export default function SeoHead({ content }) {
       <meta
         name="description"
         content={
-          content.translations
+          content?.translations
             ? content.translations[0].description ||
               intl.formatMessage({ id: 'default.description' })
             : intl.formatMessage({ id: 'default.description' })

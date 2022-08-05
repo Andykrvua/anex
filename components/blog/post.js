@@ -4,8 +4,7 @@ import styles from './post.module.css';
 import { directusFormattedDate } from 'utils/formattedDate';
 import { GetLangField } from 'utils/getLangField';
 import { location } from 'utils/constants';
-import { accordionData } from 'utils/data/accordionData';
-import Faq from '/components/mainpage/faq.js';
+import Faq from '/components/country/faq.js';
 import changeImageUrl from 'utils/changeImageUrl';
 
 // variant null = post content
@@ -79,18 +78,7 @@ export default function Post({ post, loc, variant = null }) {
           </div>
         </div>
       </header>
-      {variant === location.postContent.countryPage && (
-        <Faq data={accordionData} />
-      )}
-      {/* <div
-        className={styles.content}
-        dangerouslySetInnerHTML={{
-          __html:
-            variant === null
-              ? post.translations[0].content
-              : post.translations[0].post_content,
-        }}
-      /> */}
+      {post.translations[0].faq && <Faq data={post.translations[0].faq} />}
       <div
         className={styles.content}
         dangerouslySetInnerHTML={{

@@ -56,6 +56,10 @@ p.property_item_title {
   margin-top: var(--block-title-top-margin);
 }
 
+.subtitle {
+  margin: var(--block-title-top-margin) 0 var(--title-bottom);
+}
+
 @media (min-width: 810px) {
   .property_item {
     margin: 0 25px 25px 0;

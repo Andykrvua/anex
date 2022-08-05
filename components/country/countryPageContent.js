@@ -2,6 +2,9 @@ import styles from './countryPageContent.module.css';
 import TourList from 'components/country/tourList';
 import CountryPostContent from 'components/blog/post';
 import { location } from 'utils/constants';
+import CountryToursFrom from 'components/country/countryToursFrom';
+import CountryToursMonth from 'components/country/countryToursMonth';
+import { useIntl } from 'react-intl';
 
 const CountryPropertys = ({ country }) => {
   return (
@@ -34,7 +37,37 @@ const TourBlock = ({ code }) => {
   );
 };
 
-export default function CountryPageContent({ country, loc }) {
+const SubpagesLinks = ({ subpagesSlugs, countryName }) => {
+  const intl = useIntl();
+  const from = subpagesSlugs.filter((item) => item.temp_from === null);
+  const month = subpagesSlugs.filter((item) => item.temp_from !== null);
+  return (
+    <>
+      {from.length ? (
+        <>
+          <h2 className={`${styles.subtitle} block_title`}>
+            {intl.formatMessage({ id: 'country.from_1' })}
+            <span className="mark">{countryName}</span>
+            {intl.formatMessage({ id: 'country.from_2' })}
+          </h2>
+          <CountryToursFrom data={from} />
+        </>
+      ) : null}
+      {month.length ? (
+        <>
+          <h2 className={`${styles.subtitle} block_title`}>
+            {intl.formatMessage({ id: 'country.month_1' })}
+            <span className="mark">{countryName}</span>
+            {intl.formatMessage({ id: 'country.month_2' })}
+          </h2>
+          <CountryToursMonth data={month} />
+        </>
+      ) : null}
+    </>
+  );
+};
+
+export default function CountryPageContent({ country, loc, subpagesSlugs }) {
   return (
     <section className={styles.page_wrapper}>
       <h2 className={styles.title}>
@@ -48,6 +81,10 @@ export default function CountryPageContent({ country, loc }) {
         post={country}
         loc={loc}
         variant={location.postContent.countryPage}
+      />
+      <SubpagesLinks
+        subpagesSlugs={subpagesSlugs}
+        countryName={country.translations[0].from_month_country_name}
       />
     </section>
   );

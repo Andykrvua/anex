@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import {
   getAPICountryListSlugs,
   getCountryFromSlug,
-  getSubpagesSlugsFromCountry,
+  getCountrySlugsAndSubpagesSlugs,
 } from 'utils/fetch';
 import { links } from 'utils/links';
 import DefaultErrorPage from 'next/error';
@@ -13,13 +13,7 @@ import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
 
-export default function Country({
-  country,
-  countrySlugs,
-  slug,
-  loc,
-  subpagesSlugs,
-}) {
+export default function Country({ country, countrySlugs, slug, loc }) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -31,7 +25,6 @@ export default function Country({
     );
   }
 
-  // all false if country slug not found
   const searchSlug = countrySlugs.data.map((item) => item.slug === slug);
 
   const br_arr = [
@@ -52,11 +45,7 @@ export default function Country({
           <Breadcrumbs data={br_arr} beforeMainFrom />
           <H1>{country.translations[0].h1}</H1>
           <MainForm />
-          <CountryPageContent
-            country={country}
-            loc={loc}
-            subpagesSlugs={subpagesSlugs}
-          />
+          {/* <CountryPageContent country={country} loc={loc} /> */}
         </div>
       )}
     </>
@@ -64,18 +53,25 @@ export default function Country({
 }
 
 export async function getStaticPaths({ locales }) {
-  const countrySlugs = await getAPICountryListSlugs();
+  const countrySlugsAndSubpagesSlugs = await getCountrySlugsAndSubpagesSlugs();
+  console.log(countrySlugsAndSubpagesSlugs);
+
+  // const countrySlugs = await getAPICountryListSlugs();
+
+  // получить все слаги стран у которых есть сабпейдж, сгруппировать все слаги сабпейдж в один масиив для каждого слага страны и положить в объект
+  // потом пройтись по всем слагам стран и положить в объект ключ слага и масиив слагов сабпейдж
 
   const paths = [];
-  countrySlugs.data.map((item) => {
+  countrySlugsAndSubpagesSlugs.data.map((item) => {
     return locales.map((locale) => {
       return paths.push({
-        params: { slug: item.slug },
+        params: { slug: item.country_slug.slug, subpage: item.subpage_slug },
         locale,
       });
     });
   });
 
+  console.log(paths);
   return { paths, fallback: true };
 }
 
@@ -85,13 +81,11 @@ export async function getStaticProps(context) {
 
   const country = await getCountryFromSlug(slug, loc);
   const countrySlugs = await getAPICountryListSlugs();
-  const subpagesSlugs = await getSubpagesSlugsFromCountry(slug);
 
-  if (country.errors || countrySlugs.errors || subpagesSlugs.errors) {
+  if (country.errors || countrySlugs.errors) {
     // if incorrect request
     console.log('error: ', country?.errors);
     console.log('error: ', countrySlugs?.errors);
-    console.log('error: ', subpagesSlugs?.errors);
     throw new Error('TEST ERROR');
   }
 
@@ -101,7 +95,6 @@ export async function getStaticProps(context) {
       countrySlugs,
       slug,
       loc,
-      subpagesSlugs: subpagesSlugs.data,
     },
     revalidate: 30,
   };

@@ -17,7 +17,6 @@ export default function Home({ postsList, popularCountry, mainPageSettings }) {
         <PopularCountry data={popularCountry} />
         <Blog data={postsList} />
         <Faq data={accordionData} />
-        <SeoBlock />
         {mainPageSettings.translations && (
           <SeoBlock text={mainPageSettings.translations[0].seo_block} />
         )}
