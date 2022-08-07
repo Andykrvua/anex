@@ -54,7 +54,6 @@ export default function Country({ country, countrySlugs, slug, loc }) {
 
 export async function getStaticPaths({ locales }) {
   const countrySlugsAndSubpagesSlugs = await getCountrySlugsAndSubpagesSlugs();
-  console.log(countrySlugsAndSubpagesSlugs);
 
   // const countrySlugs = await getAPICountryListSlugs();
 
@@ -71,7 +70,6 @@ export async function getStaticPaths({ locales }) {
     });
   });
 
-  console.log(paths);
   return { paths, fallback: true };
 }
 

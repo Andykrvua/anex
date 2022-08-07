@@ -82,10 +82,12 @@ export default function CountryPageContent({ country, loc, subpagesSlugs }) {
         loc={loc}
         variant={location.postContent.countryPage}
       />
-      <SubpagesLinks
-        subpagesSlugs={subpagesSlugs}
-        countryName={country.translations[0].from_month_country_name}
-      />
+      {subpagesSlugs.length > 0 && (
+        <SubpagesLinks
+          subpagesSlugs={subpagesSlugs}
+          countryName={country.translations[0].from_month_country_name}
+        />
+      )}
     </section>
   );
 }
