@@ -24,6 +24,7 @@ export default function Post({ post, postsList, loc, postsSlugs, slug }) {
   const router = useRouter();
 
   if (router.isFallback) {
+    console.log(1);
     return (
       <div className="container">
         <div>loading...</div>
@@ -50,18 +51,18 @@ export default function Post({ post, postsList, loc, postsSlugs, slug }) {
         <title>Anex Main</title>
         <meta name="description" content="Anex Main" />
       </Head>
-      {/* {!router.isFallback && !searchSlug.includes(true) ? (
+      {!router.isFallback && !searchSlug.includes(true) ? (
         <DefaultErrorPage statusCode={404} />
-      ) : ( */}
-      <div className="container">
-        <Breadcrumbs data={br_arr} />
-        <PostContent post={post} loc={loc} />
-        <h3 style={styles}>Читайте также</h3>
-        {postsList.length && (
-          <Carousel data={postsList} instance={carouselInstance.blog} />
-        )}
-      </div>
-      {/* )} */}
+      ) : (
+        <div className="container">
+          <Breadcrumbs data={br_arr} />
+          <PostContent post={post} loc={loc} />
+          <h3 style={styles}>Читайте также</h3>
+          {postsList.length && (
+            <Carousel data={postsList} instance={carouselInstance.blog} />
+          )}
+        </div>
+      )}
     </>
   );
 }
@@ -78,9 +79,7 @@ export async function getStaticPaths({ locales }) {
       });
     });
   });
-  // return { paths, fallback: true };
-  console.log('paths', paths);
-  return { paths, fallback: 'blocking' };
+  return { paths, fallback: true };
 }
 
 export async function getStaticProps(context) {
@@ -91,14 +90,6 @@ export async function getStaticProps(context) {
   const limit = 3;
   const postsList = await getLastPost(limit, loc, slug);
   const postsSlugs = await getPostsSlugs();
-
-  console.log('post', post);
-
-  if (post.data.length === 0) {
-    return {
-      notFound: true,
-    };
-  }
 
   if (post.errors || postsList.errors || postsSlugs.errors) {
     // if server down and incorrect request

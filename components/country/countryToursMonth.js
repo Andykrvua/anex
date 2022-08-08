@@ -18,7 +18,7 @@ const colors = {
   december: '#4dc2f6',
 };
 
-export default function CountryToursMonth({ data }) {
+export default function CountryToursMonth({ data, current }) {
   return (
     <div className={styles.toursmonth_items}>
       {data.map((item, ind) => (
@@ -26,8 +26,20 @@ export default function CountryToursMonth({ data }) {
           href={`${links.countries}/${item.country_slug.slug}/${item.subpage_slug}`}
           key={ind}
         >
-          <a className={`${styles.toursmonth_item} touch`}>
-            <span className={styles.toursmonth_item_title}>
+          <a
+            className={
+              item.subpage_slug !== current
+                ? `${styles.toursmonth_item} touch`
+                : `${styles.toursmonth_item} ${styles.toursmonth_item__current} touch`
+            }
+          >
+            <span
+              className={
+                item.subpage_slug !== current
+                  ? `${styles.toursmonth_item_title}`
+                  : `${styles.toursmonth_item_title} ${styles.toursmonth_item_title__current}`
+              }
+            >
               <FM id={`month.${item.subpage_slug}`} />
             </span>
             <span className={styles.toursmonth_temp}>

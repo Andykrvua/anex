@@ -1,5 +1,6 @@
 import styles from './countryPageContent.module.css';
 import TourList from 'components/country/tourList';
+import DistrictList from 'components/country/districtList';
 import CountryPostContent from 'components/blog/post';
 import { location } from 'utils/constants';
 import CountryToursFrom from 'components/country/countryToursFrom';
@@ -37,9 +38,13 @@ const TourBlock = ({ code }) => {
   );
 };
 
-const SubpagesLinks = ({ subpagesSlugs, countryName }) => {
+const SubpagesLinks = ({ subpagesSlugs, countryName, current = 0 }) => {
+  console.log(subpagesSlugs);
   const intl = useIntl();
-  const from = subpagesSlugs.filter((item) => item.temp_from === null);
+  const from = subpagesSlugs.filter(
+    (item) => item.temp_from === null && item?.is_district !== true
+  );
+
   const month = subpagesSlugs.filter((item) => item.temp_from !== null);
   return (
     <>
@@ -50,7 +55,7 @@ const SubpagesLinks = ({ subpagesSlugs, countryName }) => {
             <span className="mark">{countryName}</span>
             {intl.formatMessage({ id: 'country.from_2' })}
           </h2>
-          <CountryToursFrom data={from} />
+          <CountryToursFrom data={from} current={current} />
         </>
       ) : null}
       {month.length ? (
@@ -60,7 +65,7 @@ const SubpagesLinks = ({ subpagesSlugs, countryName }) => {
             <span className="mark">{countryName}</span>
             {intl.formatMessage({ id: 'country.month_2' })}
           </h2>
-          <CountryToursMonth data={month} />
+          <CountryToursMonth data={month} current={current} />
         </>
       ) : null}
     </>
@@ -68,22 +73,37 @@ const SubpagesLinks = ({ subpagesSlugs, countryName }) => {
 };
 
 export default function CountryPageContent({ country, loc, subpagesSlugs }) {
+  console.log(subpagesSlugs);
+  console.log(country);
   return (
     <section className={styles.page_wrapper}>
-      <h2 className={styles.title}>
-        {country?.translations[0].declension_title}
-      </h2>
+      {country?.translations[0].declension_title && (
+        <h2 className={styles.title}>
+          {country?.translations[0].declension_title}
+        </h2>
+      )}
       {country.translations[0].property_list && (
         <CountryPropertys country={country} />
       )}
+      {country.code && (
+        <DistrictList
+          data={subpagesSlugs}
+          title={country.translations[0].country_district_title}
+          country={country.slug}
+          loc={loc}
+        />
+      )}
       <TourBlock code={country.code} />
-      <CountryPostContent
-        post={country}
-        loc={loc}
-        variant={location.postContent.countryPage}
-      />
+      {country?.translations[0].post_title && (
+        <CountryPostContent
+          post={country}
+          loc={loc}
+          variant={location.postContent.countryPage}
+        />
+      )}
       {subpagesSlugs.length > 0 && (
         <SubpagesLinks
+          current={country?.subpage_slug}
           subpagesSlugs={subpagesSlugs}
           countryName={country.translations[0].from_month_country_name}
         />

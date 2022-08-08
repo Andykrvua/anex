@@ -1,0 +1,47 @@
+.cards_wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  column-gap: 15px;
+  row-gap: 20px;
+  margin-top: 15px;
+}
+
+.card:hover .img {
+  transform: scale(1.1);
+}
+
+.card {
+  border-radius: var(--def-radius);
+  overflow: hidden;
+  box-shadow: var(--formfield-shadow);
+}
+
+.img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card_name {
+  padding: 12px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.card_name img {
+  margin-right: 4px;
+}
+
+@media (min-width: 810px) {
+  .cards_wrapper {
+    grid-gap: 25px;
+    margin-top: 25px;
+  }
+
+  .card_name {
+    padding: 25px;
+    line-height: 16px;
+  }
+}
