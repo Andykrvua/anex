@@ -121,7 +121,7 @@ export const getCountrySubpageSlug = async (slug, subpage, loc) => {
 };
 
 export const getCountrySubpagesSlugs = async (slug) => {
-  const url = `api_countries_subpage?fields=country_slug.slug,status,subpage_slug,temp_from,temp_to&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
+  const url = `api_countries_subpage?fields=country_slug.slug,status,is_district,subpage_slug,temp_from,temp_to,translations.languages_code,translations.name&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
   return req(url);
 };
 

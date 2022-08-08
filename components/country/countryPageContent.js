@@ -39,7 +39,6 @@ const TourBlock = ({ code }) => {
 };
 
 const SubpagesLinks = ({ subpagesSlugs, countryName, current = 0 }) => {
-  console.log(subpagesSlugs);
   const intl = useIntl();
   const from = subpagesSlugs.filter(
     (item) => item.temp_from === null && item?.is_district !== true
@@ -73,8 +72,6 @@ const SubpagesLinks = ({ subpagesSlugs, countryName, current = 0 }) => {
 };
 
 export default function CountryPageContent({ country, loc, subpagesSlugs }) {
-  console.log(subpagesSlugs);
-  console.log(country);
   return (
     <section className={styles.page_wrapper}>
       {country?.translations[0].declension_title && (
@@ -85,14 +82,15 @@ export default function CountryPageContent({ country, loc, subpagesSlugs }) {
       {country.translations[0].property_list && (
         <CountryPropertys country={country} />
       )}
-      {country.code && (
+      {country.code &&
+      subpagesSlugs.filter((item) => item.is_district === true).length ? (
         <DistrictList
           data={subpagesSlugs}
           title={country.translations[0].country_district_title}
           country={country.slug}
           loc={loc}
         />
-      )}
+      ) : null}
       <TourBlock code={country.code} />
       {country?.translations[0].post_title && (
         <CountryPostContent

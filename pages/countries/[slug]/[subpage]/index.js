@@ -14,6 +14,7 @@ import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
+import { GetLangField } from '/utils/getLangField';
 
 export default function Country({
   country,
@@ -41,9 +42,12 @@ export default function Country({
     ? `${intl.formatMessage({
         id: `month.${countrySubpage?.subpage_slug}`,
       })}`
-    : `${intl.formatMessage({
-        id: 'country.tours_from',
-      })} ${intl.formatMessage({
+    : countrySubpage.is_district
+    ? GetLangField(countrySubpage.translations, 'languages_code', 'name', loc)
+    : `
+    ${intl.formatMessage({
+      id: 'country.tours_from',
+    })} ${intl.formatMessage({
         id: `country.${countrySubpage?.subpage_slug}`,
       })}`;
 
@@ -102,6 +106,10 @@ export async function getStaticProps(context) {
   const country = await getCountryFromSlug(slug, loc);
   const countrySubpage = await getCountrySubpageSlug(slug, subpage, loc);
   const countrySubpages = await getCountrySubpagesSlugs(slug);
+
+  console.log('country', country);
+  console.log('countrySubpage', countrySubpage);
+  console.log('countrySubpages', countrySubpages);
 
   if (country.errors || countrySubpage.errors || countrySubpages.errors) {
     // if incorrect request
