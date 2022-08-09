@@ -70,7 +70,9 @@ export default function Country({
       ) : (
         <div className="container">
           <Breadcrumbs data={br_arr} beforeMainFrom />
-          {/* <H1>{country.translations[0].h1}</H1> */}
+          {countrySubpage.translations[0].h1 && (
+            <H1>{countrySubpage.translations[0].h1}</H1>
+          )}
           <MainForm />
           <CountryPageContent
             country={countrySubpage}

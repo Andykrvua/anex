@@ -12,21 +12,12 @@ import changeImageUrl from 'utils/changeImageUrl';
 export default function Post({ post, loc, variant = null }) {
   const content = changeImageUrl(post, variant);
 
-  const Title = ({ text, is_district }) => {
-    return is_district ? (
-      <h2 className={styles.countrypage_title}>{text}</h2>
-    ) : (
-      <h1 className={styles.countrypage_title}>{text}</h1>
-    );
-  };
-
   return (
     <article className={`${styles.post} ${styles[variant]}`}>
       {variant === location.postContent.countryPage && (
-        <Title
-          text={post.translations[0].post_title}
-          is_district={post?.is_district}
-        />
+        <h2 className={styles.countrypage_title}>
+          {post.translations[0].post_title}
+        </h2>
       )}
       <header className={styles.header}>
         <div className={`${styles.img_wrapper} ${styles[variant]}`}>
