@@ -11,6 +11,7 @@
 }
 
 .card {
+  display: block;
   border-radius: var(--def-radius);
   overflow: hidden;
   box-shadow: var(--formfield-shadow);
@@ -21,11 +22,11 @@
 }
 
 .card_name {
-  padding: 12px;
-  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 12px;
   font-size: 14px;
   line-height: 14px;
 }
@@ -42,6 +43,14 @@
 
   .card_name {
     padding: 25px;
+    font-size: 16px;
     line-height: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .cards_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }

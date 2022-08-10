@@ -24,3 +24,16 @@
   font-size: 16px;
   background-color: var(--font-white);
 }
+
+@media (max-width: 560px) {
+  .cards {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 15px;
+  }
+
+  .name {
+    padding: 12px;
+    font-size: 14px;
+  }
+}

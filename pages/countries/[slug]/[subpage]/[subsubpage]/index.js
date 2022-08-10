@@ -6,6 +6,7 @@ import {
   getCountryFromSlug,
   getCountrySlugsAndSubpagesSlugs,
   getCountrySubpageSlug,
+  getCountrySubSubpageSlug,
   getCountrySubpagesSlugs,
 } from 'utils/fetch';
 import { links } from 'utils/links';
@@ -16,11 +17,14 @@ import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
 import { GetLangField } from '/utils/getLangField';
 
-export default function CountrySubPage({
+export default function CountrySubSubPage({
   country,
   slug,
+  subpage,
+  subsubpage,
   loc,
   countrySubpage,
+  countrySubSubpage,
   countrySubpages,
 }) {
   const intl = useIntl();
@@ -35,21 +39,8 @@ export default function CountrySubPage({
   }
 
   const searchSlug = countrySubpages.map(
-    (item) => item.subpage_slug === countrySubpage?.subpage_slug
+    (item) => item.subsubpage_slug === subsubpage
   );
-
-  const brSubPageTitle = countrySubpage?.temp_from
-    ? `${intl.formatMessage({
-        id: `month.${countrySubpage?.subpage_slug}`,
-      })}`
-    : countrySubpage.is_district
-    ? GetLangField(countrySubpage.translations, 'languages_code', 'name', loc)
-    : `
-    ${intl.formatMessage({
-      id: 'country.tours_from',
-    })} ${intl.formatMessage({
-        id: `country.${countrySubpage?.subpage_slug}`,
-      })}`;
 
   const br_arr = [
     {
@@ -58,24 +49,28 @@ export default function CountrySubPage({
     },
     { url: `${links.countries}/${slug}`, title: country?.translations[0].name },
     {
-      title: brSubPageTitle,
+      url: `${links.countries}/${slug}/${subpage}`,
+      title: countrySubpage?.translations[0].name,
+    },
+    {
+      title: countrySubSubpage?.translations[0].name,
     },
   ];
 
   return (
     <>
-      <SeoHead content={countrySubpage} />
+      <SeoHead content={countrySubSubpage} />
       {!router.isFallback && !searchSlug.includes(true) ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
         <div className="container">
           <Breadcrumbs data={br_arr} beforeMainFrom />
-          {countrySubpage.translations[0].h1 && (
-            <H1>{countrySubpage.translations[0].h1}</H1>
+          {countrySubSubpage.translations[0].h1 && (
+            <H1>{countrySubSubpage.translations[0].h1}</H1>
           )}
           <MainForm />
           <CountryPageContent
-            country={countrySubpage}
+            country={countrySubSubpage}
             loc={loc}
             subpagesSlugs={countrySubpages}
           />
@@ -86,30 +81,39 @@ export default function CountrySubPage({
 }
 
 export async function getStaticPaths({ locales }) {
-  const countrySlugsAndSubpagesSlugs = await getCountrySlugsAndSubpagesSlugs();
+  const subsubpageField = true;
+  const countrySlugsAndSubpagesSlugs = await getCountrySlugsAndSubpagesSlugs(
+    subsubpageField
+  );
 
   const paths = [];
   countrySlugsAndSubpagesSlugs.data.map((item) => {
     return locales.map((locale) => {
-      if (item.subsubpage) return;
       return paths.push({
-        params: { slug: item.country_slug.slug, subpage: item.subpage_slug },
+        params: {
+          slug: item.country_slug.slug,
+          subpage: item.subpage_slug,
+          subsubpage: item.subsubpage_slug,
+        },
         locale,
       });
     });
   });
-
   return { paths, fallback: true };
 }
 
 export async function getStaticProps(context) {
   const slug = context.params.slug;
   const subpage = context.params.subpage;
+  const subsubpage = context.params.subsubpage;
   const loc = context.locale;
 
   const country = await getCountryFromSlug(slug, loc);
   const countrySubpage = await getCountrySubpageSlug(slug, subpage, loc);
+  const countrySubSubpage = await getCountrySubSubpageSlug(slug, subpage, loc);
   const countrySubpages = await getCountrySubpagesSlugs(slug);
+  console.log('countrySubpages1', countrySubpage);
+  console.log('countrySubpages2', countrySubSubpage);
 
   if (country.errors || countrySubpage.errors || countrySubpages.errors) {
     // if incorrect request
@@ -123,8 +127,11 @@ export async function getStaticProps(context) {
     props: {
       country: country.data[0] || null,
       slug,
+      subpage,
+      subsubpage,
       loc,
       countrySubpage: countrySubpage.data[0] || null,
+      countrySubSubpage: countrySubSubpage.data[0] || null,
       countrySubpages: countrySubpages.data || null,
     },
     revalidate: 30,

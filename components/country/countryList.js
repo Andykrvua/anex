@@ -1,5 +1,5 @@
 import styles from './countryList.module.css';
-import Cards from '/components/cards';
+import Cards from '/components/country/cards';
 
 export default function CountryList({ countryList, loc }) {
   return (

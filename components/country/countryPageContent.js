@@ -85,7 +85,7 @@ export default function CountryPageContent({ country, loc, subpagesSlugs }) {
       {country.code &&
       subpagesSlugs.filter((item) => item.is_district === true).length ? (
         <DistrictList
-          data={subpagesSlugs}
+          data={subpagesSlugs.filter((item) => item.subsubpage !== true)}
           title={country.translations[0].country_district_title}
           country={country.slug}
           loc={loc}
