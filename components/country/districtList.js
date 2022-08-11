@@ -5,9 +5,10 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
 export default function DistrictList({ data, title, country, loc }) {
-  if (!data.length) return null;
   const intl = useIntl();
   const [name, setName] = useState(data.length > 5 ? 'popular' : null);
+
+  if (!data.length) return null;
 
   return (
     <>
