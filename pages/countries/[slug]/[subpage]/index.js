@@ -2,7 +2,6 @@ import { useIntl } from 'react-intl';
 import SeoHead from '/components/common/seoHead/seoHead.js';
 import { useRouter } from 'next/router';
 import {
-  getAPICountryListSlugs,
   getCountryFromSlug,
   getCountrySlugsAndSubpagesSlugs,
   getCountrySubpageSlug,
@@ -14,11 +13,11 @@ import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
-import { GetLangField } from '/utils/getLangField';
 
 export default function CountrySubPage({
   country,
   slug,
+  subpage,
   loc,
   countrySubpage,
   countrySubpages,
@@ -43,7 +42,7 @@ export default function CountrySubPage({
         id: `month.${countrySubpage?.subpage_slug}`,
       })}`
     : countrySubpage.is_district
-    ? GetLangField(countrySubpage.translations, 'languages_code', 'name', loc)
+    ? countrySubpage.translations[0].br
     : `
     ${intl.formatMessage({
       id: 'country.tours_from',
@@ -78,6 +77,8 @@ export default function CountrySubPage({
             country={countrySubpage}
             loc={loc}
             subpagesSlugs={countrySubpages}
+            isDistrict={countrySubpage.is_district}
+            subpageSlug={subpage}
           />
         </div>
       )}
@@ -123,6 +124,7 @@ export async function getStaticProps(context) {
     props: {
       country: country.data[0] || null,
       slug,
+      subpage,
       loc,
       countrySubpage: countrySubpage.data[0] || null,
       countrySubpages: countrySubpages.data || null,

@@ -71,7 +71,14 @@ const SubpagesLinks = ({ subpagesSlugs, countryName, current = 0 }) => {
   );
 };
 
-export default function CountryPageContent({ country, loc, subpagesSlugs }) {
+export default function CountryPageContent({
+  country,
+  loc,
+  subpagesSlugs,
+  isDistrict = false,
+  subpageSlug,
+  subsubpage,
+}) {
   return (
     <section className={styles.page_wrapper}>
       {country?.translations[0].declension_title && (
@@ -82,12 +89,23 @@ export default function CountryPageContent({ country, loc, subpagesSlugs }) {
       {country.translations[0].property_list && (
         <CountryPropertys country={country} />
       )}
-      {country.code &&
-      subpagesSlugs.filter((item) => item.is_district === true).length ? (
+      {subpagesSlugs.filter((item) => item.is_district === true).length &&
+      !subsubpage ? (
         <DistrictList
-          data={subpagesSlugs.filter((item) => item.subsubpage !== true)}
+          data={
+            isDistrict
+              ? subpagesSlugs.filter(
+                  (item) =>
+                    item.is_district &&
+                    item.subsubpage &&
+                    item.subpage_slug === subpageSlug
+                )
+              : subpagesSlugs.filter(
+                  (item) => item.is_district && !item.subsubpage
+                )
+          }
           title={country.translations[0].country_district_title}
-          country={country.slug}
+          country={country.slug ? country.slug : country.country_slug.slug}
           loc={loc}
         />
       ) : null}
@@ -99,13 +117,13 @@ export default function CountryPageContent({ country, loc, subpagesSlugs }) {
           variant={location.postContent.countryPage}
         />
       )}
-      {subpagesSlugs.length > 0 && (
+      {subpagesSlugs.length > 0 && !isDistrict ? (
         <SubpagesLinks
           current={country?.subpage_slug}
           subpagesSlugs={subpagesSlugs}
           countryName={country.translations[0].from_month_country_name}
         />
-      )}
+      ) : null}
     </section>
   );
 }

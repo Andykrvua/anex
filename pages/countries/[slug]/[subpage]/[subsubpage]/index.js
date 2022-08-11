@@ -2,7 +2,6 @@ import { useIntl } from 'react-intl';
 import SeoHead from '/components/common/seoHead/seoHead.js';
 import { useRouter } from 'next/router';
 import {
-  getAPICountryListSlugs,
   getCountryFromSlug,
   getCountrySlugsAndSubpagesSlugs,
   getCountrySubpageSlug,
@@ -15,7 +14,6 @@ import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
-import { GetLangField } from '/utils/getLangField';
 
 export default function CountrySubSubPage({
   country,
@@ -50,10 +48,10 @@ export default function CountrySubSubPage({
     { url: `${links.countries}/${slug}`, title: country?.translations[0].name },
     {
       url: `${links.countries}/${slug}/${subpage}`,
-      title: countrySubpage?.translations[0].name,
+      title: countrySubpage?.translations[0].br,
     },
     {
-      title: countrySubSubpage?.translations[0].name,
+      title: countrySubSubpage?.translations[0].br,
     },
   ];
 
@@ -73,6 +71,7 @@ export default function CountrySubSubPage({
             country={countrySubSubpage}
             loc={loc}
             subpagesSlugs={countrySubpages}
+            subsubpage
           />
         </div>
       )}
@@ -112,8 +111,6 @@ export async function getStaticProps(context) {
   const countrySubpage = await getCountrySubpageSlug(slug, subpage, loc);
   const countrySubSubpage = await getCountrySubSubpageSlug(slug, subpage, loc);
   const countrySubpages = await getCountrySubpagesSlugs(slug);
-  console.log('countrySubpages1', countrySubpage);
-  console.log('countrySubpages2', countrySubSubpage);
 
   if (country.errors || countrySubpage.errors || countrySubpages.errors) {
     // if incorrect request

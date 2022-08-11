@@ -11,7 +11,11 @@ export default function TourCards({ current, cards, country, loc }) {
       {cards.map((item, ind) => {
         return (
           <Link
-            href={`${links.countries}/${country}/${item.subpage_slug}`}
+            href={`${links.countries}/${country}/${
+              item.subsubpage_slug ? item.subpage_slug : ''
+            }${item.subsubpage_slug ? '/' : ''}${
+              item.subsubpage_slug ? item.subsubpage_slug : item.subpage_slug
+            }`}
             key={ind}
           >
             <a
