@@ -117,7 +117,7 @@ export default function CountryPageContent({
           variant={location.postContent.countryPage}
         />
       )}
-      {subpagesSlugs.length > 0 && !isDistrict ? (
+      {subpagesSlugs.length > 0 && !isDistrict && !subsubpage ? (
         <SubpagesLinks
           current={country?.subpage_slug}
           subpagesSlugs={subpagesSlugs}
