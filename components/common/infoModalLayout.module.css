@@ -1,0 +1,71 @@
+.modal_wrapper.ok {
+  --light: #edf7ed;
+  --medium: #80c683;
+  --hard: #5b8c5d;
+}
+.modal_wrapper.error {
+  --light: #fdeded;
+  --medium: #f37572;
+  --hard: #8c4442;
+}
+.modal_wrapper.info {
+  --light: #e5f6fd;
+  --medium: #4dc2f6;
+  --hard: #2c6f8c;
+}
+.modal_wrapper.warning {
+  --light: #fff4e5;
+  --medium: #ffb54b;
+  --hard: #8c6429;
+}
+
+.modal_wrapper {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 260px;
+  min-width: 140px;
+  padding: 15px 20px;
+  border: 1px solid var(--medium);
+  border-radius: var(--def-radius);
+  background-color: var(--light);
+  color: var(--hard);
+  font-size: 14px;
+  line-height: 18px;
+  overflow: hidden;
+  z-index: var(--info-modal-z);
+}
+
+.modal_wrapper p {
+  margin: 0 0 10px 0;
+}
+
+.line_wrapper {
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.line {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--medium);
+}
+
+.animation {
+  animation-name: slideInRight;
+  animation-duration: var(--animation-time);
+  animation-fill-mode: both;
+  animation-timing-function: ease-in;
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

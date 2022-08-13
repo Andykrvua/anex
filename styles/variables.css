@@ -46,6 +46,11 @@
     var(--secondary) 17.57%,
     #ff1821 112.75%
   ); /* скролбар красный градиент */
+  --green-linear: linear-gradient(
+    135deg,
+    #55b54a 0%,
+    #44cc35 100%
+  ); /* градиент для кнопки подтверждения */
   --scroll-default: rgba(0, 0, 0, 0.3); /* скролбар по -умолчанию */
 
   --btn-focus: 0 0 0 5px rgb(195 195 208/50%); /* оутлайн кнопок и ссылок */
@@ -73,6 +78,7 @@
   --main-form-popup-z: 10; /* z-index шапки */
   --burger-z: 15; /* z-index шапки */
   --modal-z: 99; /* z-index модального окна */
+  --info-modal-z: 100; /* z-index исчезающего модального окна */
 
   --title-fz: 20px;
   --title-lh: 23px;

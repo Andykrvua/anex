@@ -55,7 +55,7 @@
   "country.month_1": "Тури в ",
   "country.month_2": " по місяцям",
   "country.tours_from": "Тури з",
-  "country.from-kyyiv": "Києву",
+  "country.from-kyyiv": "Києва",
   "country.from-lviv": "Львову",
   "country.from-odesa": "Одеси",
   "country.from-kharkiv": "Харкова",
@@ -71,5 +71,17 @@
   "month.september": "Вересень",
   "month.october": "Жовтень",
   "month.november": "Листопад",
-  "month.december": "Грудень"
+  "month.december": "Грудень",
+  "certificates.br": "Подарунковий сертифікат",
+  "certificates.inp.cost.p": "Свій номінал",
+  "certificates.inp.name.p": "Ім'я",
+  "certificates.inp.phone.p": "Телефон",
+  "certificates.form.btn": "Замовити",
+  "certificates.form.btn.loading": "Відправляємо...",
+  "certificates.form.modal.cost.empty": "Вкажіть номінал",
+  "certificates.form.modal.cost.less": "Номінал не може бути менше 5 000",
+  "certificates.form.modal.name": "Вкажіть ім'я",
+  "certificates.form.modal.phone": "Перевірте номер",
+  "certificates.form.send.ok": "Отримано. Дякуємо!",
+  "certificates.form.send.fail": "Помилка відправки, спробуйте пізніше"
 }

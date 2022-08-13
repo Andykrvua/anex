@@ -71,5 +71,17 @@
   "month.september": "Сентябрь",
   "month.october": "Октябрь",
   "month.november": "Ноябрь",
-  "month.december": "Декабрь"
+  "month.december": "Декабрь",
+  "certificates.br": "Подарочный сертификат",
+  "certificates.inp.cost.p": "Свой номинал",
+  "certificates.inp.name.p": "Имя",
+  "certificates.inp.phone.p": "Телефон",
+  "certificates.form.btn": "Заказать",
+  "certificates.form.btn.loading": "Отправляем...",
+  "certificates.form.modal.cost.empty": "Укажите номинал",
+  "certificates.form.modal.cost.less": "Номинал не может быть меньше 5 000",
+  "certificates.form.modal.name": "Укажите имя",
+  "certificates.form.modal.phone": "Проверьте номер",
+  "certificates.form.send.ok": "Получено. Спасибо!",
+  "certificates.form.send.fail": "Ошибка отправки, попробуйте позже"
 }

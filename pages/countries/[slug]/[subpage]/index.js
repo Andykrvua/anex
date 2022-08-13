@@ -43,10 +43,9 @@ export default function CountrySubPage({
       })}`
     : countrySubpage.is_district
     ? countrySubpage.translations[0].br
-    : `
-    ${intl.formatMessage({
-      id: 'country.tours_from',
-    })} ${intl.formatMessage({
+    : `${intl.formatMessage({
+        id: 'country.tours_from',
+      })} ${intl.formatMessage({
         id: `country.${countrySubpage?.subpage_slug}`,
       })}`;
 

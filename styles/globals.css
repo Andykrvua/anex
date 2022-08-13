@@ -127,7 +127,7 @@ input[type='text'] {
   font-size: 16px;
   line-height: 18px;
   color: var(--primary);
-  -webkit-text-fill-color: var(--primary); /* ios disabled-input fix */
+  /* -webkit-text-fill-color: var(--primary); ios disabled-input fix */
   background-color: var(--white);
   background-image: linear-gradient(
     transparent,

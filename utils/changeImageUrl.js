@@ -16,6 +16,8 @@ export default function ChangeImageUrl(str, variant) {
 
   if (variant === location.postContent.countryPage) {
     content = Change(str.translations[0].post_content);
+  } else if (variant === 'default') {
+    content = Change(str);
   } else {
     content = Change(str.translations[0].content);
   }

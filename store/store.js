@@ -36,6 +36,12 @@ const useStore = create(
     setModal: (modal) => set({ modal }),
     burger: false,
     setBurger: (burger) => set({ burger }),
+    windowInfo: {
+      show: false,
+      type: null,
+      text: null,
+    },
+    setWindowInfo: (windowInfo) => set({ windowInfo }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -92,6 +98,9 @@ export const useSetModal = () => useStore((state) => state.setModal);
 
 export const useGetBurger = () => useStore((state) => state.burger);
 export const useSetBurger = () => useStore((state) => state.setBurger);
+
+export const useWindowInfo = () => useStore((state) => state.windowInfo);
+export const useSetWindowInfo = () => useStore((state) => state.setWindowInfo);
 
 // example
 // export const useLogin = () => useStore((state) => state.login);

@@ -1,0 +1,34 @@
+.form {
+  margin-top: 15px;
+}
+
+.form.loading input {
+  background-color: var(--bg);
+}
+
+.first_input {
+  position: relative;
+}
+
+.first_input img {
+  position: absolute;
+  bottom: 80px;
+  right: 62px;
+  pointer-events: none;
+}
+
+.form input {
+  margin-bottom: 20px;
+}
+
+.btn {
+  width: 100%;
+  margin: 0;
+  padding: 24px 0;
+}
+
+@media (min-width: 810px) {
+  .form {
+    margin-top: 50px;
+  }
+}

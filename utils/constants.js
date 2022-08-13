@@ -60,11 +60,26 @@ export const languages = {
   uk: 'uk',
 };
 
+// lang name from fetch
 export const languagesApi = {
   ru: 'ru-RU',
   uk: 'uk-UA',
 };
 
+// blog announce count
 export const blogApi = {
   announceLimit: 6,
+};
+
+// info modal styles
+export const infoModal = {
+  ok: 'ok',
+  error: 'error',
+  info: 'info',
+  warning: 'warning',
+};
+
+// info modal show time
+export const showTime = {
+  time: 3000,
 };

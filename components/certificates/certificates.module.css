@@ -1,0 +1,148 @@
+.title {
+  margin-top: var(--block-title-top-margin);
+}
+
+.title h1 {
+  margin-bottom: 15px;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.content_wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 33px;
+}
+
+.content_img_wrapper {
+  text-align: center;
+}
+
+.content_text {
+  padding: 20px;
+  border-radius: var(--def-radius);
+  background-color: var(--font-white);
+  box-shadow: var(--formfield-shadow);
+}
+
+.content_text_title {
+  margin: 0 0 10px 0;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.content_text_list {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  row-gap: 10px;
+  align-items: center;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.content_text_list p {
+  margin: 0;
+}
+
+.select_block_title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 23px;
+  font-weight: 700;
+}
+
+.cost_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.cost_item {
+  margin: 0 15px 15px 0;
+  padding: 20px;
+  border: 1px solid;
+  border-radius: var(--def-radius);
+  border-color: var(--line);
+  background-color: var(--white);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 700;
+  transition: color var(--base-transition), border-color var(--base-transition);
+}
+
+.cost_item.active {
+  border-color: #4ca642;
+  background: var(--green-linear);
+  color: var(--font-white);
+}
+
+.term_title {
+  margin: var(--block-title-top-margin) 0 15px;
+  font-size: 20px;
+  line-height: 23px;
+  font-weight: 700;
+}
+
+.term_content {
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.term_content p {
+  margin: 0 0 10px 0;
+}
+
+.term_content p:last-child {
+  margin: 0;
+}
+
+@media (min-width: 810px) {
+  .title h1 {
+    margin-bottom: 40px;
+  }
+
+  .content_wrapper {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 35px;
+  }
+
+  .content_text {
+    padding: 30px;
+  }
+
+  .content_text_title {
+    margin: 0 0 20px 0;
+    font-size: 17px;
+    line-height: 20px;
+  }
+
+  .content_text_list {
+    row-gap: 15px;
+    font-size: 16px;
+  }
+
+  .cost_wrapper {
+    margin-top: 35px;
+  }
+
+  .cost_item {
+    margin: 0 20px 20px 0;
+    font-size: 15px;
+    line-height: 15px;
+  }
+
+  .term_title {
+    font-size: 17px;
+    line-height: 20px;
+  }
+
+  .term_content {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}

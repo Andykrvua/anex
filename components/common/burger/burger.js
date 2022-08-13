@@ -29,6 +29,15 @@ export default function Burger() {
   }, [lang]);
 
   useEffect(() => {
+    if (getBurger) {
+      router.events.on('routeChangeComplete', closeBurgerHandler);
+    }
+    return () => {
+      router.events.off('routeChangeComplete');
+    };
+  }, [router.events, getBurger]);
+
+  useEffect(() => {
     const BODY = document.querySelector('body');
     const SCROLLABLE = document.querySelector('.burger_content_wrapper');
     if (getBurger) {
