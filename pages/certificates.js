@@ -7,6 +7,10 @@ import { useIntl } from 'react-intl';
 import changeImageUrl from 'utils/changeImageUrl';
 import { useState, useEffect } from 'react';
 
+// перезалити зображення
+// додати атрибути ширини та висоти, 5 зображень (3 в адмінці)
+// додати гіфт до кнопки відправки
+
 const CostItems = ({ items, value, setValue }) => {
   const [itemsActive, setItemsActive] = useState(items.map(() => false));
 
