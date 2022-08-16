@@ -9,7 +9,7 @@ export const links = {
   blog_category: '/blog/category',
   blog_country: '/blog/country',
   reviews: '/reviews',
-  certificates: '/certificates',
+  certificates: '/podarochnye-sertifikaty',
   contacts: '/contacts',
   telegram: '/',
   viber: 'viber://chat?number=0635914144',

@@ -22,9 +22,16 @@
 }
 
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   margin: 0;
   padding: 24px 0;
+}
+
+.btn img {
+  margin-right: 11px;
 }
 
 @media (min-width: 810px) {

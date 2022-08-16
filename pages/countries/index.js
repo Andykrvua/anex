@@ -39,9 +39,12 @@ export async function getStaticProps(context) {
   const loc = context.locale;
 
   const countryList = await getAPICountryList();
+
+  const data = 'translations.seo_block';
   const allCountriesPageSettings = await getPageSettings(
     'all_countries_page',
-    loc
+    loc,
+    data
   );
 
   if (countryList.errors || allCountriesPageSettings.errors) {

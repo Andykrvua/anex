@@ -21,6 +21,10 @@
   text-align: center;
 }
 
+.content_img_wrapper img {
+  display: inline-block;
+}
+
 .content_text {
   padding: 20px;
   border-radius: var(--def-radius);

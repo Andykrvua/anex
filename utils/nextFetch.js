@@ -1,5 +1,6 @@
 const item = {
   certificate: 'certificates',
+  lead: 'lead',
 };
 
 const req = async (url, data) => {
@@ -18,5 +19,11 @@ const req = async (url, data) => {
 export const createCertificateOrder = async (data) => {
   const url = `/api/createorder`;
   data.item = item.certificate;
+  return req(url, data);
+};
+
+export const createLead = async (data) => {
+  const url = `/api/createorder`;
+  data.item = item.lead;
   return req(url, data);
 };

@@ -83,5 +83,11 @@
   "certificates.form.modal.name": "Вкажіть ім'я",
   "certificates.form.modal.phone": "Перевірте номер",
   "certificates.form.send.ok": "Отримано. Дякуємо!",
-  "certificates.form.send.fail": "Помилка відправки, спробуйте пізніше"
+  "certificates.form.send.fail": "Помилка відправки, спробуйте пізніше",
+  "contacts.br": "Контакти",
+  "contacts.form.modal.text": "Ймовірно питання не може бути менше 10-ти символів, перевірте будь ласка",
+  "contacts.inp.text.p": "Ваше питання",
+  "contacts.form.checkbox": "погоджуюсь з умовами використання сайту та політикою конфіденційності",
+  "contacts.form.btn": "Надіслати",
+  "contacts.form.checkbox": "Ви повинні погодитись з умовами використання сайту та політикою конфіденційності"
 }

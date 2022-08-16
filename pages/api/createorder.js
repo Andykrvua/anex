@@ -21,11 +21,7 @@ const request = async (url = '', data = {}) => {
 export default async function handler(req, res) {
   const result = await request(
     `${process.env.API}${req.body.item}?access_token=${process.env.ACCESS_TOKEN}`,
-    {
-      name: req.body.name,
-      phone: req.body.phone,
-      cost: req.body.cost,
-    }
+    { ...req.body }
   );
 
   if (result.errors) {

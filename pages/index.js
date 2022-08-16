@@ -31,7 +31,8 @@ export async function getStaticProps(context) {
   const limit = 6;
   const postsList = await getLastPost(limit, loc);
   const popularCountry = await getPopularCountry(loc);
-  const mainPageSettings = await getPageSettings('main_page', loc);
+  const data = 'translations.seo_block';
+  const mainPageSettings = await getPageSettings('main_page', loc, data);
 
   if (postsList.errors || popularCountry.errors || mainPageSettings.errors) {
     // if incorrect request

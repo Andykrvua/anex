@@ -7,10 +7,6 @@ import { useIntl } from 'react-intl';
 import changeImageUrl from 'utils/changeImageUrl';
 import { useState, useEffect } from 'react';
 
-// перезалити зображення
-// додати атрибути ширини та висоти, 5 зображень (3 в адмінці)
-// додати гіфт до кнопки відправки
-
 const CostItems = ({ items, value, setValue }) => {
   const [itemsActive, setItemsActive] = useState(items.map(() => false));
 
@@ -50,10 +46,8 @@ const CostItems = ({ items, value, setValue }) => {
 
 export default function Certificates({ mainPageSettings }) {
   const intl = useIntl();
-
   const [value, setValue] = useState(null);
 
-  // console.log(mainPageSettings);
   const content_descr_text = changeImageUrl(
     mainPageSettings.translations[0].content_descr_text,
     'default'
@@ -74,7 +68,13 @@ export default function Certificates({ mainPageSettings }) {
         <div className={styles.content_wrapper}>
           <div className={styles.content_text_block}>
             <div className={styles.content_img_wrapper}>
-              <img src="/assets/img/certificates/wooman.png" alt="" />
+              <img
+                className="responsive"
+                src="/assets/img/certificates/wooman.png"
+                width={342}
+                height={287}
+                alt={intl.formatMessage({ id: 'certificates.br' })}
+              />
             </div>
             <div className={styles.content_text}>
               <p className={styles.content_text_title}>
@@ -119,8 +119,13 @@ export default function Certificates({ mainPageSettings }) {
 
 export async function getStaticProps(context) {
   const loc = context.locale;
-
-  const mainPageSettings = await getPageSettings('certificates_page', loc);
+  const data =
+    'translations.h1,translations.content_descr,translations.content_descr_text,translations.select_title,translations.term_title,translations.term_content';
+  const mainPageSettings = await getPageSettings(
+    'certificates_page',
+    loc,
+    data
+  );
 
   if (mainPageSettings.errors) {
     // if incorrect request

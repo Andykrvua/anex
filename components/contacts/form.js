@@ -1,55 +1,23 @@
 import styles from './form.module.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSetWindowInfo } from '/store/store';
 import { infoModal } from '/utils/constants';
-import { createCertificateOrder } from 'utils/nextFetch';
+import { createLead } from 'utils/nextFetch';
 import { useIntl } from 'react-intl';
+import Checkbox from 'components/common/checkbox/checkbox';
 
-export default function Form({ costChecked, setCostChecked }) {
+export default function Form() {
   const intl = useIntl();
   const setModalInfo = useSetWindowInfo();
 
-  const [customCost, setCustomCost] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [text, setText] = useState('');
+  const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (costChecked) {
-      setCustomCost(costChecked);
-    }
-  }, [costChecked]);
-
-  const costHandler = (e) => {
-    setCustomCost(e.target.value);
-    setCostChecked(null);
-  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    if (!Number(costChecked)) {
-      if (!Number(customCost) || customCost === '') {
-        const data = {
-          show: true,
-          type: infoModal.error,
-          text: intl.formatMessage({
-            id: 'certificates.form.modal.cost.empty',
-          }),
-        };
-        setModalInfo(data);
-        return;
-      }
-      if (customCost < 5000) {
-        const data = {
-          show: true,
-          type: infoModal.error,
-          text: intl.formatMessage({ id: 'certificates.form.modal.cost.less' }),
-        };
-        setModalInfo(data);
-        return;
-      }
-    }
 
     if (name.length < 2) {
       const data = {
@@ -79,11 +47,31 @@ export default function Form({ costChecked, setCostChecked }) {
       return;
     }
 
+    if (text.length < 10) {
+      const data = {
+        show: true,
+        type: infoModal.error,
+        text: intl.formatMessage({ id: 'contacts.form.modal.text' }),
+      };
+      setModalInfo(data);
+      return;
+    }
+
+    if (!check) {
+      const data = {
+        show: true,
+        type: infoModal.error,
+        text: intl.formatMessage({ id: 'contacts.form.checkbox' }),
+      };
+      setModalInfo(data);
+      return;
+    }
+
     setLoading(true);
-    const res = await createCertificateOrder({
+    const res = await createLead({
       name,
       phone,
-      cost: customCost,
+      text,
     });
 
     if (res.ok) {
@@ -95,10 +83,8 @@ export default function Form({ costChecked, setCostChecked }) {
           text: intl.formatMessage({ id: 'certificates.form.send.ok' }),
         };
         setModalInfo(data);
-        setCustomCost('');
         setName('');
         setPhone('');
-        setCostChecked(null);
       }, 2000);
       return;
     }
@@ -121,21 +107,6 @@ export default function Form({ costChecked, setCostChecked }) {
       }
       onSubmit={submitHandler}
     >
-      <div className={styles.first_input}>
-        <img
-          src="/assets/img/certificates/gift-box.png"
-          width={81}
-          height={57}
-          alt="gift"
-        />
-        <input
-          type="text"
-          placeholder={intl.formatMessage({ id: 'certificates.inp.cost.p' })}
-          onChange={(e) => costHandler(e)}
-          value={customCost}
-          disabled={loading}
-        />
-      </div>
       <input
         type="text"
         placeholder={intl.formatMessage({ id: 'certificates.inp.name.p' })}
@@ -150,16 +121,23 @@ export default function Form({ costChecked, setCostChecked }) {
         value={phone}
         disabled={loading}
       />
-      <button className={`${styles.btn} main_form_btn`} disabled={loading}>
-        <img
-          src="/assets/img/certificates/gift.svg"
-          alt=""
-          width={18}
-          height={19}
-        />
+      <textarea
+        type="text"
+        placeholder={intl.formatMessage({ id: 'contacts.inp.text.p' })}
+        onChange={(e) => setText(e.target.value)}
+        value={text}
+        disabled={loading}
+      />
+      <Checkbox
+        label={intl.formatMessage({ id: 'contacts.form.checkbox' })}
+        check={check}
+        setCheck={setCheck}
+      />
+
+      <button className={`${styles.btn} apply_btn`} disabled={loading}>
         {loading
           ? intl.formatMessage({ id: 'certificates.form.btn.loading' })
-          : intl.formatMessage({ id: 'certificates.form.btn' })}
+          : intl.formatMessage({ id: 'contacts.form.btn' })}
       </button>
     </form>
   );
