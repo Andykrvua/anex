@@ -252,6 +252,13 @@ header.header .header_container {
     display: block;
   }
 
+  .header_nav_container {
+    display: block;
+    margin: 0;
+    position: static;
+    width: auto;
+  }
+
   .header_nav_container.mobile {
     display: none;
   }
@@ -275,6 +282,10 @@ header.header .header_container {
   text-transform: uppercase;
   background-color: transparent;
   transition: color var(--base-transition);
+}
+
+.header_nav_link:active {
+  box-shadow: none;
 }
 
 .header_nav_link:hover {

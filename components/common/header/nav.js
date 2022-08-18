@@ -14,8 +14,12 @@ const NavContent = ({ setOffsetLeft = null }) => {
     if (setOffsetLeft !== null) {
       setOffsetLeft(() => elRef.current.offsetLeft);
     }
+    return () => {
+      if (setOffsetLeft !== null) {
+        setOffsetLeft(0);
+      }
+    };
   }, [windowSize]);
-
   return (
     <ul className="header_nav">
       <li ref={elRef}>
@@ -65,8 +69,8 @@ export default function Nav({ position, setOffsetLeft = null }) {
   return (
     <nav className={`header_nav_container ${position}`}>
       {position === location.nav.mobile ? (
-        <SimpleBar style={{ maxWidth: 600, height: 30 }} autoHide={false}>
-          <NavContent setOffsetLeft={setOffsetLeft} />
+        <SimpleBar style={{ maxWidth: 600, height: 35 }} autoHide={false}>
+          <NavContent />
         </SimpleBar>
       ) : (
         <NavContent setOffsetLeft={setOffsetLeft} />
