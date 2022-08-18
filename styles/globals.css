@@ -264,6 +264,7 @@ header.header .header_container {
 .header_nav {
   display: grid;
   grid-template-columns: repeat(5, max-content);
+  align-items: center;
 }
 
 .header_nav_link {
@@ -272,6 +273,7 @@ header.header .header_container {
   line-height: 19px;
   letter-spacing: var(--letter);
   text-transform: uppercase;
+  background-color: transparent;
   transition: color var(--base-transition);
 }
 
@@ -396,6 +398,7 @@ header.header .header_container {
   color: var(--font-white);
   background: var(--red-btn);
   box-shadow: var(--red-btn-shadow);
+  z-index: 1;
 }
 
 .apply_btn {

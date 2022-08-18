@@ -2,29 +2,45 @@ import Logo from './logo';
 import UserArea from './userArea';
 import BurgerBtn from './burgerBtn';
 import Nav from './nav';
-
-// import { useUser, useLogin, useAddToCart } from 'store/store';
+import { location } from 'utils/constants';
+import { useState, useEffect } from 'react';
 
 export default function Header() {
-  // const user = useUser();
-  // const login = useLogin();
-  // const addToCart = useAddToCart(15);
+  const [offsetLeft, setOffsetLeft] = useState(null);
+  const [test, setTest] = useState(null);
+
+  useEffect(() => {
+    setTest(offsetLeft);
+  }, [offsetLeft]);
+
   return (
-    <header className="header">
+    <header className="header" style={{ position: 'relative' }}>
       <div className="header_wrapper">
         <div className="container header_container">
           <BurgerBtn />
           <Logo />
-          <Nav location={'desktop'} />
+          <Nav position={location.nav.desktop} setOffsetLeft={setOffsetLeft} />
           <UserArea />
         </div>
-        {/* {user}
-        <button onClick={login}>log</button>
-      <button onClick={() => addToCart(15)}>Add to card</button> */}
       </div>
       <div className="container">
-        <Nav location={'mobile'} />
+        <Nav position={location.nav.mobile} />
       </div>
+      {/* <div
+        id="countrylist"
+        role="menu"
+        aria-labelledby="countrylistbutton"
+        style={{
+          position: 'absolute',
+          minWidth: '360px',
+          height: '300px',
+          left: `${test ? test : 30}px`,
+          top: test ? '81px' : 'calc(100% - 25px)',
+          backgroundColor: 'red',
+        }}
+      >
+        22uaaduduuuudddaassss
+      </div> */}
     </header>
   );
 }

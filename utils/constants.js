@@ -37,6 +37,10 @@ export const location = {
   postContent: {
     countryPage: 'countryPage',
   },
+  nav: {
+    desktop: 'desktop',
+    mobile: 'mobile',
+  },
 };
 
 // switch menu margin
