@@ -42,6 +42,8 @@ const useStore = create(
       text: null,
     },
     setWindowInfo: (windowInfo) => set({ windowInfo }),
+    test: '',
+    setTets: (test) => set({ test }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -101,6 +103,9 @@ export const useSetBurger = () => useStore((state) => state.setBurger);
 
 export const useWindowInfo = () => useStore((state) => state.windowInfo);
 export const useSetWindowInfo = () => useStore((state) => state.setWindowInfo);
+
+export const useGetTest = () => useStore((state) => state.test);
+export const useSetTest = () => useStore((state) => state.setTets);
 
 // example
 // export const useLogin = () => useStore((state) => state.login);

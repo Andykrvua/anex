@@ -89,8 +89,11 @@ export async function getStaticProps(context) {
 
   if (country.errors || countrySlugs.errors || subpagesSlugs.errors) {
     // if incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', country?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', countrySlugs?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', subpagesSlugs?.errors);
     throw new Error('TEST ERROR');
   }

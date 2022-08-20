@@ -3,17 +3,16 @@ import SimpleBar from 'simplebar-react';
 import { FormattedMessage as FM } from 'react-intl';
 import { links } from 'utils/links';
 import { location } from 'utils/constants';
-import { useRef, useEffect } from 'react';
-import getViewport from 'utils/getViewport';
+import { useRef, useEffect, memo } from 'react';
 
-const NavContent = ({ setOffsetLeft = null }) => {
-  const windowSize = getViewport();
+const NavContent = ({ setOffsetLeft = null, setIsOpen, windowSize = null }) => {
   const elRef = useRef();
 
   useEffect(() => {
     if (setOffsetLeft !== null) {
       setOffsetLeft(() => elRef.current.offsetLeft);
     }
+
     return () => {
       if (setOffsetLeft !== null) {
         setOffsetLeft(0);
@@ -29,6 +28,7 @@ const NavContent = ({ setOffsetLeft = null }) => {
           aria-haspopup="true"
           aria-controls="countrylist"
           expanded="false"
+          onClick={() => setIsOpen((prev) => !prev)}
         >
           <FM id="nav.country" />
         </button>
@@ -65,15 +65,25 @@ const NavContent = ({ setOffsetLeft = null }) => {
   );
 };
 
-export default function Nav({ position, setOffsetLeft = null }) {
+export default function Nav({
+  position,
+  setOffsetLeft = null,
+  setIsOpen,
+  windowSize = null,
+}) {
+  const MemoNavContent = memo(NavContent);
   return (
     <nav className={`header_nav_container ${position}`}>
       {position === location.nav.mobile ? (
         <SimpleBar style={{ maxWidth: 600, height: 35 }} autoHide={false}>
-          <NavContent />
+          <NavContent setIsOpen={setIsOpen} />
         </SimpleBar>
       ) : (
-        <NavContent setOffsetLeft={setOffsetLeft} />
+        <NavContent
+          setOffsetLeft={setOffsetLeft}
+          setIsOpen={setIsOpen}
+          windowSize={windowSize}
+        />
       )}
     </nav>
   );

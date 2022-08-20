@@ -93,8 +93,11 @@ export async function getStaticProps(context) {
 
   if (post.errors || postsList.errors || postsSlugs.errors) {
     // if server down and incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', post?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', postsList?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', postsSlugs?.errors);
     throw new Error('TEST ERROR');
     // return {

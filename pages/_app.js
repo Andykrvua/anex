@@ -5,13 +5,14 @@ import Layout from '../components/common/layout';
 import '../styles/globals.css';
 import uk from '../lang/uk.json';
 import ru from '../lang/ru.json';
+import { languagesApi } from 'utils/constants';
 
 const messages = {
   uk,
   ru,
 };
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps, navData }) {
   const { locale } = useRouter();
 
   return (
@@ -25,7 +26,7 @@ function App({ Component, pageProps }) {
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
       </Head>
-      <Layout>
+      <Layout navData={navData}>
         <Component {...pageProps} />
       </Layout>
     </IntlProvider>
@@ -33,3 +34,16 @@ function App({ Component, pageProps }) {
 }
 
 export default App;
+
+App.getInitialProps = async ({ Component, ctx }) => {
+  const loc = languagesApi[ctx.locale];
+  const navRes = await fetch(
+    `https://a-k.name/directus/items/api_countries?fields=slug,code,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${loc}`
+  );
+  const navData = await navRes.json();
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+  return { pageProps, navData };
+};

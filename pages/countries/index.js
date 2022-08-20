@@ -15,6 +15,7 @@ export default function Countries({
 }) {
   const intl = useIntl();
   if (allCountriesPageSettings.status === 'draft') {
+    /* eslint-disable-next-line */
     console.log('Page settings not set');
   }
 
@@ -49,7 +50,9 @@ export async function getStaticProps(context) {
 
   if (countryList.errors || allCountriesPageSettings.errors) {
     // if incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', countryList?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', allCountriesPageSettings?.errors);
     throw new Error('TEST ERROR');
   }

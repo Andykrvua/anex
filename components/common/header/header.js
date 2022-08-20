@@ -3,44 +3,20 @@ import UserArea from './userArea';
 import BurgerBtn from './burgerBtn';
 import Nav from './nav';
 import { location } from 'utils/constants';
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useRef } from 'react';
 import getViewport from 'utils/getViewport';
-
-const CountrySubMenu = ({ test, offsetLeft, setTest }) => {
-  useEffect(() => {
-    setTest(offsetLeft);
-
-    return () => {
-      setTest(offsetLeft);
-    };
-  }, [offsetLeft]);
-  return (
-    <div
-      id="countrylist"
-      role="menu"
-      aria-labelledby="countrylistbutton"
-      style={{
-        position: 'absolute',
-        minWidth: '360px',
-        height: '300px',
-        left: `${test ? test : 30}px`,
-        top: test ? '81px' : 'calc(100% - 25px)',
-        backgroundColor: 'red',
-      }}
-    >
-      22uaaduduuuudddaassss
-    </div>
-  );
-};
+import SubnavCountry from './subnavCountry';
+import { useGetTest, useSetTest } from '/store/store';
 
 export default function Header() {
+  // country submenu offset left
   const [offsetLeft, setOffsetLeft] = useState(null);
-  const [test, setTest] = useState(null);
+  // country submenu variant
   const [isShow, setIsShow] = useState(true);
+  // country submenu is open
   const [isOpen, setIsOpen] = useState(false);
-  console.log(isOpen);
-
   const windowSize = getViewport();
+  const get = useGetTest();
 
   useEffect(() => {
     if (!window.matchMedia('(min-width: 900px)').matches) {
@@ -49,7 +25,7 @@ export default function Header() {
       setIsShow(false);
     }
     return () => {
-      setIsShow(false);
+      setIsShow(true);
     };
   }, [windowSize]);
 
@@ -61,21 +37,29 @@ export default function Header() {
         <div className="container header_container">
           <MemoBurgerBtn />
           <Logo />
+          {get}
           {!isShow && (
             <Nav
               position={location.nav.desktop}
               setOffsetLeft={setOffsetLeft}
+              setIsOpen={setIsOpen}
+              windowSize={windowSize}
             />
           )}
           <MemoUserArea />
         </div>
       </div>
-      <div className="container">
-        {isShow && <Nav position={location.nav.mobile} />}
-      </div>
-      {isOpen && (
-        <CountrySubMenu test={test} offsetLeft={offsetLeft} setTest={setTest} />
+      {isShow && (
+        <div className="container">
+          <Nav position={location.nav.mobile} setIsOpen={setIsOpen} />
+        </div>
       )}
+
+      <SubnavCountry
+        offsetLeft={offsetLeft}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
     </header>
   );
 }

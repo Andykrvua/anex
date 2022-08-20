@@ -113,8 +113,11 @@ export async function getStaticProps(context) {
 
   if (country.errors || countrySubpage.errors || countrySubpages.errors) {
     // if incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', country?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', countrySubpage?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', countrySubpages?.errors);
     throw new Error('TEST ERROR');
   }

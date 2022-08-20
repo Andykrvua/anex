@@ -93,6 +93,7 @@ export async function getStaticPaths({ locales }) {
 
   if (objCountrySlug.errors) {
     // if server down and incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', objCountrySlug.errors);
     throw new Error('TEST ERROR');
     // return {
@@ -141,8 +142,11 @@ export async function getStaticProps(context) {
 
   if (postsList.errors || resCategoryList.errors || resCountryList.errors) {
     // if server down and incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', postsList?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', resCategoryList?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', resCountryList?.errors);
     throw new Error('TEST ERROR');
     // return {

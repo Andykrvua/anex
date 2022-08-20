@@ -275,6 +275,7 @@ header.header .header_container {
 }
 
 .header_nav_link {
+  display: inline-block;
   padding: 5px;
   font-size: 16px;
   line-height: 19px;

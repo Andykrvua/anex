@@ -1,0 +1,29 @@
+.subnavcountry_wrapper {
+  z-index: var(--submenu-z);
+  position: absolute;
+  min-width: 360px;
+  height: 300px;
+  transform-origin: top;
+  transition: transform var(--base-transition);
+}
+
+.subnavcountry {
+  border: 1px solid var(--line);
+  background-color: var(--white);
+  transition: transform var(--base-transition);
+}
+
+.subnavcountry_header {
+  display: flex;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--line);
+}
+
+.subnavcountry_content {
+  padding: 20px;
+}
+
+.subnavcountry .svg_btn {
+  margin: 5px;
+  padding: 0;
+}

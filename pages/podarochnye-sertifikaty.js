@@ -129,6 +129,7 @@ export async function getStaticProps(context) {
 
   if (mainPageSettings.errors) {
     // if incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', mainPageSettings?.errors);
     throw new Error('TEST ERROR');
   }

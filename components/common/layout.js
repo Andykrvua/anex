@@ -4,7 +4,8 @@ import Modal from './modal';
 import Burger from './burger/burger';
 import InfoModal from './infoModal';
 
-export default function Layout({ children }) {
+export default function Layout({ children, navData }) {
+  console.log(navData);
   return (
     <div className="wrapper">
       <InfoModal />

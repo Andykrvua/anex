@@ -7,8 +7,15 @@ import SeoBlock from '/components/common/pageSeoBlock/seoBlock.js';
 import { getLastPost, getPopularCountry, getPageSettings } from 'utils/fetch';
 import declension from 'utils/declension';
 import SeoHead from '/components/common/seoHead/seoHead.js';
+import { useGetTest, useSetTest } from '/store/store';
 
 export default function Home({ postsList, popularCountry, mainPageSettings }) {
+  // const get = useGetTest();
+  // console.log(get);
+  const set = useSetTest();
+  set('gggg2');
+  // const get = useGetTest();
+  // console.log(get);
   return (
     <>
       <SeoHead content={mainPageSettings} />
@@ -36,8 +43,11 @@ export async function getStaticProps(context) {
 
   if (postsList.errors || popularCountry.errors || mainPageSettings.errors) {
     // if incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', postsList?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', popularCountry?.errors);
+    /* eslint-disable-next-line */
     console.log('error: ', mainPageSettings?.errors);
     throw new Error('TEST ERROR');
   }
