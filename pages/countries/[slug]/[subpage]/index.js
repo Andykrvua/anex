@@ -41,7 +41,7 @@ export default function CountrySubPage({
     ? `${intl.formatMessage({
         id: `month.${countrySubpage?.subpage_slug}`,
       })}`
-    : countrySubpage.is_district
+    : countrySubpage?.is_district
     ? countrySubpage.translations[0]?.br
     : `${intl.formatMessage({
         id: 'country.tours_from',
