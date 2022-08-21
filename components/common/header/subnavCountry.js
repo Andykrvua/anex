@@ -3,6 +3,8 @@ import styles from './subnavCountry.module.css';
 import CloseSvg from '../closeSvg';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
+import SimpleBar from 'simplebar-react';
+import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
 function useOutsideClick(ref, setIsOpen, isOpen, el) {
   useEffect(() => {
@@ -31,9 +33,19 @@ function useOutsideClick(ref, setIsOpen, isOpen, el) {
   }, [isOpen]);
 }
 
-export default function SubnavCountry({ offsetLeft, isOpen, setIsOpen }) {
+export default function SubnavCountry({
+  offsetLeft,
+  isOpen,
+  setIsOpen,
+  navData,
+  windowSize,
+}) {
   const [offset, setOffest] = useState(null);
   const [transition, setTransition] = useState('scaleY(0)');
+  const [width, setWidth] = useState(null);
+  const elRef = useRef();
+
+  const scrollableRef = useRef(null);
   useEffect(() => {
     setOffest(offsetLeft);
 
@@ -44,17 +56,40 @@ export default function SubnavCountry({ offsetLeft, isOpen, setIsOpen }) {
 
   useEffect(() => {
     if (isOpen) {
+      setWidth(windowSize.width);
       setTimeout(() => {
         setTransition('scaleY(1)');
       }, 0);
+      if (windowSize.width < 810) {
+        lock(scrollableRef.current);
+      } else {
+        unlock(document.querySelector('body'));
+      }
+    } else {
+      unlock(document.querySelector('body'));
     }
 
     return () => {
       setTransition('scaleY(0)');
+      clearBodyLocks();
     };
   }, [isOpen]);
 
-  const elRef = useRef();
+  useEffect(() => {
+    if (isOpen) {
+      setWidth(windowSize.width);
+      if (windowSize.width < 810) {
+        lock(scrollableRef.current);
+      } else {
+        unlock(document.querySelector('body'));
+      }
+    }
+
+    return () => {
+      setWidth(null);
+      clearBodyLocks();
+    };
+  }, [windowSize]);
 
   useOutsideClick(elRef, setIsOpen, isOpen, '.subnavcountry_wrapper');
 
@@ -64,7 +99,11 @@ export default function SubnavCountry({ offsetLeft, isOpen, setIsOpen }) {
       id="countrylist"
       role="menu"
       aria-labelledby="countrylistbutton"
-      className={`${styles.subnavcountry_wrapper} subnavcountry_wrapper`}
+      className={
+        isOpen
+          ? `${styles.subnavcountry_wrapper} ${styles.open} subnavcountry_wrapper`
+          : `${styles.subnavcountry_wrapper} subnavcountry_wrapper`
+      }
       style={{
         left: `${offset ? offset : 30}px`,
         top: offset ? '80px' : 'calc(100% - 25px)',
@@ -81,8 +120,26 @@ export default function SubnavCountry({ offsetLeft, isOpen, setIsOpen }) {
             <CloseSvg />
           </button>
         </header>
-        <div className={styles.subnavcountry_content}>
-          <CountryList variant={countryListVariants.getSearch} />
+        <div className={styles.subnavcountry_content} ref={scrollableRef}>
+          {width >= 810 ? (
+            <SimpleBar
+              style={{ maxHeight: '610px', padding: '20px' }}
+              autoHide={true}
+              className="mobile_default"
+            >
+              <CountryList
+                variant={countryListVariants.getNavMenu}
+                data={navData}
+                setIsOpen={setIsOpen}
+              />
+            </SimpleBar>
+          ) : (
+            <CountryList
+              variant={countryListVariants.getNavMenu}
+              data={navData}
+              setIsOpen={setIsOpen}
+            />
+          )}
         </div>
       </div>
     </div>

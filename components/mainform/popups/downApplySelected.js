@@ -8,7 +8,7 @@ export default function DownApplySelected({
   selectDownHandler,
 }) {
   const selected = () => {
-    selectDownHandler(item.name);
+    selectDownHandler(item.translations[0].name);
   };
 
   const closeDownApplySelected = () => {
@@ -22,9 +22,16 @@ export default function DownApplySelected({
         data-code={item.code}
       >
         <div className={styles.country_item_img}>
-          <img src={item.img} alt={item.name} width="60" height="43" />
+          <img
+            src={`/assets/img/svg/flags/${item.code}.svg`}
+            alt={item.translations[0].name}
+            width="60"
+            height="43"
+          />
         </div>
-        <div className={styles.country_item_name}>{item.name}</div>
+        <div className={styles.country_item_name}>
+          {item.translations[0].name}
+        </div>
         <div className={styles.country_item_price}>{item.price}</div>
       </div>
       <button

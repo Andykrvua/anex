@@ -3,12 +3,11 @@ import UserArea from './userArea';
 import BurgerBtn from './burgerBtn';
 import Nav from './nav';
 import { location } from 'utils/constants';
-import { useState, useEffect, memo, useRef } from 'react';
+import { useState, useEffect, memo } from 'react';
 import getViewport from 'utils/getViewport';
 import SubnavCountry from './subnavCountry';
-import { useGetTest, useSetTest } from '/store/store';
 
-export default function Header() {
+export default function Header({ navData }) {
   // country submenu offset left
   const [offsetLeft, setOffsetLeft] = useState(null);
   // country submenu variant
@@ -16,7 +15,6 @@ export default function Header() {
   // country submenu is open
   const [isOpen, setIsOpen] = useState(false);
   const windowSize = getViewport();
-  const get = useGetTest();
 
   useEffect(() => {
     if (!window.matchMedia('(min-width: 900px)').matches) {
@@ -37,7 +35,6 @@ export default function Header() {
         <div className="container header_container">
           <MemoBurgerBtn />
           <Logo />
-          {get}
           {!isShow && (
             <Nav
               position={location.nav.desktop}
@@ -59,6 +56,8 @@ export default function Header() {
         offsetLeft={offsetLeft}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        navData={navData}
+        windowSize={windowSize}
       />
     </header>
   );

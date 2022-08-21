@@ -1,0 +1,19 @@
+.links_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: var(--block-title-top-margin);
+}
+
+.links_item {
+  margin: 0 15px 15px 0;
+  padding: 8px;
+  border: solid 1px var(--line);
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 16px;
+  background-color: var(--white);
+}
+
+.links_item:hover {
+  text-decoration: underline;
+}

@@ -2,8 +2,7 @@
 export const countryListVariants = {
   getSearch: 'getSearch',
   getSearchPopular: 'getSearchPopular',
-  getCountryPage: 'getCountryPage',
-  getCountryHotels: 'getCountryHotels',
+  getNavMenu: 'getNavMenu',
 };
 
 // base css transition
@@ -36,6 +35,7 @@ export const location = {
   },
   postContent: {
     countryPage: 'countryPage',
+    tourPage: 'tourPage',
   },
   nav: {
     desktop: 'desktop',

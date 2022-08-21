@@ -3,7 +3,7 @@ import SimpleBar from 'simplebar-react';
 import { FormattedMessage as FM } from 'react-intl';
 import { links } from 'utils/links';
 import { location } from 'utils/constants';
-import { useRef, useEffect, memo } from 'react';
+import { useRef, useEffect } from 'react';
 
 const NavContent = ({ setOffsetLeft = null, setIsOpen, windowSize = null }) => {
   const elRef = useRef();
@@ -71,7 +71,6 @@ export default function Nav({
   setIsOpen,
   windowSize = null,
 }) {
-  const MemoNavContent = memo(NavContent);
   return (
     <nav className={`header_nav_container ${position}`}>
       {position === location.nav.mobile ? (

@@ -83,7 +83,6 @@ export const getAPICountryList = async () => {
 
 export const getPageSettings = async (item, loc, data) => {
   const locale = languagesApi[loc];
-  // const url = `${item}?fields=*,translations.languages_code,translations.seo_block,translations.description,translations.title,translations.h1,translations.content_descr,translations.content_descr_text,translations.select_title,translations.term_title,translations.term_content&filter[status][_eq]=published&deep[translations][_filter][languages_code][_eq]=${locale}`;
   const url = `${item}?fields=*,${data},translations.languages_code,translations.description,translations.title&filter[status][_eq]=published&deep[translations][_filter][languages_code][_eq]=${locale}`;
   return req(url);
 };
@@ -135,5 +134,17 @@ export const getCountrySubSubpageSlug = async (slug, subpage, loc) => {
 
 export const getCountrySubpagesSlugs = async (slug) => {
   const url = `api_countries_subpage?fields=country_slug.slug,img,subsubpage,subsubpage_slug,status,is_district,subpage_slug,temp_from,temp_to,translations.languages_code,translations.name&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
+  return req(url);
+};
+
+export const getAllCountriesForNav = async (loc) => {
+  const locale = languagesApi[loc];
+  const url = `api_countries?fields=slug,code,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published&sort[translations.name]=sort`;
+  return req(url);
+};
+
+export const getAllToursTextPages = async (loc = languagesApi.ru) => {
+  const locale = languagesApi[loc];
+  const url = `tours_text?fields=slug,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
   return req(url);
 };

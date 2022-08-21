@@ -1,7 +1,7 @@
 import styles from 'components/contacts/contacts.module.css';
 import Form from 'components/contacts/form';
 import { getPageSettings } from 'utils/fetch';
-import SeoHead from '/components/common/seoHead/seoHead.js';
+import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import { useIntl } from 'react-intl';
 import { useRef, useState, useEffect } from 'react';

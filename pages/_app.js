@@ -5,7 +5,7 @@ import Layout from '../components/common/layout';
 import '../styles/globals.css';
 import uk from '../lang/uk.json';
 import ru from '../lang/ru.json';
-import { languagesApi } from 'utils/constants';
+import { getAllCountriesForNav } from 'utils/fetch';
 
 const messages = {
   uk,
@@ -36,11 +36,16 @@ function App({ Component, pageProps, navData }) {
 export default App;
 
 App.getInitialProps = async ({ Component, ctx }) => {
-  const loc = languagesApi[ctx.locale];
-  const navRes = await fetch(
-    `https://a-k.name/directus/items/api_countries?fields=slug,code,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${loc}`
-  );
-  const navData = await navRes.json();
+  const loc = ctx.locale;
+  const resData = await getAllCountriesForNav(loc);
+  let navData;
+  if (resData.errors || resData.data.length === 0) {
+    /* eslint-disable-next-line */
+    console.log(resData?.errors);
+    navData = null;
+  } else {
+    navData = resData.data;
+  }
   let pageProps = {};
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, memo } from 'react';
 import dynamic from 'next/dynamic';
 import useOutsideClick from '../../../utils/clickOutside';
 import { allCountry } from '../../../utils/allCountry';
@@ -51,6 +51,8 @@ const DownApplySelected = dynamic(
     },
   }
 );
+
+const MemoCountryList = memo(CountryList);
 
 export default function Down({
   setModalIsOpen,
@@ -129,9 +131,9 @@ export default function Down({
       (item) => item.code === e.target.closest('.country_item').dataset.code
     );
     if (size.width >= maxWidth) {
-      selectDownHandler(selected.name);
+      selectDownHandler(selected.translations[0].name);
     } else {
-      setCountry(selected.name);
+      setCountry(selected.translations[0].name);
       setCountryData(selected);
     }
   };
@@ -167,14 +169,14 @@ export default function Down({
           <h5 className={styles.down_content_title}>
             <FM id="mainform.down.t2" />
           </h5>
-          <CountryList
+          <MemoCountryList
             variant={countryListVariants.getSearchPopular}
             clickCountryItem={clickCountryItem}
           />
           <h5 className={styles.down_content_title}>
             <FM id="mainform.down.t3" /> (31)
           </h5>
-          <CountryList
+          <MemoCountryList
             variant={countryListVariants.getSearch}
             clickCountryItem={clickCountryItem}
           />

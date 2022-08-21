@@ -40,11 +40,6 @@
   opacity: 0;
 }
 
-.checkbox_container:hover input ~ .checkmark svg {
-  stroke: var(--primary);
-  opacity: 1;
-}
-
 .checkbox_container input:checked ~ .checkmark {
   background-color: var(--primary);
 }

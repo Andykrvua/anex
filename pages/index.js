@@ -7,15 +7,8 @@ import SeoBlock from '/components/common/pageSeoBlock/seoBlock.js';
 import { getLastPost, getPopularCountry, getPageSettings } from 'utils/fetch';
 import declension from 'utils/declension';
 import SeoHead from '/components/common/seoHead/seoHead.js';
-import { useGetTest, useSetTest } from '/store/store';
 
 export default function Home({ postsList, popularCountry, mainPageSettings }) {
-  // const get = useGetTest();
-  // console.log(get);
-  const set = useSetTest();
-  set('gggg2');
-  // const get = useGetTest();
-  // console.log(get);
   return (
     <>
       <SeoHead content={mainPageSettings} />
