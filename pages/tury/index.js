@@ -8,7 +8,6 @@ import { location } from 'utils/constants';
 import LinksBlock from 'components/tours/tours-text/links';
 
 export default function Tours({ pageSettings, allLinks }) {
-  console.log(pageSettings);
   const intl = useIntl();
   const br_arr = [{ title: intl.formatMessage({ id: 'tour.br' }) }];
   return (

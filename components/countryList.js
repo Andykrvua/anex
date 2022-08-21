@@ -12,7 +12,6 @@ const List = ({
   variant = null,
   setIsOpen = null,
 }) => {
-  console.log(`render countryList ${variant}`);
   const countryData = data ? data : allCountry;
 
   const Item = ({ children, code, slug, variant }) => {
