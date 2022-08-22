@@ -1,32 +1,54 @@
 import MainForm from '/components/mainform/mainForm.js';
-import { getPageSettings, getAllToursTextPages } from 'utils/fetch';
+import { getAllToursTextPages, getToursTextPage } from 'utils/fetch';
 import SeoHead from '/components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import { useIntl } from 'react-intl';
 import Post from '/components/blog/post.js';
 import { location } from 'utils/constants';
 import LinksBlock from 'components/tours/tours-text/links';
+import { links } from 'utils/links';
+import { useRouter } from 'next/router';
+import DefaultErrorPage from 'next/error';
 
-export default function Tours({ pageSettings, allLinks }) {
-  // console.log(allLinks);
+export default function Tours({ toursTextPage, allLinks, slug }) {
   const intl = useIntl();
-  const br_arr = [{ title: intl.formatMessage({ id: 'tour.br' }) }];
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return (
+      <div className="container">
+        <div>loading...</div>
+      </div>
+    );
+  }
+
+  // all false if country slug not found
+  const searchSlug = allLinks.map((item) => item.slug === slug);
+
+  const br_arr = [
+    { url: links.tours, title: intl.formatMessage({ id: 'tour.br' }) },
+    { title: toursTextPage?.translations[0].name },
+  ];
+
   return (
     <>
-      <SeoHead content={pageSettings} />
-      <div className="container">
-        <Breadcrumbs data={br_arr} beforeMainFrom />
-        <MainForm />
-        {/* <LinksBlock allLinks={allLinks} />
-        <Post variant={location.postContent.tourPage} post={pageSettings} /> */}
-      </div>
+      <SeoHead content={toursTextPage} />
+      {!router.isFallback && !searchSlug.includes(true) ? (
+        <DefaultErrorPage statusCode={404} />
+      ) : (
+        <div className="container">
+          <Breadcrumbs data={br_arr} beforeMainFrom />
+          <MainForm />
+          <LinksBlock allLinks={allLinks} />
+          <Post variant={location.postContent.tourPage} post={toursTextPage} />
+        </div>
+      )}
     </>
   );
 }
 
 export async function getStaticPaths({ locales }) {
   const allLinks = await getAllToursTextPages();
-  console.log(allLinks);
 
   const paths = [];
   allLinks.data.map((item) => {
@@ -37,7 +59,6 @@ export async function getStaticPaths({ locales }) {
       });
     });
   });
-  // console.log(paths);
   return { paths, fallback: true };
 }
 
@@ -45,22 +66,22 @@ export async function getStaticProps(context) {
   const loc = context.locale;
   const slug = context.params.slug;
 
-  const data = 'translations.content';
-  const pageSettings = await getPageSettings('alltours_tex_page', loc, data);
+  const toursTextPage = await getToursTextPage(loc, slug);
   const allLinks = await getAllToursTextPages(loc);
-  if (allLinks.errors || pageSettings.errors) {
+  if (allLinks.errors || toursTextPage.errors) {
     // if incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', allLinks?.errors);
     /* eslint-disable-next-line */
-    console.log('error: ', pageSettings?.errors);
+    console.log('error: ', toursTextPage?.errors);
     throw new Error('TEST ERROR');
   }
 
   return {
     props: {
-      pageSettings: pageSettings.data,
+      toursTextPage: toursTextPage.data[0] || null,
       allLinks: allLinks.data,
+      slug,
     },
     revalidate: 30,
   };

@@ -148,3 +148,9 @@ export const getAllToursTextPages = async (loc = languagesApi.ru) => {
   const url = `tours_text?fields=slug,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
   return req(url);
 };
+
+export const getToursTextPage = async (loc, slug) => {
+  const locale = languagesApi[loc];
+  const url = `tours_text?fields=slug,translations.languages_code,translations.name,translations.title,translations.description,translations.content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}&filter[status]=published`;
+  return req(url);
+};
