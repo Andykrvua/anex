@@ -17,8 +17,8 @@ export default function Tours({ pageSettings, allLinks }) {
       <div className="container">
         <Breadcrumbs data={br_arr} beforeMainFrom />
         <MainForm />
-        <LinksBlock allLinks={allLinks} />
-        <Post variant={location.postContent.tourPage} post={pageSettings} />
+        {/* <LinksBlock allLinks={allLinks} />
+        <Post variant={location.postContent.tourPage} post={pageSettings} /> */}
       </div>
     </>
   );
@@ -26,6 +26,7 @@ export default function Tours({ pageSettings, allLinks }) {
 
 export async function getStaticPaths({ locales }) {
   const allLinks = await getAllToursTextPages();
+  console.log(allLinks);
 
   const paths = [];
   allLinks.data.map((item) => {
