@@ -1,10 +1,10 @@
-import { useState, useEffect, memo, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './subnavCountry.module.css';
 import CloseSvg from '../closeSvg';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
 import SimpleBar from 'simplebar-react';
-import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
+import { lock, unlock } from 'tua-body-scroll-lock';
 
 function useOutsideClick(ref, setIsOpen, isOpen, el) {
   useEffect(() => {
@@ -46,6 +46,7 @@ export default function SubnavCountry({
   const elRef = useRef();
 
   const scrollableRef = useRef(null);
+
   useEffect(() => {
     setOffest(offsetLeft);
 
@@ -71,24 +72,18 @@ export default function SubnavCountry({
 
     return () => {
       setTransition('scaleY(0)');
-      clearBodyLocks();
     };
   }, [isOpen]);
 
   useEffect(() => {
+    setWidth(windowSize.width);
     if (isOpen) {
-      setWidth(windowSize.width);
       if (windowSize.width < 810) {
         lock(scrollableRef.current);
       } else {
         unlock(document.querySelector('body'));
       }
     }
-
-    return () => {
-      setWidth(null);
-      clearBodyLocks();
-    };
   }, [windowSize]);
 
   useOutsideClick(elRef, setIsOpen, isOpen, '.subnavcountry_wrapper');
@@ -108,6 +103,7 @@ export default function SubnavCountry({
         left: `${offset ? offset : 30}px`,
         top: offset ? '80px' : 'calc(100% - 25px)',
         transform: `${transition}`,
+        display: `${isOpen ? 'block' : 'none'}`,
       }}
     >
       <div className={styles.subnavcountry}>

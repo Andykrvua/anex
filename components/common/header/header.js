@@ -26,14 +26,11 @@ export default function Header({ navData }) {
       setIsShow(true);
     };
   }, [windowSize]);
-
-  const MemoBurgerBtn = memo(BurgerBtn);
-  const MemoUserArea = memo(UserArea);
   return (
     <header className="header" style={{ position: 'relative' }}>
       <div className="header_wrapper">
         <div className="container header_container">
-          <MemoBurgerBtn />
+          <BurgerBtn />
           <Logo />
           {!isShow && (
             <Nav
@@ -43,7 +40,7 @@ export default function Header({ navData }) {
               windowSize={windowSize}
             />
           )}
-          <MemoUserArea />
+          <UserArea />
         </div>
       </div>
       {isShow && (

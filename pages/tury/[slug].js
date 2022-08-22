@@ -7,7 +7,8 @@ import Post from '/components/blog/post.js';
 import { location } from 'utils/constants';
 import LinksBlock from 'components/tours/tours-text/links';
 
-export default function Tour({ pageSettings, allLinks }) {
+export default function Tours({ pageSettings, allLinks }) {
+  // console.log(allLinks);
   const intl = useIntl();
   const br_arr = [{ title: intl.formatMessage({ id: 'tour.br' }) }];
   return (
@@ -23,8 +24,25 @@ export default function Tour({ pageSettings, allLinks }) {
   );
 }
 
+export async function getStaticPaths({ locales }) {
+  const allLinks = await getAllToursTextPages();
+
+  const paths = [];
+  allLinks.data.map((item) => {
+    return locales.map((locale) => {
+      return paths.push({
+        params: { slug: item.slug },
+        locale,
+      });
+    });
+  });
+  // console.log(paths);
+  return { paths, fallback: true };
+}
+
 export async function getStaticProps(context) {
   const loc = context.locale;
+  const slug = context.params.slug;
 
   const data = 'translations.content';
   const pageSettings = await getPageSettings('alltours_tex_page', loc, data);
