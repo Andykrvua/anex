@@ -8,7 +8,7 @@ export const links = {
   blog: '/blog',
   blog_category: '/blog/category',
   blog_country: '/blog/country',
-  reviews: '/reviews',
+  reviews: '/vidhuky',
   certificates: '/podarochnye-sertifikaty',
   contacts: '/contacts',
   telegram: '/',

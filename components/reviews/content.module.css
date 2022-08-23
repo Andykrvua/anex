@@ -1,0 +1,26 @@
+.review {
+  background-color: var(--font-white);
+  border-radius: var(--def-radius);
+  box-shadow: var(--formfield-shadow);
+  margin-bottom: 20px;
+}
+
+.review:last-child {
+  margin-bottom: 0px;
+}
+
+.review_header {
+  height: 56px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.review_header span {
+  margin-right: auto;
+}
+
+.review_content {
+  padding: 20px;
+}
