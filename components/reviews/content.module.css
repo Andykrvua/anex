@@ -15,12 +15,43 @@
   display: flex;
   align-items: center;
   padding: 0 20px;
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--primary-light);
+}
+
+.review_header img {
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.review_header p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 10px;
 }
 
 .review_header span {
-  margin-right: auto;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .review_content {
   padding: 20px;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+@media (min-width: 810px) {
+  .review_header img,
+  .review_header p {
+    margin-right: 25px;
+  }
+
+  .review_content {
+    font-size: 16px;
+  }
 }

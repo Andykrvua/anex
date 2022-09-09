@@ -25,6 +25,7 @@ export default function CountrySubSubPage({
   countrySubSubpage,
   countrySubpages,
 }) {
+
   const intl = useIntl();
   const router = useRouter();
 
@@ -109,9 +110,9 @@ export async function getStaticProps(context) {
 
   const country = await getCountryFromSlug(slug, loc);
   const countrySubpage = await getCountrySubpageSlug(slug, subpage, loc);
-  const countrySubSubpage = await getCountrySubSubpageSlug(slug, subpage, loc);
+  const countrySubSubpage = await getCountrySubSubpageSlug(slug, subpage, subsubpage, loc);
   const countrySubpages = await getCountrySubpagesSlugs(slug);
-
+  
   if (country.errors || countrySubpage.errors || countrySubpages.errors) {
     // if incorrect request
     /* eslint-disable-next-line */

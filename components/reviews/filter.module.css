@@ -1,0 +1,37 @@
+.filter_wrapper {
+  margin: 20px 0;
+  display: flex;
+}
+
+.filter_wrapper a {
+  margin-right: 5px;
+  padding: 13px 15px 12px 15px;
+  font-size: 15px;
+  line-height: 15px;
+  background-color: var(--line);
+  border-radius: var(--def-radius);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.filter_wrapper a.disabled {
+  color: var(--placeholder);
+}
+
+.filter_wrapper a img {
+  margin-right: 10px;
+}
+
+.filter_wrapper a:last-child {
+  margin-right: 0;
+}
+
+@media (min-width: 810px) {
+  .filter_wrapper {
+    justify-content: right;
+  }
+  .filter_wrapper a {
+    margin-right: 25px;
+  }
+}

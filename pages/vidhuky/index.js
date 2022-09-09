@@ -7,22 +7,12 @@ import { getPostsList, getCategories, getCountries } from 'utils/fetch';
 import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import Pagination from 'components/blog/pagination';
-import ReviewHeader from 'components/reviews/header';
+import ReviewsHeader from 'components/reviews/header';
 import ReviewsContent from 'components/reviews/content';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { SessionProvider } from 'next-auth/react';
+import Auth from 'components/reviews/auth';
 
 export default function Reviews({ data }) {
-  const { data: session, status } = useSession();
-  const loading = status === 'loading';
-  console.log(session);
-  const handleSignin = (e) => {
-    e.preventDefault();
-    signIn();
-  };
-  const handleSignout = (e) => {
-    e.preventDefault();
-    signOut();
-  };
   const intl = useIntl();
   console.log(data);
 
@@ -37,37 +27,12 @@ export default function Reviews({ data }) {
       <SeoHead content={null} />
       <div className="container">
         <Breadcrumbs data={br_arr} />
-        {session && (
-          <a href="#" onClick={handleSignout} className="btn-signin">
-            Sign out
-          </a>
-        )}
-        {!session && (
-          <a href="#" onClick={handleSignin} className="btn-signin">
-            Sign in
-          </a>
-        )}
-        {loading && <div>Loading...</div>}
-        {session && (
-          <>
-            <p style={{ marginBottom: '10px' }}>
-              Welcome, {session.user.name ?? session.user.email}
-            </p>
-            <br />
-            <img
-              src={session.user.image}
-              alt=""
-              style={{ height: '26px', width: '26px' }}
-              referrerPolicy="no-referrer"
-            />
-          </>
-        )}
-        {!session && (
-          <>
-            <p>Please Sign in</p>
-          </>
-        )}
-        <ReviewHeader />
+        <SessionProvider>
+          <Auth />
+        </SessionProvider>
+
+        <ReviewsHeader />
+
         <ReviewsContent data={data.data} />
         <Pagination
           curr={1}
