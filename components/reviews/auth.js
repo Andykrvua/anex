@@ -1,9 +1,12 @@
 import { useSession, signIn, signOut } from 'next-auth/react';
+import ReviewsPostControl from 'components/reviews/postControl';
+import styles from './auth.module.css';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default function Auth() {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
-  console.log(session);
+
   const handleSignin = (e) => {
     e.preventDefault();
     signIn();
@@ -15,34 +18,33 @@ export default function Auth() {
   return (
     <div>
       {session && (
-        <a href="#" onClick={handleSignout} className="btn-signin">
-          Sign out
-        </a>
-      )}
-      {!session && (
-        <a href="#" onClick={handleSignin} className="btn-signin">
-          Sign in
-        </a>
-      )}
-      {loading && <div>Loading...</div>}
-      {session && (
         <>
-          <p style={{ marginBottom: '10px' }}>
-            Welcome, {session.user.name ?? session.user.email}
+          <p className={styles.credentials}>
+            <img
+              src={session.user.image}
+              alt="avatar"
+              referrerPolicy="no-referrer"
+            />
+            <span className={styles.name}>
+              {session.user.name ?? session.user.email}
+            </span>
+            <a href="#" onClick={handleSignout} className={styles.logout}>
+              <FM id="common.logout" />
+            </a>
           </p>
-          <br />
-          <img
-            src={session.user.image}
-            alt=""
-            style={{ height: '26px', width: '26px' }}
-            referrerPolicy="no-referrer"
-          />
+
+          <ReviewsPostControl name={session.user.name ?? session.user.email} />
         </>
       )}
       {!session && (
-        <>
-          <p>Please Sign in</p>
-        </>
+        <a href="#" onClick={handleSignin} className={styles.login}>
+          <FM id="reviews.leave-feedback" />
+        </a>
+      )}
+      {loading && (
+        <div>
+          <FM id="common.loading" />
+        </div>
       )}
     </div>
   );

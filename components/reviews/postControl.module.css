@@ -1,0 +1,95 @@
+.title {
+  margin: var(--block-title-top-margin) 0 var(--title-bottom);
+  font-size: 20px;
+  line-height: 23px;
+  font-weight: 700;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.form textarea {
+  max-width: 720px;
+}
+
+.form.loading textarea {
+  background-color: var(--bg);
+}
+
+.addimage {
+  display: flex;
+  align-items: center;
+  margin: 11px 0 15px;
+  font-size: 15px;
+  line-height: 18px;
+  text-decoration: underline;
+  background-color: transparent;
+}
+
+.addimage img {
+  margin-right: 5px;
+}
+
+.imagespreview_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image_wrapper {
+  position: relative;
+}
+
+.img {
+  width: 75px;
+  height: 75px;
+  margin-top: 11px;
+  margin-right: 20px;
+  object-fit: cover;
+  border-radius: var(--def-radius);
+}
+
+.close {
+  --margin: 5px;
+  position: absolute;
+  border-radius: 4px;
+  top: 0;
+  right: 0;
+  font-size: 0;
+  margin-top: calc(11px + var(--margin));
+  margin-right: calc(20px + var(--margin));
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+@media (hover: hover) {
+  .close:hover svg {
+    stroke: #ff1821;
+  }
+}
+
+.close svg {
+  stroke: var(--primary);
+  transition: stroke var(--base-transition);
+}
+
+.send_btn {
+  max-width: 320px;
+}
+
+@media (min-width: 810px) {
+  .img {
+    width: 100px;
+    height: 100px;
+    margin-top: 25px;
+  }
+
+  .close {
+    margin-top: calc(25px + var(--margin));
+  }
+
+  .addimage {
+    margin: 25px 0 15px;
+  }
+}

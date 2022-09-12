@@ -1,4 +1,5 @@
-.form.loading input {
+.form.loading input,
+.form.loading textarea {
   background-color: var(--bg);
 }
 

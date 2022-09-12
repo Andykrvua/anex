@@ -85,6 +85,7 @@ export default function Form() {
         setModalInfo(data);
         setName('');
         setPhone('');
+        setText('');
       }, 2000);
       return;
     }

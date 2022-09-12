@@ -6,30 +6,22 @@ import BlogContent from 'components/blog/blog';
 import { getPostsList, getCategories, getCountries } from 'utils/fetch';
 import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
-import Pagination from 'components/blog/pagination';
 import ReviewsContent from 'components/reviews/content';
 
 export default function Reviews({ data, page }) {
   const intl = useIntl();
-  console.log(data);
 
-  const br_arr = [{ title: intl.formatMessage({ id: 'reviews.br' }) }];
-
-  const pagesCount = Math.ceil(data?.meta.filter_count / 3);
-
-  // const current = 1;
+  const br_arr = [
+    { url: links.reviews, title: intl.formatMessage({ id: 'reviews.br' }) },
+    { title: intl.formatMessage({ id: 'page' }) + ' ' + page },
+  ];
 
   return (
     <>
       <SeoHead content={null} />
       <div className="container">
         <Breadcrumbs data={br_arr} />
-        <ReviewsContent data={data.data} />
-        <Pagination
-          curr={page}
-          pagesCount={pagesCount}
-          firstPageUrl={'/vidhuky'}
-        />
+        <ReviewsContent data={data} curr={page} />
       </div>
     </>
   );
@@ -41,6 +33,5 @@ export async function getServerSideProps(ctx) {
   );
   const data = await res.json();
 
-  // Pass data to the page via props
   return { props: { data, page: ctx.query.page } };
 }

@@ -1,0 +1,34 @@
+.login,
+.logout {
+  display: inline-block;
+  margin-top: 15px;
+  font-size: 15px;
+  line-height: 20px;
+  text-decoration: underline;
+}
+
+.logout {
+  margin-top: 0;
+}
+
+.credentials {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.credentials > * {
+  margin-bottom: 15px;
+}
+
+.credentials img {
+  width: 26px;
+  height: 26px;
+  margin-right: 15px;
+  border-radius: 50%;
+}
+
+.name {
+  margin-right: 15px;
+}

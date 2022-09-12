@@ -3,17 +3,23 @@ import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
 import DistrictCards from '/components/common/districtCards/districtCards.js';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
+import { useEffect } from 'react';
+import { districtCardsShowSwitcher } from 'utils/constants';
 
 export default function DistrictList({ data, title, country, loc }) {
   const intl = useIntl();
-  const [name, setName] = useState(data.length > 5 ? 'popular' : null);
+  const [name, setName] = useState(data.length > districtCardsShowSwitcher ? 'popular' : null);
+
+  useEffect(() => {
+    setName(data.length > districtCardsShowSwitcher ? 'popular' : null)
+  },[data.length])
 
   if (!data.length) return null;
 
   return (
     <>
       <h2 className={styles.title}>{title}</h2>
-      {data.length > 5 && (
+      {data.length > districtCardsShowSwitcher && (
         <SwitchMenu
           items={[
             {

@@ -87,3 +87,12 @@ export const infoModal = {
 export const showTime = {
   time: 3000,
 };
+
+// number of district cards to show switcher
+export const districtCardsShowSwitcher = 6;
+
+// reviews atacchment folder id
+export const reviewsAtacchmentFolderId = '699934e4-e808-4a71-995c-716a92037de8';
+
+// reviews handler path
+export const reviewsHandlerPath = '/api/review';

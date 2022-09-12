@@ -1,6 +1,8 @@
 import styles from './content.module.css';
 import { useIntl } from 'react-intl';
 import ReviewsFilter from 'components/reviews/filter';
+import Pagination from 'components/blog/pagination';
+import { links } from 'utils/links';
 
 const Review = ({ data }) => {
   return (
@@ -18,16 +20,21 @@ const Review = ({ data }) => {
   );
 };
 
-export default function ReviewsContent({ data }) {
-  const intl = useIntl();
+export default function ReviewsContent({ data, curr }) {
+  const pagesCount = Math.ceil(data?.meta.filter_count / 3);
   return (
     <>
       <ReviewsFilter />
       <div className={styles.reviews_wrapper}>
-        {data.map((item) => (
+        {data.data.map((item) => (
           <Review key={item.id} data={item} />
         ))}
       </div>
+      <Pagination
+        curr={curr}
+        pagesCount={pagesCount}
+        firstPageUrl={links.reviews}
+      />
     </>
   );
 }

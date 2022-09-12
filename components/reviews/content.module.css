@@ -1,8 +1,8 @@
 .review {
-  background-color: var(--font-white);
-  border-radius: var(--def-radius);
-  box-shadow: var(--formfield-shadow);
   margin-bottom: 20px;
+  border-radius: var(--def-radius);
+  background-color: var(--font-white);
+  box-shadow: var(--formfield-shadow);
 }
 
 .review:last-child {
@@ -10,11 +10,11 @@
 }
 
 .review_header {
-  height: 56px;
-  border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
+  height: 56px;
   padding: 0 20px;
+  border-bottom: 1px solid var(--line);
   font-size: 14px;
   line-height: 14px;
   color: var(--primary-light);
@@ -28,10 +28,10 @@
 }
 
 .review_header p {
+  margin-right: 10px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-right: 10px;
 }
 
 .review_header span {
