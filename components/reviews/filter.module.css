@@ -15,12 +15,30 @@
   align-items: center;
 }
 
-.filter_wrapper a.disabled {
-  color: var(--placeholder);
+.svg_date,
+.svg_img {
+  margin-right: 10px;
 }
 
-.filter_wrapper a img {
-  margin-right: 10px;
+.svg_date {
+  fill: var(--primary);
+}
+
+.svg_img {
+  stroke: var(--primary);
+}
+
+.filter_wrapper a.disabled {
+  color: var(--placeholder);
+  pointer-events: none;
+}
+
+.filter_wrapper a.disabled .svg_date {
+  fill: var(--placeholder);
+}
+
+.filter_wrapper a.disabled .svg_img {
+  stroke: var(--placeholder);
 }
 
 .filter_wrapper a:last-child {

@@ -10,11 +10,12 @@ import ReviewsHeader from 'components/reviews/header';
 import ReviewsContent from 'components/reviews/content';
 import { SessionProvider } from 'next-auth/react';
 import Auth from 'components/reviews/auth';
+import { reviewsPerPage } from '/utils/constants';
 
 export default function Reviews({ data }) {
   const intl = useIntl();
   const br_arr = [{ title: intl.formatMessage({ id: 'reviews.br' }) }];
-
+  const pagesCount = Math.ceil(data?.meta.filter_count / reviewsPerPage);
   return (
     <>
       <SeoHead content={null} />
@@ -24,17 +25,28 @@ export default function Reviews({ data }) {
         <SessionProvider>
           <Auth />
         </SessionProvider>
-        <ReviewsContent data={data} curr={1} />
+        <ReviewsContent
+          pagesCount={pagesCount}
+          data={data}
+          curr={1}
+          filter={data?.query ? data.query : null}
+        />
       </div>
     </>
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(ctx) {
   const res = await fetch(
-    `https://a-k.name/directus/items/reviews?meta=*&page=1&limit=3&sort=sort,-date&filter[status]=published`
+    `https://a-k.name/directus/items/reviews?meta=*&page=1&limit=${reviewsPerPage}&sort=${
+      ctx.query.f ? `-img,-date_created` : `-date_created`
+    }&filter[status]=published`
   );
+
   const data = await res.json();
+  if (ctx.query.f) {
+    data.query = ctx.query.f;
+  }
 
   return { props: { data } };
 }

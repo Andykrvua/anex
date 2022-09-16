@@ -127,7 +127,7 @@ const UploadFile = ({ selectedFile, setSelectedFile, loading }) => {
   );
 };
 
-export default function PostControl({ name }) {
+export default function PostControl({ name, avatar }) {
   const setModalInfo = useSetWindowInfo();
   const intl = useIntl();
 
@@ -180,6 +180,7 @@ export default function PostControl({ name }) {
       name: name,
       content: review,
       img: atachmentRes,
+      ava: avatar,
     };
 
     const response = await fetch(url, {

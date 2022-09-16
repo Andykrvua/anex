@@ -107,5 +107,7 @@
   "reviews.form.add-file": "Додати зображення",
   "reviews.form.send.ok": "Дякуємо за ваш відгук. Він буде опубликований після модерації",
   "reviews.form.title": "Залишити відгук про роботу турагенства ANEX Tour",
-  "reviews.form.textarea.placeholder": "Введіть ваше повідомлення"
+  "reviews.form.textarea.placeholder": "Введіть ваше повідомлення",
+  "filter.date": "По даті",
+  "filter.img": "Спочатку з фото"
 }

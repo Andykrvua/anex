@@ -96,3 +96,6 @@ export const reviewsAtacchmentFolderId = '699934e4-e808-4a71-995c-716a92037de8';
 
 // reviews handler path
 export const reviewsHandlerPath = '/api/review';
+
+// reviews handler path
+export const reviewsPerPage = 10;

@@ -9,7 +9,13 @@ const position = {
   next_page: 'next_page',
 };
 
-const PrevNextPage = ({ current, pagesCount, pos, firstPageUrl }) => {
+const PrevNextPage = ({
+  current,
+  pagesCount,
+  pos,
+  firstPageUrl,
+  filterStr,
+}) => {
   return (
     <li>
       {(current === 1 && pos === position.prev_page) ||
@@ -19,8 +25,8 @@ const PrevNextPage = ({ current, pagesCount, pos, firstPageUrl }) => {
         <Link
           href={
             current - 1 === 1
-              ? firstPageUrl
-              : `${firstPageUrl}/page/${current - 1}`
+              ? `${firstPageUrl}${filterStr}`
+              : `${firstPageUrl}/page/${current - 1}${filterStr}`
           }
         >
           <a
@@ -34,7 +40,7 @@ const PrevNextPage = ({ current, pagesCount, pos, firstPageUrl }) => {
           </a>
         </Link>
       ) : (
-        <Link href={`${firstPageUrl}/page/${current + 1}`}>
+        <Link href={`${firstPageUrl}/page/${current + 1}${filterStr}`}>
           <a
             className={
               pagesCount === current
@@ -50,7 +56,13 @@ const PrevNextPage = ({ current, pagesCount, pos, firstPageUrl }) => {
   );
 };
 
-const FirstLastPage = ({ current, pagesCount, pos, firstPageUrl }) => {
+const FirstLastPage = ({
+  current,
+  pagesCount,
+  pos,
+  firstPageUrl,
+  filterStr,
+}) => {
   return (
     <li>
       {(current !== 1 && current !== pagesCount) ||
@@ -59,8 +71,8 @@ const FirstLastPage = ({ current, pagesCount, pos, firstPageUrl }) => {
         <Link
           href={
             pos === position.first_page
-              ? firstPageUrl
-              : `${firstPageUrl}/page/${pagesCount}`
+              ? `${firstPageUrl}${filterStr}`
+              : `${firstPageUrl}/page/${pagesCount}${filterStr}`
           }
         >
           <a>{pos === position.first_page ? `1` : `${pagesCount}`}</a>
@@ -74,7 +86,14 @@ const FirstLastPage = ({ current, pagesCount, pos, firstPageUrl }) => {
   );
 };
 
-const Page = ({ current, ind, pagesCount, variant, firstPageUrl }) => {
+const Page = ({
+  current,
+  ind,
+  pagesCount,
+  variant,
+  firstPageUrl,
+  filterStr,
+}) => {
   let isHidden = false;
   let isDotsRight = 0;
   let isDotsLeft = 0;
@@ -112,7 +131,9 @@ const Page = ({ current, ind, pagesCount, variant, firstPageUrl }) => {
       ) : (
         <Link
           href={
-            ind + 1 === 1 ? firstPageUrl : `${firstPageUrl}/page/${ind + 1}`
+            ind + 1 === 1
+              ? `${firstPageUrl}${filterStr}`
+              : `${firstPageUrl}/page/${ind + 1}${filterStr}`
           }
         >
           <a>
@@ -126,7 +147,13 @@ const Page = ({ current, ind, pagesCount, variant, firstPageUrl }) => {
   );
 };
 
-export default function Pagination({ curr = 1, pagesCount, firstPageUrl }) {
+export default function Pagination({
+  curr = 1,
+  pagesCount,
+  firstPageUrl,
+  filter = null,
+}) {
+  const filterStr = filter ? `/?f=${filter}` : '';
   const current = parseInt(curr);
 
   return (
@@ -138,12 +165,14 @@ export default function Pagination({ curr = 1, pagesCount, firstPageUrl }) {
             pagesCount={pagesCount}
             pos={position.prev_page}
             firstPageUrl={firstPageUrl}
+            filterStr={filterStr}
           />
           <FirstLastPage
             current={current}
             pagesCount={pagesCount}
             pos={position.first_page}
             firstPageUrl={firstPageUrl}
+            filterStr={filterStr}
           />
           {pagesCount > 2 &&
             Array(pagesCount || 0)
@@ -167,6 +196,7 @@ export default function Pagination({ curr = 1, pagesCount, firstPageUrl }) {
                         pagesCount={pagesCount}
                         variant={1}
                         firstPageUrl={firstPageUrl}
+                        filterStr={filterStr}
                       />
                     );
                   }
@@ -184,6 +214,7 @@ export default function Pagination({ curr = 1, pagesCount, firstPageUrl }) {
                         pagesCount={pagesCount}
                         variant={2}
                         firstPageUrl={firstPageUrl}
+                        filterStr={filterStr}
                       />
                     );
                   }
@@ -202,6 +233,7 @@ export default function Pagination({ curr = 1, pagesCount, firstPageUrl }) {
                         pagesCount={pagesCount}
                         variant={3}
                         firstPageUrl={firstPageUrl}
+                        filterStr={filterStr}
                       />
                     );
                   }
@@ -216,6 +248,7 @@ export default function Pagination({ curr = 1, pagesCount, firstPageUrl }) {
                         pagesCount={pagesCount}
                         variant={4}
                         firstPageUrl={firstPageUrl}
+                        filterStr={filterStr}
                       />
                     );
                   }
@@ -230,6 +263,7 @@ export default function Pagination({ curr = 1, pagesCount, firstPageUrl }) {
                         pagesCount={pagesCount}
                         variant={5}
                         firstPageUrl={firstPageUrl}
+                        filterStr={filterStr}
                       />
                     );
                   }
@@ -240,12 +274,14 @@ export default function Pagination({ curr = 1, pagesCount, firstPageUrl }) {
             pagesCount={pagesCount}
             pos={position.last_page}
             firstPageUrl={firstPageUrl}
+            filterStr={filterStr}
           />
           <PrevNextPage
             current={current}
             pagesCount={pagesCount}
             pos={position.next_page}
             firstPageUrl={firstPageUrl}
+            filterStr={filterStr}
           />
         </ul>
       )}

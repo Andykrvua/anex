@@ -21,7 +21,7 @@ export default function Auth() {
         <>
           <p className={styles.credentials}>
             <img
-              src={session.user.image}
+              src={session.user.image ?? null}
               alt="avatar"
               referrerPolicy="no-referrer"
             />
@@ -33,7 +33,10 @@ export default function Auth() {
             </a>
           </p>
 
-          <ReviewsPostControl name={session.user.name ?? session.user.email} />
+          <ReviewsPostControl
+            name={session.user.name ?? session.user.email}
+            avatar={session.user.image ?? null}
+          />
         </>
       )}
       {!session && (

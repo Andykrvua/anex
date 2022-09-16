@@ -107,5 +107,7 @@
   "reviews.form.add-file": "Добавить изображение",
   "reviews.form.send.ok": "Спасибо за ваш отзыв. Он будет опубликован после модерации",
   "reviews.form.title": "Оставить отзыв о работе турагенства ANEX Tour",
-  "reviews.form.textarea.placeholder": "Введите ваше сообщение"
+  "reviews.form.textarea.placeholder": "Введите ваше сообщение",
+  "filter.date": "По дате",
+  "filter.img": "Сначала с фото"
 }
