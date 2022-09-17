@@ -1,14 +1,11 @@
 import { useIntl } from 'react-intl';
-import Head from 'next/head';
 import { links } from 'utils/links';
-import { blogApi } from 'utils/constants';
-import BlogContent from 'components/blog/blog';
-import { getPostsList, getCategories, getCountries } from 'utils/fetch';
 import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import ReviewsContent from 'components/reviews/content';
 import { reviewsPerPage } from '/utils/constants';
 import DefaultErrorPage from 'next/error';
+import { getReviews } from '/utils/fetch';
 
 export default function Reviews({ data, page }) {
   const intl = useIntl();
@@ -47,14 +44,11 @@ export async function getServerSideProps(ctx) {
     };
   }
 
-  const res = await fetch(
-    `https://a-k.name/directus/items/reviews?meta=*&page=${
-      ctx.query.page
-    }&limit=${reviewsPerPage}&sort=${
-      ctx.query.f ? `-img,-date_created` : `-date_created`
-    }&filter[status]=published`
-  );
-  const data = await res.json();
+  const page = ctx.query.page;
+  const limit = reviewsPerPage;
+  const filter = ctx.query.f ? ctx.query.f : null;
+  const data = await getReviews(page, limit, filter);
+
   if (ctx.query.f) {
     data.query = ctx.query.f;
   }

@@ -4,6 +4,8 @@ import Pagination from 'components/blog/pagination';
 import { links } from 'utils/links';
 import { useLayoutEffect } from 'react';
 import { useState } from 'react';
+import 'yet-another-react-lightbox/styles.css';
+import dynamic from 'next/dynamic';
 
 function transformName(name) {
   const arr = name.split(' ');
@@ -20,6 +22,22 @@ function transformName(name) {
 const Review = ({ data }) => {
   const [bg, setBg] = useState('');
   const images = JSON.parse(data.img);
+  const [openLightbox, setOpenLightbox] = useState(false);
+  let slides = [];
+  if (images) {
+    slides = images.map((item) => {
+      return { src: `${process.env.NEXT_PUBLIC_API_img}${item}` };
+    });
+  }
+
+  const DynamicLightbox = dynamic(() => import('yet-another-react-lightbox'), {
+    ssr: false,
+  });
+
+  const openLightboxHandler = async () => {
+    // const Lightbox = (await import('yet-another-react-lightbox')).default;
+    setOpenLightbox(true);
+  };
 
   useLayoutEffect(() => {
     function getRandom() {
@@ -51,12 +69,24 @@ const Review = ({ data }) => {
         <div className={styles.review_content_img_wrapper}>
           {images &&
             images.map((img, ind) => (
-              <img
+              <button
+                className={styles.lightbox_btn}
                 key={ind}
-                src={`${process.env.NEXT_PUBLIC_API_img}${img}`}
-                alt="atachment"
-              />
+                onClick={() => openLightboxHandler()}
+              >
+                <img
+                  src={`${process.env.NEXT_PUBLIC_API_img}${img}`}
+                  alt="atachment"
+                />
+              </button>
             ))}
+          {images && openLightbox ? (
+            <DynamicLightbox
+              open={openLightbox}
+              close={() => setOpenLightbox(false)}
+              slides={slides}
+            />
+          ) : null}
         </div>
       </div>
     </div>

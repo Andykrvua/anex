@@ -179,7 +179,7 @@ export default function PostControl({ name, avatar }) {
     const data = {
       name: name,
       content: review,
-      img: atachmentRes,
+      img: selectedFile[0] ? atachmentRes : null,
       ava: avatar,
     };
 

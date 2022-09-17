@@ -126,7 +126,12 @@ export const getCountrySubpageSlug = async (slug, subpage, loc) => {
   return req(url);
 };
 
-export const getCountrySubSubpageSlug = async (slug, subpage, subsubpage,  loc) => {
+export const getCountrySubSubpageSlug = async (
+  slug,
+  subpage,
+  subsubpage,
+  loc
+) => {
   const locale = languagesApi[loc];
   const url = `api_countries_subpage?fields=subsubpage,subsubpage_slug,country_slug.slug,status,is_district,img,subpage_slug,temp_from,temp_to,translations.languages_code,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[subsubpage]=true&filter[subsubpage_slug]=${subsubpage}&filter[status]=published`;
   return req(url);
@@ -152,5 +157,13 @@ export const getAllToursTextPages = async (loc = languagesApi.ru) => {
 export const getToursTextPage = async (loc, slug) => {
   const locale = languagesApi[loc];
   const url = `tours_text?fields=slug,translations.languages_code,translations.name,translations.title,translations.description,translations.content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}&filter[status]=published`;
+  return req(url);
+};
+
+export const getReviews = async (page = 1, limit = 10, filter = null) => {
+  // const url = `tours_text?fields=slug,translations.languages_code,translations.name,translations.title,translations.description,translations.content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}&filter[status]=published`;
+  const url = `reviews?meta=*&page=${page}&limit=${limit}&sort=${
+    filter ? `-img,-date_created` : `-date_created`
+  }&filter[status]=published`;
   return req(url);
 };

@@ -20,7 +20,8 @@
   color: var(--primary-light);
 }
 
-.review_header img, .letter_img {
+.review_header img,
+.letter_img {
   width: 36px;
   height: 36px;
   margin-right: 10px;
@@ -57,10 +58,14 @@
 .review_content_img_wrapper img {
   width: 75px;
   height: 75px;
-  margin-top: 11px;
-  margin-right: 20px;
   object-fit: cover;
   border-radius: var(--def-radius);
+}
+
+.lightbox_btn {
+  margin-top: 11px;
+  margin-right: 20px;
+  background-color: transparent;
 }
 
 @media (min-width: 810px) {
@@ -76,6 +81,9 @@
   .review_content_img_wrapper img {
     width: 100px;
     height: 100px;
+  }
+
+  .lightbox_btn {
     margin-top: 25px;
   }
 }
