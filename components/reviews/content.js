@@ -35,7 +35,6 @@ const Review = ({ data }) => {
   });
 
   const openLightboxHandler = async () => {
-    // const Lightbox = (await import('yet-another-react-lightbox')).default;
     setOpenLightbox(true);
   };
 

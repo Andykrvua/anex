@@ -11,6 +11,11 @@
   left: 0;
   background-color: var(--primary-03);
   z-index: var(--modal-z);
+  /* opacity: 0; */
+}
+
+.modal.open {
+  /* opacity: 1; */
 }
 
 .modal.open .modal_content {
@@ -18,10 +23,10 @@
 }
 
 .modal_content {
-  width: 280px;
+  /* width: 100%; */
   border: 1px solid var(--line);
   border-radius: var(--def-radius);
-  transform: translateY(-500%);
+  transform: translateY(-700%);
   background-color: var(--white);
   transition: transform var(--base-transition);
 }

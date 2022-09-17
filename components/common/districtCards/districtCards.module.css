@@ -25,10 +25,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 52px;
   margin: 0;
   padding: 12px;
   font-size: 14px;
   line-height: 14px;
+}
+
+.card_name span {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .card_name img {
@@ -52,5 +59,17 @@
   .cards_wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 410px) {
+  .card_name span {
+    max-width: 110px;
+  }
+}
+
+@media (max-width: 370px) {
+  .card_name span {
+    max-width: 100px;
   }
 }

@@ -42,12 +42,14 @@ export default function TourCards({ current, cards, country, loc }) {
                 />
                 <p className={styles.card_name}>
                   <img src="/assets/img/svg/palm-tree.svg" alt="" />
-                  {GetLangField(
-                    item.translations,
-                    'languages_code',
-                    'name',
-                    loc
-                  )}
+                  <span>
+                    {GetLangField(
+                      item.translations,
+                      'languages_code',
+                      'name',
+                      loc
+                    )}
+                  </span>
                 </p>
               </span>
             </a>

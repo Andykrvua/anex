@@ -162,6 +162,14 @@
   height: auto;
 }
 
+.content table {
+  display: block;
+  width: 100% !important;
+  border: none;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
 @media (max-width: 500px) {
   .header {
     margin: 0 var(--helper-margin);

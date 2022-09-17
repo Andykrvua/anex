@@ -6,12 +6,17 @@ import { GetLangField } from 'utils/getLangField';
 import { location } from 'utils/constants';
 import Faq from '/components/country/faq.js';
 import changeImageUrl from 'utils/changeImageUrl';
+import { useEffect } from 'react';
 
 // variant null = post content
 // variant countryPage = country page post content
 // variant tourPage = tour page post content
 export default function Post({ post, loc, variant = null }) {
   const content = changeImageUrl(post, variant);
+
+  useEffect(() => {
+    // document.querySelector('table').style.display = 'none';
+  }, []);
 
   return (
     <article className={`${styles.post} ${styles[variant]}`}>

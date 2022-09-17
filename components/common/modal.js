@@ -7,17 +7,18 @@ import { transitionTime } from '../../utils/constants';
 export default function Modal() {
   const getModal = useGetModal();
   const setModal = useSetModal();
+  console.log(getModal);
 
   const [isOpened, setIsOpened] = useState(false);
 
-  useEffect(() => {
-    if (getModal) {
-      window.addEventListener('scroll', closeHandler);
-    }
-    return () => {
-      window.removeEventListener('scroll', closeHandler);
-    };
-  }, [getModal]);
+  // useEffect(() => {
+  //   if (getModal) {
+  //     window.addEventListener('scroll', closeHandler);
+  //   }
+  //   return () => {
+  //     window.removeEventListener('scroll', closeHandler);
+  //   };
+  // }, [getModal]);
 
   useEffect(() => {
     // need for animation
@@ -65,7 +66,7 @@ export default function Modal() {
                 <CloseSvg />
               </button>
             </header>
-            <div className={styles.modal_content_text}>{getModal}</div>
+            <div className={styles.modal_content_text}>getModal</div>
           </div>
         </div>
       )}

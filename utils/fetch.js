@@ -161,7 +161,6 @@ export const getToursTextPage = async (loc, slug) => {
 };
 
 export const getReviews = async (page = 1, limit = 10, filter = null) => {
-  // const url = `tours_text?fields=slug,translations.languages_code,translations.name,translations.title,translations.description,translations.content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}&filter[status]=published`;
   const url = `reviews?meta=*&page=${page}&limit=${limit}&sort=${
     filter ? `-img,-date_created` : `-date_created`
   }&filter[status]=published`;
