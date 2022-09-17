@@ -170,6 +170,19 @@
   overflow-x: auto;
 }
 
+.content blockquote {
+  position: relative;
+  margin: 0 0 0 45px;
+}
+
+.content blockquote::before {
+  content: url('/assets/img/svg/blockquote.svg');
+  position: absolute;
+  left: -35px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 @media (max-width: 500px) {
   .header {
     margin: 0 var(--helper-margin);
