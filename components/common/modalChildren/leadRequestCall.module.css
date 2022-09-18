@@ -1,0 +1,67 @@
+.requestcall {
+  max-width: 340px;
+}
+
+.messendgers {
+  margin: 5px 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.phones {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  row-gap: 15px;
+  justify-content: space-around;
+}
+
+.phone {
+  text-decoration: underline;
+}
+
+.schedule {
+  margin: 20px 0;
+  text-align: center;
+  color: var(--primary-light);
+}
+
+.schedule h6 {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.schedule p {
+  margin: 0;
+}
+
+.title {
+  margin: 0 0 20px 0;
+  text-align: center;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 700;
+}
+
+.form input {
+  height: 50px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.form.loading input {
+  background-color: var(--bg);
+}
+
+.form label {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.btn {
+  width: 100%;
+  margin: 20px 0 0;
+  padding: 24px 0;
+}

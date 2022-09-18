@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './burger.module.css';
-import { useSetBurger, useGetBurger } from 'store/store';
+import { useSetBurger, useGetBurger, useSetModal } from 'store/store';
 import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 import BurgerHeader from './burgerHeader';
 import Link from 'next/link';
@@ -9,10 +9,12 @@ import { useRouter } from 'next/router';
 import { FormattedMessage as FM } from 'react-intl';
 import { links } from 'utils/links';
 import MessendgersLinks from 'components/common/other/messendgersLinks';
+import { modal } from 'utils/constants';
 
 export default function Burger() {
   const setBurger = useSetBurger();
   const getBurger = useGetBurger();
+  const setModal = useSetModal();
 
   const router = useRouter();
   const { pathname, asPath, query, locale } = router;
@@ -30,7 +32,9 @@ export default function Burger() {
 
   useEffect(() => {
     if (getBurger) {
-      router.events.on('routeChangeComplete', closeBurgerHandler);
+      router.events.on('routeChangeComplete', () =>
+        closeBurgerHandler('changeRoute')
+      );
     }
     return () => {
       router.events.off('routeChangeComplete');
@@ -52,7 +56,7 @@ export default function Burger() {
       BODY.style.top = '0px';
       if (offsetTop) {
         window.scrollTo({
-          top: offsetTop,
+          top: getBurger === undefined ? 0 : offsetTop,
         });
         setOffsetTop(0);
       }
@@ -61,8 +65,17 @@ export default function Burger() {
     }
   }, [getBurger]);
 
-  const closeBurgerHandler = () => {
+  const closeBurgerHandler = (val) => {
+    if (val === 'changeRoute') {
+      setBurger(undefined);
+    } else {
+      setBurger(false);
+    }
+  };
+
+  const pickTourHandler = () => {
     setBurger(false);
+    setModal({ get: modal.leadGetTours });
   };
 
   const closeBurgerOverlayHandler = (e) => {
@@ -132,6 +145,13 @@ export default function Burger() {
               </Link>
             </li>
             <li>
+              <Link href={links.faq}>
+                <a className={styles.burger_nav_link}>
+                  <FM id="nav.faq" />
+                </a>
+              </Link>
+            </li>
+            <li>
               <Link href={links.reviews}>
                 <a className={styles.burger_nav_link}>
                   <FM id="nav.review" />
@@ -165,7 +185,10 @@ export default function Burger() {
               />
             </div>
             <div>
-              <button className={styles.circle_btn}>
+              <button
+                className={styles.circle_btn}
+                onClick={() => pickTourHandler()}
+              >
                 <FM id="nav.pick_tour" />
               </button>
             </div>

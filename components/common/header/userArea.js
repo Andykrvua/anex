@@ -1,7 +1,16 @@
+import { useSetModal } from 'store/store';
+import { modal } from 'utils/constants';
+
 export default function UserArea() {
+  const setModal = useSetModal();
+
   return (
     <div className="user_area">
-      <button className="svg_btn" aria-label="Телефоны">
+      <button
+        className="svg_btn"
+        onClick={() => setModal({ get: modal.leadRequestCall })}
+        aria-label="Телефоны"
+      >
         <svg
           width="42"
           height="42"

@@ -2,11 +2,13 @@ import Link from 'next/link';
 import SimpleBar from 'simplebar-react';
 import { FormattedMessage as FM } from 'react-intl';
 import { links } from 'utils/links';
-import { location } from 'utils/constants';
+import { location, modal } from 'utils/constants';
 import { useRef, useEffect } from 'react';
+import { useSetModal } from 'store/store';
 
 const NavContent = ({ setOffsetLeft = null, setIsOpen, windowSize = null }) => {
   const elRef = useRef();
+  const setModal = useSetModal();
 
   useEffect(() => {
     if (setOffsetLeft !== null) {
@@ -55,11 +57,16 @@ const NavContent = ({ setOffsetLeft = null, setIsOpen, windowSize = null }) => {
         </Link>
       </li>
       <li>
-        <Link href={links.main}>
-          <a className="header_nav_link">
-            <FM id="nav.pick_tour" />
-          </a>
-        </Link>
+        <button
+          className="header_nav_link"
+          id="countrylistbutton"
+          aria-haspopup="true"
+          aria-controls="countrylist"
+          expanded="false"
+          onClick={() => setModal({ get: modal.leadGetTours })}
+        >
+          <FM id="nav.pick_tour" />
+        </button>
       </li>
     </ul>
   );

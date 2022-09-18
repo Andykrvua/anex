@@ -1,0 +1,30 @@
+.form {
+  max-width: 340px;
+}
+
+.form input {
+  height: 50px;
+}
+
+.form input,
+.form textarea {
+  margin-bottom: 20px;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.form.loading input,
+.form.loading textarea {
+  background-color: var(--bg);
+}
+
+.form label {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.btn {
+  width: 100%;
+  margin: 20px 0 0;
+  padding: 24px 0;
+}

@@ -2,13 +2,18 @@ import MainForm from '/components/mainform/mainForm.js';
 import PopularCountry from '/components/mainpage/popularCountry.js';
 import Blog from '/components/mainpage/blog.js';
 import Faq from '/components/mainpage/faq.js';
-import { accordionData } from 'utils/data/accordionData';
 import SeoBlock from '/components/common/pageSeoBlock/seoBlock.js';
 import { getLastPost, getPopularCountry, getPageSettings } from 'utils/fetch';
 import declension from 'utils/declension';
 import SeoHead from '/components/common/seoHead/seoHead.js';
 
-export default function Home({ postsList, popularCountry, mainPageSettings }) {
+export default function Home({
+  postsList,
+  popularCountry,
+  mainPageSettings,
+  faqData,
+  faqDataLength,
+}) {
   return (
     <>
       <SeoHead content={mainPageSettings} />
@@ -16,7 +21,7 @@ export default function Home({ postsList, popularCountry, mainPageSettings }) {
         <MainForm />
         <PopularCountry data={popularCountry} />
         <Blog data={postsList} />
-        <Faq data={accordionData} />
+        {faqData && <Faq data={faqData} length={faqDataLength} />}
         {mainPageSettings.translations && (
           <SeoBlock text={mainPageSettings.translations[0].seo_block} />
         )}
@@ -31,10 +36,19 @@ export async function getStaticProps(context) {
   const limit = 6;
   const postsList = await getLastPost(limit, loc);
   const popularCountry = await getPopularCountry(loc);
+
   const data = 'translations.seo_block';
   const mainPageSettings = await getPageSettings('main_page', loc, data);
 
-  if (postsList.errors || popularCountry.errors || mainPageSettings.errors) {
+  const dataOtherPage = 'translations.h1,translations.faq_item';
+  const faqPageSettings = await getPageSettings('faq_page', loc, dataOtherPage);
+
+  if (
+    postsList.errors ||
+    popularCountry.errors ||
+    mainPageSettings.errors ||
+    faqPageSettings.errors
+  ) {
     // if incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', postsList?.errors);
@@ -42,7 +56,18 @@ export async function getStaticProps(context) {
     console.log('error: ', popularCountry?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', mainPageSettings?.errors);
+    /* eslint-disable-next-line */
+    console.log('error: ', faqPageSettings?.errors);
     throw new Error('TEST ERROR');
+  }
+
+  let faqData = [];
+  let faqDataLength;
+  if (faqPageSettings?.data?.translations[0]?.faq_item.length > 0) {
+    faqDataLength = faqPageSettings?.data?.translations[0]?.faq_item.length;
+    faqData = faqPageSettings.data.translations[0].faq_item.filter(
+      (item) => item?.ismain
+    );
   }
 
   const count =
@@ -66,6 +91,8 @@ export async function getStaticProps(context) {
       loc,
       popularCountry: popularCountry.data,
       mainPageSettings: mainPageSettings.data,
+      faqData: faqData.length > 0 ? faqData : null,
+      faqDataLength: faqDataLength || null,
     },
     revalidate: 30,
   };

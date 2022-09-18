@@ -2,6 +2,7 @@ import styles from './footer.module.css';
 import { links } from 'utils/links';
 import Link from 'next/link';
 import MessendgersLinks from 'components/common/other/messendgersLinks';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default function Footer() {
   return (
@@ -10,57 +11,86 @@ export default function Footer() {
         <div className={styles.wrapper}>
           <div className={styles.two_col_wrapper}>
             <div className={styles.nav}>
-              <h4 className={styles.title}>Навигация</h4>
+              <h4 className={styles.title}>
+                <FM id="footer.t1" />
+              </h4>
               <ul className={styles.list}>
                 <li>
                   <Link href={links.main}>
-                    <a>Главная</a>
+                    <a>
+                      <FM id="nav.main" />
+                    </a>
                   </Link>
                 </li>
                 <li>
                   <Link href={links.tours}>
-                    <a>Туры</a>
+                    <a>
+                      <FM id="nav.tour" />
+                    </a>
                   </Link>
                 </li>
                 <li>
                   <Link href={links.countries}>
-                    <a>Страны</a>
+                    <a>
+                      <FM id="nav.country" />
+                    </a>
                   </Link>
                 </li>
                 <li>
                   <Link href={links.hotTours}>
-                    <a>Горящие туры</a>
+                    <a>
+                      <FM id="nav.hot_tour" />
+                    </a>
                   </Link>
                 </li>
                 <li>
                   <Link href={links.hotels}>
-                    <a>Отели</a>
+                    <a>
+                      <FM id="nav.hotels" />
+                    </a>
                   </Link>
                 </li>
                 <li>
                   <Link href={links.blog}>
-                    <a>Блог</a>
+                    <a>
+                      <FM id="nav.blog" />
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={links.faq}>
+                    <a>
+                      <FM id="nav.faq" />
+                    </a>
                   </Link>
                 </li>
                 <li>
                   <Link href={links.reviews}>
-                    <a>Отзывы</a>
+                    <a>
+                      <FM id="nav.review" />
+                    </a>
                   </Link>
                 </li>
                 <li>
                   <Link href={links.certificates}>
-                    <a>Сертификати</a>
+                    <a>
+                      <FM id="nav.certificates" />
+                    </a>
                   </Link>
                 </li>
                 <li>
                   <Link href={links.contacts}>
-                    <a>Контакты</a>
+                    <a>
+                      <FM id="nav.contacts" />
+                    </a>
                   </Link>
                 </li>
               </ul>
             </div>
             <div className={styles.tours}>
-              <h4 className={styles.title}>Туры</h4>
+              <h4 className={styles.title}>
+                <FM id="footer.t2" />
+              </h4>
               <ul className={styles.list}>
                 <li>
                   <Link href={links.main}>
@@ -106,9 +136,13 @@ export default function Footer() {
             </div>
           </div>
           <div className={styles.contacts}>
-            <h4 className={styles.title}>Контакты</h4>
+            <h4 className={styles.title}>
+              <FM id="footer.t3" />
+            </h4>
             <ul className={styles.list}>
-              <li>03022, г. Киев, ул. Васильковская 32</li>
+              <li>
+                <FM id="footer.address" />
+              </li>
               <li>
                 <a href="tel:+380443384144">+38 044 338 41 44</a>
               </li>

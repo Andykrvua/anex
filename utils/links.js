@@ -1,5 +1,5 @@
 export const links = {
-  faq: '/faq',
+  faq: '/pytannia-vidpovid',
   main: '/',
   tours: '/tury',
   countries: '/countries',

@@ -1,14 +1,15 @@
 .login,
 .logout {
   display: inline-block;
+  max-width: 320px;
   margin-top: 15px;
-  font-size: 15px;
-  line-height: 20px;
-  text-decoration: underline;
+  text-align: center;
+  border-radius: var(--def-radius);
 }
 
 .logout {
   margin-top: 0;
+  text-decoration: underline;
 }
 
 .credentials {

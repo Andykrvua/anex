@@ -65,7 +65,7 @@
 
 .burger_nav_link {
   position: relative;
-  padding: 5px;
+  /* padding: 5px; */
   font-size: 16px;
   line-height: 19px;
   letter-spacing: var(--letter);

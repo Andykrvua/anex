@@ -99,3 +99,9 @@ export const reviewsHandlerPath = '/api/review';
 
 // reviews handler path
 export const reviewsPerPage = 10;
+
+// modal content
+export const modal = {
+  leadGetTours: 'leadGetTours',
+  leadRequestCall: 'leadRequestCall',
+};

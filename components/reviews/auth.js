@@ -40,7 +40,11 @@ export default function Auth() {
         </>
       )}
       {!session && (
-        <a href="#" onClick={handleSignin} className={styles.login}>
+        <a
+          href="#"
+          onClick={handleSignin}
+          className={`${styles.login} apply_btn`}
+        >
           <FM id="reviews.leave-feedback" />
         </a>
       )}

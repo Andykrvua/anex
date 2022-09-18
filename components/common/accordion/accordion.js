@@ -43,10 +43,15 @@ export default function Accordion({ data }) {
               />
               <circle cx="11" cy="11" r="10" stroke="#C3C3D0" strokeWidth="2" />
             </svg>
-            <span className={styles.accordion_title_emojii}>{item.emojii}</span>
+            <span className={styles.accordion_title_emojii}>{item.emoji}</span>
             {item.question}
           </h3>
-          <div className={styles.text_content}>{item.answer}</div>
+          <div
+            className={styles.text_content}
+            dangerouslySetInnerHTML={{
+              __html: item.answer,
+            }}
+          />
         </li>
       ))}
     </ul>
