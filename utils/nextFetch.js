@@ -41,3 +41,10 @@ export const createLeadRequestCall = async (data) => {
   data.item = item.lead_request_call;
   return req(url, data);
 };
+
+export const countryUpdateMinOffer = async () => {
+  const url = `/api/getMinOffer`;
+  const data = {};
+  data.item = `country_minoffer`;
+  return req(url, data);
+};

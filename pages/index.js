@@ -3,7 +3,13 @@ import PopularCountry from '/components/mainpage/popularCountry.js';
 import Blog from '/components/mainpage/blog.js';
 import Faq from '/components/mainpage/faq.js';
 import SeoBlock from '/components/common/pageSeoBlock/seoBlock.js';
-import { getLastPost, getPopularCountry, getPageSettings } from 'utils/fetch';
+import {
+  getLastPost,
+  getPopularCountry,
+  getPageSettings,
+  getMinOffer,
+} from 'utils/fetch';
+import { countryUpdateMinOffer } from 'utils/nextFetch';
 import declension from 'utils/declension';
 import SeoHead from '/components/common/seoHead/seoHead.js';
 
@@ -13,13 +19,27 @@ export default function Home({
   mainPageSettings,
   faqData,
   faqDataLength,
+  minOffer,
 }) {
+  // console.log('minOffer', popularCountry);
+
+  const handler = async () => {
+    const result = await countryUpdateMinOffer();
+    console.log('my front req ', result);
+  };
+
   return (
     <>
       <SeoHead content={mainPageSettings} />
       <div className="container">
         <MainForm />
-        <PopularCountry data={popularCountry} />
+        <button style={{ display: 'none' }} onClick={() => handler()}>
+          FETCH
+        </button>
+        <PopularCountry
+          data={popularCountry}
+          minOffer={minOffer?.data?.countries}
+        />
         <Blog data={postsList} />
         {faqData && <Faq data={faqData} length={faqDataLength} />}
         {mainPageSettings.translations && (
@@ -43,11 +63,14 @@ export async function getStaticProps(context) {
   const dataOtherPage = 'translations.h1,translations.faq_item';
   const faqPageSettings = await getPageSettings('faq_page', loc, dataOtherPage);
 
+  const minOffer = await getMinOffer();
+
   if (
     postsList.errors ||
     popularCountry.errors ||
     mainPageSettings.errors ||
-    faqPageSettings.errors
+    faqPageSettings.errors ||
+    minOffer.errors
   ) {
     // if incorrect request
     /* eslint-disable-next-line */
@@ -58,6 +81,8 @@ export async function getStaticProps(context) {
     console.log('error: ', mainPageSettings?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', faqPageSettings?.errors);
+    /* eslint-disable-next-line */
+    console.log('error: ', minOffer?.errors);
     throw new Error('TEST ERROR');
   }
 
@@ -93,6 +118,7 @@ export async function getStaticProps(context) {
       mainPageSettings: mainPageSettings.data,
       faqData: faqData.length > 0 ? faqData : null,
       faqDataLength: faqDataLength || null,
+      minOffer: minOffer.data || null,
     },
     revalidate: 30,
   };

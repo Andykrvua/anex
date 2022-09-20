@@ -100,7 +100,7 @@ export const getCountryFromSlug = async (slug, loc) => {
 
 export const getPopularCountry = async (loc) => {
   const locale = languagesApi[loc];
-  const url = `api_countries?fields=status,badge_color,name_color,img,popular_img,date_created,slug,translations.name,translations.badge,translations.languages_code&filter[status]=published&deep[translations][_filter][languages_code][_eq]=${locale}&filter[show_popular][_eq]=true&meta=*&sort=sort,-date_created`;
+  const url = `api_countries?fields=status,code,badge_color,name_color,img,popular_img,date_created,slug,translations.name,translations.badge,translations.languages_code&filter[status]=published&deep[translations][_filter][languages_code][_eq]=${locale}&filter[show_popular][_eq]=true&meta=*&sort=sort,-date_created`;
   return req(url);
 };
 
@@ -164,5 +164,10 @@ export const getReviews = async (page = 1, limit = 10, filter = null) => {
   const url = `reviews?meta=*&page=${page}&limit=${limit}&sort=${
     filter ? `-img,-date_created` : `-date_created`
   }&filter[status]=published`;
+  return req(url);
+};
+
+export const getMinOffer = async () => {
+  const url = `country_minoffer?filter[status]=published`;
   return req(url);
 };

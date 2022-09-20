@@ -10,8 +10,11 @@ import { shimmer, toBase64 } from '/utils/blurImage';
 import viewPortSize from '/utils/getViewport';
 import { useState, useLayoutEffect } from 'react';
 
-const Card = ({ index, item, instance }) => {
-  // image: min-width 691, min-height 380
+const Card = ({ index, item, instance, minOffer }) => {
+  if (minOffer && instance === carouselInstance.popularCountry) {
+    const temp = minOffer.filter((country) => item.code === country.iso);
+    item.price = temp.length ? temp[0].uah : null;
+  }
 
   return (
     <div key={index} className={styles.card}>
@@ -54,9 +57,13 @@ const Card = ({ index, item, instance }) => {
                     item.translations[0].name ||
                     item.translations[0].title}
                 </h3>
-                {instance === carouselInstance.popularCountry && (
-                  <span>{item.lastCard ? '' : 'от 27 700 грн'}</span>
-                )}
+                {instance === carouselInstance.popularCountry && item.price ? (
+                  <span>
+                    {item.lastCard
+                      ? ''
+                      : `от ${item.price.toLocaleString()} грн`}
+                  </span>
+                ) : null}
               </div>
               {item.categories?.length && (
                 <span
@@ -90,7 +97,7 @@ const Card = ({ index, item, instance }) => {
 
 const MemoizedCard = memo(Card);
 
-export default function Carousel({ data, instance }) {
+export default function Carousel({ data, instance, minOffer }) {
   const cardSize = bcCardsWidth.cardSize;
 
   function CarouselContainer(props) {
@@ -152,6 +159,7 @@ export default function Carousel({ data, instance }) {
         index={index}
         item={item}
         instance={instance}
+        minOffer={minOffer}
         length={data.length}
       />
     );
