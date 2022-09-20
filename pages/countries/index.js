@@ -1,7 +1,6 @@
 import MainForm from '/components/mainform/mainForm.js';
 import CountryList from '/components/country/countryList.js';
 import Faq from '/components/mainpage/faq.js';
-import { accordionData } from 'utils/data/accordionData';
 import SeoBlock from '/components/common/pageSeoBlock/seoBlock.js';
 import { getAPICountryList, getPageSettings } from 'utils/fetch';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
