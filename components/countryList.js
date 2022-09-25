@@ -1,20 +1,25 @@
-import { allCountry } from 'utils/allCountry';
+import { useRouter } from 'next/router';
 import { countryListVariants } from '../utils/constants';
 import styles from './countryList.module.css';
 import { memo } from 'react';
 import Link from 'next/link';
-import { links } from '/utils/links';
+import { links } from 'utils/links';
+import { carpathiansId } from 'utils/constants';
+import { useGetSearchCountryList } from '../store/store';
 
 const List = ({
-  clickCountryItem,
+  clickSearchResultItem,
   limit = 100,
   data = null,
   variant = null,
   setIsOpen = null,
 }) => {
-  const countryData = data ? data : allCountry;
+  const getSearchCountryList = useGetSearchCountryList();
+  const { locale } = useRouter();
+  const lang = 'name' + locale[0].toUpperCase() + locale.slice(1);
+  const countryData = data ? data : getSearchCountryList.list;
 
-  const Item = ({ children, code, slug, variant }) => {
+  const Item = ({ children, slug, variant, values }) => {
     return variant === countryListVariants.getNavMenu ? (
       <Link href={`${links.countries}/${slug}`}>
         <a
@@ -28,8 +33,7 @@ const List = ({
       <div
         variant={variant}
         className={`${styles.country_item} country_item`}
-        onClick={(e) => clickCountryItem(e)}
-        data-code={code}
+        onClick={() => clickSearchResultItem(values.val, values.id, values.img)}
       >
         {children}
       </div>
@@ -39,29 +43,37 @@ const List = ({
   return (
     <div className={`${styles.all_country_wrapper} ${styles[variant]}`}>
       {countryData.map((item, i) => {
-        if (i < limit) {
+        if (i < limit && item.id !== carpathiansId) {
           return (
             <Item
               variant={variant}
               key={item.code}
-              onClick={(e) => clickCountryItem(e)}
-              data-code={item.code}
-              code={item.code}
               slug={item?.slug}
+              values={{
+                val: item[lang],
+                id: item.id,
+                img: { src: `/assets/img/svg/flags/code/${item.code}.svg` },
+              }}
             >
               <div className={styles.country_item_img}>
                 <img
-                  src={`/assets/img/svg/flags/${item.code}.svg`}
+                  src={
+                    variant === countryListVariants.getNavMenu
+                      ? `/assets/img/svg/flags/${item.code}.svg`
+                      : `/assets/img/svg/flags/code/${item.code}.svg`
+                  }
                   alt={item.name}
                   width="60"
                   height="43"
                 />
               </div>
               <div className={styles.country_item_name}>
-                {item.translations[0].name}
+                {variant === countryListVariants.getNavMenu
+                  ? item.translations[0].name
+                  : item[lang]}
               </div>
               <div className={styles.country_item_price}>
-                {item.price ? item.price : '12 022'}
+                {item.uah ? item.uah.toLocaleString() : null}
               </div>
             </Item>
           );
@@ -75,16 +87,24 @@ const MemoList = memo(List);
 
 export default function countryList({
   variant,
-  clickCountryItem,
+  clickSearchResultItem,
   data,
   setIsOpen,
 }) {
   switch (variant) {
     case countryListVariants.getSearch:
-      return <MemoList clickCountryItem={clickCountryItem} />;
+      return (
+        <MemoList data={data} clickSearchResultItem={clickSearchResultItem} />
+      );
 
     case countryListVariants.getSearchPopular:
-      return <MemoList clickCountryItem={clickCountryItem} limit={8} />;
+      return (
+        <MemoList
+          data={data}
+          clickSearchResultItem={clickSearchResultItem}
+          limit={8}
+        />
+      );
 
     case countryListVariants.getNavMenu:
       return <MemoList data={data} variant={variant} setIsOpen={setIsOpen} />;

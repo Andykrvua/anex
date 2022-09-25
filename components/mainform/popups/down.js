@@ -19,8 +19,26 @@ import { countryListVariants } from 'utils/constants';
 import LoadingPlaceholder from '../form-fields/loadingPlaceholder';
 import SimpleBar from 'simplebar-react';
 import { transitionTime } from '../../../utils/constants';
-import { useSetDown } from '../../../store/store';
+import {
+  useSetDown,
+  useGetSearchCountryList,
+  useSetSearchCountryList,
+} from '../../../store/store';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
+import useDebounce from 'utils/useDebounce';
+import ItemCountry from './down-results/itemCountry';
+import ItemCity from './down-results/itemCity';
+import ItemHotel from './down-results/itemHotel';
+
+const ResultItem = ({ data, clickHandler }) => {
+  if (data.type === 'country')
+    return <ItemCountry data={data} clickHandler={clickHandler} />;
+  if (data.type === 'city')
+    return <ItemCity data={data} clickHandler={clickHandler} />;
+  if (data.type === 'hotel')
+    return <ItemHotel data={data} clickHandler={clickHandler} />;
+  return null;
+};
 
 // change scroll depending on mobile or desktop
 const SimpleBarWrapper = ({ size, children }) => {
@@ -29,7 +47,8 @@ const SimpleBarWrapper = ({ size, children }) => {
       {size.width >= maxWidth ? (
         <SimpleBar
           className="mobile_default"
-          style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
+          // style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
+          style={{ height: 'var(--mainform-desktop-maxheight)' }}
           autoHide={true}
         >
           {children}
@@ -61,9 +80,12 @@ export default function Down({
   popupName,
 }) {
   const selectDown = useSetDown();
-  const selectDownHandler = (name) => {
-    selectDown(name);
-    setCountry(name);
+  const getSearchCountryList = useGetSearchCountryList();
+  const setSearchCountryList = useSetSearchCountryList();
+
+  const selectDownHandler = (val, id) => {
+    selectDown({ name: val, value: id });
+    setCountry(val);
     closeModalHandler();
     setTimeout(() => {
       setCountryData(false);
@@ -84,7 +106,56 @@ export default function Down({
 
   const [iosView, setIosView] = useState(0);
   const [country, setCountry] = useState('');
-  const [countryData, setCountryData] = useState(false);
+  const [countryData, setCountryData] = useState({});
+  const [searchResult, setSearchResult] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const searchDelay = 500;
+  const debouncedSearch = useDebounce(country, searchDelay);
+
+  useEffect(async () => {
+    console.log('g', getSearchCountryList);
+    if (!getSearchCountryList.active) {
+      const fetchMinCountryList = await fetch(
+        'https://a-k.name/directus/items/country_minoffer?filter[status]=published'
+      ).then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        return null;
+      });
+
+      if (fetchMinCountryList) {
+        setSearchCountryList({
+          active: true,
+          list: fetchMinCountryList.data.data.countries,
+        });
+      }
+    }
+  }, []);
+
+  useEffect(async () => {
+    setSearchResult([]);
+    if (country.length > 2) {
+      setLoading(true);
+
+      const search = await fetch(
+        `/api/endpoints/suggests?text=${country}`
+      ).then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+      });
+
+      console.log('result', search);
+      if (search.ok) {
+        setSearchResult(Object.entries(search.result.response));
+      }
+      setLoading(false);
+    }
+  }, [debouncedSearch]);
+  // console.log('state', searchResult);
+  // console.log('entri', Object.entries(searchResult));
 
   // get viewport height when opening momile keyboard
   useEffect(() => {
@@ -124,17 +195,32 @@ export default function Down({
 
   const inputOnchange = (e) => {
     setCountry(e.target.value);
+    // console.log(e.target.value);
   };
 
-  const clickCountryItem = (e) => {
-    const selected = allCountry.find(
-      (item) => item.code === e.target.closest('.country_item').dataset.code
-    );
+  // const clickCountryItem = (val, id) => {
+  //   console.log(val);
+  //   console.log(id);
+  //   // const selected = allCountry.find(
+  //   //   (item) => item.code === e.target.closest('.country_item').dataset.code
+  //   // );
+  //   if (size.width >= maxWidth) {
+  //     selectDownHandler(val);
+  //   } else {
+  //     setCountry(val);
+  //     setCountryData(val);
+  //   }
+  // };
+
+  const clickSearchResultItem = (val, id, img) => {
+    console.log(val);
+    console.log(id);
+
     if (size.width >= maxWidth) {
-      selectDownHandler(selected.translations[0].name);
+      selectDownHandler(val, id);
     } else {
-      setCountry(selected.translations[0].name);
-      setCountryData(selected);
+      setCountry(val);
+      setCountryData({ val, id, img });
     }
   };
 
@@ -165,23 +251,44 @@ export default function Down({
               : {}
           }
         >
-          {iosView}
-          <h5 className={styles.down_content_title}>
-            <FM id="mainform.down.t2" />
-          </h5>
-          <MemoCountryList
-            variant={countryListVariants.getSearchPopular}
-            clickCountryItem={clickCountryItem}
-          />
-          <h5 className={styles.down_content_title}>
-            <FM id="mainform.down.t3" /> (31)
-          </h5>
-          <MemoCountryList
-            variant={countryListVariants.getSearch}
-            clickCountryItem={clickCountryItem}
-          />
+          {searchResult.length > 0 ? (
+            <div style={{ marginBottom: '30px' }}>
+              {searchResult.map((item, ind) => {
+                return (
+                  <ResultItem
+                    key={ind}
+                    data={item[1]}
+                    clickHandler={clickSearchResultItem}
+                  />
+                );
+              })}
+            </div>
+          ) : null}
+          {loading && (
+            <div>
+              <FM id="common.loading" />
+            </div>
+          )}
+          {country.length < 3 ? (
+            <>
+              <h5 className={styles.down_content_title}>
+                <FM id="mainform.down.t2" />
+              </h5>
+              <MemoCountryList
+                variant={countryListVariants.getSearchPopular}
+                clickSearchResultItem={clickSearchResultItem}
+              />
+              <h5 className={styles.down_content_title}>
+                <FM id="mainform.down.t3" /> (31)
+              </h5>
+              <MemoCountryList
+                variant={countryListVariants.getSearch}
+                clickSearchResultItem={clickSearchResultItem}
+              />
+            </>
+          ) : null}
         </div>
-        {countryData && (
+        {countryData?.id && (
           <DownApplySelected
             item={countryData}
             setCountryData={setCountryData}

@@ -12,7 +12,7 @@ const useStore = create(
   devtools((set) => ({
     up: 'Запорожье',
     setUp: (up) => set({ up }),
-    down: 'Сейшельские о-ва',
+    down: { name: 'Сейшельские о-ва', value: null },
     setDown: (down) => set({ down }),
     initialDate: rawDate,
     date: { rawDate, plusDays: 3 },
@@ -42,6 +42,11 @@ const useStore = create(
       text: null,
     },
     setWindowInfo: (windowInfo) => set({ windowInfo }),
+    searchCountryList: {
+      active: false,
+      list: [],
+    },
+    setSearchCountryList: (searchCountryList) => set({ searchCountryList }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -101,6 +106,11 @@ export const useSetBurger = () => useStore((state) => state.setBurger);
 
 export const useWindowInfo = () => useStore((state) => state.windowInfo);
 export const useSetWindowInfo = () => useStore((state) => state.setWindowInfo);
+
+export const useGetSearchCountryList = () =>
+  useStore((state) => state.searchCountryList);
+export const useSetSearchCountryList = () =>
+  useStore((state) => state.setSearchCountryList);
 
 // example
 // export const useLogin = () => useStore((state) => state.login);

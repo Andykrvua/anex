@@ -1,0 +1,19 @@
+<svg width="60" height="43" viewBox="0 0 60 43" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.25" y="0.25" width="59.5" height="42.5" rx="3.75" fill="white" stroke="#F5F5F5" stroke-width="0.5"/>
+<mask id="mask0_5351_4958" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="60" height="43">
+<rect x="0.25" y="0.25" width="59.5" height="42.5" rx="3.75" fill="white" stroke="white" stroke-width="0.5"/>
+</mask>
+<g mask="url(#mask0_5351_4958)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 14.3333H60V0H0V14.3333Z" fill="#FF202D"/>
+<path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M22.8574 11.4667L24.286 10.0333L25.7146 11.4667V14.3333H22.8574V11.4667ZM28.5717 11.4667L30.0003 10.0333L31.4289 11.4667V14.3333H28.5717V11.4667ZM35.7146 10.0333L34.286 11.4667V14.3333H37.1431V11.4667L35.7146 10.0333Z" fill="#1895DB"/>
+<path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M27.1424 10.0333L25.7139 11.4667V14.3333H28.571V11.4667L27.1424 10.0333ZM32.8567 10.0333L31.4282 11.4667V14.3333H34.2853V11.4667L32.8567 10.0333Z" fill="#191F94"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 43H60V28.6666H0V43Z" fill="#2027AC"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25.7146 14.3334H24.286L22.8574 17.2H25.7146V20.0667H22.8574V22.9334H25.7146V25.8H22.8574V28.6667H25.7146V31.5334H28.5717V28.6667H31.4289V31.5334H34.286V28.6667H37.1431V25.8H34.286V22.9334H37.1431V20.0667H34.286V17.2H37.1431L35.7146 14.3334H34.286V17.2H31.4289V14.3334H28.5717V17.2H25.7146V14.3334ZM28.5717 20.0667V17.2H31.4289V20.0667H28.5717ZM28.5717 22.9334V20.0667H25.7146V22.9334H28.5717ZM31.4289 22.9334H28.5717V25.8H25.7146V28.6667H28.5717V25.8H31.4289V28.6667H34.286V25.8H31.4289V22.9334ZM31.4289 22.9334H34.286V20.0667H31.4289V22.9334Z" fill="url(#paint0_linear_5351_4958)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_5351_4958" x1="22.8574" y1="14.3334" x2="22.8574" y2="31.5334" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF212E"/>
+<stop offset="1" stop-color="#FD0D1B"/>
+</linearGradient>
+</defs>
+</svg>

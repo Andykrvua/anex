@@ -12,6 +12,7 @@ import {
 import { countryUpdateMinOffer } from 'utils/nextFetch';
 import declension from 'utils/declension';
 import SeoHead from '/components/common/seoHead/seoHead.js';
+import { useEffect } from 'react';
 
 export default function Home({
   postsList,
@@ -21,21 +22,16 @@ export default function Home({
   faqDataLength,
   minOffer,
 }) {
-  // console.log('minOffer', popularCountry);
-
-  const handler = async () => {
+  useEffect(async () => {
     const result = await countryUpdateMinOffer();
-    console.log('my front req ', result);
-  };
+    console.log('minOffer update', result);
+  }, []);
 
   return (
     <>
       <SeoHead content={mainPageSettings} />
       <div className="container">
         <MainForm />
-        <button style={{ display: 'none' }} onClick={() => handler()}>
-          FETCH
-        </button>
         <PopularCountry
           data={popularCountry}
           minOffer={minOffer?.data?.countries}

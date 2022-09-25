@@ -389,9 +389,13 @@ header.header .header_container {
 
 .formfield_btn_title {
   justify-self: self-start;
-  padding-left: 20px;
+  max-width: 100%;
+  padding: 0 20px;
   line-height: 18px;
   color: var(--primary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .second_btn_date {
@@ -530,6 +534,7 @@ header.header .header_container {
   }
 
   .formfield_btn_title {
+    max-width: 200px;
     padding-right: 10px;
     padding-left: 0;
   }

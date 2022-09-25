@@ -105,3 +105,28 @@ export const modal = {
   leadGetTours: 'leadGetTours',
   leadRequestCall: 'leadRequestCall',
 };
+
+// time to fetch request
+export const fetchTime = {
+  minOffer: 18000,
+};
+
+//
+// API
+//
+
+// fetch value from stars hotels
+export const stars = {
+  hv1: 5,
+  five: 5,
+  four: 4,
+  three: 3,
+  two: 2,
+  one: 1,
+};
+
+// img url
+export const fetchImgUrl = 'https://newimg.otpusk.com';
+
+//
+export const carpathiansId = 55;

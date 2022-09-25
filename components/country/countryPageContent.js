@@ -78,6 +78,7 @@ export default function CountryPageContent({
   isDistrict = false,
   subpageSlug,
   subsubpage,
+  minOffer = null,
 }) {
   return (
     <section className={styles.page_wrapper}>
@@ -115,6 +116,7 @@ export default function CountryPageContent({
           post={country}
           loc={loc}
           variant={location.postContent.countryPage}
+          minOffer={minOffer}
         />
       )}
       {subpagesSlugs.length > 0 && !isDistrict && !subsubpage ? (

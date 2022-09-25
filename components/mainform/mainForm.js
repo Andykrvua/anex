@@ -45,6 +45,7 @@ export default function MainForm() {
   const MemoDateField = memo(DateField);
   const MemoNightField = memo(NightField);
   const MemoPersonField = memo(PersonField);
+  console.log('down', down);
 
   return (
     <div className={modalIsOpen ? 'main_form open' : 'main_form'}>
@@ -56,7 +57,7 @@ export default function MainForm() {
         popupName={fieldsNames.up}
       />
       <MemoDownField
-        title={down}
+        title={down.name}
         aria={'Город прибытия'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}

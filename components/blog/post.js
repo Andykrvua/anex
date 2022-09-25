@@ -10,7 +10,7 @@ import changeImageUrl from 'utils/changeImageUrl';
 // variant null = post content
 // variant countryPage = country page post content
 // variant tourPage = tour page post content
-export default function Post({ post, loc, variant = null }) {
+export default function Post({ post, loc, variant = null, minOffer = null }) {
   const content = changeImageUrl(post, variant);
 
   return (
@@ -44,7 +44,9 @@ export default function Post({ post, loc, variant = null }) {
             {variant === location.postContent.countryPage && (
               <div className={styles.card_text}>
                 <h3>{post.translations[0].name}</h3>
-                <span>{'от 27 700 грн'}</span>
+                {minOffer && (
+                  <span>{`от ${minOffer.toLocaleString()} грн`}</span>
+                )}
               </div>
             )}
           </div>

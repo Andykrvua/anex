@@ -8,7 +8,7 @@ export default function DownApplySelected({
   selectDownHandler,
 }) {
   const selected = () => {
-    selectDownHandler(item.translations[0].name);
+    selectDownHandler(item.val, item.id);
   };
 
   const closeDownApplySelected = () => {
@@ -21,18 +21,24 @@ export default function DownApplySelected({
         key={item.code}
         data-code={item.code}
       >
-        <div className={styles.country_item_img}>
+        <div
+          className={styles.country_item_img}
+          style={item.img.wrapper_styles}
+        >
           <img
-            src={`/assets/img/svg/flags/${item.code}.svg`}
-            alt={item.translations[0].name}
+            src={item.img.src}
+            style={item.img.styles}
+            alt={item.val}
             width="60"
             height="43"
           />
         </div>
-        <div className={styles.country_item_name}>
-          {item.translations[0].name}
+        <div className={styles.country_item_name} style={{ gridRow: '2 span' }}>
+          {item.val}
         </div>
-        <div className={styles.country_item_price}>{item.price}</div>
+        {/* <div className={styles.country_item_price}>
+          {item.price ? item.price.toLocaleString() : null}
+        </div> */}
       </div>
       <button
         className={`${styles.popup_close} ${styles.popup_close_not_mobile} svg_btn svg_btn_stroke`}

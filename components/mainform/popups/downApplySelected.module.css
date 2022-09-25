@@ -23,6 +23,11 @@
   grid-row: 2 span;
 }
 
+.country_item_img img {
+  display: block;
+  border-radius: var(--def-radius);
+}
+
 .country_item_name {
   align-self: center;
   font-weight: 500;
