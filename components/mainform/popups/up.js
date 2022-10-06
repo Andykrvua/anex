@@ -70,11 +70,14 @@ export default function UpWindow({
       const search = await fetch(`/api/endpoints/fromcities`).then(
         (response) => {
           if (response.status === 200) {
+            console.log('front res: ', response);
             return response.json();
           }
           return null;
         }
       );
+
+      console.log('res from next api ', search);
 
       if (search?.ok) {
         setUpPointList({

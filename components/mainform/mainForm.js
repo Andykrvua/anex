@@ -48,11 +48,11 @@ export default function MainForm() {
   const MemoDateField = memo(DateField);
   const MemoNightField = memo(NightField);
   const MemoPersonField = memo(PersonField);
-  console.log('up', up);
-  console.log('down', down);
-  console.log('date', date);
-  console.log('night', night);
-  console.log('person', person);
+  // console.log('up', up);
+  // console.log('down', down);
+  // console.log('date', date);
+  // console.log('night', night);
+  // console.log('person', person);
 
   return (
     <div className={modalIsOpen ? 'main_form open' : 'main_form'}>

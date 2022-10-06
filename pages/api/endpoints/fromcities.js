@@ -6,18 +6,22 @@ export default async function handler(req, res) {
   )
     .then((response) => {
       if (response.status === 200) {
+        console.log('next api res from operator ', response);
         return response.json();
       }
       throw new Error('Bad response');
     })
     .catch((errors) => {
+      console.log('next api res from operator ERRORS ', errors);
       return { errors };
     });
 
   if (result.errors) {
     res.status(200).json({
       ok: false,
+      errors: result.errors,
     });
+    return;
   }
 
   res.status(200).json({
