@@ -20,7 +20,8 @@ export default function ItemCity({ data, clickHandler }) {
                 'linear-gradient(95.77deg, #006bd6 -23.84%, #0080ff 145.99%)',
               borderRadius: 'var(--def-radius)',
             },
-          })
+          }),
+          { district: true, img: '' }
         )
       }
     >

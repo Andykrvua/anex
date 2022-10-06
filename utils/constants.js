@@ -111,9 +111,30 @@ export const fetchTime = {
   minOffer: 18000,
 };
 
+// default down point
+export const defaultDownPoint = {
+  name: {
+    ru: 'Турция',
+    uk: 'Турція',
+  },
+  value: 115,
+};
+
+// default up point
+export const defaultUpPoint = {
+  name: {
+    ru: 'Киев',
+    uk: 'Київ',
+  },
+  value: 1544,
+};
+
 //
 // API
 //
+
+// api version
+export const api_version = '2.6';
 
 // fetch value from stars hotels
 export const stars = {
@@ -128,5 +149,5 @@ export const stars = {
 // img url
 export const fetchImgUrl = 'https://newimg.otpusk.com';
 
-//
+// search res Carpathians
 export const carpathiansId = 55;

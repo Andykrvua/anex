@@ -2,6 +2,7 @@ import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { mainFormPersonValidationRange as personVal } from '../utils/constants';
 import { FormattedMessage as FM } from 'react-intl';
+import { defaultDownPoint, defaultUpPoint } from 'utils/constants';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -10,9 +11,13 @@ const rawDate = tomorrow;
 
 const useStore = create(
   devtools((set) => ({
-    up: 'Запорожье',
+    up: { name: defaultUpPoint.name, value: defaultUpPoint.value },
     setUp: (up) => set({ up }),
-    down: { name: 'Сейшельские о-ва', value: null },
+    down: {
+      name: defaultDownPoint.name,
+      value: defaultDownPoint.value,
+      code: { district: false, img: '/assets/img/svg/flags/code/turkey.svg' },
+    },
     setDown: (down) => set({ down }),
     initialDate: rawDate,
     date: { rawDate, plusDays: 3 },
@@ -34,6 +39,8 @@ const useStore = create(
     },
     modal: false,
     setModal: (modal) => set({ modal }),
+    filter: false,
+    setFilter: (filter) => set({ filter }),
     burger: false,
     setBurger: (burger) => set({ burger }),
     windowInfo: {
@@ -47,6 +54,11 @@ const useStore = create(
       list: [],
     },
     setSearchCountryList: (searchCountryList) => set({ searchCountryList }),
+    upPointList: {
+      active: false,
+      list: [],
+    },
+    setUpPointList: (upPointList) => set({ upPointList }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -101,6 +113,9 @@ export const useGetFieldsNames = () => useStore((state) => state.fieldsNames);
 export const useGetModal = () => useStore((state) => state.modal);
 export const useSetModal = () => useStore((state) => state.setModal);
 
+export const useGetFilter = () => useStore((state) => state.filter);
+export const useSetFilter = () => useStore((state) => state.setFilter);
+
 export const useGetBurger = () => useStore((state) => state.burger);
 export const useSetBurger = () => useStore((state) => state.setBurger);
 
@@ -111,6 +126,10 @@ export const useGetSearchCountryList = () =>
   useStore((state) => state.searchCountryList);
 export const useSetSearchCountryList = () =>
   useStore((state) => state.setSearchCountryList);
+
+export const useGetUpPointList = () => useStore((state) => state.upPointList);
+export const useSetUpPointList = () =>
+  useStore((state) => state.setUpPointList);
 
 // example
 // export const useLogin = () => useStore((state) => state.login);

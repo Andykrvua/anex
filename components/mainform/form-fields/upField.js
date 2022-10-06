@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
 import MainFormBtn from './mainFormBtn';
 import { svgUp } from './svg';
-import LoadingPlaceholder from './loadingPlaceholder';
+import Loader from 'components/common/loader';
 
 const DynamicUpWindow = dynamic(
   () => import(/* webpackChunkName: "Up" */ '../popups/up'),
   {
     ssr: false,
     loading: () => {
-      return <LoadingPlaceholder />;
+      return <Loader />;
     },
   }
 );
@@ -19,6 +19,7 @@ export default function UpField({
   modalIsOpen,
   setModalIsOpen,
   popupName,
+  value,
 }) {
   return (
     <MainFormBtn
@@ -34,6 +35,7 @@ export default function UpField({
         modalIsOpen={modalIsOpen}
         cName={'btn_up'}
         popupName={popupName}
+        value={value}
       />
     </MainFormBtn>
   );

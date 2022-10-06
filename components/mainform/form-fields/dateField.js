@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import MainFormBtn from './mainFormBtn';
 import { svgDate } from './svg';
-import LoadingPlaceholder from './loadingPlaceholder';
+import Loader from 'components/common/loader';
 import { formattedDate } from '../../../utils/formattedDate';
 import declension from '../../../utils/declension';
 import { useIntl } from 'react-intl';
@@ -12,7 +12,7 @@ const DynamicUpWindow = dynamic(
   {
     ssr: false,
     loading: () => {
-      return <LoadingPlaceholder />;
+      return <Loader />;
     },
   }
 );

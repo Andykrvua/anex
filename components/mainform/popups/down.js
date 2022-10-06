@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState, memo } from 'react';
 import dynamic from 'next/dynamic';
 import useOutsideClick from '../../../utils/clickOutside';
-import { allCountry } from '../../../utils/allCountry';
 import {
   useSetBodyScroll,
   getSize,
@@ -16,7 +15,6 @@ import { svgDown } from '../form-fields/svg';
 import styles from './down.module.css';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
-import LoadingPlaceholder from '../form-fields/loadingPlaceholder';
 import SimpleBar from 'simplebar-react';
 import { transitionTime } from '../../../utils/constants';
 import {
@@ -29,6 +27,7 @@ import useDebounce from 'utils/useDebounce';
 import ItemCountry from './down-results/itemCountry';
 import ItemCity from './down-results/itemCity';
 import ItemHotel from './down-results/itemHotel';
+import Loader from 'components/common/loader';
 
 const ResultItem = ({ data, clickHandler }) => {
   if (data.type === 'country')
@@ -66,7 +65,7 @@ const DownApplySelected = dynamic(
   {
     ssr: false,
     loading: () => {
-      return <LoadingPlaceholder />;
+      return <Loader />;
     },
   }
 );
@@ -83,8 +82,9 @@ export default function Down({
   const getSearchCountryList = useGetSearchCountryList();
   const setSearchCountryList = useSetSearchCountryList();
 
-  const selectDownHandler = (val, id) => {
-    selectDown({ name: val, value: id });
+  const selectDownHandler = (val, id, code) => {
+    selectDown({ name: val, value: id, code });
+    console.log(111);
     setCountry(val);
     closeModalHandler();
     setTimeout(() => {
@@ -114,10 +114,10 @@ export default function Down({
   const debouncedSearch = useDebounce(country, searchDelay);
 
   useEffect(async () => {
-    console.log('g', getSearchCountryList);
     if (!getSearchCountryList.active) {
+      setLoading(true);
       const fetchMinCountryList = await fetch(
-        'https://a-k.name/directus/items/country_minoffer?filter[status]=published'
+        `${process.env.NEXT_PUBLIC_API}country_minoffer?filter[status]=published`
       ).then((response) => {
         if (response.status === 200) {
           return response.json();
@@ -131,6 +131,7 @@ export default function Down({
           list: fetchMinCountryList.data.data.countries,
         });
       }
+      setLoading(false);
     }
   }, []);
 
@@ -147,15 +148,12 @@ export default function Down({
         }
       });
 
-      console.log('result', search);
       if (search.ok) {
         setSearchResult(Object.entries(search.result.response));
       }
       setLoading(false);
     }
   }, [debouncedSearch]);
-  // console.log('state', searchResult);
-  // console.log('entri', Object.entries(searchResult));
 
   // get viewport height when opening momile keyboard
   useEffect(() => {
@@ -195,32 +193,14 @@ export default function Down({
 
   const inputOnchange = (e) => {
     setCountry(e.target.value);
-    // console.log(e.target.value);
   };
 
-  // const clickCountryItem = (val, id) => {
-  //   console.log(val);
-  //   console.log(id);
-  //   // const selected = allCountry.find(
-  //   //   (item) => item.code === e.target.closest('.country_item').dataset.code
-  //   // );
-  //   if (size.width >= maxWidth) {
-  //     selectDownHandler(val);
-  //   } else {
-  //     setCountry(val);
-  //     setCountryData(val);
-  //   }
-  // };
-
-  const clickSearchResultItem = (val, id, img) => {
-    console.log(val);
-    console.log(id);
-
+  const clickSearchResultItem = (val, id, img, code) => {
     if (size.width >= maxWidth) {
-      selectDownHandler(val, id);
+      selectDownHandler(val, id, code);
     } else {
       setCountry(val);
-      setCountryData({ val, id, img });
+      setCountryData({ val, id, img, code });
     }
   };
 
@@ -264,27 +244,28 @@ export default function Down({
               })}
             </div>
           ) : null}
-          {loading && (
-            <div>
-              <FM id="common.loading" />
-            </div>
-          )}
+          {loading && <Loader />}
           {country.length < 3 ? (
             <>
-              <h5 className={styles.down_content_title}>
-                <FM id="mainform.down.t2" />
-              </h5>
-              <MemoCountryList
-                variant={countryListVariants.getSearchPopular}
-                clickSearchResultItem={clickSearchResultItem}
-              />
-              <h5 className={styles.down_content_title}>
-                <FM id="mainform.down.t3" /> (31)
-              </h5>
-              <MemoCountryList
-                variant={countryListVariants.getSearch}
-                clickSearchResultItem={clickSearchResultItem}
-              />
+              {!loading && (
+                <>
+                  <h5 className={styles.down_content_title}>
+                    <FM id="mainform.down.t2" />
+                  </h5>
+
+                  <MemoCountryList
+                    variant={countryListVariants.getSearchPopular}
+                    clickSearchResultItem={clickSearchResultItem}
+                  />
+                  <h5 className={styles.down_content_title}>
+                    <FM id="mainform.down.t3" /> (31)
+                  </h5>
+                  <MemoCountryList
+                    variant={countryListVariants.getSearch}
+                    clickSearchResultItem={clickSearchResultItem}
+                  />
+                </>
+              )}
             </>
           ) : null}
         </div>

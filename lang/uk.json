@@ -121,5 +121,10 @@
   "footer.t2": "Тури",
   "footer.t3": "Контакти",
   "footer.address": "03022, м. Київ, вул. Васильківська 32",
-  "faqpage.br": "Питання і відповіді"
+  "faqpage.br": "Питання і відповіді",
+  "search.br": "Пошук турів",
+  "result.filter.title": "Фильтри",
+  "result.filter.btn": "Фильтри",
+  "result.sort.btn": "Сортування грн",
+  "result.filter.reset": "Обнулити"
 }

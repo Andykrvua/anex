@@ -2,6 +2,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import ReviewsPostControl from 'components/reviews/postControl';
 import styles from './auth.module.css';
 import { FormattedMessage as FM } from 'react-intl';
+import Loader from 'components/common/loader';
 
 export default function Auth() {
   const { data: session, status } = useSession();
@@ -48,11 +49,7 @@ export default function Auth() {
           <FM id="reviews.leave-feedback" />
         </a>
       )}
-      {loading && (
-        <div>
-          <FM id="common.loading" />
-        </div>
-      )}
+      {loading && <Loader />}
     </div>
   );
 }

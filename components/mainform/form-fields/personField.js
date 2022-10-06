@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
 import MainFormBtn from './mainFormBtn';
 import { svgPerson } from './svg';
-import LoadingPlaceholder from './loadingPlaceholder';
+import Loader from 'components/common/loader';
 
 const DynamicUpWindow = dynamic(
   () => import(/* webpackChunkName: "Person" */ '../popups/person'),
   {
     ssr: false,
     loading: () => {
-      return <LoadingPlaceholder />;
+      return <Loader />;
     },
   }
 );

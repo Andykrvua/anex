@@ -14,9 +14,12 @@ import {
 } from '../../store/store';
 import declension from 'utils/declension';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
+import { useRouter } from 'next/router';
 
 export default function MainForm() {
   const [modalIsOpen, setModalIsOpen] = useState('');
+  // const { locale } = useRouter();
+  const router = useRouter();
 
   const up = useGetUp();
   const down = useGetDown();
@@ -45,19 +48,24 @@ export default function MainForm() {
   const MemoDateField = memo(DateField);
   const MemoNightField = memo(NightField);
   const MemoPersonField = memo(PersonField);
+  console.log('up', up);
   console.log('down', down);
+  console.log('date', date);
+  console.log('night', night);
+  console.log('person', person);
 
   return (
     <div className={modalIsOpen ? 'main_form open' : 'main_form'}>
       <MemoUpField
-        title={up}
+        title={up?.name[router.locale] || up.name}
+        value={up.value}
         aria={'Город вылета'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.up}
       />
       <MemoDownField
-        title={down.name}
+        title={down?.name[router.locale] || down.name}
         aria={'Город прибытия'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
@@ -84,7 +92,7 @@ export default function MainForm() {
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.person}
       />
-      <button className="main_form_btn">
+      <button className="main_form_btn" onClick={() => router.push('/search')}>
         <FM id="common.search" />
       </button>
     </div>

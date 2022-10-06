@@ -8,7 +8,7 @@ export default function DownApplySelected({
   selectDownHandler,
 }) {
   const selected = () => {
-    selectDownHandler(item.val, item.id);
+    selectDownHandler(item.val, item.id, item.code);
   };
 
   const closeDownApplySelected = () => {
@@ -33,9 +33,7 @@ export default function DownApplySelected({
             height="43"
           />
         </div>
-        <div className={styles.country_item_name} style={{ gridRow: '2 span' }}>
-          {item.val}
-        </div>
+        <div className={styles.country_item_name}>{item.val}</div>
         {/* <div className={styles.country_item_price}>
           {item.price ? item.price.toLocaleString() : null}
         </div> */}

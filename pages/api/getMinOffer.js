@@ -1,4 +1,4 @@
-import { fetchTime } from 'utils/constants';
+import { fetchTime, api_version } from 'utils/constants';
 
 const request = async (url = '', data = {}) => {
   const response = await fetch(url, {
@@ -21,8 +21,7 @@ const request = async (url = '', data = {}) => {
 };
 
 const getMinOfferApi = async () => {
-  const url =
-    'https://api.otpusk.com/api/2.6/tours/countries?with=price&data=minprice&lang=multi&access_token=337da-65e22-26745-a251f-77b9e';
+  const url = `${process.env.OPERATOR_API}${api_version}/tours/countries?with=price&data=minprice&lang=multi&access_token=${process.env.OPERATOR_ACCESS_TOKEN}`;
 
   const response = await fetch(url)
     .then((response) => {
@@ -71,8 +70,16 @@ export default async function handler(req, res) {
       seconds: `прошло ${seconds} секунд из 18 000`,
       fetchTime: fetchTime.minOffer,
     });
+    return;
   } else {
     const data = await getMinOfferApi();
+
+    if (!data) {
+      res.status(200).json({
+        ok: 'API down',
+      });
+      return;
+    }
 
     const result = await request(
       `${process.env.API}${req.body.item}?access_token=${process.env.ACCESS_TOKEN}`,
@@ -84,6 +91,7 @@ export default async function handler(req, res) {
         ok: false,
         result,
       });
+      return;
     }
 
     res.status(200).json({

@@ -8,7 +8,11 @@ export default function ItemCountry({ data, clickHandler }) {
         clickHandler(
           data.value,
           data.id,
-          (data.img = { src: `/assets/img/svg/flags/code/${data.code}.svg` })
+          (data.img = { src: `/assets/img/svg/flags/code/${data.code}.svg` }),
+          {
+            district: false,
+            img: `/assets/img/svg/flags/code/${data.code}.svg`,
+          }
         )
       }
     >

@@ -121,5 +121,10 @@
   "footer.t2": "Туры",
   "footer.t3": "Контакты",
   "footer.address": "03022, г. Киев, ул. Васильковская 32",
-  "faqpage.br": "Вопросы и ответы"
+  "faqpage.br": "Вопросы и ответы",
+  "search.br": "Поиск туров",
+  "result.filter.title": "Фильтры",
+  "result.filter.btn": "Фильтры",
+  "result.sort.btn": "Сортировка грн",
+  "result.filter.reset": "Сбросить"
 }

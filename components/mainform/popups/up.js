@@ -1,5 +1,6 @@
-import { useRef, useEffect, useLayoutEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import useOutsideClick from '../../../utils/clickOutside';
+import SimpleBar from 'simplebar-react';
 import {
   useSetBodyScroll,
   getSize,
@@ -11,38 +12,79 @@ import {
 } from '../../../utils/useBodyScroll';
 import Header from './header';
 import { svgUp } from '../form-fields/svg';
-import { useSetUp } from '../../../store/store';
+import {
+  useSetUp,
+  useGetUpPointList,
+  useSetUpPointList,
+} from '../../../store/store';
 import styles from './up.module.css';
 import { FormattedMessage as FM } from 'react-intl';
+import Loader from 'components/common/loader';
+
+// change scroll depending on mobile or desktop
+const SimpleBarWrapper = ({ size, children }) => {
+  return (
+    <>
+      {size.width >= maxWidth ? (
+        <SimpleBar
+          className="mobile_default"
+          // style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
+          style={{ height: 'var(--mainform-desktop-maxheight)' }}
+          autoHide={true}
+        >
+          {children}
+        </SimpleBar>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
+};
 
 export default function UpWindow({
   setModalIsOpen,
   modalIsOpen,
   cName,
   popupName,
+  value,
 }) {
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
-  const scrollableContent = useRef(null);
 
   const selectUp = useSetUp();
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
-  const [contentStyle, setContentStyle] = useState(false);
-  const [selectedUp, setSelectedUp] = useState(false);
+  const getUpPointList = useGetUpPointList();
+  const setUpPointList = useSetUpPointList();
 
-  useLayoutEffect(() => {
-    if (
-      scrollable.current.clientHeight > scrollableContent.current.clientHeight
-    ) {
-      setContentStyle(true);
-    } else {
-      setContentStyle(false);
+  const [selectedUp, setSelectedUp] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  useEffect(async () => {
+    if (!getUpPointList.active) {
+      setLoading(true);
+
+      const search = await fetch(`/api/endpoints/fromcities`).then(
+        (response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          return null;
+        }
+      );
+
+      if (search?.ok) {
+        setUpPointList({
+          active: true,
+          list: search.result.fromCities,
+        });
+      }
+      setLoading(false);
     }
-  }, [size.height]);
+  }, []);
 
   useEffect(() => {
     if (size.width < maxWidth) {
@@ -63,7 +105,12 @@ export default function UpWindow({
   };
 
   const inputHandler = (e) => {
-    setSelectedUp(e.target.value);
+    if (size.width >= maxWidth) {
+      selectUp({ name: e.target.dataset.name, value: e.target.value });
+      setModalIsOpen('');
+    } else {
+      setSelectedUp({ name: e.target.dataset.name, value: e.target.value });
+    }
   };
 
   const selectedHandler = () => {
@@ -74,41 +121,54 @@ export default function UpWindow({
     setModalIsOpen('');
   };
 
-  const upPoints = ['Запорожье', 'Киев', 'Львов', 'Одесса', 'Харьков'];
-
   return (
-    <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
-      <Header closeModalHandler={closeModalHandler} svg={svgUp} />
-      <h3 className="title">{popupName}</h3>
+    <SimpleBarWrapper size={size}>
       <div
-        className={`${styles.popup_scrollable_content} popup_scrollable_content`}
-        ref={scrollable}
-        style={{ justifyContent: contentStyle ? 'center' : 'start' }}
+        className="main_form_popup_mobile_wrapper"
+        ref={wrapperRef}
+        style={{ overflow: 'hidden' }}
       >
-        <div className={styles.input_wrapper} ref={scrollableContent}>
-          {upPoints.map((item, i) => {
-            return (
-              <label className={styles.input_label} key={i}>
-                <input
-                  className={styles.input}
-                  type="radio"
-                  name="up"
-                  id={i}
-                  onChange={inputHandler}
-                  value={item}
-                  defaultChecked={i === 0}
-                />
-                <span className={styles.input_label_text}>{item}</span>
-              </label>
-            );
-          })}
+        <Header closeModalHandler={closeModalHandler} svg={svgUp} />
+        <h3 className="title">{popupName}</h3>
+        <div
+          className={`${styles.popup_scrollable_content} popup_scrollable_content`}
+          ref={scrollable}
+          // style={{ justifyContent: contentStyle ? 'center' : 'start' }}
+        >
+          {loading && <Loader />}
+          {!loading && (
+            <div className={styles.input_wrapper}>
+              {getUpPointList.active &&
+                getUpPointList.list.map((item, i) => {
+                  return (
+                    <label className={styles.input_label} key={i}>
+                      <input
+                        className={styles.input}
+                        type="radio"
+                        name="up"
+                        id={i}
+                        onChange={(e) => inputHandler(e)}
+                        value={item.id}
+                        defaultChecked={item.id === value.toString()}
+                        data-name={item.name}
+                      />
+                      <span className={styles.input_label_text}>
+                        {item.name}
+                      </span>
+                    </label>
+                  );
+                })}
+            </div>
+          )}
         </div>
+        {size.width < maxWidth && (
+          <div className="apply_btn_wrapper">
+            <button className="apply_btn" onClick={selectedHandler}>
+              <FM id="common.apply" />
+            </button>
+          </div>
+        )}
       </div>
-      <div className="apply_btn_wrapper">
-        <button className="apply_btn" onClick={selectedHandler}>
-          <FM id="common.apply" />
-        </button>
-      </div>
-    </div>
+    </SimpleBarWrapper>
   );
 }
