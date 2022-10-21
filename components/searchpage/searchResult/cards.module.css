@@ -1,0 +1,189 @@
+.cards_wrapper {
+  display: grid;
+  row-gap: 20px;
+}
+
+.card:hover .img {
+  transform: scale(1.1);
+}
+
+.card_img {
+  position: relative;
+  border-radius: var(--def-radius);
+  overflow: hidden;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  /* height: auto; */
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.review {
+  bottom: 0;
+  position: absolute;
+  right: 20px;
+  padding: 10px 15px;
+  text-align: center;
+  /* transform: translateY(-50%); */
+  border: 1px solid var(--line);
+  border-radius: var(--def-radius);
+  background-color: var(--white);
+  font-size: 10px;
+  line-height: 12px;
+}
+
+.review p:not(:last-child) {
+  margin: 0 0 3px;
+}
+
+.review p:last-child {
+  margin: 0;
+}
+
+.review__number {
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: bold;
+}
+
+.review__medium {
+  font-weight: 700;
+}
+
+.card_text {
+  position: relative;
+  margin-top: 15px;
+}
+
+.country_text {
+  margin: 0;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.stars {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 16px;
+  height: 17px;
+  margin: 7px 0;
+}
+
+.hotel_name {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.tour_propertys {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px 0 5px;
+}
+
+.tour_property:nth-child(1) {
+  margin-right: 15px;
+}
+
+.tour_property {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  column-gap: 5px;
+  align-items: center;
+}
+
+.tour_property__title {
+  margin: 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.maps_and_options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.maps {
+  display: flex;
+  align-items: center;
+  min-width: 98px;
+  margin: 5px 10px 5px 0;
+  background-color: transparent;
+}
+
+.maps span {
+  margin-left: 4px;
+  text-decoration: underline;
+}
+
+.options {
+  min-width: 220px;
+  margin: 5px 0;
+  padding: 5px 10px;
+  text-align: center;
+  border-radius: var(--def-radius);
+  background-color: var(--white);
+}
+
+.card_order {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+  padding: 15px 10px 15px 20px;
+  border-radius: var(--def-radius);
+  background-color: var(--white);
+}
+
+.order_text_wrapper {
+  display: grid;
+}
+
+.order_text__duration,
+.order_text__people {
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.order_text__duration > span,
+.order_text__people > span {
+  color: var(--primary-light);
+}
+
+.order_price {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+.order_price > span {
+  font-size: 15px;
+  line-height: 18px;
+}
+
+@media (min-width: 1000px) {
+  .cards_wrapper {
+    row-gap: 25px;
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 15px;
+  }
+}

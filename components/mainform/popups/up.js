@@ -14,12 +14,14 @@ import Header from './header';
 import { svgUp } from '../form-fields/svg';
 import {
   useSetUp,
+  useGetDown,
   useGetUpPointList,
   useSetUpPointList,
 } from '../../../store/store';
 import styles from './up.module.css';
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 import Loader from 'components/common/loader';
+import { transportIcon } from 'utils/constants';
 
 // change scroll depending on mobile or desktop
 const SimpleBarWrapper = ({ size, children }) => {
@@ -52,7 +54,9 @@ export default function UpWindow({
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
 
+  const intl = useIntl();
   const selectUp = useSetUp();
+  const getDown = useGetDown();
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
@@ -67,17 +71,14 @@ export default function UpWindow({
     if (!getUpPointList.active) {
       setLoading(true);
 
-      const search = await fetch(`/api/endpoints/fromcities`).then(
-        (response) => {
-          if (response.status === 200) {
-            console.log('front res: ', response);
-            return response.json();
-          }
-          return null;
+      const search = await fetch(
+        `/api/endpoints/fromcities?geoId=${getDown.value}`
+      ).then((response) => {
+        if (response.status === 200) {
+          return response.json();
         }
-      );
-
-      console.log('res from next api ', search);
+        return null;
+      });
 
       if (search?.ok) {
         setUpPointList({
@@ -155,12 +156,45 @@ export default function UpWindow({
                         defaultChecked={item.id === value.toString()}
                         data-name={item.name}
                       />
-                      <span className={styles.input_label_text}>
-                        {item.name}
+                      <span className={styles.input_label_content}>
+                        <span className={styles.input_label_text}>
+                          {item.name}
+                        </span>
+                        <span className={styles.input_label_icons}>
+                          <img
+                            src={`/assets/img/svg/up/${
+                              transportIcon[item.transport.map((tr) => tr)]
+                            }`}
+                            alt=""
+                          />
+                        </span>
                       </span>
                     </label>
                   );
                 })}
+              <label className={styles.input_label}>
+                <input
+                  className={styles.input}
+                  type="radio"
+                  name="up"
+                  id="no_transport"
+                  onChange={(e) => inputHandler(e)}
+                  value="9999"
+                  data-name={intl.formatMessage({
+                    id: 'mainform.up.no_tr',
+                  })}
+                />
+                <span className={styles.input_label_content}>
+                  <span className={styles.input_label_text}>
+                    {intl.formatMessage({
+                      id: 'mainform.up.no_tr',
+                    })}
+                  </span>
+                  <span className={styles.input_label_icons}>
+                    <img src={`/assets/img/svg/up/smile.svg`} alt="" />
+                  </span>
+                </span>
+              </label>
             </div>
           )}
         </div>

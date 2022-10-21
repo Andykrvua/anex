@@ -33,7 +33,15 @@ const List = ({
       <div
         variant={variant}
         className={`${styles.country_item} country_item`}
-        onClick={() => clickSearchResultItem(values.val, values.id, values.img, values.code)}
+        onClick={() =>
+          clickSearchResultItem(
+            values.val,
+            values.id,
+            values.countryId,
+            values.img,
+            values.code
+          )
+        }
       >
         {children}
       </div>
@@ -52,8 +60,13 @@ const List = ({
               values={{
                 val: item[lang],
                 id: item.id,
+                countryId: item.id,
                 img: { src: `/assets/img/svg/flags/code/${item.code}.svg` },
-                code: {district: false, img: `/assets/img/svg/flags/code/${item.code}.svg`},
+                code: {
+                  district: false,
+                  hotel: false,
+                  img: `/assets/img/svg/flags/code/${item.code}.svg`,
+                },
               }}
             >
               <div className={styles.country_item_img}>

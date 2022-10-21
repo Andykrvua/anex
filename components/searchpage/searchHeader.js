@@ -1,8 +1,16 @@
 import { useSetFilter } from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 import styles from './searchHeader.module.css';
+import { useRouter } from 'next/router';
+import { useGetDown, useGetDate } from 'store/store';
 
-export default function SearchHeader({ down, date, loc }) {
+export default function SearchHeader() {
+  const router = useRouter();
+  const loc = router.locale;
+
+  const down = useGetDown();
+  const date = useGetDate();
+
   const setFilterModale = useSetFilter();
 
   const copiedDate = new Date(date.rawDate);

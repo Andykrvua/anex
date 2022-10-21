@@ -19,6 +19,7 @@ export default function DownField({
   modalIsOpen,
   setModalIsOpen,
   popupName,
+  ttt,
 }) {
   return (
     <MainFormBtn
@@ -34,6 +35,7 @@ export default function DownField({
         modalIsOpen={modalIsOpen}
         cName={'btn_down'}
         popupName={popupName}
+        ttt={ttt}
       />
     </MainFormBtn>
   );

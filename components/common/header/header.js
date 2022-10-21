@@ -3,7 +3,7 @@ import UserArea from './userArea';
 import BurgerBtn from './burgerBtn';
 import Nav from './nav';
 import { location } from 'utils/constants';
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect } from 'react';
 import getViewport from 'utils/getViewport';
 import SubnavCountry from './subnavCountry';
 

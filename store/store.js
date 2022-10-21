@@ -2,12 +2,28 @@ import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { mainFormPersonValidationRange as personVal } from '../utils/constants';
 import { FormattedMessage as FM } from 'react-intl';
-import { defaultDownPoint, defaultUpPoint } from 'utils/constants';
+// import { defaultDownPoint, defaultUpPoint } from 'utils/constants';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 // const date = tomorrow.toISOString().slice(0, 10).split('-').reverse().join('.');
 const rawDate = tomorrow;
+
+const defaultDownPoint = {
+  name: {
+    ru: 'Турция',
+    uk: 'Туреччина',
+  },
+  value: 115,
+};
+
+const defaultUpPoint = {
+  name: {
+    ru: 'Киев',
+    uk: 'Київ',
+  },
+  value: 1544,
+};
 
 const useStore = create(
   devtools((set) => ({
@@ -16,7 +32,12 @@ const useStore = create(
     down: {
       name: defaultDownPoint.name,
       value: defaultDownPoint.value,
-      code: { district: false, img: '/assets/img/svg/flags/code/turkey.svg' },
+      countryValue: 115,
+      code: {
+        district: false,
+        hotel: false,
+        img: '/assets/img/svg/flags/code/turkey.svg',
+      },
     },
     setDown: (down) => set({ down }),
     initialDate: rawDate,

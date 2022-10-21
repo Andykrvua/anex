@@ -21,6 +21,7 @@ import {
   useSetDown,
   useGetSearchCountryList,
   useSetSearchCountryList,
+  useSetUpPointList,
 } from '../../../store/store';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import useDebounce from 'utils/useDebounce';
@@ -81,15 +82,23 @@ export default function Down({
   const selectDown = useSetDown();
   const getSearchCountryList = useGetSearchCountryList();
   const setSearchCountryList = useSetSearchCountryList();
+  const setUpPointList = useSetUpPointList();
 
-  const selectDownHandler = (val, id, code) => {
-    selectDown({ name: val, value: id, code });
-    console.log(111);
+  const selectDownHandler = (val, id, countryId = null, code) => {
+    selectDown({ name: val, value: id, countryValue: countryId, code });
+    // need fetch again up point list from new down point
+    setUpPointList({
+      active: false,
+      list: [],
+    });
     setCountry(val);
     closeModalHandler();
     setTimeout(() => {
       setCountryData(false);
     }, transitionTime);
+    console.log('s');
+    setModalIsOpen('btn_up');
+    // ttt.current.click();
   };
 
   const size = getSize();
@@ -195,12 +204,13 @@ export default function Down({
     setCountry(e.target.value);
   };
 
-  const clickSearchResultItem = (val, id, img, code) => {
+  const clickSearchResultItem = (val, id, countryId, img, code) => {
     if (size.width >= maxWidth) {
-      selectDownHandler(val, id, code);
+      selectDownHandler(val, id, countryId, code);
     } else {
+      console.log(val, id, countryId, img, code);
       setCountry(val);
-      setCountryData({ val, id, img, code });
+      setCountryData({ val, id, countryId, img, code });
     }
   };
 

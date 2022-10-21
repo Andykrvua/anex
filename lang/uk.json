@@ -15,6 +15,7 @@
   "common.tourist5": "туристів",
   "mainform.up.t": "Звідки виліт",
   "mainform.down.t": "Куди вирушаємо",
+  "mainform.up.no_tr": "Без транспорту",
   "mainform.down.t2": "Популярні напрямки",
   "mainform.down.t3": "Всі країни",
   "mainform.down.placeholder": "Країна / Курорт / Готель",

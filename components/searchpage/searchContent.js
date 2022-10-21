@@ -1,16 +1,16 @@
 import styles from './searchContent.module.css';
 import { useGetFilter, useSetFilter } from 'store/store';
-import FilterMobileTemplate from './filterMobileTemplate';
-import FilterContent from './filterContent';
+import FilterMobileTemplate from './filter/filterMobileTemplate';
+import FilterContent from './filter/filterContent';
+import SearchResult from './searchResult/searchResult';
 import getViewport from 'utils/getViewport';
 import { useEffect } from 'react';
-import { FormattedMessage as FM } from 'react-intl';
-import CloseSvg from 'components/common/closeSvg';
 import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
 export default function SearchContent() {
   const getFilterModale = useGetFilter();
   const setFilterModale = useSetFilter();
+
   const windowSize = getViewport();
 
   useEffect(() => {
@@ -43,25 +43,18 @@ export default function SearchContent() {
           }
         >
           <FilterMobileTemplate>
-            <FilterContent />
+            <FilterContent mobile={true} />
           </FilterMobileTemplate>
         </div>
       )}
-      {windowSize.width > 809 && (
+      {windowSize.width >= 810 && (
         <div>
-          <div className={styles.filter_header}>
-            <h3 className={styles.title}>
-              <FM id="result.filter.title" />
-            </h3>
-            <button className={`${styles.reset_btn} svg_btn_stroke`}>
-              <FM id="result.filter.reset" />
-              <CloseSvg />
-            </button>
+          <div>
+            <FilterContent mobile={false} />
           </div>
-          <FilterContent />
         </div>
       )}
-      <div>Content</div>
+      <SearchResult />
     </div>
   );
 }

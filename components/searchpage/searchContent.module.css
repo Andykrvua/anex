@@ -2,28 +2,6 @@
   margin-top: 25px;
 }
 
-.filter_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 30px;
-}
-
-.title {
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.reset_btn {
-  display: flex;
-  align-items: center;
-  height: 17px;
-  overflow: hidden;
-  text-decoration: underline;
-  background-color: transparent;
-}
-
 @media (min-width: 810px) {
   .search_wrapper {
     display: grid;

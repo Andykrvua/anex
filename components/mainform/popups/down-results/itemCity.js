@@ -8,6 +8,7 @@ export default function ItemCity({ data, clickHandler }) {
         clickHandler(
           data.name,
           data.id,
+          data.countryId,
           (data.img = {
             src: `/assets/img/svg/search_suggests/map-marker.svg`,
             styles: { width: '26px', height: '26px' },
@@ -21,7 +22,7 @@ export default function ItemCity({ data, clickHandler }) {
               borderRadius: 'var(--def-radius)',
             },
           }),
-          { district: true, img: '' }
+          { district: true, hotel: false, img: '' }
         )
       }
     >

@@ -86,7 +86,7 @@ button {
 
 button:focus-visible,
 a:focus-visible,
-button:active {
+button:not([disabled]):active {
   border-radius: var(--def-radius);
   box-shadow: var(--btn-focus);
 }
@@ -435,13 +435,17 @@ header.header .header_container {
   box-shadow: var(--base-btn-shadow);
 }
 
-.main_form_btn:active,
-.main_form_btn:focus-visible {
+.apply_btn:disabled {
+  background-color: var(--placeholder);
+}
+
+.main_form_btn:not([disabled]):active,
+.main_form_btn:not([disabled]):focus-visible {
   box-shadow: var(--red-btn-shadow), var(--btn-focus);
 }
 
-.apply_btn:active,
-.apply_btn:focus-visible {
+.apply_btn:not([disabled]):active,
+.apply_btn:not([disabled]):focus-visible {
   box-shadow: var(--base-btn-shadow), var(--btn-focus);
 }
 
@@ -604,11 +608,11 @@ header.header .header_container {
     width: 360px;
   }
 
-  .wrapper_btn_up .main_form_popup {
+  .wrapper_btn_down .main_form_popup {
     left: -6px;
   }
 
-  .wrapper_btn_down .main_form_popup {
+  .wrapper_btn_up .main_form_popup {
     left: 0;
   }
 }

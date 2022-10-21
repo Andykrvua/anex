@@ -8,7 +8,7 @@ export default function DownApplySelected({
   selectDownHandler,
 }) {
   const selected = () => {
-    selectDownHandler(item.val, item.id, item.code);
+    selectDownHandler(item.val, item.id, item.countryId, item.code);
   };
 
   const closeDownApplySelected = () => {

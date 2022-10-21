@@ -112,21 +112,30 @@ export const fetchTime = {
 };
 
 // default down point
-export const defaultDownPoint = {
-  name: {
-    ru: 'Турция',
-    uk: 'Турція',
-  },
-  value: 115,
-};
+// export const defaultDownPoint = {
+//   name: {
+//     ru: 'Турция',
+//     uk: 'Туреччина',
+//   },
+//   value: 115,
+// };
 
 // default up point
-export const defaultUpPoint = {
-  name: {
-    ru: 'Киев',
-    uk: 'Київ',
-  },
-  value: 1544,
+// export const defaultUpPoint = {
+//   name: {
+//     ru: 'Киев',
+//     uk: 'Київ',
+//   },
+//   value: 1544,
+// };
+
+// icons from Up modale
+export const transportIcon = {
+  bus: 'bus.svg',
+  air: 'fly-up.svg',
+  train: 'close.svg',
+  ship: 'close.svg',
+  no: 'person.svg',
 };
 
 //

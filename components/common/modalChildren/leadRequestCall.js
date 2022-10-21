@@ -4,7 +4,7 @@ import { useSetWindowInfo } from '/store/store';
 import { infoModal } from '/utils/constants';
 import { createLeadRequestCall } from 'utils/nextFetch';
 import { useIntl } from 'react-intl';
-import Checkbox from 'components/common/checkbox/checkbox';
+import Checkbox from 'components/controls/checkbox/checkbox';
 import MessendgersLinks from 'components/common/other/messendgersLinks';
 
 export default function LeadRequestCall({ closeHandler }) {

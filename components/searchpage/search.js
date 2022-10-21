@@ -1,10 +1,10 @@
 import SearchContent from './searchContent';
 import SearchHeader from './searchHeader';
 
-export default function Search({ down, date, loc }) {
+export default function Search() {
   return (
     <>
-      <SearchHeader down={down} date={date} loc={loc} />
+      <SearchHeader />
       <SearchContent />
     </>
   );

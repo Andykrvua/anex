@@ -2,24 +2,21 @@ import { api_version } from 'utils/constants';
 
 export default async function handler(req, res) {
   const result = await fetch(
-    `${process.env.OPERATOR_API}${api_version}/tours/fromCities?access_token=${process.env.OPERATOR_ACCESS_TOKEN}`
+    `${process.env.OPERATOR_API}${api_version}/tours/fromCities?geoId=${req.query.geoId}&access_token=${process.env.OPERATOR_ACCESS_TOKEN}`
   )
     .then((response) => {
       if (response.status === 200) {
-        console.log('next api res from operator ', response);
         return response.json();
       }
       throw new Error('Bad response');
     })
     .catch((errors) => {
-      console.log('next api res from operator ERRORS ', errors);
       return { errors };
     });
 
   if (result.errors) {
     res.status(200).json({
       ok: false,
-      errors: result.errors,
     });
     return;
   }

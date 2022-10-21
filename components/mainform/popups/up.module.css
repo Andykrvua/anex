@@ -17,12 +17,33 @@
   opacity: 0;
 }
 
+.input_label_content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 20px;
+  transition: background-color var(--base-transition);
+  cursor: pointer;
+}
+
 .input_label_text {
   display: block;
-  padding: 22px 20px;
   font-size: 15px;
   line-height: 18px;
-  transition: background-color var(--base-transition);
+}
+
+.input_label_icons {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+
+.input_label_icons img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .input:checked + span {

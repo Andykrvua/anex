@@ -54,8 +54,43 @@ export default function MainForm() {
   // console.log('night', night);
   // console.log('person', person);
 
+  const makeSearchParams = () => {
+    const copiedDate = new Date(date.rawDate);
+    copiedDate.setDate(copiedDate.getDate() + date.plusDays);
+
+    const childs = new Array(parseInt(person.child))
+      .fill(null)
+      .map((_, ind) => {
+        if (person.childAge[ind].toString().length === 1) {
+          return '0' + person.childAge[ind].toString();
+        } else {
+          return person.childAge[ind].toString();
+        }
+      });
+
+    router.push({
+      pathname: '/search',
+      query: {
+        d: down.value,
+        u: up.value,
+        ci: date.rawDate.toISOString().substr(0, 10),
+        ct: copiedDate.toISOString().substr(0, 10),
+        nf: night.from,
+        nt: night.to,
+        p: person.adult.toString() + childs.join(''),
+      },
+    });
+  };
+
   return (
     <div className={modalIsOpen ? 'main_form open' : 'main_form'}>
+      <MemoDownField
+        title={down?.name[router.locale] || down.name}
+        aria={'Город прибытия'}
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        popupName={fieldsNames.down}
+      />
       <MemoUpField
         title={up?.name[router.locale] || up.name}
         value={up.value}
@@ -63,13 +98,6 @@ export default function MainForm() {
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.up}
-      />
-      <MemoDownField
-        title={down?.name[router.locale] || down.name}
-        aria={'Город прибытия'}
-        modalIsOpen={modalIsOpen}
-        setModalIsOpen={setModalIsOpen}
-        popupName={fieldsNames.down}
       />
       <MemoDateField
         title={date}
@@ -92,7 +120,7 @@ export default function MainForm() {
         setModalIsOpen={setModalIsOpen}
         popupName={fieldsNames.person}
       />
-      <button className="main_form_btn" onClick={() => router.push('/search')}>
+      <button className="main_form_btn" onClick={() => makeSearchParams()}>
         <FM id="common.search" />
       </button>
     </div>

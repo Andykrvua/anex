@@ -2,7 +2,6 @@ import styles from './item.module.css';
 import { stars, fetchImgUrl } from 'utils/constants';
 
 export default function ItemHotel({ data, clickHandler }) {
-  console.log(data.img);
   const image = data.img;
   return (
     <div
@@ -11,8 +10,13 @@ export default function ItemHotel({ data, clickHandler }) {
         clickHandler(
           data.name,
           data.id,
+          data.countryId,
           (data.img = { src: `${fetchImgUrl}/3/60x60/${image}` }),
-          { district: false, img: `${fetchImgUrl}/3/60x60/${image}` }
+          {
+            district: false,
+            hotel: true,
+            img: `${fetchImgUrl}/3/60x60/${image}`,
+          }
         )
       }
     >
