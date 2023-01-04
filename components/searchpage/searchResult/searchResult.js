@@ -40,15 +40,6 @@ export default function SearchResult() {
   const [isLoading, setIsLoading] = useState(false);
   const [countryHotelService, setCountryHotelService] = useState(false);
 
-  useEffect(() => {
-    // router.beforePopState(({ url, as, options }) => {
-    //   console.log('222', url);
-    //   console.log('222', as);
-    //   console.log('222', options);
-    //   return true;
-    // });
-  }, []);
-
   const reload = () => {
     const { as, url } = window.history.state;
     const newUrl = `/search/?f=${up.value}&t=${down.value}`;
@@ -127,7 +118,7 @@ export default function SearchResult() {
       .then((data) => setCountryHotelService(data))
       .catch((e) => {
         // setError(true);
-        console.log(e);
+        console.log('error', e);
         return null;
       });
 
@@ -211,7 +202,12 @@ export default function SearchResult() {
       <div>Оферів всього: {JSON.stringify(offers, null, '\t')}</div>
       {isLoading && <Loader />}
       {show && apiRes.lastResult && (
-        <MemoCards cards={apiRes.hotels} offers={apiRes.results} step={step} />
+        <MemoCards
+          hotels={apiRes.hotels}
+          offers={apiRes.results}
+          step={step}
+          countryHotelService={countryHotelService.icons}
+        />
       )}
       {isLoading && <Loader />}
       <br />

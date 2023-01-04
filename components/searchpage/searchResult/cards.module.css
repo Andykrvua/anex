@@ -17,15 +17,16 @@
   display: block;
   width: 100%;
   /* height: auto; */
-  height: 300px;
+  /* height: 300px; */
+  height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease-in-out;
 }
 
 .review {
-  bottom: 0;
   position: absolute;
   right: 20px;
+  bottom: 20px;
   padding: 10px 15px;
   text-align: center;
   /* transform: translateY(-50%); */
@@ -87,11 +88,12 @@
 .tour_propertys {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   margin: 10px 0 5px;
 }
 
-.tour_property:nth-child(1) {
-  margin-right: 15px;
+.tour_property {
+  /* margin: 0 10px; */
 }
 
 .tour_property {
@@ -105,6 +107,10 @@
   margin: 0;
   font-size: 14px;
   line-height: 16px;
+}
+
+.tour_property__title::first-letter {
+  text-transform: capitalize;
 }
 
 .maps_and_options {
@@ -130,7 +136,7 @@
 }
 
 .options {
-  min-width: 220px;
+  /* min-width: 220px; */
   margin: 5px 0;
   padding: 5px 10px;
   text-align: center;

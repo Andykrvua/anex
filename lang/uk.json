@@ -13,6 +13,9 @@
   "common.tourist1": "турист",
   "common.tourist2": "туриста",
   "common.tourist5": "туристів",
+  "common.night1": "ніч",
+  "common.night2": "ночі",
+  "common.night5": "ночей",
   "mainform.up.t": "Звідки виліт",
   "mainform.down.t": "Куди вирушаємо",
   "mainform.up.no_tr": "Без транспорту",
@@ -127,5 +130,6 @@
   "result.filter.title": "Фильтри",
   "result.filter.btn": "Фильтри",
   "result.sort.btn": "Сортування грн",
-  "result.filter.reset": "Обнулити"
+  "result.filter.reset": "Обнулити",
+  "result.common.food": "Харчування"
 }
