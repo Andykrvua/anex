@@ -1,18 +1,31 @@
 import styles from './filterContent.module.css';
-import { useSetFilter } from 'store/store';
+import {
+  useSetFilterOpen,
+  useGetSearchFilter,
+  useSetSearchFilter,
+} from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 import InputRange from 'components/controls/inputRange/inputRange';
 import Checkbox from 'components/controls/checkbox/checkbox';
 import { useIntl } from 'react-intl';
 import Accordion from 'components/controls/accordion/accordion';
 import CloseSvg from 'components/common/closeSvg';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 export default function FilterContent({ mobile }) {
   const intl = useIntl();
 
-  const min = 0;
-  const max = 100000;
-  const step = 1000;
+  const filterData = useGetSearchFilter();
+  const setFilterData = useSetSearchFilter();
+
+  // const min = 0;
+  // const max = 100000;
+  const step = 5000;
+
+  const test = () => {
+    setFilterData({ cost: { min: 0, max: 500000 } });
+  };
 
   const Stars = (star) => {
     return new Array(parseInt(star)).fill(null).map((_, ind) => {
@@ -48,7 +61,12 @@ export default function FilterContent({ mobile }) {
         }
       >
         <h4 className={styles.filter_parts_title}>Бюджет</h4>
-        <InputRange min={min} max={max} step={step} />
+        <InputRange
+          min={filterData.cost.min}
+          max={filterData.cost.max}
+          step={step}
+        />
+        <button onClick={test}>hfhfhhhf</button>
       </div>
       <div
         className={
@@ -62,7 +80,7 @@ export default function FilterContent({ mobile }) {
           <Checkbox label={Stars(3)} check={null} setCheck={null} />
         </div>
       </div>
-      <div
+      {/* <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
@@ -88,7 +106,7 @@ export default function FilterContent({ mobile }) {
             setCheck={null}
           />
         </div>
-      </div>
+      </div> */}
       <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`

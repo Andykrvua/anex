@@ -10,6 +10,8 @@ import {
   useGetPerson,
   useGetUpPointList,
   useSetUpPointList,
+  useSetSearchUrl,
+  useSetSearchFilter,
 } from 'store/store';
 import { useRouter } from 'next/router';
 import Cards from './cards';
@@ -33,6 +35,8 @@ export default function SearchResult() {
   const person = useGetPerson();
   const upPointList = useGetUpPointList();
   const setUpPointList = useSetUpPointList();
+  const setSearchUrl = useSetSearchUrl();
+  const setFilterData = useSetSearchFilter();
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -124,7 +128,9 @@ export default function SearchResult() {
 
     let number = 0;
     async function apiSearch(number) {
-      const res = await fetch(await getUrl(number))
+      const url = await getUrl(number);
+      setSearchUrl(url);
+      const res = await fetch(url)
         .then((response) => {
           if (response.status === 200) {
             return response.json();
@@ -150,6 +156,7 @@ export default function SearchResult() {
       if (data) {
         console.log('res data', data);
         if (data.lastResult) {
+          localStorage.setItem('result', JSON.stringify(data));
           setApiRes(data);
           setHotels(data.total);
           setOffers(data.workProgress);
@@ -173,8 +180,27 @@ export default function SearchResult() {
   };
 
   useEffect(() => {
-    console.log('useEffect!!!!!!!!!!!!!!!!');
-  }, []);
+    if (apiRes.lastResult) {
+      const priceArr = [];
+      Object.entries(apiRes.results).map(([operatorId, value]) => {
+        Object.entries(value).map(([hotelId, data]) => {
+          Object.entries(data.offers).map(([offerId, value]) => {
+            priceArr.push(value.pl);
+          });
+        });
+      });
+
+      // console.log('priceMin', Math.min(...priceArr));
+      // console.log('priceMax', Math.max(...priceArr));
+
+      setFilterData({
+        cost: {
+          min: Math.floor(Math.min(...priceArr) / 5000) * 5000,
+          max: Math.ceil(Math.max(...priceArr) / 5000) * 5000,
+        },
+      });
+    }
+  }, [apiRes]);
 
   if (error) {
     return <h4>Error</h4>;

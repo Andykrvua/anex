@@ -131,5 +131,12 @@
   "result.filter.btn": "Фильтры",
   "result.sort.btn": "Сортировка грн",
   "result.filter.reset": "Сбросить",
-  "result.common.food": "Питание"
+  "result.common.food": "Питание",
+  "result.food.ob": "Без питания",
+  "result.food.bb": "Завтрак",
+  "result.food.hb": "Завтрак и ужин",
+  "result.food.fb": "Полный пансион",
+  "result.food.al": "Всё включено",
+  "result.food.ai": "Всё включено",
+  "result.food.uai": "Ультра всё включено"
 }

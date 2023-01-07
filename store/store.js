@@ -3,6 +3,7 @@ import { devtools } from 'zustand/middleware';
 import { mainFormPersonValidationRange as personVal } from '../utils/constants';
 import { FormattedMessage as FM } from 'react-intl';
 // import { defaultDownPoint, defaultUpPoint } from 'utils/constants';
+import { persist } from 'zustand/middleware';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -60,8 +61,8 @@ const useStore = create(
     },
     modal: false,
     setModal: (modal) => set({ modal }),
-    filter: false,
-    setFilter: (filter) => set({ filter }),
+    isFilterOpen: false,
+    setIsFilterOpen: (isFilterOpen) => set({ isFilterOpen }),
     burger: false,
     setBurger: (burger) => set({ burger }),
     windowInfo: {
@@ -80,6 +81,11 @@ const useStore = create(
       list: [],
     },
     setUpPointList: (upPointList) => set({ upPointList }),
+    searchUrl: '',
+    setSearchUrl: (searchUrl) => set({ searchUrl }),
+    searchFilter: { cost: { min: 0, max: 375000 }, test: 'hfhfhhf' },
+    setSearchFilter: (data) =>
+      set((state) => ({ searchFilter: { ...state.searchFilter, ...data } })),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -134,8 +140,9 @@ export const useGetFieldsNames = () => useStore((state) => state.fieldsNames);
 export const useGetModal = () => useStore((state) => state.modal);
 export const useSetModal = () => useStore((state) => state.setModal);
 
-export const useGetFilter = () => useStore((state) => state.filter);
-export const useSetFilter = () => useStore((state) => state.setFilter);
+export const useGetFilterOpen = () => useStore((state) => state.isFilterOpen);
+export const useSetFilterOpen = () =>
+  useStore((state) => state.setIsFilterOpen);
 
 export const useGetBurger = () => useStore((state) => state.burger);
 export const useSetBurger = () => useStore((state) => state.setBurger);
@@ -152,6 +159,12 @@ export const useGetUpPointList = () => useStore((state) => state.upPointList);
 export const useSetUpPointList = () =>
   useStore((state) => state.setUpPointList);
 
+export const useGetSearchUrl = () => useStore((state) => state.searchUrl);
+export const useSetSearchUrl = () => useStore((state) => state.setSearchUrl);
+
+export const useGetSearchFilter = () => useStore((state) => state.searchFilter);
+export const useSetSearchFilter = () =>
+  useStore((state) => state.setSearchFilter);
 // example
 // export const useLogin = () => useStore((state) => state.login);
 // export const useLogout = () => useStore((state) => state.logout);

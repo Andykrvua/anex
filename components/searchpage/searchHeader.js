@@ -1,4 +1,4 @@
-import { useSetFilter } from 'store/store';
+import { useSetFilterOpen } from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 import styles from './searchHeader.module.css';
 import { useRouter } from 'next/router';
@@ -11,7 +11,7 @@ export default function SearchHeader() {
   const down = useGetDown();
   const date = useGetDate();
 
-  const setFilterModale = useSetFilter();
+  const setFilterModale = useSetFilterOpen();
 
   const copiedDate = new Date(date.rawDate);
   copiedDate.setDate(copiedDate.getDate() + date.plusDays);

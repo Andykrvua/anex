@@ -156,6 +156,18 @@
 
 .order_text_wrapper {
   display: grid;
+  flex-shrink: 0;
+}
+
+.order_text_wrapper__fluid {
+  display: block;
+  flex-shrink: 1;
+  text-align: center;
+  padding: 0 15px;
+}
+
+.order_text_wrapper__fluid span {
+  display: block;
 }
 
 .order_text__duration,
@@ -171,6 +183,7 @@
 
 .order_price {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   font-size: 16px;
   line-height: 19px;

@@ -1,9 +1,9 @@
 import styles from './filterMobileTemplate.module.css';
-import { useSetFilter } from 'store/store';
+import { useSetFilterOpen } from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 
 export default function FilterMobileTemplate({ children }) {
-  const setFilterModale = useSetFilter();
+  const setFilterModale = useSetFilterOpen();
   return (
     <div className="popup_wrapper">
       <div

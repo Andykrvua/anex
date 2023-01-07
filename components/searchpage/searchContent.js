@@ -1,5 +1,5 @@
 import styles from './searchContent.module.css';
-import { useGetFilter, useSetFilter } from 'store/store';
+import { useGetFilterOpen, useSetFilterOpen } from 'store/store';
 import FilterMobileTemplate from './filter/filterMobileTemplate';
 import FilterContent from './filter/filterContent';
 import SearchResult from './searchResult/searchResult';
@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
 export default function SearchContent() {
-  const getFilterModale = useGetFilter();
-  const setFilterModale = useSetFilter();
+  const getFilterModale = useGetFilterOpen();
+  const setFilterModale = useSetFilterOpen();
 
   const windowSize = getViewport();
 

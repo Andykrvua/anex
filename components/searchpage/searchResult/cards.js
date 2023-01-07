@@ -1,13 +1,18 @@
 import styles from './cards.module.css';
 import Image from 'next/image';
 import { shimmer, toBase64 } from '/utils/blurImage';
-import { useSetModal, useGetPerson } from 'store/store';
+import { useSetModal, useGetPerson, useGetSearchUrl } from 'store/store';
 import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
+import { food } from 'utils/constants';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 
 // get 3 min price offers variants
 const CardsOffersVariants = ({ offers, hotelId }) => {
+  const setModal = useSetModal();
+  const person = useGetPerson();
+  const searchUrl = useGetSearchUrl();
+
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
     id: 'common.night1',
@@ -33,46 +38,167 @@ const CardsOffersVariants = ({ offers, hotelId }) => {
     });
   });
   console.log('actualOffers hotel Id', hotelId, actualOffers);
+  console.log('searchUrl', searchUrl);
+
+  function getAllUrlParams(url) {
+    // get query string from url (optional) or window
+    var queryString = url.split('?')[1];
+
+    // we'll store the parameters here
+    var obj = {};
+
+    // if query string exists
+    if (queryString) {
+      // stuff after # is not part of query string, so get rid of it
+      queryString = queryString.split('#')[0];
+
+      // split our query string into its component parts
+      var arr = queryString.split('&');
+
+      for (var i = 0; i < arr.length; i++) {
+        // separate the keys and the values
+        var a = arr[i].split('=');
+
+        // set parameter name and value (use 'true' if empty)
+        var paramName = a[0];
+        var paramValue = typeof a[1] === 'undefined' ? true : a[1];
+
+        // (optional) keep case consistent
+        paramName = paramName.toLowerCase();
+        if (typeof paramValue === 'string')
+          paramValue = paramValue.toLowerCase();
+
+        // if the paramName ends with square brackets, e.g. colors[] or colors[2]
+        if (paramName.match(/\[(\d+)?\]$/)) {
+          // create key if it doesn't exist
+          var key = paramName.replace(/\[(\d+)?\]/, '');
+          if (!obj[key]) obj[key] = [];
+
+          // if it's an indexed array e.g. colors[2]
+          if (paramName.match(/\[\d+\]$/)) {
+            // get the index value and add the entry at the appropriate position
+            var index = /\[(\d+)\]/.exec(paramName)[1];
+            obj[key][index] = paramValue;
+          } else {
+            // otherwise add the value to the end of the array
+            obj[key].push(paramValue);
+          }
+        } else {
+          // we're dealing with a string
+          if (!obj[paramName]) {
+            // if it doesn't exist, create property
+            obj[paramName] = paramValue;
+          } else if (obj[paramName] && typeof obj[paramName] === 'string') {
+            // if property does exist and it's a string, convert it to an array
+            obj[paramName] = [obj[paramName]];
+            obj[paramName].push(paramValue);
+          } else {
+            // otherwise add the property
+            obj[paramName].push(paramValue);
+          }
+        }
+      }
+    }
+
+    return obj;
+  }
+
+  console.log('getAllUrlParams', getAllUrlParams(searchUrl));
 
   actualOffers.sort(function (a, b) {
     return a.pl - b.pl;
   });
-  console.log('aa', actualOffers);
-  return actualOffers.map((item, ind) => {
-    if (ind < 3) {
-      return (
-        <a className={styles.card_order} href="">
-          <span className={styles.order_text_wrapper}>
-            <span className={styles.order_text__duration}>
-              <span>
-                {item.n} {decl(item.n)}
-              </span>
-            </span>
-            <span className={styles.order_text__people}>
-              <span>
-                <FM id="result.common.food" /> {item.f}
-              </span>
-            </span>
-          </span>
-          <span className={styles.order_price}>
-            {new Intl.NumberFormat('uk-UA', {
-              style: 'currency',
-              currency: 'UAH',
-            }).format(item.pl)}
-            {/* <span>&nbsp;грн</span> */}
-            <img src="/assets/img/svg/arrow.svg" alt="" />
-          </span>
-        </a>
 
-        // <div>1 Дата: {item.d}</div>
-        // <div>2 Дата возврата: {item.dt}</div>
-        // <div>3 Длительность тура в ночах: {item.n}</div>
-        // <div>4 Количество взрослых: {item.ah}</div>
-        // <div>5 Стоимость: {item.pl}</div>
-      );
+  const data = actualOffers.reduce((acc, val, ind, arr) => {
+    if (ind === 0) {
+      acc.push(val);
+    } else {
+      if (val.pl !== arr[ind - 1].pl) {
+        acc.push(val);
+      }
     }
-  });
-  // return <div>sasas</div>;
+    return acc;
+  }, []);
+
+  // eslint-disable-next-line
+  const foodHelper = new Set(data.map((i) => i.f));
+  const foodTxt = Array.from(foodHelper);
+
+  let foodTransMessage = '';
+  if (foodTxt.length === 1) {
+    foodTransMessage = intl.formatMessage({
+      id: food[foodTxt[0]],
+    });
+    foodTransMessage += ', ';
+  }
+  foodTransMessage += `за ${person.adult + person.child} с перелетом`;
+
+  return (
+    <>
+      <div className={styles.maps_and_options}>
+        <button onClick={() => setModal(true)} className={styles.maps}>
+          <img src="/assets/img/svg/tour/map-marker.svg" alt="map" />
+          <span>Отель на карте</span>
+        </button>
+        <p className={styles.options}>
+          {foodTransMessage}
+          {/* {foodTxt.length === 1 ? `${(<FM id={food[foodTxt[0]]} />)}  ,` : null} */}
+          {/* за {person.adult + person.child} с перелетом */}
+          {/* за {person.adult + person.child} на автобусе */}
+        </p>
+      </div>
+
+      {data.map((item, ind) => {
+        if (ind < 3) {
+          return (
+            <a className={styles.card_order} href="" key={item.i}>
+              <span className={styles.order_text_wrapper}>
+                <span className={styles.order_text__duration}>
+                  <span>
+                    {new Date(item.d).toLocaleDateString('default', {
+                      day: '2-digit',
+                      month: '2-digit',
+                    })}{' '}
+                    заезд
+                  </span>
+                </span>
+                <span className={styles.order_text__people}>
+                  <span>
+                    {new Date(item.dt).toLocaleDateString('default', {
+                      day: '2-digit',
+                      month: '2-digit',
+                    })}{' '}
+                    выезд
+                  </span>
+                </span>
+              </span>
+              <span
+                className={`${styles.order_text_wrapper}, ${styles.order_text_wrapper__fluid}`}
+              >
+                <span className={styles.order_text__duration}>
+                  <span>
+                    {item.n} {decl(item.n)}
+                  </span>
+                </span>
+                <span className={styles.order_text__people}>
+                  <span>{item.r}</span>
+                </span>
+              </span>
+              <span className={styles.order_price}>
+                {new Intl.NumberFormat('uk-UA', {
+                  style: 'currency',
+                  currency: 'UAH',
+                  maximumFractionDigits: 0,
+                  minimumFractionDigits: 0,
+                }).format(item.pl)}
+                <img src="/assets/img/svg/arrow.svg" alt="" />
+              </span>
+            </a>
+          );
+        }
+      })}
+    </>
+  );
 };
 
 export default function Cards({
@@ -83,9 +209,7 @@ export default function Cards({
 }) {
   console.log(hotels);
   console.log(offers);
-  const setModal = useSetModal();
-  const person = useGetPerson();
-  console.log('sss', person);
+
   console.log('rr');
   console.log('step', step);
 
@@ -98,7 +222,7 @@ export default function Cards({
       {Object.entries(hotels).map(([hotelId, item], j) => {
         if (j < step) {
           return (
-            <div className={styles.card} key={item.id}>
+            <div className={styles.card} key={item.i}>
               <div className={styles.card_img}>
                 <img
                   src={`https://newimg.otpusk.com/2/400x300/${item.f}`}
@@ -112,7 +236,7 @@ export default function Cards({
                     {!item.v && <p>Рейтинг</p>}
                     <p
                       className={styles.review__number}
-                      style={{ color: ratingColor(parseFloat(item.rating)) }}
+                      style={{ color: ratingColor(parseFloat(item.r)) }}
                     >
                       {item.r}/10
                     </p>
@@ -188,18 +312,7 @@ export default function Cards({
                       });
                   })}
                 </div>
-                <div className={styles.maps_and_options}>
-                  <button
-                    onClick={() => setModal(true)}
-                    className={styles.maps}
-                  >
-                    <img src="/assets/img/svg/tour/map-marker.svg" alt="map" />
-                    <span>Отель на карте</span>
-                  </button>
-                  <p className={styles.options}>
-                    За {person.adult + person.child} с транспортом
-                  </p>
-                </div>
+
                 {/* offers */}
                 {console.log('offers', offers)}
                 <CardsOffersVariants offers={offers} hotelId={hotelId} />

@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import styles from './inputRange.module.css';
 
 export default function InputRange({ min, max, step }) {
   const [values, setValues] = useState([min, max]);
+
+  useEffect(() => {
+    setValues([min, max]);
+  }, [min, max]);
 
   return (
     <div className={styles.wrapper}>

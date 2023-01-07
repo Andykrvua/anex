@@ -131,5 +131,12 @@
   "result.filter.btn": "Фильтри",
   "result.sort.btn": "Сортування грн",
   "result.filter.reset": "Обнулити",
-  "result.common.food": "Харчування"
+  "result.common.food": "Харчування",
+  "result.food.ob": "Без харчування",
+  "result.food.bb": "Сніданок",
+  "result.food.hb": "Сніданок та вечеря",
+  "result.food.fb": "Повний пансіон",
+  "result.food.al": "Все включено",
+  "result.food.ai": "Все включено",
+  "result.food.uai": "Ультра все включено"
 }
