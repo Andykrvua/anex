@@ -202,6 +202,14 @@ export default function SearchResult() {
     }
   }, [apiRes]);
 
+  useEffect(() => {
+    console.log('router', router);
+    console.log('useeffect!!!!! search');
+    // search();
+    // ставим флаг в мейнформ если установили кверипараметры вручную
+    // если флага нет, значит юзер ввел урл и тогда парсим и заполняем урл для поиска
+  }, []);
+
   if (error) {
     return <h4>Error</h4>;
   }

@@ -4,9 +4,10 @@ import FilterMobileTemplate from './filter/filterMobileTemplate';
 import FilterContent from './filter/filterContent';
 import SearchResult from './searchResult/searchResult';
 import getViewport from 'utils/getViewport';
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
+const MemoSearchResult = memo(SearchResult);
 export default function SearchContent() {
   const getFilterModale = useGetFilterOpen();
   const setFilterModale = useSetFilterOpen();
@@ -54,7 +55,7 @@ export default function SearchContent() {
           </div>
         </div>
       )}
-      <SearchResult />
+      <MemoSearchResult />
     </div>
   );
 }

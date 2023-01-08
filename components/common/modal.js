@@ -5,6 +5,7 @@ import styles from './modal.module.css';
 import { modal, transitionTime } from '../../utils/constants';
 import dynamic from 'next/dynamic';
 import { useIntl } from 'react-intl';
+import Loader from 'components/common/loader';
 
 const LeadGetTours = dynamic(
   () =>
@@ -13,6 +14,7 @@ const LeadGetTours = dynamic(
     ),
   {
     ssr: false,
+    loading: () => <Loader />,
   }
 );
 
@@ -23,6 +25,18 @@ const LeadRequestCall = dynamic(
     ),
   {
     ssr: false,
+    loading: () => <Loader />,
+  }
+);
+
+const HotelCardsMap = dynamic(
+  () =>
+    import(
+      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/hotelCardsMap`
+    ),
+  {
+    ssr: false,
+    loading: () => <Loader />,
   }
 );
 
@@ -37,15 +51,6 @@ export default function Modal() {
     leadGetTours: intl.formatMessage({ id: 'modal.title.leadgettours' }),
     leadRequestCall: intl.formatMessage({ id: 'modal.title.leadrequestcall' }),
   };
-
-  // useEffect(() => {
-  //   if (getModal) {
-  //     window.addEventListener('scroll', closeHandler);
-  //   }
-  //   return () => {
-  //     window.removeEventListener('scroll', closeHandler);
-  //   };
-  // }, [getModal]);
 
   useEffect(() => {
     // need for animation
@@ -105,6 +110,9 @@ export default function Modal() {
               )}
               {getModal.get === modal.leadRequestCall && (
                 <LeadRequestCall closeHandler={closeHandler} />
+              )}
+              {getModal.get === modal.hotelCardsMap && (
+                <HotelCardsMap closeHandler={closeHandler} />
               )}
             </div>
           </div>

@@ -53,7 +53,7 @@ export default function MainForm() {
   // console.log('date', date);
   // console.log('night', night);
   // console.log('person', person);
-
+  console.log('rrraaaa');
   const makeSearchParams = () => {
     const copiedDate = new Date(date.rawDate);
     copiedDate.setDate(copiedDate.getDate() + date.plusDays);
@@ -71,13 +71,14 @@ export default function MainForm() {
     router.push({
       pathname: '/search',
       query: {
-        d: down.value,
-        u: up.value,
-        ci: date.rawDate.toISOString().substr(0, 10),
-        ct: copiedDate.toISOString().substr(0, 10),
-        nf: night.from,
-        nt: night.to,
-        p: person.adult.toString() + childs.join(''),
+        transport: '',
+        from: up.value,
+        to: down.value,
+        checkIn: date.rawDate.toISOString().substr(0, 10),
+        checkTo: copiedDate.toISOString().substr(0, 10),
+        nights: night.from,
+        nightsTo: night.to,
+        people: person.adult.toString() + childs.join(''),
       },
     });
   };

@@ -86,6 +86,8 @@ const useStore = create(
     searchFilter: { cost: { min: 0, max: 375000 }, test: 'hfhfhhf' },
     setSearchFilter: (data) =>
       set((state) => ({ searchFilter: { ...state.searchFilter, ...data } })),
+    openStreetMap: {},
+    setOpenStreetMap: (openStreetMap) => set({ openStreetMap }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -165,6 +167,11 @@ export const useSetSearchUrl = () => useStore((state) => state.setSearchUrl);
 export const useGetSearchFilter = () => useStore((state) => state.searchFilter);
 export const useSetSearchFilter = () =>
   useStore((state) => state.setSearchFilter);
+
+export const useGetOpenStreetMap = () =>
+  useStore((state) => state.openStreetMap);
+export const useSetOpenStreetMap = () =>
+  useStore((state) => state.setOpenStreetMap);
 // example
 // export const useLogin = () => useStore((state) => state.login);
 // export const useLogout = () => useStore((state) => state.logout);

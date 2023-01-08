@@ -104,6 +104,7 @@ export const reviewsPerPage = 10;
 export const modal = {
   leadGetTours: 'leadGetTours',
   leadRequestCall: 'leadRequestCall',
+  hotelCardsMap: 'hotelCardsMap',
 };
 
 // time to fetch request

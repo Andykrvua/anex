@@ -1,17 +1,18 @@
 import styles from './cards.module.css';
-import Image from 'next/image';
-import { shimmer, toBase64 } from '/utils/blurImage';
 import { useSetModal, useGetPerson, useGetSearchUrl } from 'store/store';
 import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
 import { food } from 'utils/constants';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
+import { modal } from 'utils/constants';
+import { useSetOpenStreetMap } from 'store/store';
 
 // get 3 min price offers variants
-const CardsOffersVariants = ({ offers, hotelId }) => {
+const CardsOffersVariants = ({ offers, hotelId, hotel }) => {
   const setModal = useSetModal();
   const person = useGetPerson();
   const searchUrl = useGetSearchUrl();
+  const setOpenStreetMapData = useSetOpenStreetMap();
 
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
@@ -133,19 +134,42 @@ const CardsOffersVariants = ({ offers, hotelId }) => {
   }
   foodTransMessage += `за ${person.adult + person.child} с перелетом`;
 
+  const OpenStreetMapBtn = () => {
+    if (!hotel.g) {
+      return null;
+    }
+
+    const modalHandler = () => {
+      setOpenStreetMapData({
+        img: `https://newimg.otpusk.com/2/400x300/${hotel.f}`,
+        hotelName: hotel.n,
+        rating: hotel.r,
+        foodTransMessage,
+        price: new Intl.NumberFormat('uk-UA', {
+          style: 'currency',
+          currency: 'UAH',
+          maximumFractionDigits: 0,
+          minimumFractionDigits: 0,
+        }).format(data[0].pl),
+        coords: hotel.g,
+        stars: hotel.s,
+      });
+      setModal({ get: modal.hotelCardsMap });
+    };
+
+    return (
+      <button onClick={() => modalHandler()} className={styles.maps}>
+        <img src="/assets/img/svg/tour/map-marker.svg" alt="map" />
+        <span>Отель на карте</span>
+      </button>
+    );
+  };
+
   return (
     <>
       <div className={styles.maps_and_options}>
-        <button onClick={() => setModal(true)} className={styles.maps}>
-          <img src="/assets/img/svg/tour/map-marker.svg" alt="map" />
-          <span>Отель на карте</span>
-        </button>
-        <p className={styles.options}>
-          {foodTransMessage}
-          {/* {foodTxt.length === 1 ? `${(<FM id={food[foodTxt[0]]} />)}  ,` : null} */}
-          {/* за {person.adult + person.child} с перелетом */}
-          {/* за {person.adult + person.child} на автобусе */}
-        </p>
+        <OpenStreetMapBtn />
+        <p className={styles.options}>{foodTransMessage}</p>
       </div>
 
       {data.map((item, ind) => {
@@ -213,10 +237,6 @@ export default function Cards({
   console.log('rr');
   console.log('step', step);
 
-  //   Object.keys(tifs).map(key =>
-  //     <option value={key}>{tifs[key]}</option>
-  // )
-
   return (
     <div className={styles.cards_wrapper}>
       {Object.entries(hotels).map(([hotelId, item], j) => {
@@ -225,11 +245,11 @@ export default function Cards({
             <div className={styles.card} key={item.i}>
               <div className={styles.card_img}>
                 <img
-                  src={`https://newimg.otpusk.com/2/400x300/${item.f}`}
+                  src={`https://newimg.otpusk.com/2/500x375/${item.f}`}
                   className={styles.img}
                   alt=""
-                  width={730}
-                  // height={240}
+                  width={500}
+                  height={375}
                 />
                 {item.r ? (
                   <div className={styles.review}>
@@ -315,7 +335,11 @@ export default function Cards({
 
                 {/* offers */}
                 {console.log('offers', offers)}
-                <CardsOffersVariants offers={offers} hotelId={hotelId} />
+                <CardsOffersVariants
+                  offers={offers}
+                  hotelId={hotelId}
+                  hotel={item}
+                />
                 {/* {Object.entries(offers).map(([operatorId, value]) => {
                   return Object.entries(value).map(([offerKey, data]) => {
                     if (offerKey === hotelId) {
