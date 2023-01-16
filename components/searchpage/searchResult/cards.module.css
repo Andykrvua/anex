@@ -14,6 +14,7 @@
 }
 
 .img {
+  position: absolute;
   display: block;
   width: 100%;
   /* height: auto; */
@@ -58,12 +59,18 @@
 .card_text {
   position: relative;
   margin-top: 15px;
+  overflow: hidden;
 }
 
 .country_text {
   margin: 0;
   font-size: 12px;
   line-height: 14px;
+}
+
+.stars_wrapper {
+  display: inline;
+  margin-right: 10px;
 }
 
 .stars {
@@ -77,6 +84,7 @@
 }
 
 .hotel_name {
+  display: inline;
   font-size: 17px;
   line-height: 20px;
   font-weight: 600;
@@ -204,5 +212,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 15px;
+  }
+}
+
+@media (max-width: 999px) {
+  .card_img {
+    height: 300px;
   }
 }

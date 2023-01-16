@@ -67,6 +67,16 @@
   color: var(--primary);
 }
 
+.filter_btn {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 25px;
+  background-color: green;
+  z-index: 1;
+}
+
 /* @media (min-width: 810px) {
   .filter_parts_row label + label {
     margin-left: 20px;

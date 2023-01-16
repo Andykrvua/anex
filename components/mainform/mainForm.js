@@ -11,6 +11,8 @@ import {
   useGetNight,
   useGetPerson,
   useGetFieldsNames,
+  useSetStartSearch,
+  useGetSearchInProgress,
 } from '../../store/store';
 import declension from 'utils/declension';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
@@ -27,6 +29,8 @@ export default function MainForm() {
   const night = useGetNight();
   const person = useGetPerson();
   const fieldsNames = useGetFieldsNames();
+  const setStartSearch = useSetStartSearch();
+  const getSearchInProgress = useGetSearchInProgress();
 
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
@@ -55,6 +59,9 @@ export default function MainForm() {
   // console.log('person', person);
   console.log('rrraaaa');
   const makeSearchParams = () => {
+    if (getSearchInProgress) {
+      return;
+    }
     const copiedDate = new Date(date.rawDate);
     copiedDate.setDate(copiedDate.getDate() + date.plusDays);
 
@@ -67,6 +74,8 @@ export default function MainForm() {
           return person.childAge[ind].toString();
         }
       });
+
+    setStartSearch(true);
 
     router.push({
       pathname: '/search',

@@ -285,18 +285,20 @@ export default function Cards({
                   {/* {`${item.country}, ${item.district}`} */}
                   {`${item.t.n}, ${item.c.n}`}
                 </p>
-                {new Array(parseInt(item.s)).fill(null).map((_, ind) => {
-                  return (
-                    <div className={styles.stars} key={ind}>
-                      <img
-                        src="/assets/img/svg/tour/star.svg"
-                        alt="star"
-                        width="12"
-                        height="12"
-                      />
-                    </div>
-                  );
-                })}
+                <div className={styles.stars_wrapper}>
+                  {new Array(parseInt(item.s)).fill(null).map((_, ind) => {
+                    return (
+                      <div className={styles.stars} key={ind}>
+                        <img
+                          src="/assets/img/svg/tour/star.svg"
+                          alt="star"
+                          width="12"
+                          height="12"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
                 <h4 className={styles.hotel_name}>
                   {item.n}
                   {item.i}

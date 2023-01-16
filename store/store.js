@@ -83,11 +83,42 @@ const useStore = create(
     setUpPointList: (upPointList) => set({ upPointList }),
     searchUrl: '',
     setSearchUrl: (searchUrl) => set({ searchUrl }),
-    searchFilter: { cost: { min: 0, max: 375000 }, test: 'hfhfhhf' },
+    searchFilter: {
+      btnTrigger: false,
+      default: {
+        change: [],
+        cost: [0, 375000],
+        hotelRating: {
+          5: false,
+          4: false,
+          3: false,
+        },
+      },
+      newData: {
+        change: [],
+        cost: [],
+        hotelRating: {
+          5: false,
+          4: false,
+          3: false,
+        },
+      },
+      costMin: 0,
+      costMax: 375000,
+      test: 'hfhfhhf',
+    },
     setSearchFilter: (data) =>
       set((state) => ({ searchFilter: { ...state.searchFilter, ...data } })),
+    applyFilter: false,
+    setApplyFilter: (applyFilter) => set({ applyFilter }),
     openStreetMap: {},
     setOpenStreetMap: (openStreetMap) => set({ openStreetMap }),
+    startSearch: false,
+    setStartSearch: (startSearch) => set({ startSearch }),
+    searchInProgress: false,
+    setSearchInProgress: (searchInProgress) => set({ searchInProgress }),
+    hotelService: {},
+    setHotelService: (hotelService) => set({ hotelService }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -137,41 +168,73 @@ export const useSetNight = () => useStore((state) => state.setNight);
 export const useGetPerson = () => useStore((state) => state.person);
 export const useSetPerson = () => useStore((state) => state.setPerson);
 
+// name for main maenu buttons
 export const useGetFieldsNames = () => useStore((state) => state.fieldsNames);
 
+// open/close modal window
 export const useGetModal = () => useStore((state) => state.modal);
 export const useSetModal = () => useStore((state) => state.setModal);
 
+// open/close filter menu
 export const useGetFilterOpen = () => useStore((state) => state.isFilterOpen);
 export const useSetFilterOpen = () =>
   useStore((state) => state.setIsFilterOpen);
 
+// open/close burger menu
 export const useGetBurger = () => useStore((state) => state.burger);
 export const useSetBurger = () => useStore((state) => state.setBurger);
 
+// modal warning type
 export const useWindowInfo = () => useStore((state) => state.windowInfo);
 export const useSetWindowInfo = () => useStore((state) => state.setWindowInfo);
 
+// search list for current user search request
 export const useGetSearchCountryList = () =>
   useStore((state) => state.searchCountryList);
 export const useSetSearchCountryList = () =>
   useStore((state) => state.setSearchCountryList);
 
+// up points for current country
 export const useGetUpPointList = () => useStore((state) => state.upPointList);
 export const useSetUpPointList = () =>
   useStore((state) => state.setUpPointList);
 
+// current search url
 export const useGetSearchUrl = () => useStore((state) => state.searchUrl);
 export const useSetSearchUrl = () => useStore((state) => state.setSearchUrl);
 
+// data for search filter user params
 export const useGetSearchFilter = () => useStore((state) => state.searchFilter);
 export const useSetSearchFilter = () =>
   useStore((state) => state.setSearchFilter);
 
+// start search for filter data
+export const useGetApplyFilter = () => useStore((state) => state.applyFilter);
+export const useSetApplyFilter = () =>
+  useStore((state) => state.setApplyFilter);
+
+// data for map view
 export const useGetOpenStreetMap = () =>
   useStore((state) => state.openStreetMap);
 export const useSetOpenStreetMap = () =>
   useStore((state) => state.setOpenStreetMap);
+
+// flag true after make search params
+// потрібен щоб визначити прийшов користувач з іншої стоірнки чи ввів урл запит в браузер
+export const useGetStartSearch = () => useStore((state) => state.startSearch);
+export const useSetStartSearch = () =>
+  useStore((state) => state.setStartSearch);
+
+// searching run right now
+export const useGetSearchInProgress = () =>
+  useStore((state) => state.searchInProgress);
+export const useSetSearchInProgress = () =>
+  useStore((state) => state.setSearchInProgress);
+
+//
+export const useGetHotelService = () => useStore((state) => state.hotelService);
+export const useSetHotelService = () =>
+  useStore((state) => state.setHotelService);
 // example
 // export const useLogin = () => useStore((state) => state.login);
 // export const useLogout = () => useStore((state) => state.logout);

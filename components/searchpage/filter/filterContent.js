@@ -3,6 +3,8 @@ import {
   useSetFilterOpen,
   useGetSearchFilter,
   useSetSearchFilter,
+  useSetApplyFilter,
+  useGetHotelService,
 } from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 import InputRange from 'components/controls/inputRange/inputRange';
@@ -10,40 +12,151 @@ import Checkbox from 'components/controls/checkbox/checkbox';
 import { useIntl } from 'react-intl';
 import Accordion from 'components/controls/accordion/accordion';
 import CloseSvg from 'components/common/closeSvg';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
+const Stars = (star) => {
+  return new Array(parseInt(star)).fill(null).map((_, ind) => {
+    return (
+      <div className={styles.stars} key={ind}>
+        <img
+          src="/assets/img/svg/tour/star.svg"
+          alt="star"
+          width="12"
+          height="12"
+        />
+      </div>
+    );
+  });
+};
+
+const hotelRatingItemsRating = [5, 4, 3];
+
+const HotelRatingItem = ({ rating, ind }) => {
+  const filterData = useGetSearchFilter();
+  const setFilterData = useSetSearchFilter();
+  const [isCheckHotelStars, setIsCheckHotelStars] = useState(
+    filterData.newData.hotelRating[rating]
+      ? filterData.newData.hotelRating[rating]
+      : filterData.default.hotelRating[rating]
+  );
+
+  const checkHotelStarsHandler = (val) => {
+    setIsCheckHotelStars(val);
+    changeFilterState(val);
+  };
+
+  const changeFilterState = (val) => {
+    if (
+      filterData.default.hotelRating[rating] ===
+      !filterData.newData.hotelRating[rating]
+    ) {
+      console.log('inp ===');
+      setFilterData({
+        btnTrigger: filterData.newData.change.filter((item) => item !== rating)
+          .length
+          ? true
+          : false,
+        default: filterData.default,
+        newData: {
+          ...filterData.newData,
+          hotelRating: { ...filterData.newData.hotelRating, [rating]: val },
+          change: filterData.newData.change.filter((item) => item !== rating),
+        },
+      });
+    } else {
+      console.log('inp !==');
+      setFilterData({
+        btnTrigger: true,
+        default: filterData.default,
+        newData: {
+          ...filterData.newData,
+          hotelRating: { ...filterData.newData.hotelRating, [rating]: val },
+          change: filterData.newData.change.includes(rating)
+            ? [...filterData.newData.change]
+            : [...filterData.newData.change, rating],
+        },
+      });
+    }
+    // const trigger = filterData.newData.change.filter(
+    //   (item) => item !== 'rating'
+    // ).length
+    //   ? true
+    //   : false;
+
+    // const temp = filterData.hotelRating.map((r, i) => {
+    //   if (i === ind) {
+    //     return (r = val);
+    //   } else {
+    //     return r;
+    //   }
+    // });
+
+    // setFilterData({
+    //   hotelRating: temp,
+    //   btnTrigger: trigger ? true : temp.includes(true),
+    //   change: temp.includes(true)
+    //     ? filterData.change.includes('rating')
+    //       ? filterData.change
+    //       : [...filterData.change, 'rating']
+    //     : filterData.change.filter((item) => item !== 'rating'),
+    // });
+  };
+
+  return (
+    <Checkbox
+      label={Stars(rating)}
+      check={isCheckHotelStars}
+      setCheck={checkHotelStarsHandler}
+    />
+  );
+};
 
 export default function FilterContent({ mobile }) {
   const intl = useIntl();
+  const router = useRouter();
 
   const filterData = useGetSearchFilter();
   const setFilterData = useSetSearchFilter();
+  const setApplyFilter = useSetApplyFilter();
+  const getHotelService = useGetHotelService();
+  console.log(filterData);
+  console.log('getHotelService', getHotelService);
 
-  // const min = 0;
-  // const max = 100000;
-  const step = 5000;
-
-  const test = () => {
-    setFilterData({ cost: { min: 0, max: 500000 } });
-  };
-
-  const Stars = (star) => {
-    return new Array(parseInt(star)).fill(null).map((_, ind) => {
-      return (
-        <div className={styles.stars} key={ind}>
-          <img
-            src="/assets/img/svg/tour/star.svg"
-            alt="star"
-            width="12"
-            height="12"
-          />
-        </div>
-      );
-    });
+  const filteredSearch = () => {
+    // setFilterData({
+    //   btnTrigger: false,
+    //   cost: {
+    //     min: filterData.cost.min,
+    //     max: filterData.cost.max,
+    //     values: filterData?.newCost.values
+    //       ? filterData?.newCost.values
+    //       : filterData?.cost.values,
+    //   },
+    // });
+    setApplyFilter(true);
   };
 
   return (
     <>
+      {filterData.btnTrigger && (
+        <div className={styles.filter_btn}>
+          <button onClick={() => filteredSearch()} style={{ padding: '15px' }}>
+            Применить фильтры
+          </button>
+          <button
+            onClick={() => {
+              setApplyFilter(false);
+              setFilterData({
+                btnTrigger: false,
+              });
+            }}
+            style={{ marginRight: '20px', padding: '15px' }}
+          >
+            Отмена
+          </button>
+        </div>
+      )}
       <div className={styles.filter_header}>
         {!mobile && (
           <h3 className={styles.title}>
@@ -60,13 +173,17 @@ export default function FilterContent({ mobile }) {
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
       >
+        {/* FILTER START */}
         <h4 className={styles.filter_parts_title}>Бюджет</h4>
         <InputRange
-          min={filterData.cost.min}
-          max={filterData.cost.max}
-          step={step}
+          min={filterData.costMin}
+          max={filterData.costMax}
+          val={
+            filterData.new?.cost
+              ? filterData.default.cost
+              : filterData.default.cost
+          }
         />
-        <button onClick={test}>hfhfhhhf</button>
       </div>
       <div
         className={
@@ -75,9 +192,9 @@ export default function FilterContent({ mobile }) {
       >
         <h4 className={styles.filter_parts_title}>Категория отеля</h4>
         <div className={mobile ? `${styles.filter_parts_row_stars}` : ''}>
-          <Checkbox label={Stars(5)} check={null} setCheck={null} />
-          <Checkbox label={Stars(4)} check={null} setCheck={null} />
-          <Checkbox label={Stars(3)} check={null} setCheck={null} />
+          {hotelRatingItemsRating.map((rating, ind) => (
+            <HotelRatingItem key={ind} rating={rating} ind={ind} />
+          ))}
         </div>
       </div>
       {/* <div
@@ -107,7 +224,7 @@ export default function FilterContent({ mobile }) {
           />
         </div>
       </div> */}
-      <div
+      {/* <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
@@ -155,8 +272,8 @@ export default function FilterContent({ mobile }) {
           check={null}
           setCheck={null}
         />
-      </div>
-      <div
+      </div> */}
+      {/* <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
@@ -206,8 +323,41 @@ export default function FilterContent({ mobile }) {
           check={null}
           setCheck={null}
         />
-      </div>
-      <div
+      </div> */}
+      {console.log('getHotelService', getHotelService)}
+      {getHotelService?.search &&
+        Object.entries(getHotelService?.search).map(([name, detailArr]) => {
+          return (
+            <div
+              key={name}
+              className={
+                mobile
+                  ? `${styles.filter_parts_mobile}`
+                  : `${styles.filter_parts}`
+              }
+            >
+              <h4 className={styles.filter_parts_title}>
+                {getHotelService.nameServices[name]}
+              </h4>
+              {detailArr.map((item, ind) => {
+                return (
+                  <Checkbox
+                    key={ind}
+                    label={
+                      <div className={styles.checkbox_text_wrapper}>
+                        {Object.values(item)}
+                      </div>
+                    }
+                    check={null}
+                    setCheck={null}
+                  />
+                );
+              })}
+            </div>
+          );
+        })}
+
+      {/* <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
@@ -227,8 +377,8 @@ export default function FilterContent({ mobile }) {
           check={null}
           setCheck={null}
         />
-      </div>
-      <div
+      </div> */}
+      {/* <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
@@ -271,8 +421,8 @@ export default function FilterContent({ mobile }) {
             setCheck={null}
           />
         </Accordion>
-      </div>
-      <div
+      </div> */}
+      {/* <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
@@ -304,7 +454,7 @@ export default function FilterContent({ mobile }) {
             setCheck={null}
           />
         </Accordion>
-      </div>
+      </div> */}
     </>
   );
 }

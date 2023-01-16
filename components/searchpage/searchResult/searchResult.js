@@ -12,6 +12,13 @@ import {
   useSetUpPointList,
   useSetSearchUrl,
   useSetSearchFilter,
+  useGetSearchFilter,
+  useGetStartSearch,
+  useSetStartSearch,
+  useSetSearchInProgress,
+  useGetApplyFilter,
+  useSetApplyFilter,
+  useSetHotelService,
 } from 'store/store';
 import { useRouter } from 'next/router';
 import Cards from './cards';
@@ -26,6 +33,7 @@ export default function SearchResult() {
   console.log(step);
   // help data end
   const router = useRouter();
+  const loc = router.locale === 'uk' ? 'ua' : 'ru';
 
   const up = useGetUp();
   const down = useGetDown();
@@ -37,25 +45,19 @@ export default function SearchResult() {
   const setUpPointList = useSetUpPointList();
   const setSearchUrl = useSetSearchUrl();
   const setFilterData = useSetSearchFilter();
+  const filterData = useGetSearchFilter();
+  const startSearch = useGetStartSearch();
+  const setStartSearch = useSetStartSearch();
+  const setSearchInProgress = useSetSearchInProgress();
+  const applyFilter = useGetApplyFilter();
+  const setApplyFilter = useSetApplyFilter();
+  const setHotelService = useSetHotelService();
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [countryHotelService, setCountryHotelService] = useState(false);
-
-  const reload = () => {
-    const { as, url } = window.history.state;
-    const newUrl = `/search/?f=${up.value}&t=${down.value}`;
-    const newAs = `/search/?f=${up.value}&t=${down.value}`;
-    // console.log(window.history.state);
-    // console.log(window.history);
-    window.history.pushState(
-      { ...window.history.state, as: newAs, url: newUrl },
-      '',
-      newAs
-    );
-  };
 
   async function getUrl(number) {
     const childs = new Array(parseInt(person.child))
@@ -104,22 +106,51 @@ export default function SearchResult() {
     const transport = upTransportAvailable.length
       ? upTransportAvailable[0].transport.join()
       : 'no';
-    const url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
+
+    // let url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e&services=one_line_beach`;
+    let url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
+    if (applyFilter) {
+      const { newData } = filterData;
+      if (
+        newData.change.includes(5) ||
+        newData.change.includes(4) ||
+        newData.change.includes(3)
+      ) {
+        url += `&stars=${newData.change
+          .filter((item) => item === 5 || item === 4 || item === 3)
+          .join()}`;
+      }
+      if (newData.change.includes('cost')) {
+        url += `&price=${newData.cost[0]}&priceTo=${newData.cost[1]}`;
+      }
+
+      setFilterData({
+        ...filterData,
+        btnTrigger: false,
+        default: { ...newData },
+        newData: { ...newData, change: [] },
+      });
+      setApplyFilter(false);
+    }
 
     return url;
   }
 
   const search = async () => {
     setIsLoading(true);
+    setSearchInProgress(true);
     await fetch(
-      `https://api.otpusk.com/api/2.6/tours/services?countryId=${down.value}&access_token=337da-65e22-26745-a251f-77b9e`
+      `https://api.otpusk.com/api/2.6/tours/services?countryId=${down.value}&lang=${loc}&access_token=337da-65e22-26745-a251f-77b9e`
     )
       .then((response) => {
         if (response.status === 200) {
           return response.json();
         }
       })
-      .then((data) => setCountryHotelService(data))
+      .then((data) => {
+        setCountryHotelService(data);
+        setHotelService(data);
+      })
       .catch((e) => {
         // setError(true);
         console.log('error', e);
@@ -140,6 +171,8 @@ export default function SearchResult() {
           setError(true);
           console.log(e);
           setIsLoading(false);
+          setSearchInProgress(false);
+          setStartSearch(false);
           return null;
         });
 
@@ -162,6 +195,8 @@ export default function SearchResult() {
           setOffers(data.workProgress);
           setShow(true);
           setIsLoading(false);
+          setStartSearch(false);
+          setSearchInProgress(false);
         } else {
           console.log('timeout');
           setTimeout(async () => {
@@ -181,34 +216,42 @@ export default function SearchResult() {
 
   useEffect(() => {
     if (apiRes.lastResult) {
-      const priceArr = [];
-      Object.entries(apiRes.results).map(([operatorId, value]) => {
-        Object.entries(value).map(([hotelId, data]) => {
-          Object.entries(data.offers).map(([offerId, value]) => {
-            priceArr.push(value.pl);
-          });
-        });
-      });
-
+      // const priceArr = [];
+      // Object.entries(apiRes.results).map(([operatorId, value]) => {
+      //   Object.entries(value).map(([hotelId, data]) => {
+      //     Object.entries(data.offers).map(([offerId, value]) => {
+      //       priceArr.push(value.pl);
+      //     });
+      //   });
+      // });
       // console.log('priceMin', Math.min(...priceArr));
       // console.log('priceMax', Math.max(...priceArr));
-
-      setFilterData({
-        cost: {
-          min: Math.floor(Math.min(...priceArr) / 5000) * 5000,
-          max: Math.ceil(Math.max(...priceArr) / 5000) * 5000,
-        },
-      });
+      // setFilterData({
+      //   cost: {
+      //     min: Math.floor(Math.min(...priceArr) / 5000) * 5000,
+      //     max: Math.ceil(Math.max(...priceArr) / 5000) * 5000,
+      //   },
+      // });
     }
   }, [apiRes]);
 
   useEffect(() => {
-    console.log('router', router);
     console.log('useeffect!!!!! search');
-    // search();
-    // ставим флаг в мейнформ если установили кверипараметры вручную
-    // если флага нет, значит юзер ввел урл и тогда парсим и заполняем урл для поиска
+    if (startSearch) {
+      search();
+    } else {
+      // ставим флаг в мейнформ если установили кверипараметры вручную
+      // если флага нет, значит юзер ввел урл и тогда парсим и заполняем урл для поиска
+      console.log('first visit');
+    }
   }, []);
+
+  useEffect(() => {
+    if (applyFilter) {
+      search();
+    }
+  }, [applyFilter]);
+  // console.log('filterData', filterData);
 
   if (error) {
     return <h4>Error</h4>;
@@ -224,7 +267,6 @@ export default function SearchResult() {
         <div>{JSON.stringify(person)}</div> */}
       </div>
       <button onClick={search}>search</button>
-      <button onClick={reload}>add</button>
       {countryHotelService && (
         <div>
           Сервіси готелів:{' '}
