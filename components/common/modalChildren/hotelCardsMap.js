@@ -56,14 +56,14 @@ export default function HotelCardsMap() {
                         </div>
                       );
                     })}
-                  {rating && (
+                  {rating > 0 ? (
                     <div
                       className={styles.review}
                       style={{ color: ratingColor(parseFloat(rating)) }}
                     >
                       {rating}/10
                     </div>
-                  )}
+                  ) : null}
                 </div>
                 <div className={styles.food_trans_mess}>{foodTransMessage}</div>
                 <div className={styles.order_price}>{price}</div>

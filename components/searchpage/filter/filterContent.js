@@ -6,12 +6,12 @@ import {
   useSetApplyFilter,
   useGetHotelService,
 } from 'store/store';
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 import InputRange from 'components/controls/inputRange/inputRange';
 import Checkbox from 'components/controls/checkbox/checkbox';
-import { useIntl } from 'react-intl';
 import Accordion from 'components/controls/accordion/accordion';
 import CloseSvg from 'components/common/closeSvg';
+import { foodFilterItems } from 'utils/constants';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -32,7 +32,7 @@ const Stars = (star) => {
 
 const hotelRatingItemsRating = [5, 4, 3];
 
-const HotelRatingItem = ({ rating, ind }) => {
+const HotelRatingCheckbox = ({ rating }) => {
   const filterData = useGetSearchFilter();
   const setFilterData = useSetSearchFilter();
   const [isCheckHotelStars, setIsCheckHotelStars] = useState(
@@ -78,29 +78,6 @@ const HotelRatingItem = ({ rating, ind }) => {
         },
       });
     }
-    // const trigger = filterData.newData.change.filter(
-    //   (item) => item !== 'rating'
-    // ).length
-    //   ? true
-    //   : false;
-
-    // const temp = filterData.hotelRating.map((r, i) => {
-    //   if (i === ind) {
-    //     return (r = val);
-    //   } else {
-    //     return r;
-    //   }
-    // });
-
-    // setFilterData({
-    //   hotelRating: temp,
-    //   btnTrigger: trigger ? true : temp.includes(true),
-    //   change: temp.includes(true)
-    //     ? filterData.change.includes('rating')
-    //       ? filterData.change
-    //       : [...filterData.change, 'rating']
-    //     : filterData.change.filter((item) => item !== 'rating'),
-    // });
   };
 
   return (
@@ -108,6 +85,56 @@ const HotelRatingItem = ({ rating, ind }) => {
       label={Stars(rating)}
       check={isCheckHotelStars}
       setCheck={checkHotelStarsHandler}
+    />
+  );
+};
+
+const FilterCheckbox = ({ item }) => {
+  const filterData = useGetSearchFilter();
+  const setFilterData = useSetSearchFilter();
+  const [isCheck, setIsCheck] = useState(
+    filterData.default.change.includes(Object.keys(item)) ? true : false
+  );
+
+  const checkHandler = (val) => {
+    setIsCheck(val);
+    changeFilterState(val);
+  };
+
+  const changeFilterState = (val) => {
+    let toggle = val;
+    if (filterData.default.change.includes(Object.keys(item).join())) {
+      toggle = !val;
+    }
+    setFilterData({
+      btnTrigger: filterData.newData.change.filter(
+        (i) => i !== Object.keys(item).join()
+      ).length
+        ? true
+        : toggle
+        ? true
+        : false,
+      default: filterData.default,
+      newData: {
+        ...filterData.newData,
+        change: toggle
+          ? [...filterData.newData.change, Object.keys(item).join()]
+          : filterData.newData.change.filter(
+              (i) => i !== Object.keys(item).join()
+            ),
+      },
+    });
+  };
+
+  return (
+    <Checkbox
+      label={
+        <div className={styles.checkbox_text_wrapper}>
+          {Object.values(item)}
+        </div>
+      }
+      check={isCheck}
+      setCheck={checkHandler}
     />
   );
 };
@@ -193,7 +220,7 @@ export default function FilterContent({ mobile }) {
         <h4 className={styles.filter_parts_title}>Категория отеля</h4>
         <div className={mobile ? `${styles.filter_parts_row_stars}` : ''}>
           {hotelRatingItemsRating.map((rating, ind) => (
-            <HotelRatingItem key={ind} rating={rating} ind={ind} />
+            <HotelRatingCheckbox key={ind} rating={rating} />
           ))}
         </div>
       </div>
@@ -224,107 +251,29 @@ export default function FilterContent({ mobile }) {
           />
         </div>
       </div> */}
-      {/* <div
+
+      <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
       >
-        <h4 className={styles.filter_parts_title}>Питание</h4>
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Без питания</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={<div className={styles.checkbox_text_wrapper}>Завтрак</div>}
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Завтрак и ужин</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Полный пансион</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Всё включено</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>
-              Ультра всё включено
-            </div>
-          }
-          check={null}
-          setCheck={null}
-        />
-      </div> */}
-      {/* <div
-        className={
-          mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
-        }
-      >
-        <h4 className={styles.filter_parts_title}>Пляж</h4>
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Первая линия</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Вторая линия</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Собственный пляж</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Песчаный пляж</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Галечный пляж</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>
-              Песчано-галечный пляж
-            </div>
-          }
-          check={null}
-          setCheck={null}
-        />
-      </div> */}
-      {console.log('getHotelService', getHotelService)}
+        <>
+          <h4 className={styles.filter_parts_title}>Питание</h4>
+          {Object.entries(foodFilterItems).map(([key, val]) => {
+            return (
+              <FilterCheckbox
+                key={key}
+                item={{
+                  [key]: intl.formatMessage({
+                    id: val,
+                  }),
+                }}
+              />
+            );
+          })}
+        </>
+      </div>
+
       {getHotelService?.search &&
         Object.entries(getHotelService?.search).map(([name, detailArr]) => {
           return (
@@ -336,92 +285,31 @@ export default function FilterContent({ mobile }) {
                   : `${styles.filter_parts}`
               }
             >
-              <h4 className={styles.filter_parts_title}>
-                {getHotelService.nameServices[name]}
-              </h4>
-              {detailArr.map((item, ind) => {
-                return (
-                  <Checkbox
-                    key={ind}
-                    label={
-                      <div className={styles.checkbox_text_wrapper}>
-                        {Object.values(item)}
-                      </div>
-                    }
-                    check={null}
-                    setCheck={null}
-                  />
-                );
-              })}
+              {name === 'renovation' ? (
+                <>
+                  <Accordion
+                    title={getHotelService.nameServices[name]}
+                    open={false}
+                  >
+                    {detailArr.map((item, ind) => {
+                      return <FilterCheckbox key={ind} item={item} />;
+                    })}
+                  </Accordion>
+                </>
+              ) : (
+                <>
+                  <h4 className={styles.filter_parts_title}>
+                    {getHotelService.nameServices[name]}
+                  </h4>
+                  {detailArr.map((item, ind) => {
+                    return <FilterCheckbox key={ind} item={item} />;
+                  })}
+                </>
+              )}
             </div>
           );
         })}
 
-      {/* <div
-        className={
-          mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
-        }
-      >
-        <h4 className={styles.filter_parts_title}>Пляж</h4>
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Первая линия</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-        <Checkbox
-          label={
-            <div className={styles.checkbox_text_wrapper}>Вторая линия</div>
-          }
-          check={null}
-          setCheck={null}
-        />
-      </div> */}
-      {/* <div
-        className={
-          mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
-        }
-      >
-        <Accordion title={'В отеле'} open={false}>
-          <Checkbox
-            label={
-              <div className={styles.checkbox_text_wrapper}>
-                Бесплатный Wi-Fi
-              </div>
-            }
-            check={null}
-            setCheck={null}
-          />
-          <Checkbox
-            label={
-              <div className={styles.checkbox_text_wrapper}>
-                Бассейн с подогревом
-              </div>
-            }
-            check={null}
-            setCheck={null}
-          />
-          <Checkbox
-            label={
-              <div className={styles.checkbox_text_wrapper}>
-                Отель для взрослых
-              </div>
-            }
-            check={null}
-            setCheck={null}
-          />
-          <Checkbox
-            label={
-              <div className={styles.checkbox_text_wrapper}>
-                Большая территория
-              </div>
-            }
-            check={null}
-            setCheck={null}
-          />
-        </Accordion>
-      </div> */}
       {/* <div
         className={
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`

@@ -111,24 +111,84 @@ export default function SearchResult() {
     let url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
     if (applyFilter) {
       const { newData } = filterData;
-      if (
-        newData.change.includes(5) ||
-        newData.change.includes(4) ||
-        newData.change.includes(3)
-      ) {
-        url += `&stars=${newData.change
+      const filters = newData.change;
+
+      if (filters.includes(5) || filters.includes(4) || filters.includes(3)) {
+        url += `&stars=${filters
           .filter((item) => item === 5 || item === 4 || item === 3)
           .join()}`;
       }
-      if (newData.change.includes('cost')) {
+
+      if (filters.includes('cost')) {
         url += `&price=${newData.cost[0]}&priceTo=${newData.cost[1]}`;
       }
+
+      if (
+        filters.includes('ob') ||
+        filters.includes('bb') ||
+        filters.includes('hb') ||
+        filters.includes('fb') ||
+        filters.includes('ai') ||
+        filters.includes('uai')
+      ) {
+        url += `&food=${filters
+          .filter(
+            (item) =>
+              item === 'ob' ||
+              item === 'bb' ||
+              item === 'hb' ||
+              item === 'fb' ||
+              item === 'ai' ||
+              item === 'uai'
+          )
+          .join()}`;
+      }
+
+      url += `&services=${filters
+        .filter(
+          (item) =>
+            item !== 5 &&
+            item !== 4 &&
+            item !== 3 &&
+            item !== 'cost' &&
+            item !== 'ob' &&
+            item !== 'bb' &&
+            item !== 'hb' &&
+            item !== 'fb' &&
+            item !== 'ai' &&
+            item !== 'uai'
+        )
+        .join()}`;
+
+      const changeHelper = (arr1, arr2) => {
+        // eslint-disable-next-line
+        let unique = new Set();
+        // eslint-disable-next-line
+        let unique2 = new Set(arr2);
+        arr1.forEach((el) => unique.add(el));
+        [...unique2].forEach((el) => {
+          if (unique.has(el)) {
+            unique.delete(el);
+          } else {
+            unique.add(el);
+          }
+        });
+        return [...unique];
+      };
 
       setFilterData({
         ...filterData,
         btnTrigger: false,
-        default: { ...newData },
-        newData: { ...newData, change: [] },
+        default: {
+          ...filterData.newData,
+          change: [
+            ...changeHelper(
+              filterData.default.change,
+              filterData.newData.change
+            ),
+          ],
+        },
+        newData: { ...filterData.newData, change: [] },
       });
       setApplyFilter(false);
     }
@@ -253,6 +313,19 @@ export default function SearchResult() {
   }, [applyFilter]);
   // console.log('filterData', filterData);
 
+  const add = () => {
+    const { as, url } = window.history.state;
+    console.log('as', as);
+    console.log('url', url);
+    const newAs = '/uk/search/';
+    const newUrl = '/uk/search/';
+    window.history.pushState(
+      { ...window.history.state, as: newAs, url: newUrl },
+      '',
+      newAs
+    );
+  };
+
   if (error) {
     return <h4>Error</h4>;
   }
@@ -267,6 +340,7 @@ export default function SearchResult() {
         <div>{JSON.stringify(person)}</div> */}
       </div>
       <button onClick={search}>search</button>
+      <button onClick={add}>addddd</button>
       {countryHotelService && (
         <div>
           Сервіси готелів:{' '}

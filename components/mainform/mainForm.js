@@ -93,7 +93,17 @@ export default function MainForm() {
   };
 
   return (
-    <div className={modalIsOpen ? 'main_form open' : 'main_form'}>
+    <div
+      className={
+        modalIsOpen
+          ? router.pathname === '/search'
+            ? 'main_form search_page open'
+            : 'main_form open'
+          : router.pathname === '/search'
+          ? 'main_form search_page'
+          : 'main_form'
+      }
+    >
       <MemoDownField
         title={down?.name[router.locale] || down.name}
         aria={'Город прибытия'}

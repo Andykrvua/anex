@@ -231,12 +231,6 @@ export default function Cards({
   step,
   countryHotelService = [],
 }) {
-  console.log(hotels);
-  console.log(offers);
-
-  console.log('rr');
-  console.log('step', step);
-
   return (
     <div className={styles.cards_wrapper}>
       {Object.entries(hotels).map(([hotelId, item], j) => {

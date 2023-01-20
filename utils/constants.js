@@ -162,13 +162,23 @@ export const fetchImgUrl = 'https://newimg.otpusk.com';
 // search res Carpathians
 export const carpathiansId = 55;
 
-// food variants txt
+// food variants for cards
 export const food = {
   ob: 'result.food.ob',
   bb: 'result.food.bb',
   hb: 'result.food.hb',
   fb: 'result.food.fb',
   al: 'result.food.al',
+  ai: 'result.food.ai',
+  uai: 'result.food.uai',
+};
+
+// food variants for filter search
+export const foodFilterItems = {
+  ob: 'result.food.ob',
+  bb: 'result.food.bb',
+  hb: 'result.food.hb',
+  fb: 'result.food.fb',
   ai: 'result.food.ai',
   uai: 'result.food.uai',
 };

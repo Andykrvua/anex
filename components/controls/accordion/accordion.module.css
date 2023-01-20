@@ -1,5 +1,6 @@
 .accordion_wrapper {
   position: relative;
+  cursor: pointer;
 }
 
 .filter_parts_title {
@@ -26,6 +27,7 @@
   padding: 0;
   opacity: 0;
   transform: translate(0, 50%);
+  visibility: hidden;
 }
 
 .text_content.open {
@@ -36,6 +38,7 @@
   transition: transform var(--base-transition),
     max-height var(--base-transition);
   z-index: 2;
+  visibility: visible;
 }
 
 .dropdown_icon {
