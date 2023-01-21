@@ -6,6 +6,7 @@ export default function MainFormBtn({
   aria,
   svg,
   SecondaryBtn = null,
+  plusDays = null,
   modalIsOpen,
   setModalIsOpen,
   children,
@@ -30,13 +31,21 @@ export default function MainFormBtn({
         onClick={clickHandler}
         aria-label={aria}
       >
-        <div className="main_formfield_inner">
+        <span className="main_formfield_inner">
           <span
             className="formfield_btn_icon"
             dangerouslySetInnerHTML={{ __html: svg }}
           ></span>
-          <span className="formfield_btn_title">{title}</span>
-        </div>
+          <span className="formfield_btn_title">
+            {title}
+            {cName === 'btn_date' && (
+              <span className="formfield_btn_title_plusdays">
+                {'+'}
+                {plusDays}
+              </span>
+            )}
+          </span>
+        </span>
       </button>
       {SecondaryBtn && <SecondaryBtn />}
       <DynamicWrapper modalIsOpen={modalIsOpen} cName={cName}>

@@ -449,6 +449,10 @@ header.header .header_container {
   box-shadow: var(--base-btn-shadow), var(--btn-focus);
 }
 
+.formfield_btn_title_plusdays {
+  display: none;
+}
+
 /* Size tablet or bigger start */
 @media (min-width: 810px) {
   .main_form {
@@ -561,12 +565,28 @@ header.header .header_container {
     flex-wrap: wrap;
   }
 
+  .main_form.search_page .main_formfield_wrapper {
+    flex-grow: 1;
+    max-width: 200px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
   .main_form.search_page .main_formfield_wrapper + .main_formfield_wrapper {
     margin-top: 0;
   }
 
+  .main_form.search_page button.main_formfield {
+    padding: 13px 32px 12px 15px;
+    border: none;
+    background: url(/assets/img/svg/results/pencil.svg) var(--line) no-repeat
+      center right 10px;
+    box-shadow: none;
+  }
+
   .main_form.search_page .main_formfield_inner {
     grid-template-columns: 1fr;
+    height: auto;
   }
 
   .main_form.search_page .formfield_btn_icon {
@@ -574,10 +594,26 @@ header.header .header_container {
   }
 
   .main_form.search_page .main_form_btn {
+    flex-grow: 1;
     width: initial;
-    height: 60px;
+    height: 43px;
     margin-top: 0;
+    margin-right: 5px;
+    margin-bottom: 5px;
     padding: 0 12px;
+  }
+
+  .main_form.search_page .second_btn_date {
+    display: none;
+  }
+
+  .main_form.search_page .formfield_btn_title {
+    padding: 0;
+  }
+
+  .main_form.search_page .formfield_btn_title_plusdays {
+    display: inline;
+    padding-left: 10px;
   }
 }
 /* Size mobile and search-page end */

@@ -68,6 +68,7 @@ export default function DateField({
       aria={aria}
       svg={svgDate}
       SecondaryBtn={SecondaryBtn}
+      plusDays={plusDays}
       modalIsOpen={modalIsOpen}
       setModalIsOpen={setModalIsOpen}
     >

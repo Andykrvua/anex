@@ -38,8 +38,6 @@ const CardsOffersVariants = ({ offers, hotelId, hotel }) => {
       }
     });
   });
-  console.log('actualOffers hotel Id', hotelId, actualOffers);
-  console.log('searchUrl', searchUrl);
 
   function getAllUrlParams(url) {
     // get query string from url (optional) or window
@@ -328,23 +326,11 @@ export default function Cards({
                       });
                   })}
                 </div>
-
-                {/* offers */}
-                {console.log('offers', offers)}
                 <CardsOffersVariants
                   offers={offers}
                   hotelId={hotelId}
                   hotel={item}
                 />
-                {/* {Object.entries(offers).map(([operatorId, value]) => {
-                  return Object.entries(value).map(([offerKey, data]) => {
-                    if (offerKey === hotelId) {
-                      console.log('dd', data);
-                      return <div>{data.i}</div>;
-                    }
-                  });
-                })} */}
-                {/* offers end */}
               </div>
             </div>
           );

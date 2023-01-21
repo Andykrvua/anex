@@ -27,8 +27,6 @@ const MemoCards = memo(Cards);
 
 export default function SearchResult() {
   // help data start
-  const [hotels, setHotels] = useState('');
-  const [offers, setOffers] = useState({});
   const [step, setStep] = useState(10);
   console.log(step);
   // help data end
@@ -55,9 +53,30 @@ export default function SearchResult() {
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
+  const [apiData, setApiData] = useState(false);
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [countryHotelService, setCountryHotelService] = useState(false);
+
+  const ResultHandler = (apiData) => {
+    if (!apiData) return;
+
+    Object.entries(apiData.hotels).map(([hotelId, item], j) => {
+      Object.entries(apiData.results).map(([offerOperatorId, value]) => {
+        return Object.entries(value).map(([offerHotelId, data]) => {
+          if (offerHotelId === hotelId) {
+            item.actualOffers = [];
+            Object.entries(data.offers).map(([offerId, value]) => {
+              item.actualOffers.push(value);
+            });
+          }
+        });
+      });
+    });
+    console.log('ResultHandler', apiData);
+    setApiData(apiData);
+    // return apiData;
+  };
 
   async function getUrl(number) {
     const childs = new Array(parseInt(person.child))
@@ -241,8 +260,6 @@ export default function SearchResult() {
 
     async function recursiveFetch(number) {
       setApiRes(false);
-      setHotels(false);
-      setOffers(false);
       setShow(false);
       console.log('start search');
       let data = await apiSearch(number);
@@ -251,8 +268,7 @@ export default function SearchResult() {
         if (data.lastResult) {
           localStorage.setItem('result', JSON.stringify(data));
           setApiRes(data);
-          setHotels(data.total);
-          setOffers(data.workProgress);
+          ResultHandler(data);
           setShow(true);
           setIsLoading(false);
           setStartSearch(false);
@@ -270,30 +286,7 @@ export default function SearchResult() {
     }
     console.log('start recursiveFetch');
     await recursiveFetch(number);
-
-    // console.log('data', data);
   };
-
-  useEffect(() => {
-    if (apiRes.lastResult) {
-      // const priceArr = [];
-      // Object.entries(apiRes.results).map(([operatorId, value]) => {
-      //   Object.entries(value).map(([hotelId, data]) => {
-      //     Object.entries(data.offers).map(([offerId, value]) => {
-      //       priceArr.push(value.pl);
-      //     });
-      //   });
-      // });
-      // console.log('priceMin', Math.min(...priceArr));
-      // console.log('priceMax', Math.max(...priceArr));
-      // setFilterData({
-      //   cost: {
-      //     min: Math.floor(Math.min(...priceArr) / 5000) * 5000,
-      //     max: Math.ceil(Math.max(...priceArr) / 5000) * 5000,
-      //   },
-      // });
-    }
-  }, [apiRes]);
 
   useEffect(() => {
     console.log('useeffect!!!!! search');
@@ -332,28 +325,14 @@ export default function SearchResult() {
 
   return (
     <div>
-      <div>
-        {/* <div>{JSON.stringify(up)}</div>
-        <div>{JSON.stringify(down)}</div>
-        <div>{JSON.stringify(date)}</div>
-        <div>{JSON.stringify(night)}</div>
-        <div>{JSON.stringify(person)}</div> */}
-      </div>
+      <div></div>
       <button onClick={search}>search</button>
       <button onClick={add}>addddd</button>
-      {countryHotelService && (
-        <div>
-          Сервіси готелів:{' '}
-          {JSON.stringify(countryHotelService.icons, null, '\t')}
-          {console.log(countryHotelService)}
-        </div>
-      )}
-      <div>Готелів всього: {hotels}</div>
-      <div>Оферів всього: {JSON.stringify(offers, null, '\t')}</div>
       {isLoading && <Loader />}
       {show && apiRes.lastResult && (
         <MemoCards
-          hotels={apiRes.hotels}
+          // hotels={apiRes.hotels}
+          hotels={apiData.hotels}
           offers={apiRes.results}
           step={step}
           countryHotelService={countryHotelService.icons}
