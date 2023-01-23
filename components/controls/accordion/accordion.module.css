@@ -22,23 +22,25 @@
 }
 
 .text_content {
-  max-height: 0;
+  display: none;
+  /* max-height: 0; */
   margin-top: 0;
   padding: 0;
-  opacity: 0;
-  transform: translate(0, 50%);
-  visibility: hidden;
+  /* opacity: 0; */
+  /* transform: translate(0, 50%); */
+  /* visibility: hidden; */
 }
 
 .text_content.open {
-  max-height: 800px;
+  display: block;
+  /* max-height: 800px; */
   /* overflow: hidden; */
-  opacity: 1;
-  transform: translate(0, 0);
-  transition: transform var(--base-transition),
-    max-height var(--base-transition);
+  /* opacity: 1; */
+  /* transform: translate(0, 0); */
+  /* transition: transform var(--base-transition),
+    max-height var(--base-transition); */
   z-index: 2;
-  visibility: visible;
+  /* visibility: visible; */
 }
 
 .dropdown_icon {

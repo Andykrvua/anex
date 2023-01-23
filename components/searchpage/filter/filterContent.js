@@ -12,7 +12,7 @@ import Checkbox from 'components/controls/checkbox/checkbox';
 import Accordion from 'components/controls/accordion/accordion';
 import CloseSvg from 'components/common/closeSvg';
 import { foodFilterItems } from 'utils/constants';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useRouter } from 'next/router';
 
 const Stars = (star) => {
@@ -32,7 +32,8 @@ const Stars = (star) => {
 
 const hotelRatingItemsRating = [5, 4, 3];
 
-const HotelRatingCheckbox = ({ rating }) => {
+const HotelRatingCheckbox = ({ rating, reset }) => {
+  console.log('sss');
   const filterData = useGetSearchFilter();
   const setFilterData = useSetSearchFilter();
   const [isCheckHotelStars, setIsCheckHotelStars] = useState(
@@ -45,6 +46,13 @@ const HotelRatingCheckbox = ({ rating }) => {
     setIsCheckHotelStars(val);
     changeFilterState(val);
   };
+
+  useEffect(() => {
+    if (reset) {
+      console.log('AAAA');
+      setIsCheckHotelStars(false);
+    }
+  }, [reset]);
 
   const changeFilterState = (val) => {
     if (
@@ -89,11 +97,11 @@ const HotelRatingCheckbox = ({ rating }) => {
   );
 };
 
-const FilterCheckbox = ({ item }) => {
+const FilterCheckbox = ({ item, reset }) => {
   const filterData = useGetSearchFilter();
   const setFilterData = useSetSearchFilter();
   const [isCheck, setIsCheck] = useState(
-    filterData.default.change.includes(Object.keys(item)) ? true : false
+    filterData.newData.change.includes(Object.keys(item).join) ? true : false
   );
 
   const checkHandler = (val) => {
@@ -101,6 +109,15 @@ const FilterCheckbox = ({ item }) => {
     changeFilterState(val);
   };
 
+  useEffect(() => {
+    if (reset) {
+      console.log('AAAA');
+      setIsCheck(false);
+    }
+  }, [reset]);
+
+  console.log('1', isCheck);
+  console.log('2', reset);
   const changeFilterState = (val) => {
     let toggle = val;
     if (filterData.default.change.includes(Object.keys(item).join())) {
@@ -139,7 +156,7 @@ const FilterCheckbox = ({ item }) => {
   );
 };
 
-export default function FilterContent({ mobile }) {
+export default function FilterContent({ mobile, filteredSearch }) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -149,38 +166,50 @@ export default function FilterContent({ mobile }) {
   const getHotelService = useGetHotelService();
   console.log(filterData);
   console.log('getHotelService', getHotelService);
+  const [rere, setRere] = useState(false);
 
-  const filteredSearch = () => {
-    // setFilterData({
-    //   btnTrigger: false,
-    //   cost: {
-    //     min: filterData.cost.min,
-    //     max: filterData.cost.max,
-    //     values: filterData?.newCost.values
-    //       ? filterData?.newCost.values
-    //       : filterData?.cost.values,
-    //   },
-    // });
-    setApplyFilter(true);
+  const resetHandler = () => {
+    setRere((prev) => !prev);
+    setFilterData({
+      btnTrigger: false,
+      default: {
+        change: [],
+        cost: [0, 375000],
+        hotelRating: {
+          5: false,
+          4: false,
+          3: false,
+        },
+      },
+      newData: {
+        change: [],
+        cost: [],
+        hotelRating: {
+          5: false,
+          4: false,
+          3: false,
+        },
+      },
+      costMin: 0,
+      costMax: 375000,
+      reset: true,
+    });
   };
+  useEffect(() => {
+    console.log('YYYYY', filterData.reset);
+    setFilterData({ ...filterData, reset: false });
+  }, [rere]);
 
   return (
     <>
-      {filterData.btnTrigger && (
+      {filterData.btnTrigger && !mobile && (
         <div className={styles.filter_btn}>
-          <button onClick={() => filteredSearch()} style={{ padding: '15px' }}>
-            Применить фильтры
-          </button>
           <button
-            onClick={() => {
-              setApplyFilter(false);
-              setFilterData({
-                btnTrigger: false,
-              });
-            }}
-            style={{ marginRight: '20px', padding: '15px' }}
+            className="apply_btn"
+            onClick={() => filteredSearch()}
+            style={{ padding: '24px 36px' }}
           >
-            Отмена
+            Применить фильтры
           </button>
         </div>
       )}
@@ -190,7 +219,10 @@ export default function FilterContent({ mobile }) {
             <FM id="result.filter.title" />
           </h3>
         )}
-        <button className={`${styles.reset_btn} svg_btn_stroke`}>
+        <button
+          className={`${styles.reset_btn} svg_btn_stroke`}
+          onClick={resetHandler}
+        >
           <FM id="result.filter.reset" />
           <CloseSvg />
         </button>
@@ -210,6 +242,7 @@ export default function FilterContent({ mobile }) {
               ? filterData.default.cost
               : filterData.default.cost
           }
+          reset={filterData.reset}
         />
       </div>
       <div
@@ -220,37 +253,14 @@ export default function FilterContent({ mobile }) {
         <h4 className={styles.filter_parts_title}>Категория отеля</h4>
         <div className={mobile ? `${styles.filter_parts_row_stars}` : ''}>
           {hotelRatingItemsRating.map((rating, ind) => (
-            <HotelRatingCheckbox key={ind} rating={rating} />
+            <HotelRatingCheckbox
+              key={ind}
+              rating={rating}
+              reset={filterData.reset}
+            />
           ))}
         </div>
       </div>
-      {/* <div
-        className={
-          mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
-        }
-      >
-        <h4 className={styles.filter_parts_title}>Транспорт</h4>
-        <div className={styles.filter_parts_row}>
-          <Checkbox
-            label={
-              <span className={styles.checkbox_icon_wrapper}>
-                <img src="/assets/img/svg/fly-up.svg" alt="air" />
-              </span>
-            }
-            check={null}
-            setCheck={null}
-          />
-          <Checkbox
-            label={
-              <span className={styles.checkbox_icon_wrapper}>
-                <img src="/assets/img/svg/results/bus.svg" alt="bus" />
-              </span>
-            }
-            check={null}
-            setCheck={null}
-          />
-        </div>
-      </div> */}
 
       <div
         className={
@@ -268,6 +278,7 @@ export default function FilterContent({ mobile }) {
                     id: val,
                   }),
                 }}
+                reset={filterData.reset}
               />
             );
           })}
@@ -292,7 +303,13 @@ export default function FilterContent({ mobile }) {
                     open={false}
                   >
                     {detailArr.map((item, ind) => {
-                      return <FilterCheckbox key={ind} item={item} />;
+                      return (
+                        <FilterCheckbox
+                          key={ind}
+                          item={item}
+                          reset={filterData.reset}
+                        />
+                      );
                     })}
                   </Accordion>
                 </>
@@ -302,47 +319,19 @@ export default function FilterContent({ mobile }) {
                     {getHotelService.nameServices[name]}
                   </h4>
                   {detailArr.map((item, ind) => {
-                    return <FilterCheckbox key={ind} item={item} />;
+                    return (
+                      <FilterCheckbox
+                        key={ind}
+                        item={item}
+                        reset={filterData.reset}
+                      />
+                    );
                   })}
                 </>
               )}
             </div>
           );
         })}
-
-      {/* <div
-        className={
-          mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
-        }
-      >
-        <Accordion title={'Для детей'} open={false}>
-          <Checkbox
-            label={
-              <div className={styles.checkbox_text_wrapper}>Детский клуб</div>
-            }
-            check={null}
-            setCheck={null}
-          />
-          <Checkbox
-            label={
-              <div className={styles.checkbox_text_wrapper}>
-                Детский бассейн
-              </div>
-            }
-            check={null}
-            setCheck={null}
-          />
-          <Checkbox
-            label={
-              <div className={styles.checkbox_text_wrapper}>
-                Детское меню в ресторане
-              </div>
-            }
-            check={null}
-            setCheck={null}
-          />
-        </Accordion>
-      </div> */}
     </>
   );
 }

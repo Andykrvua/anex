@@ -1,5 +1,11 @@
 import styles from './searchContent.module.css';
-import { useGetFilterOpen, useSetFilterOpen } from 'store/store';
+import {
+  useGetFilterOpen,
+  useSetFilterOpen,
+  useGetSearchFilter,
+  useSetSearchFilter,
+  useSetApplyFilter,
+} from 'store/store';
 import FilterMobileTemplate from './filter/filterMobileTemplate';
 import FilterContent from './filter/filterContent';
 import SearchResult from './searchResult/searchResult';
@@ -7,10 +13,12 @@ import getViewport from 'utils/getViewport';
 import { useEffect, memo } from 'react';
 import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
-const MemoSearchResult = memo(SearchResult);
 export default function SearchContent() {
   const getFilterModale = useGetFilterOpen();
   const setFilterModale = useSetFilterOpen();
+  const filterData = useGetSearchFilter();
+  const setFilterData = useSetSearchFilter();
+  const setApplyFilter = useSetApplyFilter();
 
   const windowSize = getViewport();
 
@@ -33,6 +41,37 @@ export default function SearchContent() {
     }
   }, [getFilterModale]);
 
+  const filteredSearch = () => {
+    const changeHelper = (arr1, arr2) => {
+      // eslint-disable-next-line
+      let unique = new Set();
+      // eslint-disable-next-line
+      let unique2 = new Set(arr2);
+      arr1.forEach((el) => unique.add(el));
+      [...unique2].forEach((el) => {
+        if (unique.has(el)) {
+          unique.delete(el);
+        } else {
+          unique.add(el);
+        }
+      });
+      return [...unique];
+    };
+
+    setFilterData({
+      ...filterData,
+      btnTrigger: false,
+      default: {
+        ...filterData.newData,
+        change: [
+          ...changeHelper(filterData.default.change, filterData.newData.change),
+        ],
+      },
+      newData: { ...filterData.newData, change: [] },
+    });
+    setApplyFilter(true);
+  };
+
   return (
     <div className={styles.search_wrapper}>
       {windowSize.width < 810 && (
@@ -43,7 +82,10 @@ export default function SearchContent() {
               : 'main_form_popup filter'
           }
         >
-          <FilterMobileTemplate>
+          <FilterMobileTemplate
+            filteredSearch={filteredSearch}
+            filterData={filterData}
+          >
             <FilterContent mobile={true} />
           </FilterMobileTemplate>
         </div>
@@ -51,11 +93,11 @@ export default function SearchContent() {
       {windowSize.width >= 810 && (
         <div>
           <div>
-            <FilterContent mobile={false} />
+            <FilterContent mobile={false} filteredSearch={filteredSearch} />
           </div>
         </div>
       )}
-      <MemoSearchResult />
+      <SearchResult />
     </div>
   );
 }

@@ -1,12 +1,6 @@
 import { useIntl } from 'react-intl';
 import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
-import ReviewsHeader from 'components/reviews/header';
-import ReviewsContent from 'components/reviews/content';
-import { SessionProvider } from 'next-auth/react';
-import Auth from 'components/reviews/auth';
-import { reviewsPerPage } from '/utils/constants';
-import { getReviews } from '/utils/fetch';
 
 export default function Reviews({ data }) {
   const intl = useIntl();
@@ -17,7 +11,8 @@ export default function Reviews({ data }) {
       <SeoHead content={null} />
       <div className="container">
         <Breadcrumbs data={br_arr} />
-        <div>1</div>
+        <div>{data.country}</div>
+        <div>{data.hotel}</div>
         {console.log(data)}
       </div>
     </>

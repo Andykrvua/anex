@@ -61,7 +61,7 @@ export default function SearchResult() {
   const ResultHandler = (apiData) => {
     if (!apiData) return;
 
-    Object.entries(apiData.hotels).map(([hotelId, item], j) => {
+    Object.entries(apiData.hotels).map(([hotelId, item]) => {
       Object.entries(apiData.results).map(([offerOperatorId, value]) => {
         return Object.entries(value).map(([offerHotelId, data]) => {
           if (offerHotelId === hotelId) {
@@ -73,6 +73,30 @@ export default function SearchResult() {
         });
       });
     });
+
+    apiData.hotelsArr = [];
+    Object.entries(apiData.hotels).map(([hotelId, item]) => {
+      apiData.hotelsArr.push(item);
+    });
+
+    // hotel.actualOffers.sort(function (a, b) {
+    //   return a.pl - b.pl;
+    // });
+
+    apiData.hotelsArr.map((item) => {
+      item.actualOffers.sort(function (a, b) {
+        return a.pl - b.pl;
+      });
+    });
+
+    // apiData.hotelsArr.sort(function (a, b) {
+    //   return a.actualOffers[0].pl - b.actualOffers[0].pl;
+    // });
+
+    // apiData.hotelsArr.sort(function (a, b) {
+    //   return b.r - a.r;
+    // });
+
     console.log('ResultHandler', apiData);
     setApiData(apiData);
     // return apiData;
@@ -126,11 +150,12 @@ export default function SearchResult() {
       ? upTransportAvailable[0].transport.join()
       : 'no';
 
-    // let url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e&services=one_line_beach`;
     let url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
     if (applyFilter) {
       const { newData } = filterData;
-      const filters = newData.change;
+      // const filters = newData.change;
+      const filters = filterData.default.change;
+      console.log('filtersfiltersfilters', filters);
 
       if (filters.includes(5) || filters.includes(4) || filters.includes(3)) {
         url += `&stars=${filters
@@ -138,7 +163,8 @@ export default function SearchResult() {
           .join()}`;
       }
 
-      if (filters.includes('cost')) {
+      // if (filters.includes('cost')) {
+      if (newData.cost[0] !== undefined || newData.cost[1] !== undefined) {
         url += `&price=${newData.cost[0]}&priceTo=${newData.cost[1]}`;
       }
 
@@ -179,36 +205,6 @@ export default function SearchResult() {
         )
         .join()}`;
 
-      const changeHelper = (arr1, arr2) => {
-        // eslint-disable-next-line
-        let unique = new Set();
-        // eslint-disable-next-line
-        let unique2 = new Set(arr2);
-        arr1.forEach((el) => unique.add(el));
-        [...unique2].forEach((el) => {
-          if (unique.has(el)) {
-            unique.delete(el);
-          } else {
-            unique.add(el);
-          }
-        });
-        return [...unique];
-      };
-
-      setFilterData({
-        ...filterData,
-        btnTrigger: false,
-        default: {
-          ...filterData.newData,
-          change: [
-            ...changeHelper(
-              filterData.default.change,
-              filterData.newData.change
-            ),
-          ],
-        },
-        newData: { ...filterData.newData, change: [] },
-      });
       setApplyFilter(false);
     }
 
@@ -324,16 +320,13 @@ export default function SearchResult() {
   }
 
   return (
-    <div>
-      <div></div>
+    <div style={filterData.btnTrigger ? { opacity: '.5' } : {}}>
       <button onClick={search}>search</button>
       <button onClick={add}>addddd</button>
       {isLoading && <Loader />}
       {show && apiRes.lastResult && (
         <MemoCards
-          // hotels={apiRes.hotels}
-          hotels={apiData.hotels}
-          offers={apiRes.results}
+          hotels={apiData.hotelsArr}
           step={step}
           countryHotelService={countryHotelService.icons}
         />

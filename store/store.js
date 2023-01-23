@@ -105,7 +105,7 @@ const useStore = create(
       },
       costMin: 0,
       costMax: 375000,
-      test: 'hfhfhhf',
+      reset: false,
     },
     setSearchFilter: (data) =>
       set((state) => ({ searchFilter: { ...state.searchFilter, ...data } })),

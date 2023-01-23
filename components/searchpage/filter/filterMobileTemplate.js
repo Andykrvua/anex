@@ -2,7 +2,11 @@ import styles from './filterMobileTemplate.module.css';
 import { useSetFilterOpen } from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 
-export default function FilterMobileTemplate({ children }) {
+export default function FilterMobileTemplate({
+  children,
+  filteredSearch,
+  filterData,
+}) {
   const setFilterModale = useSetFilterOpen();
   return (
     <div className="popup_wrapper">
@@ -115,7 +119,14 @@ export default function FilterMobileTemplate({ children }) {
           {children}
         </div>
         <div className="apply_btn_wrapper">
-          <button className="apply_btn">
+          <button
+            className="apply_btn"
+            onClick={() => {
+              setFilterModale(false);
+              filteredSearch();
+            }}
+            disabled={!filterData.btnTrigger}
+          >
             <FM id="common.apply" />
           </button>
         </div>

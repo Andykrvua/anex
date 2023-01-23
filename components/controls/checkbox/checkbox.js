@@ -6,7 +6,8 @@ export default function Checkbox({ label, check, setCheck }) {
       {label}
       <input
         type="checkbox"
-        defaultChecked={check}
+        // defaultChecked={check}
+        checked={check}
         onChange={() => setCheck(!check)}
       />
       <span className={styles.checkmark}>

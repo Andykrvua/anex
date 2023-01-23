@@ -1,4 +1,5 @@
 import styles from './cards.module.css';
+import { shimmer, toBase64 } from '/utils/blurImage';
 import { useSetModal, useGetPerson, useGetSearchUrl } from 'store/store';
 import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
@@ -6,9 +7,10 @@ import { food } from 'utils/constants';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { modal } from 'utils/constants';
 import { useSetOpenStreetMap } from 'store/store';
+import Image from 'next/image';
 
 // get 3 min price offers variants
-const CardsOffersVariants = ({ offers, hotelId, hotel }) => {
+const CardsOffersVariants = ({ hotel }) => {
   const setModal = useSetModal();
   const person = useGetPerson();
   const searchUrl = useGetSearchUrl();
@@ -27,17 +29,17 @@ const CardsOffersVariants = ({ offers, hotelId, hotel }) => {
 
   const decl = (val) => declension(val, tTxt1, tTxt2, tTxt5);
 
-  const actualOffers = [];
+  // const actualOffers = [];
 
-  Object.entries(offers).map(([offerOperatorId, value]) => {
-    return Object.entries(value).map(([offerHotelId, data]) => {
-      if (offerHotelId === hotelId) {
-        Object.entries(data.offers).map(([offerId, value]) => {
-          actualOffers.push(value);
-        });
-      }
-    });
-  });
+  // Object.entries(offers).map(([offerOperatorId, value]) => {
+  //   return Object.entries(value).map(([offerHotelId, data]) => {
+  //     if (offerHotelId === hotelId) {
+  //       Object.entries(data.offers).map(([offerId, value]) => {
+  //         actualOffers.push(value);
+  //       });
+  //     }
+  //   });
+  // });
 
   function getAllUrlParams(url) {
     // get query string from url (optional) or window
@@ -104,11 +106,11 @@ const CardsOffersVariants = ({ offers, hotelId, hotel }) => {
 
   console.log('getAllUrlParams', getAllUrlParams(searchUrl));
 
-  actualOffers.sort(function (a, b) {
-    return a.pl - b.pl;
-  });
+  // hotel.actualOffers.sort(function (a, b) {
+  //   return a.pl - b.pl;
+  // });
 
-  const data = actualOffers.reduce((acc, val, ind, arr) => {
+  const data = hotel.actualOffers.reduce((acc, val, ind, arr) => {
     if (ind === 0) {
       acc.push(val);
     } else {
@@ -171,7 +173,7 @@ const CardsOffersVariants = ({ offers, hotelId, hotel }) => {
       </div>
 
       {data.map((item, ind) => {
-        if (ind < 3) {
+        if (ind < 6) {
           return (
             <a className={styles.card_order} href="" key={item.i}>
               <span className={styles.order_text_wrapper}>
@@ -223,26 +225,34 @@ const CardsOffersVariants = ({ offers, hotelId, hotel }) => {
   );
 };
 
-export default function Cards({
-  hotels = [],
-  offers = null,
-  step,
-  countryHotelService = [],
-}) {
+export default function Cards({ hotels = [], step, countryHotelService = [] }) {
   return (
     <div className={styles.cards_wrapper}>
-      {Object.entries(hotels).map(([hotelId, item], j) => {
+      {hotels.map((item, j) => {
         if (j < step) {
           return (
             <div className={styles.card} key={item.i}>
               <div className={styles.card_img}>
-                <img
+                <Image
+                  className={styles.img}
+                  src={`https://newimg.otpusk.com/2/500x375/${item.f}`}
+                  alt=""
+                  layout="fill"
+                  // width={500}
+                  // height={375}
+                  placeholder="blur"
+                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
+                    shimmer(500, 375)
+                  )}`}
+                  quality="100"
+                />
+                {/* <img
                   src={`https://newimg.otpusk.com/2/500x375/${item.f}`}
                   className={styles.img}
                   alt=""
                   width={500}
                   height={375}
-                />
+                /> */}
                 {item.r ? (
                   <div className={styles.review}>
                     {!item.v && <p>Рейтинг</p>}
@@ -274,7 +284,6 @@ export default function Cards({
               </div>
               <div className={styles.card_text}>
                 <p className={styles.country_text}>
-                  {/* {`${item.country}, ${item.district}`} */}
                   {`${item.t.n}, ${item.c.n}`}
                 </p>
                 <div className={styles.stars_wrapper}>
@@ -326,11 +335,7 @@ export default function Cards({
                       });
                   })}
                 </div>
-                <CardsOffersVariants
-                  offers={offers}
-                  hotelId={hotelId}
-                  hotel={item}
-                />
+                <CardsOffersVariants hotel={item} />
               </div>
             </div>
           );

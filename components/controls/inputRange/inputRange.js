@@ -3,46 +3,25 @@ import { Range, getTrackBackground } from 'react-range';
 import { useSetSearchFilter, useGetSearchFilter } from 'store/store';
 import styles from './inputRange.module.css';
 
-export default function InputRange({ min, max, val }) {
+export default function InputRange({ min, max, val, reset }) {
   const step = 5000;
   const [values, setValues] = useState(val);
+  const filterData = useGetSearchFilter();
+  useEffect(() => {
+    if (reset) {
+      setValues(filterData.default.cost);
+    }
 
-  // useEffect(() => {
-  //   setValues([min, max]);
-  // }, [min, max]);
+    // setValues([min, max]);
+  }, [reset]);
 
   const setFilterData = useSetSearchFilter();
-  const filterData = useGetSearchFilter();
-
-  // searchFilter: {
-  //   btnTrigger: false,
-  //   default: {
-  //     change: [],
-  //     cost: [0, 375000],
-  //     hotelRating: {
-  //       5: false,
-  //       4: false,
-  //       3: false,
-  //     },
-  //   },
-  //   new: {
-  //   },
-  //   costMin: 0,
-  //   costMax: 375000,
-  //   test: 'hfhfhhf',
-  // },
 
   function Test(values) {
-    console.log('!!!!!!!!!!!!!', values);
     if (
       filterData.default.cost[0] === values[0] &&
       filterData.default.cost[1] === values[1]
     ) {
-      console.log('===');
-      console.log('filterData.default.cost[0]', filterData.default.cost[0]);
-      console.log('filterData.newData?.cost[0]', values[0]);
-      console.log('filterData.default.cost[1]', filterData.default.cost[1]);
-      console.log('filterData.newData?.cost[1]', values[1]);
       setFilterData({
         btnTrigger: filterData.newData.change.filter((item) => item !== 'cost')
           .length
@@ -56,12 +35,6 @@ export default function InputRange({ min, max, val }) {
         },
       });
     } else {
-      console.log('!==');
-      console.log('filterData.default.cost[0]', filterData.default.cost[0]);
-      console.log('filterData.newData?.cost[0]', values[0]);
-      console.log('filterData.default.cost[1]', filterData.default.cost[1]);
-      console.log('filterData.newData?.cost[1]', values[1]);
-
       setFilterData({
         btnTrigger: true,
         default: filterData.default,
