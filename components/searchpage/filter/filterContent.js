@@ -12,7 +12,7 @@ import Checkbox from 'components/controls/checkbox/checkbox';
 import Accordion from 'components/controls/accordion/accordion';
 import CloseSvg from 'components/common/closeSvg';
 import { foodFilterItems } from 'utils/constants';
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 
 const Stars = (star) => {
@@ -33,7 +33,6 @@ const Stars = (star) => {
 const hotelRatingItemsRating = [5, 4, 3];
 
 const HotelRatingCheckbox = ({ rating, reset }) => {
-  console.log('sss');
   const filterData = useGetSearchFilter();
   const setFilterData = useSetSearchFilter();
   const [isCheckHotelStars, setIsCheckHotelStars] = useState(
@@ -49,7 +48,6 @@ const HotelRatingCheckbox = ({ rating, reset }) => {
 
   useEffect(() => {
     if (reset) {
-      console.log('AAAA');
       setIsCheckHotelStars(false);
     }
   }, [reset]);
@@ -59,7 +57,6 @@ const HotelRatingCheckbox = ({ rating, reset }) => {
       filterData.default.hotelRating[rating] ===
       !filterData.newData.hotelRating[rating]
     ) {
-      console.log('inp ===');
       setFilterData({
         btnTrigger: filterData.newData.change.filter((item) => item !== rating)
           .length
@@ -73,7 +70,6 @@ const HotelRatingCheckbox = ({ rating, reset }) => {
         },
       });
     } else {
-      console.log('inp !==');
       setFilterData({
         btnTrigger: true,
         default: filterData.default,
@@ -111,13 +107,10 @@ const FilterCheckbox = ({ item, reset }) => {
 
   useEffect(() => {
     if (reset) {
-      console.log('AAAA');
       setIsCheck(false);
     }
   }, [reset]);
 
-  console.log('1', isCheck);
-  console.log('2', reset);
   const changeFilterState = (val) => {
     let toggle = val;
     if (filterData.default.change.includes(Object.keys(item).join())) {
@@ -164,12 +157,11 @@ export default function FilterContent({ mobile, filteredSearch }) {
   const setFilterData = useSetSearchFilter();
   const setApplyFilter = useSetApplyFilter();
   const getHotelService = useGetHotelService();
-  console.log(filterData);
-  console.log('getHotelService', getHotelService);
-  const [rere, setRere] = useState(false);
+  const ref = useRef(0);
 
   const resetHandler = () => {
-    setRere((prev) => !prev);
+    ref.current++;
+
     setFilterData({
       btnTrigger: false,
       default: {
@@ -195,10 +187,12 @@ export default function FilterContent({ mobile, filteredSearch }) {
       reset: true,
     });
   };
+
   useEffect(() => {
-    console.log('YYYYY', filterData.reset);
-    setFilterData({ ...filterData, reset: false });
-  }, [rere]);
+    if (ref.current) {
+      setFilterData({ ...filterData, reset: false });
+    }
+  }, [ref.current]);
 
   return (
     <>

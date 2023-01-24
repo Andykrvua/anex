@@ -10,7 +10,7 @@ import FilterMobileTemplate from './filter/filterMobileTemplate';
 import FilterContent from './filter/filterContent';
 import SearchResult from './searchResult/searchResult';
 import getViewport from 'utils/getViewport';
-import { useEffect, memo } from 'react';
+import { useEffect, useRef } from 'react';
 import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
 export default function SearchContent() {
@@ -21,6 +21,8 @@ export default function SearchContent() {
   const setApplyFilter = useSetApplyFilter();
 
   const windowSize = getViewport();
+  const filterBlock = useRef(null);
+  console.log('filterBlock.current', filterBlock.current);
 
   useEffect(() => {
     if (windowSize.width > 809) {
@@ -66,11 +68,27 @@ export default function SearchContent() {
         change: [
           ...changeHelper(filterData.default.change, filterData.newData.change),
         ],
+        cost: filterData.newData.cost.length
+          ? filterData.newData.cost
+          : filterData.default.cost,
       },
       newData: { ...filterData.newData, change: [] },
     });
     setApplyFilter(true);
   };
+
+  const onScroll = () => {
+    if (filterBlock.current) {
+      console.log('scrollY =', window?.scrollY);
+    }
+  };
+
+  useEffect(() => {
+    // clean up code
+    window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <div className={styles.search_wrapper}>
@@ -92,7 +110,7 @@ export default function SearchContent() {
       )}
       {windowSize.width >= 810 && (
         <div>
-          <div>
+          <div ref={filterBlock} className="scroll-block">
             <FilterContent mobile={false} filteredSearch={filteredSearch} />
           </div>
         </div>

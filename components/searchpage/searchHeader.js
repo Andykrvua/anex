@@ -1,8 +1,13 @@
-import { useSetFilterOpen } from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 import styles from './searchHeader.module.css';
 import { useRouter } from 'next/router';
-import { useGetDown, useGetDate } from 'store/store';
+import {
+  useGetDown,
+  useGetDate,
+  useSetFilterOpen,
+  useSetSearchResultSort,
+  useGetSearchResultSort,
+} from 'store/store';
 
 export default function SearchHeader() {
   const router = useRouter();
@@ -12,9 +17,34 @@ export default function SearchHeader() {
   const date = useGetDate();
 
   const setFilterModale = useSetFilterOpen();
+  const setSearchResultSort = useSetSearchResultSort();
+  const getSearchResultSort = useGetSearchResultSort();
 
   const copiedDate = new Date(date.rawDate);
   copiedDate.setDate(copiedDate.getDate() + date.plusDays);
+
+  const sortHandler = (type) => {
+    getSearchResultSort;
+    if (type === 'price') {
+      setSearchResultSort({
+        price: {
+          active: true,
+          dir: getSearchResultSort.price.dir === 'asc' ? 'desc' : 'asc',
+        },
+        rating: { active: false, dir: getSearchResultSort.rating.dir },
+      });
+      // { price: false, rating: false }
+    }
+    if (type === 'rating') {
+      setSearchResultSort({
+        price: { active: false, dir: getSearchResultSort.price.dir },
+        rating: {
+          active: true,
+          dir: getSearchResultSort.rating.dir === 'asc' ? 'desc' : 'asc',
+        },
+      });
+    }
+  };
 
   return (
     <div className={styles.header}>
@@ -32,20 +62,47 @@ export default function SearchHeader() {
           />
           <FM id="result.filter.btn" />
         </button>
-        <button className={styles.sort_btn}>
+        <button
+          className={styles.sort_btn}
+          onClick={() => sortHandler('price')}
+          style={
+            getSearchResultSort.price.active
+              ? { background: 'var(--placeholder)' }
+              : {}
+          }
+        >
           <img
-            src="/assets/img/svg/results/sort-numeric.svg"
+            src={
+              getSearchResultSort.price.dir === 'asc'
+                ? '/assets/img/svg/results/sort-numeric.svg'
+                : '/assets/img/svg/results/sort-numeric-desc.svg'
+            }
             width={14}
             height={18}
-            alt=""
+            alt="sort"
           />
-          {/* <img
-            src="/assets/img/svg/results/sort-numeric-desc.svg"
+          <FM id="result.price_sort.btn" />
+        </button>
+        <button
+          className={styles.sort_btn}
+          onClick={() => sortHandler('rating')}
+          style={
+            getSearchResultSort.rating.active
+              ? { background: 'var(--placeholder)' }
+              : {}
+          }
+        >
+          <img
+            src={
+              getSearchResultSort.rating.dir === 'asc'
+                ? '/assets/img/svg/results/sort-numeric.svg'
+                : '/assets/img/svg/results/sort-numeric-desc.svg'
+            }
             width={14}
             height={18}
-            alt=""
-          /> */}
-          <FM id="result.sort.btn" />
+            alt="sort"
+          />
+          <FM id="result.rating_sort.btn" />
         </button>
       </div>
       <div className={styles.search_item}>

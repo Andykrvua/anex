@@ -110,7 +110,14 @@ const useStore = create(
     setSearchFilter: (data) =>
       set((state) => ({ searchFilter: { ...state.searchFilter, ...data } })),
     applyFilter: false,
-    setApplyFilter: (applyFilter) => set({ applyFilter }),
+    setApplyFilter: (applyFilter) =>
+      set({
+        applyFilter,
+        searchResultSort: {
+          price: { active: false, dir: 'asc' },
+          rating: { active: false, dir: 'desc' },
+        },
+      }),
     openStreetMap: {},
     setOpenStreetMap: (openStreetMap) => set({ openStreetMap }),
     startSearch: false,
@@ -119,6 +126,11 @@ const useStore = create(
     setSearchInProgress: (searchInProgress) => set({ searchInProgress }),
     hotelService: {},
     setHotelService: (hotelService) => set({ hotelService }),
+    searchResultSort: {
+      price: { active: false, dir: 'asc' },
+      rating: { active: false, dir: 'desc' },
+    },
+    setSearchResultSort: (searchResultSort) => set({ searchResultSort }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -231,10 +243,16 @@ export const useGetSearchInProgress = () =>
 export const useSetSearchInProgress = () =>
   useStore((state) => state.setSearchInProgress);
 
-//
+// save hotels services
 export const useGetHotelService = () => useStore((state) => state.hotelService);
 export const useSetHotelService = () =>
   useStore((state) => state.setHotelService);
+
+// sort control
+export const useGetSearchResultSort = () =>
+  useStore((state) => state.searchResultSort);
+export const useSetSearchResultSort = () =>
+  useStore((state) => state.setSearchResultSort);
 // example
 // export const useLogin = () => useStore((state) => state.login);
 // export const useLogout = () => useStore((state) => state.logout);

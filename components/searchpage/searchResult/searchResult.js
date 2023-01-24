@@ -19,6 +19,8 @@ import {
   useGetApplyFilter,
   useSetApplyFilter,
   useSetHotelService,
+  useSetSearchResultSort,
+  useGetSearchResultSort,
 } from 'store/store';
 import { useRouter } from 'next/router';
 import Cards from './cards';
@@ -50,6 +52,11 @@ export default function SearchResult() {
   const applyFilter = useGetApplyFilter();
   const setApplyFilter = useSetApplyFilter();
   const setHotelService = useSetHotelService();
+
+  const setSearchResultSort = useSetSearchResultSort();
+  const getSearchResultSort = useGetSearchResultSort();
+
+  console.log('getSearchResultSort', getSearchResultSort);
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -101,6 +108,37 @@ export default function SearchResult() {
     setApiData(apiData);
     // return apiData;
   };
+
+  console.log('apiData', apiData);
+
+  useEffect(() => {
+    if (getSearchResultSort.price.active) {
+      const arr = apiData.hotelsArr;
+      if (!arr) return;
+
+      arr.sort(function (a, b) {
+        return getSearchResultSort.price.dir === 'asc'
+          ? a.actualOffers[0].pl - b.actualOffers[0].pl
+          : b.actualOffers[0].pl - a.actualOffers[0].pl;
+      });
+
+      setApiData((prev) => {
+        return { ...prev, hotelsArr: [...arr] };
+      });
+    }
+    if (getSearchResultSort.rating.active) {
+      const arr = apiData.hotelsArr;
+      if (!arr) return;
+
+      arr.sort(function (a, b) {
+        return getSearchResultSort.rating.dir === 'asc' ? a.r - b.r : b.r - a.r;
+      });
+
+      setApiData((prev) => {
+        return { ...prev, hotelsArr: [...arr] };
+      });
+    }
+  }, [getSearchResultSort]);
 
   async function getUrl(number) {
     const childs = new Array(parseInt(person.child))
@@ -321,8 +359,6 @@ export default function SearchResult() {
 
   return (
     <div style={filterData.btnTrigger ? { opacity: '.5' } : {}}>
-      <button onClick={search}>search</button>
-      <button onClick={add}>addddd</button>
       {isLoading && <Loader />}
       {show && apiRes.lastResult && (
         <MemoCards

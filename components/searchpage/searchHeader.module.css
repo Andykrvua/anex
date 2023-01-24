@@ -36,6 +36,8 @@
 }
 
 .sort_items {
+  display: flex;
+  align-items: flex-start;
   order: 2;
 }
 
@@ -49,6 +51,10 @@
   line-height: 15px;
   background-color: var(--line);
   cursor: pointer;
+}
+
+.sort_btn {
+  margin-left: 5px;
 }
 
 .sort_btn img,
@@ -72,9 +78,5 @@
     display: flex;
     order: 0;
     margin-bottom: 25px;
-  }
-
-  .sort_btn {
-    margin-left: 5px;
   }
 }
