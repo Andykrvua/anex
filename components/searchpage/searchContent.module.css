@@ -9,4 +9,15 @@
     column-gap: 50px;
     margin-top: 30px;
   }
+
+  .filter_content_wrapper {
+    position: relative;
+  }
+
+  .filter_fluid {
+    /* position: absolute; */
+    position: relative;
+    /* top: 200px; */
+    transition: all 0.3s;
+  }
 }

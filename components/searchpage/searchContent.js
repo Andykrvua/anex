@@ -10,10 +10,11 @@ import FilterMobileTemplate from './filter/filterMobileTemplate';
 import FilterContent from './filter/filterContent';
 import SearchResult from './searchResult/searchResult';
 import getViewport from 'utils/getViewport';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 
 export default function SearchContent() {
+  const [filterFluid, setFilterFluid] = useState(false);
   const getFilterModale = useGetFilterOpen();
   const setFilterModale = useSetFilterOpen();
   const filterData = useGetSearchFilter();
@@ -22,6 +23,7 @@ export default function SearchContent() {
 
   const windowSize = getViewport();
   const filterBlock = useRef(null);
+  const filterBlockWrapper = useRef(null);
   console.log('filterBlock.current', filterBlock.current);
 
   useEffect(() => {
@@ -79,12 +81,34 @@ export default function SearchContent() {
 
   const onScroll = () => {
     if (filterBlock.current) {
-      console.log('scrollY =', window?.scrollY);
+      // console.log('scrollY =', window?.scrollY);
+      // console.log('width wrapper', filterBlockWrapper.current.offsetHeight);
+      // console.log('width block', filterBlock.current.offsetHeight);
+      // console.log('block top', filterBlock.current.offsetTop);
+      // console.log('wrapper top', filterBlockWrapper.current.offsetTop);
+      if (
+        filterBlockWrapper.current?.offsetHeight >
+        filterBlock.current?.offsetHeight
+      ) {
+        console.log('q1q1q1');
+        setFilterFluid(true);
+        const parrent = filterBlockWrapper.current?.offsetHeight;
+        const child = filterBlock.current?.offsetHeight;
+        const diff = parrent - child;
+        console.log('diff', diff);
+        const { top } = filterBlock.current.getBoundingClientRect();
+        console.log('top', top);
+        if (top < 111) {
+          if (111 - top > diff) return;
+          console.log('transform', 111 + window?.scrollY);
+          console.log('window?.scrollY', window?.scrollY);
+          filterBlock.current.style.transform = `translateY(${-top}px)`;
+        }
+      }
     }
   };
 
   useEffect(() => {
-    // clean up code
     window.removeEventListener('scroll', onScroll);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -109,8 +133,11 @@ export default function SearchContent() {
         </div>
       )}
       {windowSize.width >= 810 && (
-        <div>
-          <div ref={filterBlock} className="scroll-block">
+        <div ref={filterBlockWrapper} className={styles.filter_content_wrapper}>
+          <div
+            ref={filterBlock}
+            className={filterFluid ? styles.filter_fluid : null}
+          >
             <FilterContent mobile={false} filteredSearch={filteredSearch} />
           </div>
         </div>
