@@ -13,11 +13,4 @@
   .filter_content_wrapper {
     position: relative;
   }
-
-  .filter_float {
-    /* position: absolute; */
-    position: relative;
-    /* top: 200px; */
-    transition: all 0.3s;
-  }
 }

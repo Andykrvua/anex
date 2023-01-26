@@ -183,7 +183,6 @@ textarea::placeholder {
   min-width: 360px;
   height: 100%;
   min-height: 100vh;
-  overflow: hidden;
 }
 
 .content {
@@ -328,6 +327,12 @@ header.header .header_container {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
+}
+
+@media (max-width: 809px) {
+  .wrapper {
+    overflow: hidden;
+  }
 }
 
 @media (min-width: 810px) {
