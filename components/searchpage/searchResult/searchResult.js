@@ -5,8 +5,10 @@ import {
   useGetUp,
   useGetDown,
   useSetDown,
+  useSetUp,
   useGetDate,
   useGetNight,
+  useSetNight,
   useGetPerson,
   useGetUpPointList,
   useSetUpPointList,
@@ -20,6 +22,7 @@ import {
   useSetApplyFilter,
   useSetHotelService,
   useSetSearchResultSort,
+  useSetDate,
   useGetSearchResultSort,
 } from 'store/store';
 import { useRouter } from 'next/router';
@@ -52,6 +55,9 @@ export default function SearchResult() {
   const applyFilter = useGetApplyFilter();
   const setApplyFilter = useSetApplyFilter();
   const setHotelService = useSetHotelService();
+  const setUp = useSetUp();
+  const setNight = useSetNight();
+  const setDate = useSetDate();
 
   const setSearchResultSort = useSetSearchResultSort();
   const getSearchResultSort = useGetSearchResultSort();
@@ -324,12 +330,20 @@ export default function SearchResult() {
       search();
     } else {
       // если флага startSearch нет, значит юзер ввел урл и тогда парсим параметры
+      setIsLoading(true);
       console.log('first visit');
       console.log(router.query);
-      await parseUrl(router);
+      const res = await parseUrl(router);
+
+      console.log('!!!!!', res);
+      // setDown({ ...res.to });
+      // setUp({ ...res.from });
+      // setNight({ from: res.nights, to: res.nightsTo });
+      // setDate({ ...res.date });
+      setIsLoading(false);
     }
   }, []);
-
+  console.log('reeeeeee');
   useEffect(() => {
     if (applyFilter) {
       search();

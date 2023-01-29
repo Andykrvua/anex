@@ -49,7 +49,9 @@ export default function DateField({
     setDayText(declension(plusDays, dTxt1, dTxt2, dTxt5));
   }, [plusDays]);
 
+  // if (typeof window === 'undefined') {
   title = formattedDate(title.rawDate);
+  // }
 
   const SecondaryBtn = () => {
     return (
@@ -64,7 +66,7 @@ export default function DateField({
   return (
     <MainFormBtn
       cName={'btn_date'}
-      title={title}
+      title={title ? title : ''}
       aria={aria}
       svg={svgDate}
       SecondaryBtn={SecondaryBtn}

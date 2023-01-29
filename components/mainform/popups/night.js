@@ -34,8 +34,8 @@ export default function Night({
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
-  const [fromNight, setFromNight] = useState(defaultNight.from);
-  const [toNight, setToNight] = useState(defaultNight.to);
+  const [fromNight, setFromNight] = useState(Number(defaultNight.from));
+  const [toNight, setToNight] = useState(Number(defaultNight.to));
 
   useEffect(() => {
     if (size.width < maxWidth) {
