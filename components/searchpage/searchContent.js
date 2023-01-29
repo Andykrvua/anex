@@ -95,10 +95,22 @@ export default function SearchContent() {
           </FilterMobileTemplate>
         </div>
       )}
+
       {windowSize.width >= 810 && (
         <div className={styles.filter_content_wrapper}>
+          {filterData.btnTrigger && (
+            <div className={styles.filter_btn}>
+              <button
+                className="apply_btn"
+                onClick={() => filteredSearch()}
+                style={{ padding: '24px 36px' }}
+              >
+                Применить фильтры
+              </button>
+            </div>
+          )}
           <StickyBox offsetTop={110} offsetBottom={25}>
-            <FilterContent mobile={false} filteredSearch={filteredSearch} />
+            <FilterContent mobile={false} />
           </StickyBox>
         </div>
       )}

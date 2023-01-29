@@ -57,7 +57,7 @@ export default function MainForm() {
   // console.log('date', date);
   // console.log('night', night);
   // console.log('person', person);
-  console.log('rrraaaa');
+
   const makeSearchParams = () => {
     if (getSearchInProgress) {
       return;
@@ -83,6 +83,7 @@ export default function MainForm() {
         transport: '',
         from: up.value,
         to: down.value,
+        country: down.countryValue,
         checkIn: date.rawDate.toISOString().substr(0, 10),
         checkTo: copiedDate.toISOString().substr(0, 10),
         nights: night.from,

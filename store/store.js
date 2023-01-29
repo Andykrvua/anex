@@ -123,7 +123,14 @@ const useStore = create(
     startSearch: false,
     setStartSearch: (startSearch) => set({ startSearch }),
     searchInProgress: false,
-    setSearchInProgress: (searchInProgress) => set({ searchInProgress }),
+    setSearchInProgress: (searchInProgress) =>
+      set({
+        searchInProgress,
+        searchResultSort: {
+          price: { active: false, dir: 'asc' },
+          rating: { active: false, dir: 'desc' },
+        },
+      }),
     hotelService: {},
     setHotelService: (hotelService) => set({ hotelService }),
     searchResultSort: {

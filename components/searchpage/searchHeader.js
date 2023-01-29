@@ -24,7 +24,6 @@ export default function SearchHeader() {
   copiedDate.setDate(copiedDate.getDate() + date.plusDays);
 
   const sortHandler = (type) => {
-    getSearchResultSort;
     if (type === 'price') {
       setSearchResultSort({
         price: {

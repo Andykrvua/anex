@@ -104,8 +104,6 @@ const CardsOffersVariants = ({ hotel }) => {
     return obj;
   }
 
-  console.log('getAllUrlParams', getAllUrlParams(searchUrl));
-
   // hotel.actualOffers.sort(function (a, b) {
   //   return a.pl - b.pl;
   // });

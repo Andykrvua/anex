@@ -149,7 +149,7 @@ const FilterCheckbox = ({ item, reset }) => {
   );
 };
 
-export default function FilterContent({ mobile, filteredSearch }) {
+export default function FilterContent({ mobile }) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -196,17 +196,6 @@ export default function FilterContent({ mobile, filteredSearch }) {
 
   return (
     <>
-      {filterData.btnTrigger && !mobile && (
-        <div className={styles.filter_btn}>
-          <button
-            className="apply_btn"
-            onClick={() => filteredSearch()}
-            style={{ padding: '24px 36px' }}
-          >
-            Применить фильтры
-          </button>
-        </div>
-      )}
       <div className={styles.filter_header}>
         {!mobile && (
           <h3 className={styles.title}>
@@ -280,6 +269,7 @@ export default function FilterContent({ mobile, filteredSearch }) {
       </div>
 
       {getHotelService?.search &&
+        getHotelService?.nameServices &&
         Object.entries(getHotelService?.search).map(([name, detailArr]) => {
           return (
             <div
@@ -310,7 +300,8 @@ export default function FilterContent({ mobile, filteredSearch }) {
               ) : (
                 <>
                   <h4 className={styles.filter_parts_title}>
-                    {getHotelService.nameServices[name]}
+                    {getHotelService.nameServices &&
+                      getHotelService.nameServices[name]}
                   </h4>
                   {detailArr.map((item, ind) => {
                     return (

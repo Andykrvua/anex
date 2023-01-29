@@ -23,6 +23,7 @@ import {
   useGetSearchResultSort,
 } from 'store/store';
 import { useRouter } from 'next/router';
+import parseUrl from '../pasteUrl/pasteUrl';
 import Cards from './cards';
 
 const MemoCards = memo(Cards);
@@ -30,7 +31,6 @@ const MemoCards = memo(Cards);
 export default function SearchResult() {
   // help data start
   const [step, setStep] = useState(10);
-  console.log(step);
   // help data end
   const router = useRouter();
   const loc = router.locale === 'uk' ? 'ua' : 'ru';
@@ -55,8 +55,6 @@ export default function SearchResult() {
 
   const setSearchResultSort = useSetSearchResultSort();
   const getSearchResultSort = useGetSearchResultSort();
-
-  console.log('getSearchResultSort', getSearchResultSort);
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -193,7 +191,6 @@ export default function SearchResult() {
       const { newData } = filterData;
       // const filters = newData.change;
       const filters = filterData.default.change;
-      console.log('filtersfiltersfilters', filters);
 
       if (filters.includes(5) || filters.includes(4) || filters.includes(3)) {
         url += `&stars=${filters
@@ -322,14 +319,14 @@ export default function SearchResult() {
     await recursiveFetch(number);
   };
 
-  useEffect(() => {
-    console.log('useeffect!!!!! search');
+  useEffect(async () => {
     if (startSearch) {
       search();
     } else {
-      // ставим флаг в мейнформ если установили кверипараметры вручную
-      // если флага нет, значит юзер ввел урл и тогда парсим и заполняем урл для поиска
+      // если флага startSearch нет, значит юзер ввел урл и тогда парсим параметры
       console.log('first visit');
+      console.log(router.query);
+      await parseUrl(router);
     }
   }, []);
 
@@ -338,12 +335,11 @@ export default function SearchResult() {
       search();
     }
   }, [applyFilter]);
-  // console.log('filterData', filterData);
 
   const add = () => {
     const { as, url } = window.history.state;
-    console.log('as', as);
-    console.log('url', url);
+    // console.log('as', as);
+    // console.log('url', url);
     const newAs = '/uk/search/';
     const newUrl = '/uk/search/';
     window.history.pushState(
