@@ -110,10 +110,19 @@ export default function UpWindow({
 
   const inputHandler = (e) => {
     if (size.width >= maxWidth) {
-      selectUp({ name: e.target.dataset.name, value: e.target.value });
+      console.log('e.target', e.target);
+      selectUp({
+        name: e.target.dataset.name,
+        value: e.target.value,
+        transport: e.target.dataset.transport ? e.target.dataset.transport : '',
+      });
       setModalIsOpen('');
     } else {
-      setSelectedUp({ name: e.target.dataset.name, value: e.target.value });
+      setSelectedUp({
+        name: e.target.dataset.name,
+        value: e.target.value,
+        transport: e.target.dataset.transport ? e.target.dataset.transport : '',
+      });
     }
   };
 
@@ -144,6 +153,7 @@ export default function UpWindow({
             <div className={styles.input_wrapper}>
               {getUpPointList.active &&
                 getUpPointList.list.map((item, i) => {
+                  console.log('item', item);
                   return (
                     <label className={styles.input_label} key={i}>
                       <input
@@ -155,6 +165,7 @@ export default function UpWindow({
                         value={item.id}
                         defaultChecked={item.id === value.toString()}
                         data-name={item.name}
+                        data-transport={item.transport[0]}
                       />
                       <span className={styles.input_label_content}>
                         <span className={styles.input_label_text}>

@@ -1,19 +1,16 @@
 import styles from './filterContent.module.css';
+import { useEffect, useState, useRef } from 'react';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 import {
-  useSetFilterOpen,
   useGetSearchFilter,
   useSetSearchFilter,
-  useSetApplyFilter,
   useGetHotelService,
 } from 'store/store';
-import { FormattedMessage as FM, useIntl } from 'react-intl';
 import InputRange from 'components/controls/inputRange/inputRange';
 import Checkbox from 'components/controls/checkbox/checkbox';
 import Accordion from 'components/controls/accordion/accordion';
 import CloseSvg from 'components/common/closeSvg';
 import { foodFilterItems } from 'utils/constants';
-import { useEffect, useState, useRef } from 'react';
-import { useRouter } from 'next/router';
 
 const Stars = (star) => {
   return new Array(parseInt(star)).fill(null).map((_, ind) => {
@@ -151,11 +148,9 @@ const FilterCheckbox = ({ item, reset }) => {
 
 export default function FilterContent({ mobile }) {
   const intl = useIntl();
-  const router = useRouter();
 
   const filterData = useGetSearchFilter();
   const setFilterData = useSetSearchFilter();
-  const setApplyFilter = useSetApplyFilter();
   const getHotelService = useGetHotelService();
   const ref = useRef(0);
 
@@ -215,8 +210,9 @@ export default function FilterContent({ mobile }) {
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
       >
-        {/* FILTER START */}
-        <h4 className={styles.filter_parts_title}>Бюджет</h4>
+        <h4 className={styles.filter_parts_title}>
+          <FM id="result.filter.bud" />
+        </h4>
         <InputRange
           min={filterData.costMin}
           max={filterData.costMax}
@@ -233,7 +229,9 @@ export default function FilterContent({ mobile }) {
           mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`
         }
       >
-        <h4 className={styles.filter_parts_title}>Категория отеля</h4>
+        <h4 className={styles.filter_parts_title}>
+          <FM id="result.filter.cat_hotel" />
+        </h4>
         <div className={mobile ? `${styles.filter_parts_row_stars}` : ''}>
           {hotelRatingItemsRating.map((rating, ind) => (
             <HotelRatingCheckbox
@@ -251,7 +249,9 @@ export default function FilterContent({ mobile }) {
         }
       >
         <>
-          <h4 className={styles.filter_parts_title}>Питание</h4>
+          <h4 className={styles.filter_parts_title}>
+            <FM id="result.common.food" />
+          </h4>
           {Object.entries(foodFilterItems).map(([key, val]) => {
             return (
               <FilterCheckbox

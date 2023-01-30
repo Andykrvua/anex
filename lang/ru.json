@@ -132,6 +132,9 @@
   "result.price_sort.btn": "Цена",
   "result.rating_sort.btn": "Рейтинг",
   "result.filter.reset": "Сбросить",
+  "result.filter.bud": "Бюджет",
+  "result.filter.cat_hotel": "Категория отеля",
+  "result.filter.apply": "Применить фильтры",
   "result.common.food": "Питание",
   "result.food.ob": "Без питания",
   "result.food.bb": "Завтрак",
@@ -139,5 +142,12 @@
   "result.food.fb": "Полный пансион",
   "result.food.al": "Всё включено",
   "result.food.ai": "Всё включено",
-  "result.food.uai": "Ультра всё включено"
+  "result.food.uai": "Ультра всё включено",
+  "hotel_card.transport.bus": "на автобусе",
+  "hotel_card.transport.air": "с перелетом",
+  "hotel_card.transport.train": "на поезде",
+  "hotel_card.transport.ship": "на корабле",
+  "hotel_card.map": "Отель на карте",
+  "hotel_card.rating": "Рейтинг",
+  "hotel_card.reviews": "Отзывов:"
 }

@@ -132,6 +132,9 @@
   "result.price_sort.btn": "Ціна",
   "result.rating_sort.btn": "Рейтинг",
   "result.filter.reset": "Обнулити",
+  "result.filter.bud": "Бюджет",
+  "result.filter.cat_hotel": "Категорія готелю",
+  "result.filter.apply": "Застосувати фільтри",
   "result.common.food": "Харчування",
   "result.food.ob": "Без харчування",
   "result.food.bb": "Сніданок",
@@ -139,5 +142,12 @@
   "result.food.fb": "Повний пансіон",
   "result.food.al": "Все включено",
   "result.food.ai": "Все включено",
-  "result.food.uai": "Ультра все включено"
+  "result.food.uai": "Ультра все включено",
+  "hotel_card.transport.bus": "на автобусі",
+  "hotel_card.transport.air": "з перельотом",
+  "hotel_card.transport.train": "на поїзді",
+  "hotel_card.transport.ship": "на кораблі",
+  "hotel_card.map": "Готель на карті",
+  "hotel_card.rating": "Рейтинг",
+  "hotel_card.reviews": "Відгуків:"
 }

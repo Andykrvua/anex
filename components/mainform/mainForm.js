@@ -20,7 +20,6 @@ import { useRouter } from 'next/router';
 
 export default function MainForm() {
   const [modalIsOpen, setModalIsOpen] = useState('');
-  // const { locale } = useRouter();
   const router = useRouter();
 
   const up = useGetUp();
@@ -52,11 +51,6 @@ export default function MainForm() {
   const MemoDateField = memo(DateField);
   const MemoNightField = memo(NightField);
   const MemoPersonField = memo(PersonField);
-  // console.log('up', up);
-  // console.log('down', down);
-  // console.log('date', date);
-  // console.log('night', night);
-  // console.log('person', person);
 
   const makeSearchParams = () => {
     if (getSearchInProgress) {
@@ -80,7 +74,7 @@ export default function MainForm() {
     router.push({
       pathname: '/search',
       query: {
-        transport: '',
+        transport: up.transport,
         from: up.value,
         to: down.value,
         country: down.countryValue,

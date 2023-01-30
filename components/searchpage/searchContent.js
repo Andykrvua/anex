@@ -1,4 +1,8 @@
 import styles from './searchContent.module.css';
+import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
+import { useEffect } from 'react';
+import { FormattedMessage as FM } from 'react-intl';
+import StickyBox from 'react-sticky-box';
 import {
   useGetFilterOpen,
   useSetFilterOpen,
@@ -10,12 +14,8 @@ import FilterMobileTemplate from './filter/filterMobileTemplate';
 import FilterContent from './filter/filterContent';
 import SearchResult from './searchResult/searchResult';
 import getViewport from 'utils/getViewport';
-import { useEffect, useRef, useState } from 'react';
-import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
-import StickyBox from 'react-sticky-box';
 
 export default function SearchContent() {
-  // const [filterFluid, setFilterFluid] = useState(false);
   const getFilterModale = useGetFilterOpen();
   const setFilterModale = useSetFilterOpen();
   const filterData = useGetSearchFilter();
@@ -105,7 +105,7 @@ export default function SearchContent() {
                 onClick={() => filteredSearch()}
                 style={{ padding: '24px 36px' }}
               >
-                Применить фильтры
+                <FM id="result.filter.apply" />
               </button>
             </div>
           )}

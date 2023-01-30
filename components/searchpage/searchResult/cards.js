@@ -1,19 +1,17 @@
 import styles from './cards.module.css';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { shimmer, toBase64 } from '/utils/blurImage';
-import { useSetModal, useGetPerson, useGetSearchUrl } from 'store/store';
+import { useSetModal, useGetPerson, useSetOpenStreetMap } from 'store/store';
 import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
-import { food } from 'utils/constants';
-import { FormattedMessage as FM, useIntl } from 'react-intl';
-import { modal } from 'utils/constants';
-import { useSetOpenStreetMap } from 'store/store';
-import Image from 'next/image';
+import { food, modal } from 'utils/constants';
 
-// get 3 min price offers variants
 const CardsOffersVariants = ({ hotel }) => {
+  const router = useRouter();
   const setModal = useSetModal();
   const person = useGetPerson();
-  const searchUrl = useGetSearchUrl();
   const setOpenStreetMapData = useSetOpenStreetMap();
 
   const intl = useIntl();
@@ -28,85 +26,6 @@ const CardsOffersVariants = ({ hotel }) => {
   });
 
   const decl = (val) => declension(val, tTxt1, tTxt2, tTxt5);
-
-  // const actualOffers = [];
-
-  // Object.entries(offers).map(([offerOperatorId, value]) => {
-  //   return Object.entries(value).map(([offerHotelId, data]) => {
-  //     if (offerHotelId === hotelId) {
-  //       Object.entries(data.offers).map(([offerId, value]) => {
-  //         actualOffers.push(value);
-  //       });
-  //     }
-  //   });
-  // });
-
-  function getAllUrlParams(url) {
-    // get query string from url (optional) or window
-    var queryString = url.split('?')[1];
-
-    // we'll store the parameters here
-    var obj = {};
-
-    // if query string exists
-    if (queryString) {
-      // stuff after # is not part of query string, so get rid of it
-      queryString = queryString.split('#')[0];
-
-      // split our query string into its component parts
-      var arr = queryString.split('&');
-
-      for (var i = 0; i < arr.length; i++) {
-        // separate the keys and the values
-        var a = arr[i].split('=');
-
-        // set parameter name and value (use 'true' if empty)
-        var paramName = a[0];
-        var paramValue = typeof a[1] === 'undefined' ? true : a[1];
-
-        // (optional) keep case consistent
-        paramName = paramName.toLowerCase();
-        if (typeof paramValue === 'string')
-          paramValue = paramValue.toLowerCase();
-
-        // if the paramName ends with square brackets, e.g. colors[] or colors[2]
-        if (paramName.match(/\[(\d+)?\]$/)) {
-          // create key if it doesn't exist
-          var key = paramName.replace(/\[(\d+)?\]/, '');
-          if (!obj[key]) obj[key] = [];
-
-          // if it's an indexed array e.g. colors[2]
-          if (paramName.match(/\[\d+\]$/)) {
-            // get the index value and add the entry at the appropriate position
-            var index = /\[(\d+)\]/.exec(paramName)[1];
-            obj[key][index] = paramValue;
-          } else {
-            // otherwise add the value to the end of the array
-            obj[key].push(paramValue);
-          }
-        } else {
-          // we're dealing with a string
-          if (!obj[paramName]) {
-            // if it doesn't exist, create property
-            obj[paramName] = paramValue;
-          } else if (obj[paramName] && typeof obj[paramName] === 'string') {
-            // if property does exist and it's a string, convert it to an array
-            obj[paramName] = [obj[paramName]];
-            obj[paramName].push(paramValue);
-          } else {
-            // otherwise add the property
-            obj[paramName].push(paramValue);
-          }
-        }
-      }
-    }
-
-    return obj;
-  }
-
-  // hotel.actualOffers.sort(function (a, b) {
-  //   return a.pl - b.pl;
-  // });
 
   const data = hotel.actualOffers.reduce((acc, val, ind, arr) => {
     if (ind === 0) {
@@ -130,7 +49,21 @@ const CardsOffersVariants = ({ hotel }) => {
     });
     foodTransMessage += ', ';
   }
-  foodTransMessage += `за ${person.adult + person.child} с перелетом`;
+
+  const transports = {
+    bus: 'hotel_card.transport.bus',
+    air: 'hotel_card.transport.air',
+    train: 'hotel_card.transport.train',
+    ship: 'hotel_card.transport.ship',
+  };
+
+  foodTransMessage += `за ${person.adult + person.child} ${
+    transports[router.query.transport]
+      ? intl.formatMessage({
+          id: transports[router.query.transport],
+        })
+      : ''
+  }`;
 
   const OpenStreetMapBtn = () => {
     if (!hotel.g) {
@@ -158,7 +91,9 @@ const CardsOffersVariants = ({ hotel }) => {
     return (
       <button onClick={() => modalHandler()} className={styles.maps}>
         <img src="/assets/img/svg/tour/map-marker.svg" alt="map" />
-        <span>Отель на карте</span>
+        <span>
+          <FM id="hotel_card.map" />
+        </span>
       </button>
     );
   };
@@ -173,7 +108,13 @@ const CardsOffersVariants = ({ hotel }) => {
       {data.map((item, ind) => {
         if (ind < 6) {
           return (
-            <a className={styles.card_order} href="" key={item.i}>
+            <a
+              className={styles.card_order}
+              href={`/hotels/italy/${hotel.i}-${hotel.h}?offer=${item.i}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              key={item.i}
+            >
               <span className={styles.order_text_wrapper}>
                 <span className={styles.order_text__duration}>
                   <span>
@@ -253,32 +194,27 @@ export default function Cards({ hotels = [], step, countryHotelService = [] }) {
                 /> */}
                 {item.r ? (
                   <div className={styles.review}>
-                    {!item.v && <p>Рейтинг</p>}
+                    {!item.v && (
+                      <p>
+                        <FM id="hotel_card.rating" />
+                      </p>
+                    )}
                     <p
                       className={styles.review__number}
                       style={{ color: ratingColor(parseFloat(item.r)) }}
                     >
                       {item.r}/10
                     </p>
-                    {item.v && <p>Отзывов:</p>}
+                    {item.v && (
+                      <p>
+                        <FM id="hotel_card.reviews" />
+                      </p>
+                    )}
                     {item.v && (
                       <p className={styles.review__medium}>{item.v}</p>
                     )}
                   </div>
                 ) : null}
-                {/* <Image
-                className={styles.img}
-                src={item.img}
-                alt=""
-                layout="responsive"
-                width={333}
-                height={240}
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(333, 240)
-                )}`}
-                quality="100"
-              /> */}
               </div>
               <div className={styles.card_text}>
                 <p className={styles.country_text}>

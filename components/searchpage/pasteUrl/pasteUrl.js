@@ -1,4 +1,9 @@
+// todo ru and ua
+// todo fetch hide token
+
 const searchTo = async (router) => {
+  if (!router.query.to || !router.query.to.length) return null;
+
   const isCountry = await fetch(
     `https://api.otpusk.com/api/2.6/tours/countries?access_token=337da-65e22-26745-a251f-77b9e`
   ).then((response) => {
@@ -8,18 +13,12 @@ const searchTo = async (router) => {
     return null;
   });
 
-  console.log('router.query.to', router.query.to);
-  console.log('isCountry', isCountry);
   if (!isCountry) return null;
   const isCountrySearched = isCountry.countries.filter(
     (item) => item.id === Number(router.query.to)
   );
-  console.log('searched', isCountrySearched);
 
   if (isCountrySearched.length === 1) {
-    // країну знайдено
-    console.log('країну знайдено', isCountrySearched);
-
     const code = {
       district: false,
       hotel: false,
@@ -33,10 +32,8 @@ const searchTo = async (router) => {
     };
     return res;
   } else if (isCountrySearched.length > 1) {
-    console.log('error');
     return null;
   } else {
-    // це не країна, шукаємо дістрікт
     const isDistrict = await fetch(
       `https://api.otpusk.com/api/2.6/tours/geotree?id=${router.query.country}&depth=district&access_token=337da-65e22-26745-a251f-77b9e`
     ).then((response) => {
@@ -46,7 +43,6 @@ const searchTo = async (router) => {
       return null;
     });
 
-    console.log('isDistrict', isDistrict);
     if (!isDistrict) return null;
     const isDistrictSearched = [];
     isDistrict.geo.map((item) => {
@@ -66,11 +62,8 @@ const searchTo = async (router) => {
         });
       }
     });
-    console.log('isDistrictSearched', isDistrictSearched);
-    if (isDistrictSearched.length === 1) {
-      // дістрікт знайдено
-      console.log('дістрікт знайдено', isDistrictSearched);
 
+    if (isDistrictSearched.length === 1) {
       const code = {
         district: true,
         hotel: false,
@@ -84,10 +77,8 @@ const searchTo = async (router) => {
       };
       return res;
     } else if (isDistrictSearched.length > 1) {
-      console.log('error');
       return null;
     } else {
-      // це не країна і не дістрікт шукаємо готель
       const isHotel = await fetch(
         `https://api.otpusk.com/api/2.6/tours/hotel?hotelId=${router.query.to}&access_token=337da-65e22-26745-a251f-77b9e`
       ).then((response) => {
@@ -98,9 +89,6 @@ const searchTo = async (router) => {
       });
 
       if (isHotel) {
-        //готель знайдено
-        console.log('готель знайдено', isHotel.hotel);
-
         const code = {
           district: false,
           hotel: true,
@@ -115,7 +103,6 @@ const searchTo = async (router) => {
         };
         return res;
       } else {
-        console.log('error');
         return null;
       }
     }
@@ -123,6 +110,16 @@ const searchTo = async (router) => {
 };
 
 const searchFrom = async (router) => {
+  if (!router.query.from || !router.query.from.length) return null;
+
+  if (router.query.from === '9999') {
+    return {
+      name: 'Без транспорта',
+      value: '9999',
+      transport: '',
+    };
+  }
+
   const search = await fetch(
     `/api/endpoints/fromcities?geoId=${router.query.to}`
   ).then((response) => {
@@ -133,13 +130,16 @@ const searchFrom = async (router) => {
   });
 
   if (search?.ok) {
-    console.log('aaaa', search.result.fromCities);
-    search.result.fromCities;
     const searchedFrom = search.result.fromCities.filter(
       (item) => item.id === router.query.from
     );
-    console.log('bbbb', searchedFrom);
-    const res = { name: searchedFrom[0].name, value: searchedFrom[0].id };
+
+    if (!searchedFrom.length) return null;
+    const res = {
+      name: searchedFrom[0].name,
+      value: searchedFrom[0].id,
+      transport: searchedFrom[0].transport[0],
+    };
     return res;
   }
 
@@ -147,50 +147,69 @@ const searchFrom = async (router) => {
 };
 
 const searchDate = (router) => {
+  if (
+    !router.query.checkIn ||
+    !router.query.checkIn.length ||
+    !router.query.checkTo ||
+    !router.query.checkTo.length
+  )
+    return null;
   const date1 = new Date(router.query.checkIn);
   const date2 = new Date(router.query.checkTo);
 
-  // One day in milliseconds
+  if (!date1 || !date2) return null;
+
   const oneDay = 1000 * 60 * 60 * 24;
 
-  // Calculating the time difference between two dates
   const diffInTime = date2.getTime() - date1.getTime();
 
-  // Calculating the no. of days between two dates
   const plusDays = Math.round(diffInTime / oneDay);
 
-  return { rawDate: new Date(router.query.checkIn).toISOString(), plusDays };
+  return { rawDate: new Date(router.query.checkIn), plusDays };
+};
+
+const searchPeople = (router) => {
+  if (!router.query.people || !router.query.people.length) return null;
+  const str = router.query.people;
+  const str_length = router.query.people.length;
+
+  const adult = Number(str[0]);
+  const childTemp = str_length - 1;
+  const child = childTemp === 0 ? 0 : childTemp / 2;
+  let childAge = [];
+  if (childTemp === 0) {
+    childAge = [0, 0, 0, 0];
+  } else {
+    childAge = [
+      str[2] ? Number(str[1] === '0' ? str[2] : str[1] + str[2]) : 0,
+      str[4] ? Number(str[3] === '0' ? str[4] : str[3] + str[4]) : 0,
+      str[6] ? Number(str[5] === '0' ? str[6] : str[5] + str[6]) : 0,
+      str[8] ? Number(str[7] === '0' ? str[8] : str[7] + str[8]) : 0,
+    ];
+  }
+  return { adult, child, childAge };
 };
 
 export default async function parseUrl(router) {
-  console.log(router);
-
   const to = await searchTo(router);
   const from = await searchFrom(router);
-  // const date = searchDate(router);
-  // console.log('date', date);
+  const nights = Number(router.query.nights)
+    ? Number(router.query.nights)
+    : null;
+  const nightsTo = Number(router.query.nightsTo)
+    ? Number(router.query.nightsTo)
+    : null;
+  const date = searchDate(router);
+  const people = searchPeople(router);
 
-  console.log('to result', to);
+  if (!to || !from || !nights || !nightsTo || !date || !people) return null;
 
   return {
     to,
     from,
-    nights: router.query.nights,
-    nightsTo: router.query.nightsTo,
-    // date,
+    nights,
+    nightsTo,
+    date,
+    people,
   };
-
-  // router.push({
-  //   pathname: '/search',
-  //   query: {
-  //     transport: router.query.transport,
-  //     from: router.query.from,
-  //     to: router.query.to,
-  //     checkIn: router.query.checkIn,
-  //     checkTo: router.query.checkTo,
-  //     nights: router.query.nights,
-  //     nightsTo: router.query.nightsTo,
-  //     people: router.query.people,
-  //   },
-  // });
 }

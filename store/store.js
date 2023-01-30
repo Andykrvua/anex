@@ -28,7 +28,11 @@ const defaultUpPoint = {
 
 const useStore = create(
   devtools((set) => ({
-    up: { name: defaultUpPoint.name, value: defaultUpPoint.value },
+    up: {
+      name: defaultUpPoint.name,
+      value: defaultUpPoint.value,
+      transport: 'bus',
+    },
     setUp: (up) => set({ up }),
     down: {
       name: defaultDownPoint.name,
@@ -81,8 +85,6 @@ const useStore = create(
       list: [],
     },
     setUpPointList: (upPointList) => set({ upPointList }),
-    searchUrl: '',
-    setSearchUrl: (searchUrl) => set({ searchUrl }),
     searchFilter: {
       btnTrigger: false,
       default: {
@@ -217,10 +219,6 @@ export const useSetSearchCountryList = () =>
 export const useGetUpPointList = () => useStore((state) => state.upPointList);
 export const useSetUpPointList = () =>
   useStore((state) => state.setUpPointList);
-
-// current search url
-export const useGetSearchUrl = () => useStore((state) => state.searchUrl);
-export const useSetSearchUrl = () => useStore((state) => state.setSearchUrl);
 
 // data for search filter user params
 export const useGetSearchFilter = () => useStore((state) => state.searchFilter);

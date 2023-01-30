@@ -1,4 +1,4 @@
-// import styles from './'
+// todo fetch hide token
 import Loader from 'components/common/loader';
 import { useEffect, useState, memo } from 'react';
 import {
@@ -10,9 +10,9 @@ import {
   useGetNight,
   useSetNight,
   useGetPerson,
+  useSetPerson,
   useGetUpPointList,
   useSetUpPointList,
-  useSetSearchUrl,
   useSetSearchFilter,
   useGetSearchFilter,
   useGetStartSearch,
@@ -46,7 +46,6 @@ export default function SearchResult() {
   const person = useGetPerson();
   const upPointList = useGetUpPointList();
   const setUpPointList = useSetUpPointList();
-  const setSearchUrl = useSetSearchUrl();
   const setFilterData = useSetSearchFilter();
   const filterData = useGetSearchFilter();
   const startSearch = useGetStartSearch();
@@ -58,6 +57,7 @@ export default function SearchResult() {
   const setUp = useSetUp();
   const setNight = useSetNight();
   const setDate = useSetDate();
+  const setPerson = useSetPerson();
 
   const setSearchResultSort = useSetSearchResultSort();
   const getSearchResultSort = useGetSearchResultSort();
@@ -110,6 +110,7 @@ export default function SearchResult() {
 
     console.log('ResultHandler', apiData);
     setApiData(apiData);
+    localStorage.setItem('result', JSON.stringify(apiData.hotelsArr));
     // return apiData;
   };
 
@@ -255,6 +256,7 @@ export default function SearchResult() {
   const search = async () => {
     setIsLoading(true);
     setSearchInProgress(true);
+    setStartSearch(true);
     await fetch(
       `https://api.otpusk.com/api/2.6/tours/services?countryId=${down.value}&lang=${loc}&access_token=337da-65e22-26745-a251f-77b9e`
     )
@@ -276,7 +278,6 @@ export default function SearchResult() {
     let number = 0;
     async function apiSearch(number) {
       const url = await getUrl(number);
-      setSearchUrl(url);
       const res = await fetch(url)
         .then((response) => {
           if (response.status === 200) {
@@ -288,7 +289,6 @@ export default function SearchResult() {
           console.log(e);
           setIsLoading(false);
           setSearchInProgress(false);
-          setStartSearch(false);
           return null;
         });
 
@@ -303,12 +303,10 @@ export default function SearchResult() {
       if (data) {
         console.log('res data', data);
         if (data.lastResult) {
-          localStorage.setItem('result', JSON.stringify(data));
           setApiRes(data);
           ResultHandler(data);
           setShow(true);
           setIsLoading(false);
-          setStartSearch(false);
           setSearchInProgress(false);
         } else {
           console.log('timeout');
@@ -326,6 +324,7 @@ export default function SearchResult() {
   };
 
   useEffect(async () => {
+    console.log('use effect null');
     if (startSearch) {
       search();
     } else {
@@ -334,13 +333,20 @@ export default function SearchResult() {
       console.log('first visit');
       console.log(router.query);
       const res = await parseUrl(router);
+      if (!res) {
+        setIsLoading(false);
+        setError(true);
+        return;
+      }
 
       console.log('!!!!!', res);
-      // setDown({ ...res.to });
-      // setUp({ ...res.from });
-      // setNight({ from: res.nights, to: res.nightsTo });
-      // setDate({ ...res.date });
+      setDown({ ...res.to });
+      setUp({ ...res.from });
+      setNight({ from: res.nights, to: res.nightsTo });
+      setDate({ ...res.date });
+      setPerson({ ...res.people });
       setIsLoading(false);
+      search();
     }
   }, []);
   console.log('reeeeeee');
