@@ -38,6 +38,8 @@ const CardsOffersVariants = ({ hotel }) => {
     return acc;
   }, []);
 
+  console.log('ccc', data);
+
   // eslint-disable-next-line
   const foodHelper = new Set(data.map((i) => i.f));
   const foodTxt = Array.from(foodHelper);
@@ -110,11 +112,12 @@ const CardsOffersVariants = ({ hotel }) => {
           return (
             <a
               className={styles.card_order}
-              href={`/hotels/italy/${hotel.i}-${hotel.h}?offer=${item.i}`}
+              href={`/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${item.i}`}
               target="_blank"
               rel="noopener noreferrer"
               key={item.i}
             >
+              {console.log('ssss',hotel)}
               <span className={styles.order_text_wrapper}>
                 <span className={styles.order_text__duration}>
                   <span>
