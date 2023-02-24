@@ -46,13 +46,13 @@ export async function getServerSideProps(ctx) {
   const hotelId = result[1];
   const hotelName = result[2];
 
-  const dev = process.env.NODE_ENV !== 'production';
-  const hostname = dev
-    ? 'http://localhost:3000'
-    : process.env.NEXT_PUBLIC_SITE_URL;
+  // const dev = process.env.NODE_ENV !== 'production';
+  // const hostname = dev
+  //   ? 'http://localhost:3000'
+  //   : process.env.HOST;
 
   const hotel = await fetch(
-    `${hostname}/api/endpoints/hotels?hotelId=${hotelId}`
+    `http:localhost:3000/api/endpoints/hotels?hotelId=${hotelId}`
   ).then((response) => {
     if (response.status === 200) {
       if (response.ok) {
