@@ -1,0 +1,205 @@
+.tur_wrapper {
+  margin-top: 40px;
+  padding: 40px 30px;
+  border-radius: var(--def-radius);
+  background-color: var(--primary);
+}
+
+.tur_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tur_header button {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 12px;
+  background-color: transparent;
+  color: var(--font-white);
+}
+
+.tur_header .btn_copy svg {
+  margin-left: 5px;
+}
+
+.tur_header .btn_add_to_list {
+  text-decoration: underline;
+}
+
+.tur_header .btn_add_to_list svg {
+  margin-right: 5px;
+}
+
+.tur_title {
+  margin: 15px 0 40px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 22px;
+  color: var(--secondary);
+}
+
+.tur_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.grid_item.grid_item_scroll {
+  overflow-x: auto;
+}
+
+.grid_item_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-light);
+  color: var(--font-white);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 16px;
+  padding: 9px 10px;
+  border-top-left-radius: var(--def-radius);
+  border-top-right-radius: var(--def-radius);
+}
+
+.grid_item_header_title_normal {
+  font-weight: 400;
+  padding: 0 !important;
+}
+
+.grid_item_header.grid_item_header_green {
+  background-color: var(--green);
+}
+
+.grid_item_header .change_btn,
+.grid_item_header span {
+  padding: 9px 10px;
+}
+
+.change_btn {
+  text-decoration: underline;
+  font-weight: 400;
+  background-color: transparent;
+}
+
+.change_btn:disabled {
+  color: var(--placeholder);
+}
+
+.grid_item_content {
+  border-bottom-left-radius: var(--def-radius);
+  border-bottom-right-radius: var(--def-radius);
+  background-color: #fff;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid_item_content.col_2_grid {
+  display: grid;
+  grid-template-columns: 65px 1fr;
+}
+
+.grid_item_content.col_2_grid svg {
+  place-self: center;
+}
+
+.grid_item_content_text {
+  padding: 20px 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.transport_block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.transport_block svg {
+  place-self: center;
+}
+
+.transport_block > div {
+  display: grid;
+  grid-template-columns: 65px 1fr;
+}
+
+.transport_block_from_to {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.transport_block_from_to_airlines {
+  font-weight: 700;
+}
+
+.craft_code {
+  color: var(--primary-soft-light);
+}
+
+.transport_block_min_1items {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.transport_block_min_2items {
+  flex-basis: 50%;
+  text-align: center;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.room_block {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 20px 0;
+}
+
+.room_block_bold {
+  font-weight: 700;
+}
+
+.duration_block {
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.duration_block_title {
+  font-weight: 700;
+}
+
+.offer_act_time {
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 400;
+}
+
+.grid_item_content.grid_item_content_calendar {
+  display: block;
+  overflow-x: auto;
+}
+
+.dates_block {
+  /* display: grid;
+  grid-template-columns: repeat(8, 60px); */
+}
+
+@media (max-width: 700px) {
+  .tur_grid {
+    grid-template-columns: 1fr;
+  }
+}

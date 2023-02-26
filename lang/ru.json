@@ -150,5 +150,7 @@
   "hotel_card.transport.ship": "на корабле",
   "hotel_card.map": "Отель на карте",
   "hotel_card.rating": "Рейтинг",
-  "hotel_card.reviews": "Отзывов:"
+  "hotel_card.reviews": "Отзывов:",
+  "offer_page.btn_copy": "Скопировано",
+  "offer_page.btn_add_to_list": "Добавлено в мой список"
 }

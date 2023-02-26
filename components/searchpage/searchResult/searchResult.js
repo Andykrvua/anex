@@ -68,6 +68,7 @@ export default function SearchResult() {
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [countryHotelService, setCountryHotelService] = useState(false);
+  const [searchParams, setSearchParams] = useState(false);
 
   const ResultHandler = (apiData) => {
     if (!apiData) return;
@@ -96,12 +97,9 @@ export default function SearchResult() {
       });
     });
 
-    console.log('ResultHandler', apiData);
     setApiData(apiData);
     localStorage.setItem('result', JSON.stringify(apiData.hotelsArr));
   };
-
-  console.log('apiData', apiData);
 
   useEffect(() => {
     if (getSearchResultSort.price.active) {
@@ -314,6 +312,7 @@ export default function SearchResult() {
     console.log('use effect null');
     if (startSearch) {
       search();
+      collectParams();
     } else {
       // если флага startSearch нет, значит юзер ввел урл и тогда парсим параметры
       setIsLoading(true);
@@ -340,6 +339,7 @@ export default function SearchResult() {
     if (helper) {
       search();
       setHelper(false);
+      collectParams();
     }
   }, [helper]);
 
@@ -362,6 +362,42 @@ export default function SearchResult() {
     );
   };
 
+  const collectParams = () => {
+    const copiedDate = new Date(date.rawDate);
+    copiedDate.setDate(copiedDate.getDate() + date.plusDays);
+
+    const childs = new Array(parseInt(person.child))
+      .fill(null)
+      .map((_, ind) => {
+        if (person.childAge[ind].toString().length === 1) {
+          return '0' + person.childAge[ind].toString();
+        } else {
+          return person.childAge[ind].toString();
+        }
+      });
+
+    let fromname;
+    if (typeof up.name === 'string') {
+      fromname = up.name;
+    } else {
+      fromname = up.name.ru;
+    }
+
+    const params = {
+      transport: up.transport,
+      from: up.value,
+      fromname,
+      to: down.value,
+      checkIn: date.rawDate.toISOString().substr(0, 10),
+      checkTo: copiedDate.toISOString().substr(0, 10),
+      nights: night.from,
+      nightsTo: night.to,
+      people: person.adult.toString() + childs.join(''),
+    };
+
+    setSearchParams(params);
+  };
+
   if (error) {
     return <h4>Error</h4>;
   }
@@ -375,6 +411,7 @@ export default function SearchResult() {
             hotels={apiData.hotelsArr}
             step={step}
             countryHotelService={countryHotelService.icons}
+            searchParams={searchParams}
           />
         )}
       </div>

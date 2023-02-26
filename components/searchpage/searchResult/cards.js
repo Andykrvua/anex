@@ -8,7 +8,7 @@ import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
 import { food, modal } from 'utils/constants';
 
-const CardsOffersVariants = ({ hotel }) => {
+const CardsOffersVariants = ({ hotel, searchParams }) => {
   const router = useRouter();
   const setModal = useSetModal();
   const person = useGetPerson();
@@ -37,8 +37,6 @@ const CardsOffersVariants = ({ hotel }) => {
     }
     return acc;
   }, []);
-
-  console.log('ccc', data);
 
   // eslint-disable-next-line
   const foodHelper = new Set(data.map((i) => i.f));
@@ -100,6 +98,8 @@ const CardsOffersVariants = ({ hotel }) => {
     );
   };
 
+  console.log('ccc', searchParams);
+
   return (
     <>
       <div className={styles.maps_and_options}>
@@ -112,12 +112,11 @@ const CardsOffersVariants = ({ hotel }) => {
           return (
             <a
               className={styles.card_order}
-              href={`/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${item.i}`}
+              href={`/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${item.i}&transport=${searchParams.transport}&from=${searchParams.from}&fromname=${searchParams.fromname}&to=${searchParams.to}&checkIn=${searchParams.checkIn}&checkTo=${searchParams.checkTo}&nights=${searchParams.nights}&nightsTo=${searchParams.nightsTo}&people=${searchParams.people}`}
               target="_blank"
               rel="noopener noreferrer"
               key={item.i}
             >
-              {console.log('ssss',hotel)}
               <span className={styles.order_text_wrapper}>
                 <span className={styles.order_text__duration}>
                   <span>
@@ -167,7 +166,12 @@ const CardsOffersVariants = ({ hotel }) => {
   );
 };
 
-export default function Cards({ hotels = [], step, countryHotelService = [] }) {
+export default function Cards({
+  hotels = [],
+  step,
+  countryHotelService = [],
+  searchParams,
+}) {
   return (
     <div className={styles.cards_wrapper}>
       {hotels.map((item, j) => {
@@ -272,7 +276,7 @@ export default function Cards({ hotels = [], step, countryHotelService = [] }) {
                       });
                   })}
                 </div>
-                <CardsOffersVariants hotel={item} />
+                <CardsOffersVariants hotel={item} searchParams={searchParams} />
               </div>
             </div>
           );
