@@ -24,7 +24,7 @@ export default function RoomBlock({ offerData }) {
       <div className={styles.room_block}>
         <span className={styles.room_block_bold}>{offerData?.r}</span>
         <span className={styles.room_block_food}>
-          Питание:{' '}
+          <span className={styles.room_block_light}> Питание: </span>
           <span className={styles.room_block_bold}> {offerData?.fn}</span> (
           <FM id={food[offerData?.f]} />)
         </span>

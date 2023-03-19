@@ -1,7 +1,6 @@
 import styles from './turDetails.module.css';
 import { useSetWindowInfo } from '/store/store';
 import { infoModal } from '/utils/constants';
-import { useIntl } from 'react-intl';
 import declension from 'utils/declension';
 import { useEffect, useState } from 'react';
 import Loader from 'components/common/loader';
@@ -9,18 +8,64 @@ import TransportBlock from './transportBlock';
 import RoomBlock from './roomBlock';
 import DurationBlock from './durationBlock';
 import DatesBlock from './datesBlock';
+import { useRouter } from 'next/router';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 
 export default function TurDetails({ data, country }) {
   const [offerData, setOfferdata] = useState(false);
+  const [urlData, setUrldata] = useState(data);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  console.log('data', data);
+
   console.log('offerData', offerData);
+
   const intl = useIntl();
   const setModalInfo = useSetWindowInfo();
 
+  const router = useRouter();
+
+  const offerOptions = () => {
+    const offerAllOpt = ['transfer', 'insurance', 'noNeedVisa'];
+    const offerNotIncluded = offerAllOpt.filter(
+      (item) => !offerData.o.includes(item)
+    );
+    const notIncl = offerNotIncluded.length ? true : false;
+    return (
+      <>
+        {offerData.o.length && (
+          <p className={styles.price_block_incl}>
+            <span>Включено: </span>
+            {offerData.o.map((item, ind) => offerOptText(item, ind))}
+          </p>
+        )}
+        {offerData.o.length < 3 && (
+          <p className={styles.price_block_notincl}>
+            <span>Не включено:</span>{' '}
+            {offerNotIncluded.map((item, ind) =>
+              offerOptText(item, ind, notIncl)
+            )}
+          </p>
+        )}
+      </>
+    );
+  };
+
+  const offerOptText = (item, ind, notIncl = false) => {
+    let str = '';
+    if (ind !== 0) {
+      str = ', ';
+    }
+    notIncl && item === 'noNeedVisa' ? (item = item + 'Need') : null;
+    return (
+      str +
+      intl.formatMessage({
+        id: `offer_page.offer_opt.${item}`,
+      })
+    );
+  };
+
   const copyHandler = () => {
-    navigator.clipboard.writeText(data.offer);
+    navigator.clipboard.writeText(urlData.offer);
     const val = {
       show: true,
       type: infoModal.info,
@@ -98,7 +143,7 @@ export default function TurDetails({ data, country }) {
       setError(false);
     }
     await fetch(
-      `https://api.otpusk.com/api/2.6/tours/offer?offerId=${data.offer}&currencyLocal=uah&access_token=337da-65e22-26745-a251f-77b9e`
+      `https://api.otpusk.com/api/2.6/tours/offer?offerId=${urlData.offer}&currencyLocal=uah&access_token=337da-65e22-26745-a251f-77b9e`
     )
       .then((response) => {
         if (response.status === 200) {
@@ -124,17 +169,49 @@ export default function TurDetails({ data, country }) {
 
   const getActTimeOffer = () => {
     const d = new Date(offerData?.last);
-    const str = d.toLocaleTimeString('uk-UA', {
+    const time = d.toLocaleTimeString('uk-UA', {
       hour: 'numeric',
       minute: 'numeric',
     });
-    return str;
+    const date = d.toLocaleDateString('uk-UA', {
+      month: 'numeric',
+      day: 'numeric',
+    });
+    return time + ' ' + date;
+  };
+
+  const CopyCode = ({ code }) => {
+    return (
+      <button className={styles.btn_copy} onClick={copyHandler}>
+        Код: {code}
+        <svg
+          width="15"
+          height="14"
+          viewBox="0 0 15 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.16667 2.33317V9.33317C5.16667 9.64259 5.28958 9.93934 5.50838 10.1581C5.72717 10.3769 6.02391 10.4998 6.33333 10.4998H11C11.3094 10.4998 11.6062 10.3769 11.825 10.1581C12.0437 9.93934 12.1667 9.64259 12.1667 9.33317V4.22434C12.1666 4.06891 12.1356 3.91506 12.0753 3.77181C12.015 3.62857 11.9266 3.49881 11.8155 3.39017L9.88175 1.499C9.66379 1.28589 9.37108 1.16654 9.06625 1.1665H6.33333C6.02391 1.1665 5.72717 1.28942 5.50838 1.50821C5.28958 1.72701 5.16667 2.02375 5.16667 2.33317V2.33317Z"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M9.83333 10.4997V11.6663C9.83333 11.9758 9.71042 12.2725 9.49162 12.4913C9.27283 12.7101 8.97609 12.833 8.66667 12.833H4C3.69058 12.833 3.39383 12.7101 3.17504 12.4913C2.95625 12.2725 2.83333 11.9758 2.83333 11.6663V5.24967C2.83333 4.94026 2.95625 4.64351 3.17504 4.42472C3.39383 4.20592 3.69058 4.08301 4 4.08301H5.16667"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+    );
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      getOfferData();
-    }, 3000);
+    getOfferData();
+    // setTimeout(() => {
+    // }, 3000);
   }, []);
 
   if (error) {
@@ -150,29 +227,7 @@ export default function TurDetails({ data, country }) {
   return (
     <div className={styles.tur_wrapper}>
       <div className={styles.tur_header}>
-        <button className={styles.btn_copy} onClick={copyHandler}>
-          Код: {data.offer}
-          <svg
-            width="15"
-            height="14"
-            viewBox="0 0 15 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.16667 2.33317V9.33317C5.16667 9.64259 5.28958 9.93934 5.50838 10.1581C5.72717 10.3769 6.02391 10.4998 6.33333 10.4998H11C11.3094 10.4998 11.6062 10.3769 11.825 10.1581C12.0437 9.93934 12.1667 9.64259 12.1667 9.33317V4.22434C12.1666 4.06891 12.1356 3.91506 12.0753 3.77181C12.015 3.62857 11.9266 3.49881 11.8155 3.39017L9.88175 1.499C9.66379 1.28589 9.37108 1.16654 9.06625 1.1665H6.33333C6.02391 1.1665 5.72717 1.28942 5.50838 1.50821C5.28958 1.72701 5.16667 2.02375 5.16667 2.33317V2.33317Z"
-              stroke="#F8F9FA"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M9.83333 10.4997V11.6663C9.83333 11.9758 9.71042 12.2725 9.49162 12.4913C9.27283 12.7101 8.97609 12.833 8.66667 12.833H4C3.69058 12.833 3.39383 12.7101 3.17504 12.4913C2.95625 12.2725 2.83333 11.9758 2.83333 11.6663V5.24967C2.83333 4.94026 2.95625 4.64351 3.17504 4.42472C3.39383 4.20592 3.69058 4.08301 4 4.08301H5.16667"
-              stroke="#F8F9FA"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
+        <CopyCode code={urlData.offer} />
         <button className={styles.btn_add_to_list} onClick={addToListHandler}>
           <svg
             width="17"
@@ -234,7 +289,7 @@ export default function TurDetails({ data, country }) {
                   <path d="M15.75 26.25h-3.5a1.75 1.75 0 0 1-1.75-1.75v-6.125a1.75 1.75 0 0 1-1.75-1.75v-5.25a2.625 2.625 0 0 1 2.625-2.625h5.25a2.625 2.625 0 0 1 2.625 2.625v5.25a1.75 1.75 0 0 1-1.75 1.75V24.5a1.75 1.75 0 0 1-1.75 1.75ZM11.375 10.5a.824.824 0 0 0-.875.875v5.25h1.75V24.5h3.5v-7.875h1.75v-5.25a.824.824 0 0 0-.875-.875h-5.25ZM14 7.875a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0-5.25a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Z"></path>
                 </svg>
                 <div className={styles.grid_item_content_text}>
-                  {peopleBlockData(data.people)}
+                  {peopleBlockData(urlData.people)}
                 </div>
               </>
             )}
@@ -256,13 +311,13 @@ export default function TurDetails({ data, country }) {
                 <TransportBlock
                   offerData={offerData}
                   country={country}
-                  data={data}
+                  data={urlData}
                 />
               )
             )}
           </div>
         </div>
-        {/* Grid Item */}
+        {/* Grid Item room */}
         <div className={styles.grid_item}>
           <div className={styles.grid_item_header}>
             <span>Номер, питание</span>
@@ -280,7 +335,7 @@ export default function TurDetails({ data, country }) {
             )}
           </div>
         </div>
-        {/* Grid Item */}
+        {/* Grid Item duration */}
         <div className={styles.grid_item}>
           <div className={styles.grid_item_header}>
             <span>Длительность тура</span>
@@ -298,7 +353,7 @@ export default function TurDetails({ data, country }) {
             )}
           </div>
         </div>
-        {/* Grid Item */}
+        {/* Grid Item dates */}
         <div className={`${styles.grid_item} ${styles.grid_item_scroll}`}>
           <div className={styles.grid_item_header}>
             <span>
@@ -309,7 +364,6 @@ export default function TurDetails({ data, country }) {
                 ночей
               </span>
             </span>
-            <button className={styles.change_btn}>Изменить</button>
           </div>
           <div
             className={`${styles.grid_item_content} ${styles.grid_item_content_calendar}`}
@@ -317,11 +371,11 @@ export default function TurDetails({ data, country }) {
             {loading ? (
               <Loader />
             ) : (
-              offerData && <DatesBlock offerData={offerData} />
+              offerData && <DatesBlock offerData={offerData} data={urlData} />
             )}
           </div>
         </div>
-        {/* Grid Item */}
+        {/* Grid Item price */}
         <div className={styles.grid_item}>
           <div
             className={`${styles.grid_item_header} ${styles.grid_item_header_green}`}
@@ -332,7 +386,34 @@ export default function TurDetails({ data, country }) {
             </span>
           </div>
           <div className={styles.grid_item_content}>
-            {loading ? <Loader /> : offerData && '5556666'}
+            {loading ? (
+              <Loader />
+            ) : (
+              offerData && (
+                <div className={styles.price_block}>
+                  {offerOptions()}
+                  <div className={styles.price_block_numbers}>
+                    <CopyCode code={urlData.offer} />
+                    <div className={styles.price_block_sum}>
+                      <span>👍 </span>
+                      {new Intl.NumberFormat('uk-UA', {
+                        maximumFractionDigits: 0,
+                        minimumFractionDigits: 0,
+                      }).format(offerData.pl)}
+                      <span className={styles.price_block_sum_curr}> грн</span>
+                    </div>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+          <div>
+            <div className={styles.varn_text}>
+              За утренний и вечерний рейс возможна доплата. Возможна доплата за
+              утренний рейс $25 за каждого туриста. Возможна доплата за вечерний
+              обратный рейс $25 за каждого туриста.
+            </div>
+            <button className={styles.order_btn}>Бронировать онлайн</button>
           </div>
         </div>
       </div>

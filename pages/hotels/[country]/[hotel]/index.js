@@ -214,6 +214,8 @@ export async function getServerSideProps(ctx) {
   const hotelId = result[1];
   const hotelName = result[2];
 
+  data.hotelId = hotelId;
+
   // const dev = process.env.NODE_ENV !== 'production';
   // const hostname = dev
   //   ? 'http://localhost:3000'

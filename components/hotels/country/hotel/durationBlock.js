@@ -1,13 +1,12 @@
 import styles from './turDetails.module.css';
+import {dayMonthFormatDate} from 'utils/formattedDate'
+import { useRouter } from 'next/router';
 
 export default function DurationBlock({ offerData }) {
   const dStart = new Date(offerData?.d);
   const dEnd = new Date(offerData?.dt);
 
-  const opt = {
-    day: 'numeric',
-    month: 'short',
-  };
+  const router = useRouter();
 
   return (
     <>
@@ -23,8 +22,7 @@ export default function DurationBlock({ offerData }) {
       </svg>
       <div className={styles.duration_block}>
         <div className={styles.duration_block_title}>
-          {dStart.toLocaleDateString('uk-UA', opt)} -{' '}
-          {dEnd.toLocaleDateString('uk-UA', opt)}
+          {dayMonthFormatDate(dStart, router.locale)} - {dayMonthFormatDate(dEnd, router.locale)}
         </div>
         <div>
           {offerData?.n} дней / {offerData?.nh} ночей

@@ -74,7 +74,7 @@ export default function MainForm() {
     router.push({
       pathname: '/search',
       query: {
-        transport: up.transport,
+        transport: up.transport ? up.transport : 'no',
         from: up.value,
         to: down.value,
         country: down.countryValue,

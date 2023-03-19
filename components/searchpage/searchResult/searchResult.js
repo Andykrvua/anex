@@ -148,35 +148,37 @@ export default function SearchResult() {
     const checkIn = date.rawDate.toISOString().substr(0, 10);
     const checkTo = copiedDate.toISOString().substr(0, 10);
 
-    // need get available transport from point list before fetch results
-    let upTransportAvailable;
-    if (!upPointList.active) {
-      const search = await fetch(
-        `/api/endpoints/fromcities?geoId=${down.value}`
-      ).then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        return null;
-      });
+    const transport = up.transport ? up.transport : 'no';
 
-      if (search?.ok) {
-        setUpPointList({
-          active: true,
-          list: search.result.fromCities,
-        });
-      }
-      upTransportAvailable = search.result.fromCities.filter(
-        (item) => item.id === up.value.toString()
-      );
-    } else {
-      upTransportAvailable = upPointList.list.filter(
-        (item) => item.id === up.value.toString()
-      );
-    }
-    const transport = upTransportAvailable.length
-      ? upTransportAvailable[0].transport.join()
-      : 'no';
+    // need get available transport from point list before fetch results
+    // let upTransportAvailable;
+    // if (!upPointList.active) {
+    //   const search = await fetch(
+    //     `/api/endpoints/fromcities?geoId=${down.value}`
+    //   ).then((response) => {
+    //     if (response.status === 200) {
+    //       return response.json();
+    //     }
+    //     return null;
+    //   });
+
+    //   if (search?.ok) {
+    //     setUpPointList({
+    //       active: true,
+    //       list: search.result.fromCities,
+    //     });
+    //   }
+    //   upTransportAvailable = search.result.fromCities.filter(
+    //     (item) => item.id === up.value.toString()
+    //   );
+    // } else {
+    //   upTransportAvailable = upPointList.list.filter(
+    //     (item) => item.id === up.value.toString()
+    //   );
+    // }
+    // const transport = upTransportAvailable.length
+    //   ? upTransportAvailable[0].transport.join()
+    //   : 'no';
 
     let url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
     if (applyFilter) {
@@ -294,6 +296,12 @@ export default function SearchResult() {
           setIsLoading(false);
           setSearchInProgress(false);
         } else {
+          if (number > 12) {
+            setIsLoading(false);
+            setSearchInProgress(false);
+            setError(true);
+            return;
+          }
           console.log('timeout');
           setTimeout(async () => {
             number++;
@@ -311,6 +319,7 @@ export default function SearchResult() {
   useEffect(async () => {
     console.log('use effect null');
     if (startSearch) {
+      console.log('startSearch');
       search();
       collectParams();
     } else {
@@ -318,6 +327,7 @@ export default function SearchResult() {
       setIsLoading(true);
       console.log('first visit');
       const res = await parseUrl(router);
+
       if (!res) {
         setIsLoading(false);
         setError(true);

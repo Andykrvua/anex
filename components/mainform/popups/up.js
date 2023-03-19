@@ -190,7 +190,8 @@ export default function UpWindow({
                   name="up"
                   id="no_transport"
                   onChange={(e) => inputHandler(e)}
-                  value="9999"
+                  // value="9999"
+                  value=""
                   data-name={intl.formatMessage({
                     id: 'mainform.up.no_tr',
                   })}

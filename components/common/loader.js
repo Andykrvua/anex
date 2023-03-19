@@ -1,6 +1,20 @@
-export default function Loader() {
+export default function Loader({ view = '' }) {
+  const style =
+    view === 'absolute'
+      ? {
+          textAlign: 'center',
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          inset: 0,
+          display: 'grid',
+          placeItems: 'center',
+          backgroundColor: '#fff',
+        }
+      : { textAlign: 'center' };
+
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={style}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         style={{ width: '52px', height: '100px' }}

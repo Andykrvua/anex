@@ -110,13 +110,13 @@ const searchTo = async (router) => {
 };
 
 const searchFrom = async (router) => {
-  if (!router.query.from || !router.query.from.length) return null;
+  // if (!router.query.from || !router.query.from.length) return null;
 
-  if (router.query.from === '9999') {
+  if (!router.query.from) {
     return {
       name: 'Без транспорта',
-      value: '9999',
-      transport: '',
+      value: '',
+      transport: 'no',
     };
   }
 
@@ -131,7 +131,7 @@ const searchFrom = async (router) => {
 
   if (search?.ok) {
     const searchedFrom = search.result.fromCities.filter(
-      (item) => item.id === router.query.from
+      (item) => item.id === Number(router.query.from)
     );
 
     if (!searchedFrom.length) return null;
@@ -193,6 +193,7 @@ const searchPeople = (router) => {
 export default async function parseUrl(router) {
   const to = await searchTo(router);
   const from = await searchFrom(router);
+  console.log('from', from);
   const nights = Number(router.query.nights)
     ? Number(router.query.nights)
     : null;
@@ -201,12 +202,14 @@ export default async function parseUrl(router) {
     : null;
   const date = searchDate(router);
   const people = searchPeople(router);
+  const transport = router.query.transport;
 
   if (!to || !from || !nights || !nightsTo || !date || !people) return null;
 
   return {
     to,
     from,
+    transport,
     nights,
     nightsTo,
     date,

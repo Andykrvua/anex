@@ -22,6 +22,7 @@
 
 .tur_header .btn_copy svg {
   margin-left: 5px;
+  stroke: var(--font-white);
 }
 
 .tur_header .btn_add_to_list {
@@ -49,6 +50,7 @@
 
 .grid_item.grid_item_scroll {
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .grid_item_header {
@@ -170,6 +172,10 @@
   font-weight: 700;
 }
 
+.room_block_light {
+  color: var(--primary-soft-light);
+}
+
 .duration_block {
   font-size: 14px;
   line-height: 18px;
@@ -190,12 +196,195 @@
 
 .grid_item_content.grid_item_content_calendar {
   display: block;
-  overflow-x: auto;
+  /* overflow-x: auto; */
+}
+
+.dates_block_wrapper {
+  position: relative;
+}
+
+.dates_block_loader_wrapper {
+  position: relative;
 }
 
 .dates_block {
-  /* display: grid;
-  grid-template-columns: repeat(8, 60px); */
+  display: grid;
+  grid-template-columns: repeat(8, 60px);
+  margin-bottom: 24px;
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--primary-light);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.dates_block_cell {
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dates_block_btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 24px;
+}
+
+.dates_block_btns button + button {
+  margin-left: 24px;
+}
+
+.dates_block_btns button {
+  display: flex;
+  align-items: center;
+  background-color: var(--font-white);
+  border: 1px solid var(--line);
+  box-shadow: var(--formfield-shadow);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--primary-light);
+  width: 130px;
+}
+
+.dates_block_btns button:disabled {
+  box-shadow: none;
+  color: var(--line);
+}
+
+.dates_block_btns span {
+  background: url(/assets/img/svg/arrow.svg) var(--font-white) no-repeat;
+  width: 38px;
+  height: 38px;
+}
+
+.btn_prev,
+.btn_night_next {
+  padding-right: 16px;
+  padding-left: 2px;
+}
+
+.btn_next,
+.btn_night_prev {
+  padding-left: 16px;
+  padding-right: 2px;
+}
+
+.btn_prev span {
+  transform: rotateY(-180deg);
+}
+
+.btn_night_prev,
+.btn_night_next {
+  justify-content: space-between;
+}
+
+.btn_night_prev span {
+  transform: rotate(270deg);
+}
+
+.btn_night_next span {
+  transform: rotate(90deg);
+}
+
+.offer_link,
+.offer_link_current {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.offer_link_current {
+  background-color: var(--green);
+  color: var(--font-white);
+}
+
+.offer_link_price {
+  line-height: 12px;
+}
+
+.offer_link_curr {
+  font-size: 12px;
+}
+
+.price_block {
+  width: 100%;
+  padding: 20px;
+}
+
+.price_block_incl,
+.price_block_notincl {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.price_block_notincl {
+  color: var(--primary-soft-light);
+}
+
+.price_block_notincl span,
+.price_block_incl span {
+  font-weight: 700;
+}
+
+.price_block_numbers {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.price_block_numbers .btn_copy {
+  padding: 5px;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  line-height: 12px;
+  background-color: transparent;
+  color: var(--primary-soft-light);
+}
+
+.price_block_numbers .btn_copy svg {
+  margin-left: 5px;
+  stroke: var(--primary-soft-light);
+}
+
+.price_block_sum {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.price_block_sum_curr {
+  font-size: 14px;
+}
+
+.varn_text {
+  max-width: 280px;
+  margin: 30px auto 25px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--placeholder);
+}
+
+.order_btn {
+  width: 100%;
+  padding: 24px 0;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--font-white);
+  background: var(--red-btn);
+  box-shadow: var(--red-btn-shadow);
 }
 
 @media (max-width: 700px) {
