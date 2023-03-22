@@ -141,11 +141,11 @@ export default function DurationBlock({ offerData, data }) {
     setIsFetch(false);
   };
 
-  const fillMatrix = async (dates, dRange, nRange, data) => {
+  const fillMatrix = async (datesRow, datesRange, nightsRange, data) => {
     const reply = isRecSend.includes(
-      `${dates[dRange.first]}-${dates[dRange.last]}-${nRange[0]}-${
-        nRange[nRange.length - 1]
-      }`
+      `${datesRow[datesRange.first]}-${datesRow[datesRange.last]}-${
+        nightsRange[0]
+      }-${nightsRange[nightsRange.length - 1]}`
     );
     if (reply) {
       setIsFetch(false);
@@ -159,10 +159,10 @@ export default function DurationBlock({ offerData, data }) {
       to: data.hotelId,
       transport: data.transport,
       people: data.people,
-      checkIn: dates[dRange.first],
-      checkTo: dates[dRange.last],
-      nights: nRange[0],
-      nightsTo: nRange[nRange.length - 1],
+      checkIn: datesRow[datesRange.first],
+      checkTo: datesRow[datesRange.last],
+      nights: nightsRange[0],
+      nightsTo: nightsRange[nightsRange.length - 1],
     };
     const search = await fetch(`/api/endpoints/isOfferSearchVariants/`, {
       method: 'POST',
@@ -179,7 +179,13 @@ export default function DurationBlock({ offerData, data }) {
 
     if (search?.ok) {
       setLoading(false);
-      ResultHandler(search.data.results, dates, dRange, nRange, offerData.fn);
+      ResultHandler(
+        search.data.results,
+        datesRow,
+        datesRange,
+        nightsRange,
+        offerData.fn
+      );
     } else {
       setIsFetch(false);
       setLoading(false);
@@ -213,7 +219,7 @@ export default function DurationBlock({ offerData, data }) {
     const stopDate = new Date();
     stopDate.setHours(0, 0, 0, 0);
     // tomorow day
-    stopDate.setDate(stopDate.getDate() + 1);
+    stopDate.setDate(stopDate.getDate() + 2);
     // arive day
     const currDate = new Date(offerData.d);
     const result = [];
@@ -221,38 +227,49 @@ export default function DurationBlock({ offerData, data }) {
     // arive day + 1 month
     endDate.setMonth(endDate.getMonth() + 1);
     while (stopDate <= currDate) {
-      const formated = new Date(
-        `${stopDate.getFullYear()}-${
-          stopDate.getMonth() + 1
-        }-${stopDate.getDate()}`
-      )
-        .toLocaleDateString('uk-UA')
-        .split('.')
-        .reverse()
-        .join('-');
-      result.push(formated);
+      // const formated = new Date(
+      //   `${stopDate.getFullYear()}-${
+      //     stopDate.getMonth() + 1
+      //   }-${stopDate.getDate()}`
+      // )
+      //   .toISOString()
+      //   .slice(0, 10)
+      //   .split('-')
+      //   .join('-');
+
+      // result.push(formated);
+      result.push(formatDate(stopDate));
       stopDate.setDate(stopDate.getDate() + 1);
     }
     while (currDate < endDate) {
       currDate.setDate(currDate.getDate() + 1);
-      const formated = new Date(
-        `${currDate.getFullYear()}-${
-          currDate.getMonth() + 1
-        }-${currDate.getDate()}`
-      )
-        .toLocaleDateString('uk-UA')
-        .split('.')
-        .reverse()
-        .join('-');
-      result.push(formated);
+      // const formated = new Date(
+      //   `${currDate.getFullYear()}-${
+      //     currDate.getMonth() + 1
+      //   }-${currDate.getDate()}`
+      // )
+      //   .toISOString()
+      //   .slice(0, 10)
+      //   .split('-')
+      //   .join('-');
+      // result.push(formated);
+      result.push(formatDate(currDate));
     }
 
     return result;
   }
 
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+
   function getDateRange() {
     const ind = datesRow.indexOf(offerData.d);
     if (ind === -1) return;
+
     const first = ind <= 3 ? 0 : ind - 3;
     const last = first + 6;
 
@@ -261,10 +278,10 @@ export default function DurationBlock({ offerData, data }) {
 
   const PrevDateRangeBtn = ({ datesRange, datesRow }) => {
     const first = () => {
-      if (datesRange.first - 7 <= 0) {
+      if (datesRange?.first - 7 <= 0) {
         return 0;
       }
-      return datesRange.first - 7;
+      return datesRange?.first - 7;
     };
 
     const last = () => {
@@ -280,7 +297,7 @@ export default function DurationBlock({ offerData, data }) {
       <button
         className={styles.btn_prev}
         onClick={prev}
-        disabled={datesRange.first === 0 || loading ? true : false}
+        disabled={datesRange?.first === 0 || loading ? true : false}
       >
         <span></span>
         {`${new Date(datesRow[first()]).toLocaleDateString('uk-UA', {
@@ -298,15 +315,15 @@ export default function DurationBlock({ offerData, data }) {
     const length = datesRow.length;
 
     const first = () => {
-      return datesRange.last + 7 >= length - 1
+      return datesRange?.last + 7 >= length - 1
         ? length - gridColumns
-        : datesRange.last + 1;
+        : datesRange?.last + 1;
     };
     const last = () => {
-      if (datesRange.last + 7 >= length - 1) {
+      if (datesRange?.last + 7 >= length - 1) {
         return length - 1;
       }
-      return datesRange.last + 7;
+      return datesRange?.last + 7;
     };
     const next = () => {
       setDatesRange({ first: first(), last: last() });
@@ -318,7 +335,7 @@ export default function DurationBlock({ offerData, data }) {
         className={styles.btn_next}
         onClick={next}
         disabled={
-          datesRange.last === datesRow.length - 1 || loading ? true : false
+          datesRange?.last === datesRow.length - 1 || loading ? true : false
         }
       >
         {`${new Date(datesRow[first()]).toLocaleDateString('uk-UA', {
@@ -512,14 +529,19 @@ export default function DurationBlock({ offerData, data }) {
         </div>
         {loading && <Loader view={'absolute'} />}
       </div>
-      <div className={styles.dates_block_btns}>
-        <PrevDateRangeBtn datesRange={datesRange} datesRow={datesRow} />
-        <NextDateRangeBtn datesRange={datesRange} datesRow={datesRow} />
-      </div>
-      <div className={styles.dates_block_btns}>
-        <PrevNightRangeBtn nightsRange={nightsRange} />
-        <NextNightRangeBtn nightsRange={nightsRange} />
-      </div>
+
+      {datesRange && datesRow && (
+        <div className={styles.dates_block_btns}>
+          <PrevDateRangeBtn datesRange={datesRange} datesRow={datesRow} />
+          <NextDateRangeBtn datesRange={datesRange} datesRow={datesRow} />
+        </div>
+      )}
+      {nightsRange && (
+        <div className={styles.dates_block_btns}>
+          <PrevNightRangeBtn nightsRange={nightsRange} />
+          <NextNightRangeBtn nightsRange={nightsRange} />
+        </div>
+      )}
     </div>
   );
 }

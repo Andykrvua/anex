@@ -140,6 +140,8 @@ const useStore = create(
       rating: { active: false, dir: 'desc' },
     },
     setSearchResultSort: (searchResultSort) => set({ searchResultSort }),
+    offerParams: {},
+    setOfferParams: (offerParams) => set({ offerParams }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -258,6 +260,10 @@ export const useGetSearchResultSort = () =>
   useStore((state) => state.searchResultSort);
 export const useSetSearchResultSort = () =>
   useStore((state) => state.setSearchResultSort);
+// offer page req params
+export const useGetOfferParams = () => useStore((state) => state.offerParams);
+export const useSetOfferParams = () =>
+  useStore((state) => state.setOfferParams);
 // example
 // export const useLogin = () => useStore((state) => state.login);
 // export const useLogout = () => useStore((state) => state.logout);

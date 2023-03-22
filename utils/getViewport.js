@@ -19,8 +19,8 @@ function debounce(func, wait, immediate) {
 
 function getSize() {
   return {
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window?.innerWidth,
+    height: window?.innerHeight,
   };
 }
 

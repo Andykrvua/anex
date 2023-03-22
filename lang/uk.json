@@ -155,6 +155,7 @@
   "offer_page.btn_add_to_list": "Додано до мого списку",
   "offer_page.offer_opt.transfer": "трансфер",
   "offer_page.offer_opt.insurance": "страхування",
-  "offer_page.offer_opt.noNeedVisa": "віза не потрібна",
+  "offer_page.offer_opt.noNeedVisa": "віза",
+  "offer_page.offer_opt.notNeedVisa": "віза не потрібна",
   "offer_page.offer_opt.noNeedVisaNeed": "віза"
 }

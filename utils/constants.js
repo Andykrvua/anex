@@ -105,6 +105,8 @@ export const modal = {
   leadGetTours: 'leadGetTours',
   leadRequestCall: 'leadRequestCall',
   hotelCardsMap: 'hotelCardsMap',
+  offerPageChangePerson: 'offerPageChangePerson',
+  offerPageChangeNight: 'offerPageChangeNight',
 };
 
 // time to fetch request

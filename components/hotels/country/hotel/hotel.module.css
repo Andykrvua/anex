@@ -1,3 +1,7 @@
+.card {
+  margin-top: var(--before-brcrumbs);
+}
+
 .card_img_wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -6,6 +6,7 @@ import { modal, transitionTime } from '../../utils/constants';
 import dynamic from 'next/dynamic';
 import { useIntl } from 'react-intl';
 import Loader from 'components/common/loader';
+import useWindowSize from 'utils/getViewport';
 
 const LeadGetTours = dynamic(
   () =>
@@ -40,10 +41,38 @@ const HotelCardsMap = dynamic(
   }
 );
 
+const OfferPageChangePerson = dynamic(
+  () =>
+    import(
+      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/offerPageChangePerson`
+    ),
+  {
+    ssr: false,
+    loading: () => <Loader />,
+  }
+);
+
+const OfferPageChangeNight = dynamic(
+  () =>
+    import(
+      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/offerPageChangeNight`
+    ),
+  {
+    ssr: false,
+    loading: () => <Loader />,
+  }
+);
+
 export default function Modal() {
   const getModal = useGetModal();
   const setModal = useSetModal();
   const intl = useIntl();
+  const size = useWindowSize();
+  const maxWidth = 810;
+
+  const offersPageModalLayout =
+    getModal.get === modal.offerPageChangePerson ||
+    getModal.get === modal.offerPageChangeNight;
 
   const [isOpened, setIsOpened] = useState(false);
 
@@ -77,6 +106,26 @@ export default function Modal() {
     }, transitionTime);
   }
 
+  const modal_content = offersPageModalLayout ? {} : {};
+  const modal_content_mobile = offersPageModalLayout
+    ? { position: 'relative', width: '100%', height: '100%', margin: 0 }
+    : {};
+  const modal_content_text = offersPageModalLayout
+    ? {
+        maxHeight: 'var(--mainform-desktop-maxheight)',
+        width: '360px',
+        padding: 0,
+      }
+    : {};
+  const modal_content_text_mobile = offersPageModalLayout
+    ? {
+        maxHeight: '100%',
+        width: '100%',
+        height: '100%',
+        padding: 0,
+      }
+    : {};
+
   return (
     <>
       {getModal && (
@@ -88,23 +137,37 @@ export default function Modal() {
           }
           onClick={(e) => closeEventHandler(e)}
         >
-          <div className={styles.modal_content}>
-            <header className={styles.modal_content_header}>
-              <h5
-                className={styles.title}
-                dangerouslySetInnerHTML={{
-                  __html: modalTitle[getModal.get],
-                }}
-              ></h5>
-              <button
-                className="svg_btn svg_btn_stroke"
-                aria-label="Закрыть"
-                onClick={closeHandler}
-              >
-                <CloseSvg />
-              </button>
-            </header>
-            <div className={styles.modal_content_text}>
+          <div
+            className={styles.modal_content}
+            style={
+              size.width >= maxWidth ? modal_content : modal_content_mobile
+            }
+          >
+            {!offersPageModalLayout && (
+              <header className={styles.modal_content_header}>
+                <h5
+                  className={styles.title}
+                  dangerouslySetInnerHTML={{
+                    __html: modalTitle[getModal.get],
+                  }}
+                ></h5>
+                <button
+                  className="svg_btn svg_btn_stroke"
+                  aria-label="Закрыть"
+                  onClick={closeHandler}
+                >
+                  <CloseSvg />
+                </button>
+              </header>
+            )}
+            <div
+              className={styles.modal_content_text}
+              style={
+                size.width >= maxWidth
+                  ? modal_content_text
+                  : modal_content_text_mobile
+              }
+            >
               {getModal.get === modal.leadGetTours && (
                 <LeadGetTours closeHandler={closeHandler} />
               )}
@@ -113,6 +176,12 @@ export default function Modal() {
               )}
               {getModal.get === modal.hotelCardsMap && (
                 <HotelCardsMap closeHandler={closeHandler} />
+              )}
+              {getModal.get === modal.offerPageChangePerson && (
+                <OfferPageChangePerson closeHandler={closeHandler} />
+              )}
+              {getModal.get === modal.offerPageChangeNight && (
+                <OfferPageChangeNight closeHandler={closeHandler} />
               )}
             </div>
           </div>

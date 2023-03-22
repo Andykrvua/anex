@@ -10,6 +10,8 @@ import DurationBlock from './durationBlock';
 import DatesBlock from './datesBlock';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
+import { useSetModal, useSetOfferParams } from 'store/store';
+import { modal } from 'utils/constants';
 
 export default function TurDetails({ data, country }) {
   const [offerData, setOfferdata] = useState(false);
@@ -18,9 +20,12 @@ export default function TurDetails({ data, country }) {
   const [loading, setLoading] = useState(true);
 
   console.log('offerData', offerData);
+  console.log('data', data);
 
   const intl = useIntl();
   const setModalInfo = useSetWindowInfo();
+  const setModal = useSetModal();
+  const setOfferParams = useSetOfferParams();
 
   const router = useRouter();
 
@@ -138,7 +143,7 @@ export default function TurDetails({ data, country }) {
     return str;
   };
 
-  const getOfferData = async () => {
+  const getOfferData = async (currParams) => {
     if (error) {
       setError(false);
     }
@@ -157,6 +162,10 @@ export default function TurDetails({ data, country }) {
           return;
         }
         setOfferdata(data.offer);
+        currParams.food = data.offer.fn;
+        currParams.dateStart = data.offer.d;
+        currParams.nightCount = data.offer.nh;
+        setOfferParams(currParams);
         setLoading(false);
       })
       .catch((e) => {
@@ -209,7 +218,7 @@ export default function TurDetails({ data, country }) {
   };
 
   useEffect(() => {
-    getOfferData();
+    getOfferData(data);
     // setTimeout(() => {
     // }, 3000);
   }, []);
@@ -263,11 +272,16 @@ export default function TurDetails({ data, country }) {
       </div>
       <h2 className={styles.tur_title}>Детали тура</h2>
       <div className={styles.tur_grid}>
-        {/* Grid Item */}
+        {/* Grid Item Person */}
         <div className={styles.grid_item}>
           <div className={styles.grid_item_header}>
             <span>Туристы</span>
-            <button className={styles.change_btn}>Изменить</button>
+            <button
+              onClick={() => setModal({ get: modal.offerPageChangePerson })}
+              className={styles.change_btn}
+            >
+              Изменить
+            </button>
           </div>
           <div
             className={`${styles.grid_item_content} ${
@@ -339,7 +353,12 @@ export default function TurDetails({ data, country }) {
         <div className={styles.grid_item}>
           <div className={styles.grid_item_header}>
             <span>Длительность тура</span>
-            <button className={styles.change_btn}>Изменить</button>
+            <button
+              className={styles.change_btn}
+              onClick={() => setModal({ get: modal.offerPageChangeNight })}
+            >
+              Изменить
+            </button>
           </div>
           <div
             className={`${styles.grid_item_content} ${

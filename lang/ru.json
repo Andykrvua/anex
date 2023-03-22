@@ -155,6 +155,7 @@
   "offer_page.btn_add_to_list": "Добавлено в мой список",
   "offer_page.offer_opt.transfer": "трансфер",
   "offer_page.offer_opt.insurance": "страховка",
-  "offer_page.offer_opt.noNeedVisa": "виза не нужна",
+  "offer_page.offer_opt.noNeedVisa": "виза",
+  "offer_page.offer_opt.notNeedVisa": "виза не нужна",
   "offer_page.offer_opt.noNeedVisaNeed": "виза"
 }

@@ -12,7 +12,7 @@ import TurDetails from 'components/hotels/country/hotel/turDetails';
 
 export default function Hotel({ data, hotel }) {
   const intl = useIntl();
-  const br_arr = [{ title: intl.formatMessage({ id: 'reviews.br' }) }];
+  const br_arr = [{ title: hotel.n }];
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
 
@@ -79,9 +79,6 @@ export default function Hotel({ data, hotel }) {
       <SeoHead content={null} />
       <div className="container">
         <Breadcrumbs data={br_arr} />
-        <div>{data.country}</div>
-        <div>{data.hotel}</div>
-
         <div className={styles.card}>
           <div className={styles.card_img_wrapper}>
             <div className={styles.card_img}>

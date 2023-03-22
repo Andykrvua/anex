@@ -108,6 +108,9 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
       </div>
 
       {data.map((item, ind) => {
+        {
+          console.log('item', item);
+        }
         if (ind < 6) {
           return (
             <a
@@ -142,7 +145,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
               >
                 <span className={styles.order_text__duration}>
                   <span>
-                    {item.n} {decl(item.n)}
+                    {item.nh} {decl(item.nh)}
                   </span>
                 </span>
                 <span className={styles.order_text__people}>
