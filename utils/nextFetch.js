@@ -2,6 +2,7 @@ const item = {
   certificate: 'certificates',
   lead: 'lead',
   lead_pick_tour: 'lead_pick_tour',
+  lead_order_tour: 'lead_order_tour',
   lead_request_call: 'lead_request_call',
 };
 
@@ -33,6 +34,12 @@ export const createLead = async (data) => {
 export const createLeadPickTour = async (data) => {
   const url = `/api/createorder`;
   data.item = item.lead_pick_tour;
+  return req(url, data);
+};
+
+export const createLeadOrderTour = async (data) => {
+  const url = `/api/createorder`;
+  data.item = item.lead_order_tour;
   return req(url, data);
 };
 

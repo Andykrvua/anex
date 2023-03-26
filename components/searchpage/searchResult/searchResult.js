@@ -359,19 +359,6 @@ export default function SearchResult() {
     }
   }, [applyFilter]);
 
-  const add = () => {
-    const { as, url } = window.history.state;
-    // console.log('as', as);
-    // console.log('url', url);
-    const newAs = '/uk/search/';
-    const newUrl = '/uk/search/';
-    window.history.pushState(
-      { ...window.history.state, as: newAs, url: newUrl },
-      '',
-      newAs
-    );
-  };
-
   const collectParams = () => {
     const copiedDate = new Date(date.rawDate);
     copiedDate.setDate(copiedDate.getDate() + date.plusDays);

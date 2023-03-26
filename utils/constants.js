@@ -64,10 +64,16 @@ export const languages = {
   uk: 'uk',
 };
 
-// lang name from fetch
+// lang name from internal api fetch
 export const languagesApi = {
   ru: 'ru-RU',
   uk: 'uk-UA',
+};
+
+// lang name from external api fetch
+export const languagesOperatorApi = {
+  ru: 'ru',
+  uk: 'ua',
 };
 
 // blog announce count
@@ -107,6 +113,7 @@ export const modal = {
   hotelCardsMap: 'hotelCardsMap',
   offerPageChangePerson: 'offerPageChangePerson',
   offerPageChangeNight: 'offerPageChangeNight',
+  offerPageOrder: 'offerPageOrder',
 };
 
 // time to fetch request

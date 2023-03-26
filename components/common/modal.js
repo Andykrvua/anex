@@ -63,6 +63,17 @@ const OfferPageChangeNight = dynamic(
   }
 );
 
+const OfferPageOrder = dynamic(
+  () =>
+    import(
+      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/offerPageOrder`
+    ),
+  {
+    ssr: false,
+    loading: () => <Loader />,
+  }
+);
+
 export default function Modal() {
   const getModal = useGetModal();
   const setModal = useSetModal();
@@ -72,7 +83,8 @@ export default function Modal() {
 
   const offersPageModalLayout =
     getModal.get === modal.offerPageChangePerson ||
-    getModal.get === modal.offerPageChangeNight;
+    getModal.get === modal.offerPageChangeNight ||
+    getModal.get === modal.offerPageOrder;
 
   const [isOpened, setIsOpened] = useState(false);
 
@@ -112,7 +124,10 @@ export default function Modal() {
     : {};
   const modal_content_text = offersPageModalLayout
     ? {
-        maxHeight: 'var(--mainform-desktop-maxheight)',
+        maxHeight:
+          getModal.get === modal.offerPageOrder
+            ? '100%'
+            : 'var(--mainform-desktop-maxheight)',
         width: '360px',
         padding: 0,
       }
@@ -182,6 +197,9 @@ export default function Modal() {
               )}
               {getModal.get === modal.offerPageChangeNight && (
                 <OfferPageChangeNight closeHandler={closeHandler} />
+              )}
+              {getModal.get === modal.offerPageOrder && (
+                <OfferPageOrder closeHandler={closeHandler} />
               )}
             </div>
           </div>

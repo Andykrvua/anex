@@ -10,7 +10,11 @@ import DurationBlock from './durationBlock';
 import DatesBlock from './datesBlock';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
-import { useSetModal, useSetOfferParams } from 'store/store';
+import {
+  useSetModal,
+  useSetOfferParams,
+  useSetCurrentOffer,
+} from 'store/store';
 import { modal } from 'utils/constants';
 
 export default function TurDetails({ data, country }) {
@@ -26,6 +30,7 @@ export default function TurDetails({ data, country }) {
   const setModalInfo = useSetWindowInfo();
   const setModal = useSetModal();
   const setOfferParams = useSetOfferParams();
+  const setCurrentOffer = useSetCurrentOffer();
 
   const router = useRouter();
 
@@ -166,6 +171,7 @@ export default function TurDetails({ data, country }) {
         currParams.dateStart = data.offer.d;
         currParams.nightCount = data.offer.nh;
         setOfferParams(currParams);
+        setCurrentOffer(data.offer);
         setLoading(false);
       })
       .catch((e) => {
@@ -432,7 +438,12 @@ export default function TurDetails({ data, country }) {
               утренний рейс $25 за каждого туриста. Возможна доплата за вечерний
               обратный рейс $25 за каждого туриста.
             </div>
-            <button className={styles.order_btn}>Бронировать онлайн</button>
+            <button
+              className={styles.order_btn}
+              onClick={() => setModal({ get: modal.offerPageOrder })}
+            >
+              Бронировать онлайн
+            </button>
           </div>
         </div>
       </div>

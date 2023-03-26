@@ -2,19 +2,20 @@ import styles from 'components/hotels/country/hotel/hotel.module.css';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
-import Image from 'next/image';
-import { shimmer, toBase64 } from '/utils/blurImage';
 import ratingColor from 'utils/ratingColor';
-import { stars, modal } from 'utils/constants';
+import { stars, modal, languagesOperatorApi } from 'utils/constants';
 import { useSetModal, useSetOpenStreetMap } from 'store/store';
 import { useState } from 'react';
 import TurDetails from 'components/hotels/country/hotel/turDetails';
+import ImgSlider from 'components/hotels/country/hotel/imgSlider';
 
 export default function Hotel({ data, hotel }) {
   const intl = useIntl();
   const br_arr = [{ title: hotel.n }];
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
+
+  console.log('hotel', hotel);
 
   const OpenStreetMapBtn = () => {
     if (!hotel.g) {
@@ -80,31 +81,7 @@ export default function Hotel({ data, hotel }) {
       <div className="container">
         <Breadcrumbs data={br_arr} />
         <div className={styles.card}>
-          <div className={styles.card_img_wrapper}>
-            <div className={styles.card_img}>
-              <Image
-                className={styles.img}
-                src={`https://newimg.otpusk.com/2/500x375/${hotel.fh[0].src}`}
-                alt=""
-                layout="fill"
-                // width={500}
-                // height={375}
-                placeholder="blur"
-                blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                  shimmer(500, 375)
-                )}`}
-                quality="100"
-              />
-              {/* <img
-                    src={`https://newimg.otpusk.com/2/500x375/${item.f}`}
-                    className={styles.img}
-                    alt=""
-                    width={500}
-                    height={375}
-                  /> */}
-            </div>
-          </div>
-
+          <ImgSlider images={hotel.fh} />
           <div className={styles.card_text}>
             <h1 className={styles.hotel_name}>{hotel.n}</h1>
             <div className={styles.texts_grid}>
@@ -187,6 +164,7 @@ export default function Hotel({ data, hotel }) {
 
 export async function getServerSideProps(ctx) {
   const data = ctx.query;
+  const loc = languagesOperatorApi[ctx.locale];
 
   function splitUrlString(str) {
     let separatorIndex = str.indexOf('-');
@@ -213,15 +191,10 @@ export async function getServerSideProps(ctx) {
 
   data.hotelId = hotelId;
 
-  // const dev = process.env.NODE_ENV !== 'production';
-  // const hostname = dev
-  //   ? 'http://localhost:3000'
-  //   : process.env.HOST;
-
   let hotel;
   try {
     hotel = await fetch(
-      `http:localhost:3000/api/endpoints/hotels?hotelId=${hotelId}`
+      `http:localhost:3000/api/endpoints/hotels?hotelId=${hotelId}&locale=${loc}`
     ).then((response) => {
       if (response.status === 200) {
         if (response.ok) {

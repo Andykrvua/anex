@@ -142,6 +142,8 @@ const useStore = create(
     setSearchResultSort: (searchResultSort) => set({ searchResultSort }),
     offerParams: {},
     setOfferParams: (offerParams) => set({ offerParams }),
+    currentOffer: {},
+    setCurrentOffer: (currentOffer) => set({ currentOffer }),
     // user: '',
     // cartCount: 0,
     // firstName: 'React',
@@ -264,6 +266,10 @@ export const useSetSearchResultSort = () =>
 export const useGetOfferParams = () => useStore((state) => state.offerParams);
 export const useSetOfferParams = () =>
   useStore((state) => state.setOfferParams);
+//current offer
+export const useGetCurrentOffer = () => useStore((state) => state.currentOffer);
+export const useSetCurrentOffer = () =>
+  useStore((state) => state.setCurrentOffer);
 // example
 // export const useLogin = () => useStore((state) => state.login);
 // export const useLogout = () => useStore((state) => state.logout);

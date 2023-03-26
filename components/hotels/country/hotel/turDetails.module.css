@@ -209,7 +209,7 @@
 
 .dates_block {
   display: grid;
-  grid-template-columns: repeat(8, 60px);
+  grid-template-columns: repeat(8, minmax(60px, 1fr));
   margin-bottom: 24px;
   font-size: 14px;
   line-height: 14px;
@@ -338,6 +338,8 @@
 
 .price_block_numbers {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: space-between;
   margin-top: 15px;
 }
@@ -390,5 +392,33 @@
 @media (max-width: 700px) {
   .tur_grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .tur_wrapper {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding: 30px 20px;
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 810px) {
+  .dates_block_btns {
+    padding-bottom: 15px;
+  }
+
+  .dates_block_btns button + button {
+    margin-left: 15px;
+  }
+}
+
+@media (max-width: 370px) {
+  .tur_header {
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    padding-bottom: 10px;
   }
 }

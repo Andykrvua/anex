@@ -1,0 +1,65 @@
+.popup_scrollable_content {
+  /* justify-content: center; */
+}
+
+.form input {
+  height: 50px;
+}
+
+.form input,
+.form textarea {
+  margin-bottom: 20px;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.form.loading input,
+.form.loading textarea {
+  background-color: var(--bg);
+}
+
+.form label {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.btn_copy {
+  display: flex;
+  align-items: center;
+  width: 162px;
+  margin: 20px 0;
+  padding: 7px 12px;
+  border: 1px solid var(--placeholder);
+  background-color: transparent;
+}
+
+.btn_copy svg {
+  margin-left: 5px;
+  stroke: var(--primary);
+}
+
+.popup_scrollable_content p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.popup_scrollable_content p + p {
+  margin-top: 8px;
+}
+
+.messendgers {
+  display: grid;
+  row-gap: 8px;
+  margin-bottom: 17px;
+}
+
+.messendgerslinks {
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
+}
+
+.messendgerslinks img {
+  margin-right: 12px;
+}
