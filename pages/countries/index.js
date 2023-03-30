@@ -28,7 +28,7 @@ export default function Countries({
         <Breadcrumbs data={br_arr} beforeMainFrom />
         <MainForm />
         <CountryList countryList={countryList} loc={loc} />
-        {faqData && <Faq data={faqData} length={faqDataLength} />}
+        {/* {faqData && <Faq data={faqData} length={faqDataLength} />} */}
         {allCountriesPageSettings.translations && (
           <SeoBlock text={allCountriesPageSettings.translations[0].seo_block} />
         )}

@@ -109,7 +109,7 @@ const searchTo = async (router) => {
   }
 };
 
-const searchFrom = async (router) => {
+const searchFrom = async (router, loc) => {
   // if (!router.query.from || !router.query.from.length) return null;
 
   if (!router.query.from) {
@@ -121,7 +121,7 @@ const searchFrom = async (router) => {
   }
 
   const search = await fetch(
-    `/api/endpoints/fromcities?geoId=${router.query.to}`
+    `/api/endpoints/fromcities?geoId=${router.query.to}&locale=${loc}`
   ).then((response) => {
     if (response.status === 200) {
       return response.json();
@@ -190,9 +190,10 @@ const searchPeople = (router) => {
   return { adult, child, childAge };
 };
 
-export default async function parseUrl(router) {
+export default async function parseUrl(router, loc) {
   const to = await searchTo(router);
-  const from = await searchFrom(router);
+  console.log('to', to);
+  const from = await searchFrom(router, loc);
   console.log('from', from);
   const nights = Number(router.query.nights)
     ? Number(router.query.nights)

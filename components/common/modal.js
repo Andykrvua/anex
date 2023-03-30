@@ -74,6 +74,15 @@ const OfferPageOrder = dynamic(
   }
 );
 
+const Favorites = dynamic(
+  () =>
+    import(/* webpackChunkName: "hotelCardsMap" */ `./modalChildren/favorites`),
+  {
+    ssr: false,
+    loading: () => <Loader />,
+  }
+);
+
 export default function Modal() {
   const getModal = useGetModal();
   const setModal = useSetModal();
@@ -91,6 +100,7 @@ export default function Modal() {
   const modalTitle = {
     leadGetTours: intl.formatMessage({ id: 'modal.title.leadgettours' }),
     leadRequestCall: intl.formatMessage({ id: 'modal.title.leadrequestcall' }),
+    favorites: intl.formatMessage({ id: 'favorites' }),
   };
 
   useEffect(() => {
@@ -201,6 +211,7 @@ export default function Modal() {
               {getModal.get === modal.offerPageOrder && (
                 <OfferPageOrder closeHandler={closeHandler} />
               )}
+              {getModal.get === modal.favorites && <Favorites />}
             </div>
           </div>
         </div>

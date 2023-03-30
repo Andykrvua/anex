@@ -1,7 +1,8 @@
 import dynamic from 'next/dynamic';
 import MainFormBtn from './mainFormBtn';
-import { svgUp } from './svg';
+import { svgUp, svgBus, svgNo } from './svg';
 import Loader from 'components/common/loader';
+import { useGetUp } from 'store/store';
 
 const DynamicUpWindow = dynamic(
   () => import(/* webpackChunkName: "Up" */ '../popups/up'),
@@ -21,12 +22,20 @@ export default function UpField({
   popupName,
   value,
 }) {
+  const getUp = useGetUp();
+
+  const headerTransportIcon = {
+    bus: svgBus,
+    air: svgUp,
+    no: svgNo,
+  };
+
   return (
     <MainFormBtn
       cName={'btn_up'}
       title={title}
       aria={aria}
-      svg={svgUp}
+      svg={getUp.transport ? headerTransportIcon[getUp.transport] : svgUp}
       modalIsOpen={modalIsOpen}
       setModalIsOpen={setModalIsOpen}
     >

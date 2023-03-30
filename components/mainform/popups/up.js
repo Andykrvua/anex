@@ -11,17 +11,19 @@ import {
   BODY,
 } from '../../../utils/useBodyScroll';
 import Header from './header';
-import { svgUp } from '../form-fields/svg';
+import { svgUp, svgBus, svgNo } from '../form-fields/svg';
 import {
   useSetUp,
   useGetDown,
+  useGetUp,
   useGetUpPointList,
   useSetUpPointList,
 } from '../../../store/store';
 import styles from './up.module.css';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import Loader from 'components/common/loader';
-import { transportIcon } from 'utils/constants';
+import { transportIcon, languagesOperatorApi } from 'utils/constants';
+import { useRouter } from 'next/router';
 
 // change scroll depending on mobile or desktop
 const SimpleBarWrapper = ({ size, children }) => {
@@ -57,12 +59,21 @@ export default function UpWindow({
   const intl = useIntl();
   const selectUp = useSetUp();
   const getDown = useGetDown();
+  const { locale } = useRouter();
+  const loc = languagesOperatorApi[locale];
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
   const getUpPointList = useGetUpPointList();
   const setUpPointList = useSetUpPointList();
+  const getUp = useGetUp();
+
+  const headerTransportIcon = {
+    bus: svgBus,
+    air: svgUp,
+    no: svgNo,
+  };
 
   const [selectedUp, setSelectedUp] = useState({});
   const [loading, setLoading] = useState(false);
@@ -72,7 +83,7 @@ export default function UpWindow({
       setLoading(true);
 
       const search = await fetch(
-        `/api/endpoints/fromcities?geoId=${getDown.value}`
+        `/api/endpoints/fromcities?geoId=${getDown.value}&locale=${loc}`
       ).then((response) => {
         if (response.status === 200) {
           return response.json();
@@ -109,8 +120,8 @@ export default function UpWindow({
   };
 
   const inputHandler = (e) => {
+    console.log(11);
     if (size.width >= maxWidth) {
-      console.log('e.target', e.target);
       selectUp({
         name: e.target.dataset.name,
         value: e.target.value,
@@ -141,19 +152,24 @@ export default function UpWindow({
         ref={wrapperRef}
         style={{ overflow: 'hidden' }}
       >
-        <Header closeModalHandler={closeModalHandler} svg={svgUp} />
+        <Header
+          closeModalHandler={closeModalHandler}
+          svg={
+            getUp.transport
+              ? headerTransportIcon[getUp.transport]
+              : headerTransportIcon.no
+          }
+        />
         <h3 className="title">{popupName}</h3>
         <div
           className={`${styles.popup_scrollable_content} popup_scrollable_content`}
           ref={scrollable}
-          // style={{ justifyContent: contentStyle ? 'center' : 'start' }}
         >
           {loading && <Loader />}
           {!loading && (
             <div className={styles.input_wrapper}>
               {getUpPointList.active &&
                 getUpPointList.list.map((item, i) => {
-                  console.log('item', item);
                   return (
                     <label className={styles.input_label} key={i}>
                       <input

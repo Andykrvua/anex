@@ -24,7 +24,6 @@ export default function PostList({ data, loc }) {
                 blurDataURL={`data:image/svg+xml;base64,${toBase64(
                   shimmer(333, 360)
                 )}`}
-                quality="100"
                 priority={ind === 0 ? true : false}
               />
               {item.categories[0] && (

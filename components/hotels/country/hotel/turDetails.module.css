@@ -412,6 +412,11 @@
   .dates_block_btns button + button {
     margin-left: 15px;
   }
+
+  .price_block_sum {
+    flex-grow: 1;
+    text-align: center;
+  }
 }
 
 @media (max-width: 370px) {

@@ -35,13 +35,13 @@ const NavContent = ({ setOffsetLeft = null, setIsOpen, windowSize = null }) => {
           <FM id="nav.country" />
         </button>
       </li>
-      <li>
+      {/* <li>
         <Link href={links.hotTours}>
           <a className="header_nav_link">
             <FM id="nav.hot_tour" />
           </a>
         </Link>
-      </li>
+      </li> */}
       <li>
         <Link href={links.reviews}>
           <a className="header_nav_link">
@@ -53,6 +53,13 @@ const NavContent = ({ setOffsetLeft = null, setIsOpen, windowSize = null }) => {
         <Link href={links.blog}>
           <a className="header_nav_link">
             <FM id="nav.blog" />
+          </a>
+        </Link>
+      </li>
+      <li>
+        <Link href={links.faq}>
+          <a className="header_nav_link">
+            <FM id="nav.faq" />
           </a>
         </Link>
       </li>

@@ -14,7 +14,7 @@ export default function Logo({ location = '', closeBurgerHandler = null }) {
               height="58"
             />
             <img
-              src="/assets/img/logo.png"
+              src="/assets/img/logo.svg"
               alt="Логотип"
               width="150"
               height="58"

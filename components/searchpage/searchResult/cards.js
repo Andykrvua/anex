@@ -3,10 +3,15 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { shimmer, toBase64 } from '/utils/blurImage';
-import { useSetModal, useGetPerson, useSetOpenStreetMap } from 'store/store';
+import {
+  useSetModal,
+  useGetPerson,
+  useSetOpenStreetMap,
+  useSetWindowInfo,
+} from 'store/store';
 import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
-import { food, modal } from 'utils/constants';
+import { food, modal, infoModal } from 'utils/constants';
 
 const CardsOffersVariants = ({ hotel, searchParams }) => {
   const router = useRouter();
@@ -98,8 +103,52 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
     );
   };
 
-  console.log('ccc', searchParams);
+  console.log('ccc22', searchParams);
 
+  const saveToLocalStorage = () => {
+    const res = JSON.parse(localStorage.getItem('result') || '[]');
+
+    const item = {
+      img: `https://newimg.otpusk.com/2/500x375/${hotel.f}`,
+      hotelName: hotel.n,
+      stars: parseInt(hotel.s),
+      country: hotel.t.n,
+      district: hotel.c.n,
+      rating: hotel.r,
+      reviews: hotel.v,
+      description: foodTransMessage,
+      orders: [],
+      id: hotel.i,
+    };
+
+    item.orders = data.map((item, ind) => {
+      if (ind < 6) {
+        return {
+          link: `/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${item.i}&transport=${searchParams.transport}&from=${searchParams.from}&fromname=${searchParams.fromname}&to=${searchParams.to}&checkIn=${searchParams.checkIn}&checkTo=${searchParams.checkTo}&nights=${searchParams.nights}&nightsTo=${searchParams.nightsTo}&people=${searchParams.people}`,
+          start: new Date(item.d).toLocaleDateString('default', {
+            day: '2-digit',
+            month: '2-digit',
+          }),
+          end: new Date(item.dt).toLocaleDateString('default', {
+            day: '2-digit',
+            month: '2-digit',
+          }),
+          n: `${item.nh} ${decl(item.nh)}`,
+          r: item.r,
+          price: new Intl.NumberFormat('uk-UA', {
+            style: 'currency',
+            currency: 'UAH',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0,
+          }).format(item.pl),
+        };
+      }
+    });
+
+    res.push(item);
+    localStorage.setItem('result', JSON.stringify(res));
+  };
+  saveToLocalStorage();
   return (
     <>
       <div className={styles.maps_and_options}>
@@ -108,9 +157,6 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
       </div>
 
       {data.map((item, ind) => {
-        {
-          console.log('item', item);
-        }
         if (ind < 6) {
           return (
             <a
@@ -175,6 +221,48 @@ export default function Cards({
   countryHotelService = [],
   searchParams,
 }) {
+  const setModalInfo = useSetWindowInfo();
+  const intl = useIntl();
+  localStorage.removeItem('result');
+
+  const addToFavorites = (id) => {
+    // country: "Египет"
+    // description: "Всё включено, за 2 с перелетом"
+    // district: "Шарм эль Шейх"
+    // hotelName: "Dreams Beach Resort"
+    // id: 8006
+    // img: "https://newimg.otpusk.com/2/500x375/00/04/29/38/4293840.jpg"
+    // orders: [
+    //     end: "25.04"
+    //     link: "/hotels/egypt/43-8006-Dreams_Beach_Resort?offer=2591020901337448&transport=air&from=3158&fromname=Жешув&to=43&checkIn=2023-04-11&checkTo=2023-04-14&nights=10&nightsTo=15&people=2"
+    //     n: "12 ночей"
+    //     price: "103 758 грн"
+    //     r: "Standard Room"
+    //     start: "13.04"
+    // }
+    // rating: 6.3
+    // reviews: 257
+    // stars: 5
+    const tours = JSON.parse(localStorage.getItem('result') || '[]');
+    if (tours.length) {
+      const add = tours.filter((tour) => tour.id === id);
+      let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      if (favorites.find((item) => item.id === id)) {
+        const temp = favorites.filter((item) => item.id !== id);
+        favorites = temp;
+      }
+      favorites.push(add[0]);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    const data = {
+      show: true,
+      type: infoModal.ok,
+      text: intl.formatMessage({ id: 'favorites.add' }),
+    };
+    setModalInfo(data);
+  };
+
   return (
     <div className={styles.cards_wrapper}>
       {hotels.map((item, j) => {
@@ -193,15 +281,7 @@ export default function Cards({
                   blurDataURL={`data:image/svg+xml;base64,${toBase64(
                     shimmer(500, 375)
                   )}`}
-                  quality="100"
                 />
-                {/* <img
-                  src={`https://newimg.otpusk.com/2/500x375/${item.f}`}
-                  className={styles.img}
-                  alt=""
-                  width={500}
-                  height={375}
-                /> */}
                 {item.r ? (
                   <div className={styles.review}>
                     {!item.v && (
@@ -225,6 +305,36 @@ export default function Cards({
                     )}
                   </div>
                 ) : null}
+                <button
+                  className={styles.favorites_btn}
+                  onClick={() => addToFavorites(item.i)}
+                >
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 26 26"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M18.027 5.2002C17.2754 5.20027 16.5316 5.35099 15.8393 5.64344C15.147 5.93588 14.5203 6.36413 13.9963 6.90287L13.1661 7.75843L12.3274 6.90287C11.8034 6.36424 11.1767 5.9361 10.4844 5.64376C9.79215 5.35141 9.04829 5.20079 8.2968 5.20079C7.54531 5.20079 6.80145 5.35141 6.10915 5.64376C5.41686 5.9361 4.79018 6.36424 4.26615 6.90287C3.19752 8.00622 2.60001 9.482 2.60001 11.018C2.60001 12.554 3.19752 14.0298 4.26615 15.1332L13.1661 24.2127L22.0576 15.1332C23.1263 14.0298 23.7238 12.554 23.7238 11.018C23.7238 9.482 23.1263 8.00622 22.0576 6.90287C21.5336 6.36413 20.907 5.93588 20.2147 5.64344C19.5224 5.35099 18.7785 5.20027 18.027 5.2002Z"
+                      fill="url(#paint0_linear_4515_5688)"
+                    />
+                    <defs>
+                      <linearGradient
+                        id="paint0_linear_4515_5688"
+                        x1="2.86405"
+                        y1="-12.3034"
+                        x2="32.844"
+                        y2="-6.48617"
+                        gradientUnits="userSpaceOnUse"
+                      >
+                        <stop offset="0.240837" stopColor="#FF9400" />
+                        <stop offset="1" stopColor="#FF1821" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </button>
               </div>
               <div className={styles.card_text}>
                 <p className={styles.country_text}>
@@ -244,10 +354,7 @@ export default function Cards({
                     );
                   })}
                 </div>
-                <h4 className={styles.hotel_name}>
-                  {item.n}
-                  {item.i}
-                </h4>
+                <h4 className={styles.hotel_name}>{item.n}</h4>
                 <div className={styles.tour_propertys}>
                   {item.e.map((property, ind) => {
                     return countryHotelService

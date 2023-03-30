@@ -38,7 +38,6 @@ export default function TourCards({ current, cards, country, loc }) {
                     shimmer(333, 250)
                   )}`}
                   objectFit="cover"
-                  quality="100"
                 />
                 <p className={styles.card_name}>
                   <img src="/assets/img/svg/palm-tree.svg" alt="" />

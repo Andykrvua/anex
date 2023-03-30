@@ -219,7 +219,7 @@ export default function DurationBlock({ offerData, data }) {
     const stopDate = new Date();
     stopDate.setHours(0, 0, 0, 0);
     // tomorow day
-    stopDate.setDate(stopDate.getDate() + 2);
+    stopDate.setDate(stopDate.getDate() + 1);
     // arive day
     const currDate = new Date(offerData.d);
     const result = [];
@@ -255,7 +255,7 @@ export default function DurationBlock({ offerData, data }) {
       // result.push(formated);
       result.push(formatDate(currDate));
     }
-
+    console.log('result', result);
     return result;
   }
 
@@ -267,6 +267,8 @@ export default function DurationBlock({ offerData, data }) {
   }
 
   function getDateRange() {
+    console.log('datesRow', datesRow);
+    console.log('offerData.d', offerData.d);
     const ind = datesRow.indexOf(offerData.d);
     if (ind === -1) return;
 

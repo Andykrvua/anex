@@ -91,14 +91,14 @@ export default function Down({
       active: false,
       list: [],
     });
+
     setCountry(val);
     closeModalHandler();
     setTimeout(() => {
       setCountryData(false);
     }, transitionTime);
-    console.log('s');
+
     setModalIsOpen('btn_up');
-    // ttt.current.click();
   };
 
   const size = getSize();
@@ -208,7 +208,6 @@ export default function Down({
     if (size.width >= maxWidth) {
       selectDownHandler(val, id, countryId, code);
     } else {
-      console.log(val, id, countryId, img, code);
       setCountry(val);
       setCountryData({ val, id, countryId, img, code });
     }

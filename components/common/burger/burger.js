@@ -130,13 +130,13 @@ export default function Burger() {
                 </a>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href={links.tours}>
                 <a className={`${styles.burger_nav_link} ${styles.hot}`}>
                   <FM id="nav.hot_tour" />
                 </a>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href={links.blog}>
                 <a className={styles.burger_nav_link}>
@@ -197,7 +197,7 @@ export default function Burger() {
             </div>
           </div>
           <p className={styles.buregr_copyright}>
-            © 2022 <FM id="nav.copyright" />
+            © 2023 <FM id="nav.copyright" />
           </p>
         </div>
       </div>

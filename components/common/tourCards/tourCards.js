@@ -24,7 +24,6 @@ export default function TourCards({ current, cards }) {
                 blurDataURL={`data:image/svg+xml;base64,${toBase64(
                   shimmer(333, 240)
                 )}`}
-                quality="100"
               />
             </div>
             <div className={styles.card_text}>

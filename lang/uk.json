@@ -159,10 +159,20 @@
   "hotel_card.rating": "Рейтинг",
   "hotel_card.reviews": "Відгуків:",
   "offer_page.btn_copy": "Скопійовано",
-  "offer_page.btn_add_to_list": "Додано до мого списку",
   "offer_page.offer_opt.transfer": "трансфер",
   "offer_page.offer_opt.insurance": "страхування",
   "offer_page.offer_opt.noNeedVisa": "віза",
   "offer_page.offer_opt.notNeedVisa": "віза не потрібна",
-  "offer_page.offer_opt.noNeedVisaNeed": "віза"
+  "offer_page.offer_opt.noNeedVisaNeed": "віза",
+  "footer.links.poptour.Egipet": "Тури до Єгипту",
+  "footer.links.poptour.Hurgada": "Тури до Хургади",
+  "footer.links.poptour.SharmElShaysh": "Тури до Шарм эль Шейху",
+  "footer.links.poptour.Turkey": "Тури до Турції",
+  "footer.links.poptour.Dominikana": "Тури до Доміникани",
+  "footer.links.poptour.Maldives": "Тури на Мальдіви",
+  "footer.links.poptour.Mexico": "Тури до Мексики",
+  "footer.links.poptour.OAE": "Тури до ОАЕ",
+  "favorites.add": "Додано в Мій список",
+  "favorites.empty": "тут поки нічого немає",
+  "favorites": "Мій список"
 }

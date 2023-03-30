@@ -41,7 +41,6 @@ const Card = ({ index, item, instance, minOffer }) => {
               blurDataURL={`data:image/svg+xml;base64,${toBase64(
                 shimmer(290, 380)
               )}`}
-              quality="100"
             />
             <div className={styles.card_text_content}>
               <div

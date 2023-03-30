@@ -7,6 +7,10 @@
   transform: scale(1.1);
 }
 
+.card:hover .favorites_btn {
+  opacity: 1;
+}
+
 .card_img {
   position: relative;
   border-radius: var(--def-radius);
@@ -201,6 +205,15 @@
 .order_price > span {
   font-size: 15px;
   line-height: 18px;
+}
+
+.favorites_btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: transparent;
+  opacity: 0;
+  transition: opacity var(--base-transition);
 }
 
 @media (min-width: 1000px) {

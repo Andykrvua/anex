@@ -14,7 +14,6 @@ const ImgThumb = ({ img }) => {
       layout="fill"
       placeholder="blur"
       blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(500, 375))}`}
-      quality="100"
     />
   );
 };
@@ -86,7 +85,6 @@ export default function ImgSlider({ images }) {
             blurDataURL={`data:image/svg+xml;base64,${toBase64(
               shimmer(500, 375)
             )}`}
-            quality="100"
           />
           <div
             className={styles.img_overlay}

@@ -23,6 +23,7 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
       {variant === location.postContent.tourPage ? null : (
         <header className={styles.header}>
           <div className={`${styles.img_wrapper} ${styles[variant]}`}>
+            {console.log(`${process.env.NEXT_PUBLIC_API_img}${post.img}`)}
             <Image
               className={styles.img}
               src={`${process.env.NEXT_PUBLIC_API_img}${post.img}`}
@@ -34,7 +35,6 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
               blurDataURL={`data:image/svg+xml;base64,${toBase64(
                 shimmer(333, 360)
               )}`}
-              quality="100"
               priority={true}
             />
             {variant === location.postContent.countryPage &&

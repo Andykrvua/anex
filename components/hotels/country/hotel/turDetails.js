@@ -87,11 +87,24 @@ export default function TurDetails({ data, country }) {
   };
 
   const addToListHandler = () => {
+    // console.log('data.hotelId', data.hotelId);
+    // const tours = JSON.parse(localStorage.getItem('result') || '[]');
+    // if (tours.length) {
+    //   const add = tours.filter((tour) => tour.id === data.hotelId);
+    //   let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    //   if (favorites.find((item) => item.id === data.hotelId)) {
+    //     const temp = favorites.filter((item) => item.id !== data.hotelId);
+    //     favorites = temp;
+    //   }
+    //   favorites.push(add[0]);
+    //   localStorage.setItem('favorites', JSON.stringify(favorites));
+    // }
+
     const val = {
       show: true,
-      type: infoModal.info,
+      type: infoModal.ok,
       text: intl.formatMessage({
-        id: 'offer_page.btn_add_to_list',
+        id: 'favorites.add',
       }),
     };
     setModalInfo(val);

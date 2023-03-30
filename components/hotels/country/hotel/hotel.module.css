@@ -72,9 +72,6 @@
   font-size: 20px;
   line-height: 23px;
   font-weight: 700;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
 }
 
 .tour_propertys {

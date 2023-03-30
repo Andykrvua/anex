@@ -36,20 +36,20 @@ export default function Footer() {
                     </a>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link href={links.hotTours}>
                     <a>
                       <FM id="nav.hot_tour" />
                     </a>
                   </Link>
-                </li>
-                <li>
+                </li> */}
+                {/* <li>
                   <Link href={links.hotels}>
                     <a>
                       <FM id="nav.hotels" />
                     </a>
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link href={links.blog}>
                     <a>
@@ -93,43 +93,59 @@ export default function Footer() {
               </h4>
               <ul className={styles.list}>
                 <li>
-                  <Link href={links.main}>
-                    <a>Туры в Египет</a>
+                  <Link href="/countries/egypt/">
+                    <a>
+                      <FM id="footer.links.poptour.Egipet" />
+                    </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={links.main}>
-                    <a>Туры в Хургаду</a>
+                  <Link href="/countries/egypt/tur-hurgada/">
+                    <a>
+                      <FM id="footer.links.poptour.Hurgada" />
+                    </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={links.main}>
-                    <a>Туры в Шарм эль Шейх</a>
+                  <Link href="/countries/egypt/tur_sharm_el_sheyh/">
+                    <a>
+                      <FM id="footer.links.poptour.SharmElShaysh" />
+                    </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={links.main}>
-                    <a>Туры в Турцию</a>
+                  <Link href="/countries/turkey/">
+                    <a>
+                      <FM id="footer.links.poptour.Turkey" />
+                    </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={links.main}>
-                    <a>Туры в Доминикану</a>
+                  <Link href="/countries/dominician-republic/">
+                    <a>
+                      <FM id="footer.links.poptour.Dominikana" />
+                    </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={links.main}>
-                    <a>Туры в Мальдивы</a>
+                  <Link href="/countries/maldives/">
+                    <a>
+                      <FM id="footer.links.poptour.Maldives" />
+                    </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={links.main}>
-                    <a>Туры в Мексику</a>
+                  <Link href="/countries/meksika/">
+                    <a>
+                      <FM id="footer.links.poptour.Mexico" />
+                    </a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={links.main}>
-                    <a>Туры в ОАЭ</a>
+                  <Link href="/countries/uae/">
+                    <a>
+                      <FM id="footer.links.poptour.OAE" />
+                    </a>
                   </Link>
                 </li>
               </ul>
@@ -166,7 +182,7 @@ export default function Footer() {
         <div className={styles.copyright}>
           <MessendgersLinks />
           <p>
-            © 2022 Турагентство ANEX Tour Украина
+            © 2023 Турагентство ANEX Tour Украина
             <span>Все права защищены</span>
           </p>
         </div>

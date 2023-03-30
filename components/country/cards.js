@@ -31,7 +31,6 @@ export default function Cards({ countryList, loc }) {
                   blurDataURL={`data:image/svg+xml;base64,${toBase64(
                     shimmer(333, 250)
                   )}`}
-                  quality="100"
                 />
               </a>
             </Link>

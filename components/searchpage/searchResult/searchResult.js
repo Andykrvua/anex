@@ -98,7 +98,6 @@ export default function SearchResult() {
     });
 
     setApiData(apiData);
-    localStorage.setItem('result', JSON.stringify(apiData.hotelsArr));
   };
 
   useEffect(() => {
@@ -326,7 +325,7 @@ export default function SearchResult() {
       // если флага startSearch нет, значит юзер ввел урл и тогда парсим параметры
       setIsLoading(true);
       console.log('first visit');
-      const res = await parseUrl(router);
+      const res = await parseUrl(router, loc);
 
       if (!res) {
         setIsLoading(false);

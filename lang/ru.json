@@ -159,10 +159,20 @@
   "hotel_card.rating": "Рейтинг",
   "hotel_card.reviews": "Отзывов:",
   "offer_page.btn_copy": "Скопировано",
-  "offer_page.btn_add_to_list": "Добавлено в мой список",
   "offer_page.offer_opt.transfer": "трансфер",
   "offer_page.offer_opt.insurance": "страховка",
   "offer_page.offer_opt.noNeedVisa": "виза",
   "offer_page.offer_opt.notNeedVisa": "виза не нужна",
-  "offer_page.offer_opt.noNeedVisaNeed": "виза"
+  "offer_page.offer_opt.noNeedVisaNeed": "виза",
+  "footer.links.poptour.Egipet": "Туры в Египет",
+  "footer.links.poptour.Hurgada": "Туры в Хургаду",
+  "footer.links.poptour.SharmElShaysh": "Туры в Шарм эль Шейх",
+  "footer.links.poptour.Turkey": "Туры в Турцию",
+  "footer.links.poptour.Dominikana": "Туры в Доминикану",
+  "footer.links.poptour.Maldives": "Туры на Мальдивы",
+  "footer.links.poptour.Mexico": "Туры в Мексику",
+  "footer.links.poptour.OAE": "Туры в ОАЭ",
+  "favorites.add": "Добавлено в Мой список",
+  "favorites.empty": "здесь пока пусто",
+  "favorites": "Мой список"
 }

@@ -5,7 +5,7 @@ import { FormattedMessage as FM } from 'react-intl';
 export default function ReviewsFilter({ filter }) {
   return (
     <div className={styles.filter_wrapper}>
-      <Link href={'/vidhuky'}>
+      <Link href={'/reviews'}>
         <a className={!filter ? styles.disabled : ''}>
           <svg
             className={styles.svg_date}
@@ -25,7 +25,7 @@ export default function ReviewsFilter({ filter }) {
           <FM id="filter.date" />
         </a>
       </Link>
-      <Link href={'/vidhuky?f=img'}>
+      <Link href={'/reviews?f=img'}>
         <a className={filter ? styles.disabled : ''}>
           <svg
             className={styles.svg_img}
