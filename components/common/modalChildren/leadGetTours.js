@@ -92,7 +92,7 @@ export default function LeadGetTours({ closeHandler }) {
       setModalInfo(data);
     }, 2000);
   };
-
+  
   return (
     <form
       className={

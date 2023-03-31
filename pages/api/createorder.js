@@ -1,3 +1,5 @@
+import nodemailer from 'nodemailer';
+
 const request = async (url = '', data = {}) => {
   const response = await fetch(url, {
     method: 'POST',
@@ -30,6 +32,31 @@ export default async function handler(req, res) {
     });
   }
 
+  
+
+
+  try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: { 
+        // user: 'andrey.kallko@gmail.com',
+        user: 'touragency123@gmail.com',
+        // pass: 'xlktzputxoxckisl'
+        pass: 'rfnaqfqktzagdjzf'
+     }
+    })
+  
+    await transporter.sendMail({
+      from: 'touragency123@gmail.com',
+      to: 'andrey.kallko@gmail.com',
+      subject: 'test',
+      text: JSON.stringify(req.body),
+    })
+  } catch (error) {
+    console.log('error', error);
+  }
   res.status(200).json({
     ok: true,
   });
