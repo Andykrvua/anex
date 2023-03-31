@@ -419,7 +419,7 @@
   }
 }
 
-@media (max-width: 370px) {
+@media (max-width: 390px) {
   .tur_header {
     flex-wrap: wrap;
     gap: 5px;

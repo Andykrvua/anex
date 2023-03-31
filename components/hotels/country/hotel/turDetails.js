@@ -1,6 +1,6 @@
 import styles from './turDetails.module.css';
 import { useSetWindowInfo } from '/store/store';
-import { infoModal } from '/utils/constants';
+import { infoModal, food } from '/utils/constants';
 import declension from 'utils/declension';
 import { useEffect, useState } from 'react';
 import Loader from 'components/common/loader';
@@ -17,7 +17,7 @@ import {
 } from 'store/store';
 import { modal } from 'utils/constants';
 
-export default function TurDetails({ data, country }) {
+export default function TurDetails({ data, country, hotel }) {
   const [offerData, setOfferdata] = useState(false);
   const [urlData, setUrldata] = useState(data);
   const [error, setError] = useState(false);
@@ -25,14 +25,27 @@ export default function TurDetails({ data, country }) {
 
   console.log('offerData', offerData);
   console.log('data', data);
+  console.log('hotel', hotel);
 
   const intl = useIntl();
+  const tTxt1 = intl.formatMessage({
+    id: 'common.night1',
+  });
+  const tTxt2 = intl.formatMessage({
+    id: 'common.night2',
+  });
+  const tTxt5 = intl.formatMessage({
+    id: 'common.night5',
+  });
+  const decl = (val) => declension(val, tTxt1, tTxt2, tTxt5);
+
   const setModalInfo = useSetWindowInfo();
   const setModal = useSetModal();
   const setOfferParams = useSetOfferParams();
   const setCurrentOffer = useSetCurrentOffer();
 
   const router = useRouter();
+  console.log('router', router);
 
   const offerOptions = () => {
     const offerAllOpt = ['transfer', 'insurance', 'noNeedVisa'];
@@ -87,18 +100,63 @@ export default function TurDetails({ data, country }) {
   };
 
   const addToListHandler = () => {
-    // console.log('data.hotelId', data.hotelId);
-    // const tours = JSON.parse(localStorage.getItem('result') || '[]');
-    // if (tours.length) {
-    //   const add = tours.filter((tour) => tour.id === data.hotelId);
-    //   let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    //   if (favorites.find((item) => item.id === data.hotelId)) {
-    //     const temp = favorites.filter((item) => item.id !== data.hotelId);
-    //     favorites = temp;
-    //   }
-    //   favorites.push(add[0]);
-    //   localStorage.setItem('favorites', JSON.stringify(favorites));
-    // }
+    let descr = `${intl.formatMessage({ id: food[offerData?.f] })}, `;
+
+    const transports = {
+      bus: 'hotel_card.transport.bus',
+      air: 'hotel_card.transport.air',
+      train: 'hotel_card.transport.train',
+      ship: 'hotel_card.transport.ship',
+    };
+
+    descr += `за ${offerData.a + offerData.h} ${
+      transports[offerData.t]
+        ? intl.formatMessage({
+            id: transports[offerData.t],
+          })
+        : ''
+    }`;
+
+    const fav = {
+      img: `https://newimg.otpusk.com/2/500x375/${hotel.fh[0].src}`,
+      hotelName: hotel.n,
+      stars: parseInt(hotel.s.n),
+      country: hotel.t.n,
+      district: hotel.c.n,
+      rating: hotel.r,
+      reviews: hotel.v,
+      description: descr,
+      orders: [
+        {
+          end: new Date(offerData.dt).toLocaleDateString('default', {
+            day: '2-digit',
+            month: '2-digit',
+          }),
+          link: router.asPath,
+          n: `${offerData.nh} ${decl(offerData.nh)}`,
+          price: new Intl.NumberFormat('uk-UA', {
+            style: 'currency',
+            currency: 'UAH',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0,
+          }).format(offerData.pl),
+          r: offerData.r,
+          start: new Date(offerData.d).toLocaleDateString('default', {
+            day: '2-digit',
+            month: '2-digit',
+          }),
+        },
+      ],
+      id: hotel.i,
+    };
+
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    if (favorites.find((item) => item.id === hotel.i)) {
+      const temp = favorites.filter((item) => item.id !== hotel.i);
+      favorites = temp;
+    }
+    favorites.push(fav);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
 
     const val = {
       show: true,

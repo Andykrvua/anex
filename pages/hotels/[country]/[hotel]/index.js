@@ -156,7 +156,9 @@ export default function Hotel({ data, hotel }) {
             </div>
           </div>
         </div>
-        {data.offer && <TurDetails data={data} country={hotel.t.n} />}
+        {data.offer && (
+          <TurDetails data={data} country={hotel.t.n} hotel={hotel} />
+        )}
       </div>
     </>
   );
@@ -194,7 +196,7 @@ export async function getServerSideProps(ctx) {
   let hotel;
   try {
     hotel = await fetch(
-      `http:localhost:3000/api/endpoints/hotels?hotelId=${hotelId}&locale=${loc}`
+      `http://localhost:3000/api/endpoints/hotels?hotelId=${hotelId}&locale=${loc}`
     ).then((response) => {
       if (response.status === 200) {
         if (response.ok) {

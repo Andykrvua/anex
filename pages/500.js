@@ -1,7 +1,9 @@
 export default function Custom500({ text = 'Default Error Text' }) {
   return (
-    <div style={{ background: 'tomato', height: '100vh', width: '100%' }}>
-      <span>{text}</span>
+    <div style={{ background: 'var(--bg)', height: '100vh', width: '100%' }}>
+      <div className="container">
+        <span>{text}</span>
+      </div>
     </div>
   );
 }
@@ -9,7 +11,7 @@ export default function Custom500({ text = 'Default Error Text' }) {
 export async function getStaticProps(context) {
   return {
     props: {
-      text: 'Static Error Text',
+      text: 'Error',
     },
   };
 }

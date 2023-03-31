@@ -1,6 +1,4 @@
 import styles from './favorites.module.css';
-import { useSetWindowInfo } from '/store/store';
-import { infoModal } from '/utils/constants';
 import { useIntl, FormattedMessage as FM } from 'react-intl';
 import Image from 'next/image';
 import { shimmer, toBase64 } from '/utils/blurImage';
@@ -14,16 +12,6 @@ export default function Favorites() {
     JSON.parse(localStorage.getItem('favorites') || '[]')
   );
   const intl = useIntl();
-  const setModalInfo = useSetWindowInfo();
-
-  const data = {
-    show: true,
-    type: infoModal.ok,
-    text: intl.formatMessage({ id: 'certificates.form.send.ok' }),
-  };
-  // setModalInfo(data);
-
-  // let cards = JSON.parse(localStorage.getItem('favorites') || '[]');
 
   const deleteFavorites = (id) => {
     setCards([...cards.filter((item) => item.id !== id)]);
@@ -102,24 +90,28 @@ export default function Favorites() {
                   </div>
                 )}
               </div>
-              <a className={styles.card_order} href={item.orders[0].link}>
-                <span className={styles.order_text_wrapper}>
-                  <span className={styles.order_text__duration}>
-                    <span>
-                      {item.orders[0].start}-{item.orders[0].end}
+              {item.orders.map((order, ind) => {
+                return (
+                  <a className={styles.card_order} href={order.link} key={ind}>
+                    <span className={styles.order_text_wrapper}>
+                      <span className={styles.order_text__duration}>
+                        <span>
+                          {order.start}-{order.end}
+                        </span>
+                        <br />
+                        <span>{order.n}</span>
+                      </span>
+                      <span className={styles.order_text__people}>
+                        <span> {order.r}</span>
+                      </span>
                     </span>
-                    <br />
-                    <span>{item.orders[0].n}</span>
-                  </span>
-                  <span className={styles.order_text__people}>
-                    <span> {item.orders[0].r}</span>
-                  </span>
-                </span>
-                <span className={styles.order_price}>
-                  {item.orders[0].price}
-                  <img src="/assets/img/svg/arrow.svg" alt="" />
-                </span>
-              </a>
+                    <span className={styles.order_price}>
+                      {order.price}
+                      <img src="/assets/img/svg/arrow.svg" alt="" />
+                    </span>
+                  </a>
+                );
+              })}
             </div>
           );
         })}

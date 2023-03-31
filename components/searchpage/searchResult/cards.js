@@ -226,23 +226,6 @@ export default function Cards({
   localStorage.removeItem('result');
 
   const addToFavorites = (id) => {
-    // country: "Египет"
-    // description: "Всё включено, за 2 с перелетом"
-    // district: "Шарм эль Шейх"
-    // hotelName: "Dreams Beach Resort"
-    // id: 8006
-    // img: "https://newimg.otpusk.com/2/500x375/00/04/29/38/4293840.jpg"
-    // orders: [
-    //     end: "25.04"
-    //     link: "/hotels/egypt/43-8006-Dreams_Beach_Resort?offer=2591020901337448&transport=air&from=3158&fromname=Жешув&to=43&checkIn=2023-04-11&checkTo=2023-04-14&nights=10&nightsTo=15&people=2"
-    //     n: "12 ночей"
-    //     price: "103 758 грн"
-    //     r: "Standard Room"
-    //     start: "13.04"
-    // }
-    // rating: 6.3
-    // reviews: 257
-    // stars: 5
     const tours = JSON.parse(localStorage.getItem('result') || '[]');
     if (tours.length) {
       const add = tours.filter((tour) => tour.id === id);
