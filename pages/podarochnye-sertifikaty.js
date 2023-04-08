@@ -107,7 +107,8 @@ export default function Certificates({ mainPageSettings }) {
           {mainPageSettings.translations[0].term_title}
         </p>
         <div
-          className={styles.term_content}
+          // className={styles.term_content}
+          className={styles.content}
           dangerouslySetInnerHTML={{
             __html: mainPageSettings.translations[0].term_content,
           }}

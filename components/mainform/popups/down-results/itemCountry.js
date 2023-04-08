@@ -1,6 +1,8 @@
 import styles from './item.module.css';
+import { useIntl } from 'react-intl';
 
 export default function ItemCountry({ data, clickHandler }) {
+  const intl = useIntl();
   return (
     <div
       className={`${styles.country_item} result_item`}
@@ -36,7 +38,9 @@ export default function ItemCountry({ data, clickHandler }) {
         {data.name}
       </div>
       {data?.uah && (
-        <div className={styles.country_item_price}>{`от ${data.uah} грн`}</div>
+        <div className={styles.country_item_price}>{`${intl.formatMessage({
+          id: 'common.ot',
+        })} ${data.uah} грн`}</div>
       )}
     </div>
   );
