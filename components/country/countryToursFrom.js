@@ -56,7 +56,7 @@ export default function CountryToursFrom({ data, current }) {
                     GetLangField(
                       item.translations,
                       'languages_code',
-                      'name',
+                      'br',
                       router.locale
                     )
                   )}

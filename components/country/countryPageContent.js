@@ -44,6 +44,8 @@ const SubpagesLinks = ({ subpagesSlugs, countryName, current = 0 }) => {
     (item) => item.temp_from === null && item?.is_district !== true
   );
 
+  console.log('from', from);
+
   const month = subpagesSlugs.filter((item) => item.temp_from !== null);
   return (
     <>

@@ -6,6 +6,8 @@ import '../styles/globals.css';
 import uk from '../lang/uk.json';
 import ru from '../lang/ru.json';
 import { getAllCountriesForNav } from 'utils/fetch';
+import { useEffect } from 'react';
+import TagManager from 'react-gtm-module';
 // import { SessionProvider } from 'next-auth/react';
 
 const messages = {
@@ -15,6 +17,10 @@ const messages = {
 
 function App({ Component, pageProps, navData }) {
   const { locale } = useRouter();
+
+  useEffect(() => {
+    TagManager.initialize({ gtmId: 'GTM-PJT8FLD' });
+  }, []);
 
   return (
     // <SessionProvider session={pageProps.session}>

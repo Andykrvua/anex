@@ -25,6 +25,8 @@ export default function CountrySubPage({
   const intl = useIntl();
   const router = useRouter();
 
+  console.log('countrySubpages', countrySubpages);
+
   if (router.isFallback) {
     return (
       <div className="container">
@@ -41,8 +43,12 @@ export default function CountrySubPage({
     ? `${intl.formatMessage({
         id: `month.${countrySubpage?.subpage_slug}`,
       })}`
-    : countrySubpage?.is_district || countrySubpage.isNewCity
+    : countrySubpage?.is_district
     ? countrySubpage.translations[0]?.br
+    : countrySubpage.isNewCity
+    ? `${intl.formatMessage({
+        id: 'country.tours_from',
+      })} ${countrySubpage.translations[0]?.br}`
     : `${intl.formatMessage({
         id: 'country.tours_from',
       })} ${intl.formatMessage({
