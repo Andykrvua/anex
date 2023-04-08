@@ -120,7 +120,6 @@ export default function UpWindow({
   };
 
   const inputHandler = (e) => {
-    console.log(11);
     if (size.width >= maxWidth) {
       selectUp({
         name: e.target.dataset.name,

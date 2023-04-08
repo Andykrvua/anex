@@ -192,9 +192,7 @@ const searchPeople = (router) => {
 
 export default async function parseUrl(router, loc) {
   const to = await searchTo(router);
-  console.log('to', to);
   const from = await searchFrom(router, loc);
-  console.log('from', from);
   const nights = Number(router.query.nights)
     ? Number(router.query.nights)
     : null;

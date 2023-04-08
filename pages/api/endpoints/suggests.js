@@ -1,7 +1,6 @@
 import { api_version } from 'utils/constants';
 
 export default async function handler(req, res) {
-  console.log('req.query', req.query);
   const result = await fetch(
     `${process.env.OPERATOR_API}${api_version}/tours/suggests?text=${req.query.text}&lang=${req.query.loc}&access_token=${process.env.OPERATOR_ACCESS_TOKEN}`
   )

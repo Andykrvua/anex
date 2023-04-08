@@ -127,7 +127,6 @@ export const cards = [
 
 export default function TourList() {
   const [name, setName] = useState('eco');
-  // console.log(name);
 
   const filter = (cards) => {
     const res = cards.sort((a, b) => a.order[0].price - b.order[0].price);

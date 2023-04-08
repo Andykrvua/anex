@@ -37,7 +37,6 @@ export default function useWindowSize() {
       // Debounce to avoid the function fire multiple times
       return () => window.removeEventListener('resize', handleResizeDebounced);
     }, []);
-    // console.log(windowSize);
     return windowSize;
   }
 }

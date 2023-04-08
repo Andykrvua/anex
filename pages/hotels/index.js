@@ -17,8 +17,6 @@ export default function Reviews({ data }) {
       <SeoHead content={null} />
       <div className="container">
         <Breadcrumbs data={br_arr} />
-        <div>1</div>
-        {console.log(data)}
       </div>
     </>
   );
@@ -26,7 +24,6 @@ export default function Reviews({ data }) {
 
 export async function getServerSideProps(ctx) {
   const data = ctx.query;
-  console.log(ctx.res.url);
 
   // const country = await fetch(
   //   'https://api.otpusk.com/api/2.6/tours/countries?lang=ua&access_token=337da-65e22-26745-a251f-77b9e'

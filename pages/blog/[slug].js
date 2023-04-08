@@ -20,7 +20,6 @@ const styles = {
 };
 
 export default function Post({ post, postsList, loc, postsSlugs, slug }) {
-  console.log('post', post);
   const intl = useIntl();
   const router = useRouter();
 

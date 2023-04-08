@@ -8,7 +8,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  console.log('req', req.body);
   const { from, to, people, checkIn, checkTo, nights, nightsTo, transport } =
     req.body;
 
@@ -23,6 +22,7 @@ export default async function handler(req, res) {
           }
         })
         .catch((e) => {
+          /* eslint-disable-next-line */
           console.log(e);
           return null;
         });
@@ -52,6 +52,7 @@ export default async function handler(req, res) {
           }, 5000);
         }
       } else {
+        /* eslint-disable-next-line */
         console.log('bad res');
         return null;
       }

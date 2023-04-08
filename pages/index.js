@@ -24,7 +24,6 @@ export default function Home({
 }) {
   useEffect(async () => {
     const result = await countryUpdateMinOffer();
-    // console.log('minOffer update', result);
   }, []);
 
   return (

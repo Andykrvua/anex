@@ -23,10 +23,6 @@ export default function TurDetails({ data, country, hotel }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  console.log('offerData', offerData);
-  console.log('data', data);
-  console.log('hotel', hotel);
-
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
     id: 'common.night1',
@@ -45,7 +41,6 @@ export default function TurDetails({ data, country, hotel }) {
   const setCurrentOffer = useSetCurrentOffer();
 
   const router = useRouter();
-  console.log('router', router);
 
   const offerOptions = () => {
     const offerAllOpt = ['transfer', 'insurance', 'noNeedVisa'];
@@ -250,6 +245,7 @@ export default function TurDetails({ data, country, hotel }) {
         setLoading(false);
       })
       .catch((e) => {
+        /* eslint-disable-next-line */
         console.log('error', e);
         setError(true);
         setLoading(false);

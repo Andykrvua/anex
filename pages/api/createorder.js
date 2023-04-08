@@ -32,29 +32,27 @@ export default async function handler(req, res) {
     });
   }
 
-  
-
-
   try {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
-      auth: { 
+      auth: {
         // user: 'andrey.kallko@gmail.com',
         user: 'touragency123@gmail.com',
         // pass: 'xlktzputxoxckisl'
-        pass: 'rfnaqfqktzagdjzf'
-     }
-    })
-  
+        pass: 'rfnaqfqktzagdjzf',
+      },
+    });
+
     await transporter.sendMail({
       from: 'touragency123@gmail.com',
       to: 'andrey.kallko@gmail.com',
       subject: 'test',
       text: JSON.stringify(req.body),
-    })
+    });
   } catch (error) {
+    /* eslint-disable-next-line */
     console.log('error', error);
   }
   res.status(200).json({

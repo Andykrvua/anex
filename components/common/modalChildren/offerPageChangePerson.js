@@ -228,6 +228,7 @@ export default function Person({ closeHandler }) {
       }
     } else {
       setLoading(false);
+      /* eslint-disable-next-line */
       console.log('api bad res');
     }
   };

@@ -15,8 +15,6 @@ export default function Hotel({ data, hotel }) {
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
 
-  console.log('hotel', hotel);
-
   const OpenStreetMapBtn = () => {
     if (!hotel.g) {
       return null;

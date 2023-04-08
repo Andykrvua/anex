@@ -123,7 +123,11 @@ export default function CountryPageContent({
         <SubpagesLinks
           current={country?.subpage_slug}
           subpagesSlugs={subpagesSlugs}
-          countryName={country.translations[0].from_month_country_name}
+          // country.translations[0].name new code possibly generate bugs
+          countryName={
+            country.translations[0].from_month_country_name ||
+            country.translations[0].name
+          }
         />
       ) : null}
     </section>

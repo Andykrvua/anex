@@ -265,6 +265,7 @@ export default function SearchResult() {
       })
       .catch((e) => {
         // setError(true);
+        /* eslint-disable-next-line */
         console.log('error', e);
         return null;
       });
@@ -280,6 +281,7 @@ export default function SearchResult() {
         })
         .catch((e) => {
           setError(true);
+          /* eslint-disable-next-line */
           console.log(e);
           setIsLoading(false);
           setSearchInProgress(false);
@@ -292,10 +294,8 @@ export default function SearchResult() {
     async function recursiveFetch(number) {
       setApiRes(false);
       setShow(false);
-      console.log('start search');
       let data = await apiSearch(number);
       if (data) {
-        console.log('res data', data);
         if (data.lastResult) {
           setApiRes(data);
           ResultHandler(data);
@@ -309,30 +309,26 @@ export default function SearchResult() {
             setError(true);
             return;
           }
-          console.log('timeout');
           setTimeout(async () => {
             number++;
             await recursiveFetch(number);
           }, 5000);
         }
       } else {
+        /* eslint-disable-next-line */
         console.log('ne data');
       }
     }
-    console.log('start recursiveFetch');
     await recursiveFetch(number);
   };
 
   useEffect(async () => {
-    console.log('use effect null');
     if (startSearch) {
-      console.log('startSearch');
       search();
       collectParams();
     } else {
       // если флага startSearch нет, значит юзер ввел урл и тогда парсим параметры
       setIsLoading(true);
-      console.log('first visit');
       const res = await parseUrl(router, loc);
 
       if (!res) {
@@ -341,7 +337,6 @@ export default function SearchResult() {
         return;
       }
 
-      console.log('!!!!!', res);
       setDown({ ...res.to });
       setUp({ ...res.from });
       setNight({ from: res.nights, to: res.nightsTo });

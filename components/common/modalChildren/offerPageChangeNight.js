@@ -157,6 +157,7 @@ export default function Night({ closeHandler }) {
       }
     } else {
       setLoading(false);
+      /* eslint-disable-next-line */
       console.log('api bad res');
     }
   };

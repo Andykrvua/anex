@@ -2,8 +2,13 @@ import styles from './countryToursFrom.module.css';
 import Link from 'next/link';
 import { FormattedMessage as FM } from 'react-intl';
 import { links } from 'utils/links';
+import { GetLangField } from 'utils/getLangField';
+import { useRouter } from 'next/router';
 
 export default function CountryToursFrom({ data, current }) {
+  const router = useRouter();
+  console.log('data', data);
+  console.log('current', current);
   return (
     <div className={styles.toursfrom_items}>
       {data.map((item, ind) => {
@@ -36,13 +41,25 @@ export default function CountryToursFrom({ data, current }) {
                   <FM id="country.tours_from" />
                 </span>
                 <span className={styles.toursfrom_item_text_title}>
-                  <FM
+                  {/* <FM
                     id={
                       item.subpage_slug !== current
                         ? `country.${item.subpage_slug}`
                         : 'country.from-kyyiv'
                     }
-                  />
+                  /> 
+                  new code possibly generate bugs
+                  */}
+                  {item.subpage_slug === current ? (
+                    <FM id="country.from-kyyiv" />
+                  ) : (
+                    GetLangField(
+                      item.translations,
+                      'languages_code',
+                      'name',
+                      router.locale
+                    )
+                  )}
                 </span>
               </span>
             </a>

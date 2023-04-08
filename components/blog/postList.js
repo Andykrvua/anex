@@ -5,8 +5,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { shimmer, toBase64 } from '/utils/blurImage';
 import { links } from 'utils/links';
+import { useRouter } from 'next/router';
 
 export default function PostList({ data, loc }) {
+  const router = useRouter();
+
   return (
     <div className={styles.post_list}>
       {data?.map((item, ind) => (
@@ -15,7 +18,7 @@ export default function PostList({ data, loc }) {
             <a className={styles.link}>
               <Image
                 className={styles.img}
-                src={`https://a-k.name/directus/assets/${item.img}`}
+                src={`${process.env.NEXT_PUBLIC_API_HOST}/directus/assets/${item.img}`}
                 alt=""
                 layout="fill"
                 objectFit="cover"

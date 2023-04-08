@@ -152,8 +152,7 @@ export default function PostControl({ name, avatar }) {
     let atachmentRes = [];
 
     if (selectedFile[0]) {
-      const url =
-        'https://a-k.name/directus/files?access_token=49qSQ5Jp2oM5qAHWCUaZRu4iN8BLvx98yOHe7Mlem16uKWhP';
+      const url = `${process.env.NEXT_PUBLIC_API_HOST}/directus/files?access_token=49qSQ5Jp2oM5qAHWCUaZRu4iN8BLvx98yOHe7Mlem16uKWhP`;
       const formData = new FormData();
 
       selectedFile.map((file) => {

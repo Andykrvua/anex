@@ -14,7 +14,6 @@ import { useRouter } from 'next/router';
 import { memo, useEffect } from 'react';
 
 export default function Search({ loc }) {
-  console.log(loc);
   const intl = useIntl();
   const br_arr = [{ title: intl.formatMessage({ id: 'search.br' }) }];
   // const up = useGetUp();
@@ -25,7 +24,7 @@ export default function Search({ loc }) {
 
   const router = useRouter();
   // const loc = router.locale;
-  console.log('rere');
+
   // useEffect(() => {
   //   router.push(
   //     {
@@ -79,7 +78,6 @@ export default function Search({ loc }) {
 // }
 export async function getServerSideProps(context) {
   const loc = context.locale;
-  console.log(context.query);
 
   return {
     props: {

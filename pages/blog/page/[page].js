@@ -88,6 +88,7 @@ export async function getStaticPaths({ locales }) {
 
   if (filter_count.errors) {
     // if incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', filter_count.errors);
     throw new Error('TEST ERROR');
   }

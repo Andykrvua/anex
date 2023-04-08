@@ -103,8 +103,6 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
     );
   };
 
-  console.log('ccc22', searchParams);
-
   const saveToLocalStorage = () => {
     const res = JSON.parse(localStorage.getItem('result') || '[]');
 

@@ -10,7 +10,6 @@ import { getReviews, getPageSettings } from '/utils/fetch';
 import styles from 'components/privacypolicy/content.module.css';
 
 export default function Reviews({ data }) {
-  console.log('data', data);
   const intl = useIntl();
   const br_arr = [{ title: intl.formatMessage({ id: 'reviews.br' }) }];
   const pagesCount = Math.ceil(data?.meta.filter_count / reviewsPerPage);

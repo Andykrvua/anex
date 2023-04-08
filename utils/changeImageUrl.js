@@ -5,10 +5,10 @@ function Change(str) {
     return null;
   }
 
-  const search = `http://a-k.name:8055`;
+  const search = process.env.NEXT_PUBLIC_API_ADMIN_PANEL;
   const replacer = new RegExp(search, 'g');
 
-  return str.replace(replacer, `https://a-k.name/directus`);
+  return str.replace(replacer, `${process.env.NEXT_PUBLIC_API_HOST}/directus`);
 }
 
 export default function ChangeImageUrl(str, variant) {

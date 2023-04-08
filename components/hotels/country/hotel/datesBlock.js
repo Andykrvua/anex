@@ -189,6 +189,7 @@ export default function DurationBlock({ offerData, data }) {
     } else {
       setIsFetch(false);
       setLoading(false);
+      /* eslint-disable-next-line */
       console.log('api bad res');
     }
   };
@@ -255,7 +256,6 @@ export default function DurationBlock({ offerData, data }) {
       // result.push(formated);
       result.push(formatDate(currDate));
     }
-    console.log('result', result);
     return result;
   }
 
@@ -267,8 +267,6 @@ export default function DurationBlock({ offerData, data }) {
   }
 
   function getDateRange() {
-    console.log('datesRow', datesRow);
-    console.log('offerData.d', offerData.d);
     const ind = datesRow.indexOf(offerData.d);
     if (ind === -1) return;
 
