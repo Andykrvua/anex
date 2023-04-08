@@ -35,7 +35,7 @@ export default function UpField({
       cName={'btn_up'}
       title={title}
       aria={aria}
-      svg={getUp.transport ? headerTransportIcon[getUp.transport] : svgUp}
+      svg={getUp.transport ? headerTransportIcon[getUp.transport] : svgNo}
       modalIsOpen={modalIsOpen}
       setModalIsOpen={setModalIsOpen}
     >

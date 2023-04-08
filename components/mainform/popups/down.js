@@ -16,7 +16,6 @@ import styles from './down.module.css';
 import CountryList from 'components/countryList';
 import { countryListVariants } from 'utils/constants';
 import SimpleBar from 'simplebar-react';
-import { transitionTime } from '../../../utils/constants';
 import {
   useSetDown,
   useGetSearchCountryList,
@@ -29,6 +28,8 @@ import ItemCountry from './down-results/itemCountry';
 import ItemCity from './down-results/itemCity';
 import ItemHotel from './down-results/itemHotel';
 import Loader from 'components/common/loader';
+import { useRouter } from 'next/router';
+import { languagesOperatorApi, transitionTime } from 'utils/constants';
 
 const ResultItem = ({ data, clickHandler }) => {
   if (data.type === 'country')
@@ -83,6 +84,8 @@ export default function Down({
   const getSearchCountryList = useGetSearchCountryList();
   const setSearchCountryList = useSetSearchCountryList();
   const setUpPointList = useSetUpPointList();
+  const { locale } = useRouter();
+  const loc = languagesOperatorApi[locale];
 
   const selectDownHandler = (val, id, countryId = null, code) => {
     selectDown({ name: val, value: id, countryValue: countryId, code });
@@ -150,7 +153,7 @@ export default function Down({
       setLoading(true);
 
       const search = await fetch(
-        `/api/endpoints/suggests?text=${country}`
+        `/api/endpoints/suggests?text=${country}&loc=${loc}`
       ).then((response) => {
         if (response.status === 200) {
           return response.json();

@@ -24,7 +24,7 @@ export default function Home({
 }) {
   useEffect(async () => {
     const result = await countryUpdateMinOffer();
-    console.log('minOffer update', result);
+    // console.log('minOffer update', result);
   }, []);
 
   return (
@@ -32,10 +32,10 @@ export default function Home({
       <SeoHead content={mainPageSettings} />
       <div className="container">
         <MainForm />
-        <PopularCountry
+        {/* <PopularCountry
           data={popularCountry}
           minOffer={minOffer?.data?.countries}
-        />
+        /> */}
         <Blog data={postsList} />
         {faqData && <Faq data={faqData} length={faqDataLength} />}
         {mainPageSettings.translations && (

@@ -9,8 +9,10 @@ import { memo } from 'react';
 import { shimmer, toBase64 } from '/utils/blurImage';
 import viewPortSize from '/utils/getViewport';
 import { useState, useLayoutEffect } from 'react';
+import { useIntl } from 'react-intl';
 
 const Card = ({ index, item, instance, minOffer }) => {
+  const intl = useIntl();
   if (minOffer && instance === carouselInstance.popularCountry) {
     const temp = minOffer.filter((country) => item.code === country.iso);
     item.price = temp.length ? temp[0].uah : null;
@@ -60,7 +62,7 @@ const Card = ({ index, item, instance, minOffer }) => {
                   <span>
                     {item.lastCard
                       ? ''
-                      : `от ${item.price.toLocaleString()} грн`}
+                      : `${intl.formatMessage({ id: 'common.ot' })} ${item.price.toLocaleString()} грн`}
                   </span>
                 ) : null}
               </div>

@@ -124,7 +124,17 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
     item.orders = data.map((item, ind) => {
       if (ind < 6) {
         return {
-          link: `/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${item.i}&transport=${searchParams.transport}&from=${searchParams.from}&fromname=${searchParams.fromname}&to=${searchParams.to}&checkIn=${searchParams.checkIn}&checkTo=${searchParams.checkTo}&nights=${searchParams.nights}&nightsTo=${searchParams.nightsTo}&people=${searchParams.people}`,
+          link: `${router.locale === 'uk' ? '/uk' : ''}/hotels/${hotel.t.c}/${
+            hotel.t.i
+          }-${hotel.i}-${hotel.h}?offer=${item.i}&transport=${
+            searchParams.transport
+          }&from=${searchParams.from}&fromname=${searchParams.fromname}&to=${
+            searchParams.to
+          }&checkIn=${searchParams.checkIn}&checkTo=${
+            searchParams.checkTo
+          }&nights=${searchParams.nights}&nightsTo=${
+            searchParams.nightsTo
+          }&people=${searchParams.people}`,
           start: new Date(item.d).toLocaleDateString('default', {
             day: '2-digit',
             month: '2-digit',
@@ -161,7 +171,17 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
           return (
             <a
               className={styles.card_order}
-              href={`/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${item.i}&transport=${searchParams.transport}&from=${searchParams.from}&fromname=${searchParams.fromname}&to=${searchParams.to}&checkIn=${searchParams.checkIn}&checkTo=${searchParams.checkTo}&nights=${searchParams.nights}&nightsTo=${searchParams.nightsTo}&people=${searchParams.people}`}
+              href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${
+                hotel.t.c
+              }/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${item.i}&transport=${
+                searchParams.transport
+              }&from=${searchParams.from}&fromname=${
+                searchParams.fromname
+              }&to=${searchParams.to}&checkIn=${searchParams.checkIn}&checkTo=${
+                searchParams.checkTo
+              }&nights=${searchParams.nights}&nightsTo=${
+                searchParams.nightsTo
+              }&people=${searchParams.people}`}
               target="_blank"
               rel="noopener noreferrer"
               key={item.i}
@@ -173,7 +193,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
                       day: '2-digit',
                       month: '2-digit',
                     })}{' '}
-                    заезд
+                    <FM id="hotel_card.tourstart" />
                   </span>
                 </span>
                 <span className={styles.order_text__people}>
@@ -182,7 +202,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
                       day: '2-digit',
                       month: '2-digit',
                     })}{' '}
-                    выезд
+                    <FM id="hotel_card.tourend" />
                   </span>
                 </span>
               </span>

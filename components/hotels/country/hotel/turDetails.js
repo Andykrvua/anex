@@ -208,13 +208,17 @@ export default function TurDetails({ data, country, hotel }) {
   const transportNameHelper = () => {
     let str = 'Транспорт';
     if (offerData?.t === 'air') {
-      return (str = 'Авиаперелет');
+      return (str = intl.formatMessage({
+        id: 'common.tr_fly',
+      }));
     }
     if (offerData?.t === 'bus') {
       return (str = 'Автобус');
     }
     if (offerData?.t === 'no') {
-      return (str = 'Без транспорта');
+      return (str = intl.formatMessage({
+        id: 'common.tr_no',
+      }));
     }
     return str;
   };

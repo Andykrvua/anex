@@ -1,5 +1,4 @@
-import { useIntl } from 'react-intl';
-import Head from 'next/head';
+import { useIntl, FormattedMessage as FM } from 'react-intl';
 import { useRouter } from 'next/router';
 import { getPostsSlugs, getPostFromSlug, getLastPost } from 'utils/fetch';
 import { links } from 'utils/links';
@@ -8,6 +7,7 @@ import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import PostContent from 'components/blog/post';
 import Carousel from '/components/common/carousel/carousel';
 import { carouselInstance } from '/utils/constants';
+import PostSeoHead from '/components/common/seoHead/postSeoHead.js';
 
 const styles = {
   marginTop: 'var(--block-title-top-margin)',
@@ -20,23 +20,17 @@ const styles = {
 };
 
 export default function Post({ post, postsList, loc, postsSlugs, slug }) {
+  console.log('post', post);
   const intl = useIntl();
   const router = useRouter();
 
   if (router.isFallback) {
-    console.log(1);
     return (
       <div className="container">
         <div>loading...</div>
       </div>
     );
   }
-
-  //нужно для передачи в HEAD
-  const title = intl.formatMessage({ id: 'nav.tour' });
-  const description = intl.formatMessage({
-    id: 'nav.country',
-  });
 
   const searchSlug = postsSlugs.data.map((item) => item.slug === slug);
 
@@ -47,17 +41,16 @@ export default function Post({ post, postsList, loc, postsSlugs, slug }) {
 
   return (
     <>
-      <Head>
-        <title>Anex Main</title>
-        <meta name="description" content="Anex Main" />
-      </Head>
+      <PostSeoHead content={post} />
       {!router.isFallback && !searchSlug.includes(true) ? (
         <DefaultErrorPage statusCode={404} />
       ) : (
         <div className="container">
           <Breadcrumbs data={br_arr} />
           <PostContent post={post} loc={loc} />
-          <h3 style={styles}>Читайте также</h3>
+          <h3 style={styles}>
+            <FM id="blog.read_more" />
+          </h3>
           {postsList.length && (
             <Carousel data={postsList} instance={carouselInstance.blog} />
           )}

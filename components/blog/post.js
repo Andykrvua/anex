@@ -6,6 +6,7 @@ import { GetLangField } from 'utils/getLangField';
 import { location } from 'utils/constants';
 import Faq from '/components/country/faq.js';
 import changeImageUrl from 'utils/changeImageUrl';
+import { FormattedMessage as FM } from 'react-intl';
 
 // variant null = post content
 // variant countryPage = country page post content
@@ -23,7 +24,6 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
       {variant === location.postContent.tourPage ? null : (
         <header className={styles.header}>
           <div className={`${styles.img_wrapper} ${styles[variant]}`}>
-            {console.log(`${process.env.NEXT_PUBLIC_API_img}${post.img}`)}
             <Image
               className={styles.img}
               src={`${process.env.NEXT_PUBLIC_API_img}${post.img}`}
@@ -45,7 +45,10 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
               <div className={styles.card_text}>
                 <h3>{post.translations[0].name}</h3>
                 {minOffer && (
-                  <span>{`от ${minOffer.toLocaleString()} грн`}</span>
+                  <span>
+                    <FM id="common.ot" />
+                    {` ${minOffer.toLocaleString()} грн`}
+                  </span>
                 )}
               </div>
             )}
@@ -55,9 +58,9 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
               {variant === null ? (
                 <h1 className={styles.title}>{post.translations[0].title}</h1>
               ) : (
-                <h2 className={`${styles.title} ${styles[variant]}`}>
+                <h1 className={`${styles.title} ${styles[variant]}`}>
                   {post.translations[0].post_title}
-                </h2>
+                </h1>
               )}
               {post?.categories?.[0] && (
                 <span

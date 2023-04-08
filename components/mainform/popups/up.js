@@ -168,6 +168,30 @@ export default function UpWindow({
           {loading && <Loader />}
           {!loading && (
             <div className={styles.input_wrapper}>
+              <label className={styles.input_label}>
+                <input
+                  className={styles.input}
+                  type="radio"
+                  name="up"
+                  id="no_transport"
+                  onChange={(e) => inputHandler(e)}
+                  // value="9999"
+                  value=""
+                  data-name={intl.formatMessage({
+                    id: 'mainform.up.no_tr',
+                  })}
+                />
+                <span className={styles.input_label_content}>
+                  <span className={styles.input_label_text}>
+                    {intl.formatMessage({
+                      id: 'mainform.up.no_tr',
+                    })}
+                  </span>
+                  <span className={styles.input_label_icons}>
+                    <img src={`/assets/img/svg/up/suitcase.svg`} alt="" />
+                  </span>
+                </span>
+              </label>
               {getUpPointList.active &&
                 getUpPointList.list.map((item, i) => {
                   return (
@@ -190,7 +214,8 @@ export default function UpWindow({
                         <span className={styles.input_label_icons}>
                           <img
                             src={`/assets/img/svg/up/${
-                              transportIcon[item.transport.map((tr) => tr)]
+                              transportIcon[item.transport[0]]
+                              // transportIcon[item.transport.map((tr) => tr)]
                             }`}
                             alt=""
                           />
@@ -199,30 +224,6 @@ export default function UpWindow({
                     </label>
                   );
                 })}
-              <label className={styles.input_label}>
-                <input
-                  className={styles.input}
-                  type="radio"
-                  name="up"
-                  id="no_transport"
-                  onChange={(e) => inputHandler(e)}
-                  // value="9999"
-                  value=""
-                  data-name={intl.formatMessage({
-                    id: 'mainform.up.no_tr',
-                  })}
-                />
-                <span className={styles.input_label_content}>
-                  <span className={styles.input_label_text}>
-                    {intl.formatMessage({
-                      id: 'mainform.up.no_tr',
-                    })}
-                  </span>
-                  <span className={styles.input_label_icons}>
-                    <img src={`/assets/img/svg/up/smile.svg`} alt="" />
-                  </span>
-                </span>
-              </label>
             </div>
           )}
         </div>

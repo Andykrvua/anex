@@ -1,4 +1,5 @@
 import styles from './item.module.css';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default function ItemCity({ data, clickHandler }) {
   return (
@@ -44,7 +45,7 @@ export default function ItemCity({ data, clickHandler }) {
         {data.name}
       </div>
       {data?.uah && (
-        <div className={styles.city_item_price}>{`от ${data.uah} грн`}</div>
+        <div className={styles.city_item_price}><FM id="common.ot" />{` ${data.uah} грн`}</div>
       )}
     </div>
   );

@@ -3,16 +3,28 @@ import Footer from './footer/footer';
 import Modal from './modal';
 import Burger from './burger/burger';
 import InfoModal from './infoModal';
+import { useIntl } from 'react-intl';
+import Head from 'next/head';
 
 export default function Layout({ children, navData }) {
+  const intl = useIntl();
   return (
-    <div className="wrapper">
-      <InfoModal />
-      <Header navData={navData} />
-      <main className="content">{children}</main>
-      <Footer />
-      <Burger />
-      <Modal />
-    </div>
+    <>
+      <Head>
+        <title>{intl.formatMessage({ id: 'default.title' })}</title>
+        <meta
+          name="description"
+          content={intl.formatMessage({ id: 'default.description' })}
+        />
+      </Head>
+      <div className="wrapper">
+        <InfoModal />
+        <Header navData={navData} />
+        <main className="content">{children}</main>
+        <Footer />
+        <Burger />
+        <Modal />
+      </div>
+    </>
   );
 }

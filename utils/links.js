@@ -11,6 +11,7 @@ export const links = {
   reviews: '/reviews',
   certificates: '/podarochnye-sertifikaty',
   contacts: '/contacts',
-  telegram: '/',
+  privacy_policy: '/about-us/privacy-policy',
+  telegram: 'https://t.me/ua_anextour',
   viber: 'viber://chat?number=0635914144',
 };

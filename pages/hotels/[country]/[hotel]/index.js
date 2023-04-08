@@ -11,7 +11,7 @@ import ImgSlider from 'components/hotels/country/hotel/imgSlider';
 
 export default function Hotel({ data, hotel }) {
   const intl = useIntl();
-  const br_arr = [{ title: hotel.n }];
+  const br_arr = [{ title: hotel?.n }];
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
 
@@ -71,7 +71,9 @@ export default function Hotel({ data, hotel }) {
   if (!hotel) {
     return (
       <div className="container">
-        <div>Что-то пошло не так, вернитесь позже</div>
+        <div>
+          <FM id="error.block" />
+        </div>
       </div>
     );
   }

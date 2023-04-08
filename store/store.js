@@ -48,7 +48,7 @@ const useStore = create(
     initialDate: rawDate,
     date: { rawDate, plusDays: 3 },
     setDate: (date) => set({ date }),
-    night: { from: 10, to: 15 },
+    night: { from: 7, to: 9 },
     setNight: (night) => set({ night }),
     person: {
       adult: 2,
@@ -144,38 +144,8 @@ const useStore = create(
     setOfferParams: (offerParams) => set({ offerParams }),
     currentOffer: {},
     setCurrentOffer: (currentOffer) => set({ currentOffer }),
-    // user: '',
-    // cartCount: 0,
-    // firstName: 'React',
-    // anyModalIsOpen: false,
-    // isOpening: false,
-    // btn_up: false,
-    // btn_down: false,
-    // btn_date: false,
-    // btn_night: false,
-    // btn_person: false,
-    // setFirstName: (firstName) => set({ firstName }),
-    // login: () => set(() => ({ user: 'John' })),
-    // logout: () => set(() => ({ user: '' })),
-    // addToCart: (num) => set((state) => ({ cartCount: state.cartCount + num })),
-    // setModalState: (title) =>
-    //   set((state) => ({
-    //     [title]: !state[title],
-    //   })),
-    // setAnyModalIsOpen: () =>
-    //   set((state) => ({
-    //     anyModalIsOpen: !state.anyModalIsOpen,
-    //   })),
   }))
 );
-
-// export const useSetModalState = (title) =>
-//   useStore((state) => state.setModalState);
-// export const getAnyModalIsOpen = () =>
-//   useStore((state) => state.anyModalIsOpen);
-// export const getModalState = (title) => useStore((state) => state[title]);
-// export const useSetAnyModalIsOpen = () =>
-//   useStore((state) => state.setAnyModalIsOpen);
 
 export const useGetUp = () => useStore((state) => state.up);
 export const useSetUp = () => useStore((state) => state.setUp);

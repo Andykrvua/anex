@@ -1,4 +1,5 @@
 import styles from './turDetails.module.css';
+import { FormattedMessage as FM } from 'react-intl';
 
 export default function TransportBlock({ offerData, country, data }) {
   if (offerData?.t === 'bus') {
@@ -16,7 +17,9 @@ export default function TransportBlock({ offerData, country, data }) {
 
   if (offerData?.t === 'no') {
     return (
-      <div className={styles.transport_block_min_1items}>Без транспорта</div>
+      <div className={styles.transport_block_min_1items}>
+        <FM id="common.tr_no" />
+      </div>
     );
   }
 

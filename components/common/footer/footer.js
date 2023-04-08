@@ -85,6 +85,13 @@ export default function Footer() {
                     </a>
                   </Link>
                 </li>
+                <li>
+                  <Link href={links.privacy_policy}>
+                    <a>
+                      <FM id="nav.privacy_policy" />
+                    </a>
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className={styles.tours}>
@@ -182,8 +189,8 @@ export default function Footer() {
         <div className={styles.copyright}>
           <MessendgersLinks />
           <p>
-            © 2023 Турагентство ANEX Tour Украина
-            <span>Все права защищены</span>
+            © 2023 <FM id="footer.copyright" />
+            {/* <span>Все права защищены</span> */}
           </p>
         </div>
       </div>

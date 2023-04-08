@@ -110,7 +110,7 @@ export default function CountryPageContent({
           loc={loc}
         />
       ) : null}
-      <TourBlock code={country.code} />
+      {/* <TourBlock code={country.code} /> */}
       {country?.translations[0].post_title && (
         <CountryPostContent
           post={country}

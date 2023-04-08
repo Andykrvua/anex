@@ -51,7 +51,6 @@ export default function Country({
     },
     { title: country?.translations[0].name },
   ];
-
   return (
     <>
       <SeoHead content={country} />

@@ -1,7 +1,9 @@
 import styles from './item.module.css';
 import { stars, fetchImgUrl } from 'utils/constants';
+import { useIntl } from 'react-intl';
 
 export default function ItemHotel({ data, clickHandler }) {
+  const intl = useIntl();
   const image = data.img;
   return (
     <div
@@ -49,7 +51,7 @@ export default function ItemHotel({ data, clickHandler }) {
       </div>
       <div className={styles.hotel_item_price_wrapper}>
         <span className={styles.hotel_item_price}>
-          {data.uah ? `от ${data.uah} грн` : null}
+          {data.uah ? `${intl.formatMessage({ id: 'common.ot' })} ${data.uah} грн` : null}
         </span>
         <span className={styles.hotel_item_loc}>
           {data.provinceName

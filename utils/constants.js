@@ -192,3 +192,15 @@ export const foodFilterItems = {
   ai: 'result.food.ai',
   uai: 'result.food.uai',
 };
+
+// code pop country from to modal
+export const popCountryCode = [
+  'egypt',
+  'turkey',
+  'montenegro',
+  'bulgaria',
+  'uae',
+  'greece',
+  'dominican_republic',
+  'maldives',
+];

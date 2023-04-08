@@ -3,6 +3,7 @@ import Carousel from '../common/carousel/carousel';
 import { carouselInstance } from '../../utils/constants';
 import Link from 'next/link';
 import { FormattedMessage as FM } from 'react-intl';
+import { links } from 'utils/links';
 
 export default function Blog({ data }) {
   return (
@@ -11,7 +12,7 @@ export default function Blog({ data }) {
         <h2 className={`${styles.title} block_title`}>
           <FM id="blog" />
         </h2>
-        <Link href="/">
+        <Link href={links.blog}>
           <a className={styles.blog_link}>
             <FM id="blog.links" />
           </a>

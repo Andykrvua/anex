@@ -72,7 +72,7 @@ export const getPostsSlugs = async () => {
 
 export const getPostFromSlug = async (slug, loc) => {
   const locale = languagesApi[loc];
-  const url = `posts?fields=status,img,date_created,slug,translations.languages_id,translations.title,translations.content,translations.languages_code,categories.categories_id.status,categories.categories_id.translations.name,categories.categories_id.translations.languages_id&filter[slug][_eq]=${slug}&deep[translations][_filter][languages_code][_eq]=${locale}&deep[categories][_filter][categories_id][status][_neq]=draft`;
+  const url = `posts?fields=status,img,date_created,slug,translations.languages_id,translations.title,translations.content,translations.seo_title,translations.seo_descr,translations.languages_code,categories.categories_id.status,categories.categories_id.translations.name,categories.categories_id.translations.languages_id&filter[slug][_eq]=${slug}&deep[translations][_filter][languages_code][_eq]=${locale}&deep[categories][_filter][categories_id][status][_neq]=draft`;
   return req(url);
 };
 

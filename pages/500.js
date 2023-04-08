@@ -1,6 +1,6 @@
 export default function Custom500({ text = 'Default Error Text' }) {
   return (
-    <div style={{ background: 'var(--bg)', height: '100vh', width: '100%' }}>
+    <div style={{ background: 'var(--bg)', height: '300px', width: '100%' }}>
       <div className="container">
         <span>{text}</span>
       </div>

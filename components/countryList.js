@@ -4,12 +4,12 @@ import styles from './countryList.module.css';
 import { memo } from 'react';
 import Link from 'next/link';
 import { links } from 'utils/links';
-import { carpathiansId } from 'utils/constants';
+import { carpathiansId, popCountryCode } from 'utils/constants';
 import { useGetSearchCountryList } from '../store/store';
 
 const List = ({
   clickSearchResultItem,
-  limit = 100,
+  code = null,
   data = null,
   variant = null,
   setIsOpen = null,
@@ -51,7 +51,9 @@ const List = ({
   return (
     <div className={`${styles.all_country_wrapper} ${styles[variant]}`}>
       {countryData.map((item, i) => {
-        if (i < limit && item.id !== carpathiansId) {
+        if (
+          code ? code.includes(item.code) : true && item.id !== carpathiansId
+        ) {
           return (
             <Item
               variant={variant}
@@ -116,7 +118,7 @@ export default function countryList({
         <MemoList
           data={data}
           clickSearchResultItem={clickSearchResultItem}
-          limit={8}
+          code={popCountryCode}
         />
       );
 
