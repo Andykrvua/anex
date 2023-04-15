@@ -25,8 +25,6 @@ export default function CountrySubPage({
   const intl = useIntl();
   const router = useRouter();
 
-  console.log('countrySubpages', countrySubpages);
-
   if (router.isFallback) {
     return (
       <div className="container">

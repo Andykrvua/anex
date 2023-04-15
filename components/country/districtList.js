@@ -8,11 +8,13 @@ import { districtCardsShowSwitcher } from 'utils/constants';
 
 export default function DistrictList({ data, title, country, loc }) {
   const intl = useIntl();
-  const [name, setName] = useState(data.length > districtCardsShowSwitcher ? 'popular' : null);
+  const [name, setName] = useState(
+    data.length > districtCardsShowSwitcher ? 'popular' : null
+  );
 
   useEffect(() => {
-    setName(data.length > districtCardsShowSwitcher ? 'popular' : null)
-  },[data.length])
+    setName(data.length > districtCardsShowSwitcher ? 'popular' : null);
+  }, [data.length]);
 
   if (!data.length) return null;
 

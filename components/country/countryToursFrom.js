@@ -7,8 +7,7 @@ import { useRouter } from 'next/router';
 
 export default function CountryToursFrom({ data, current }) {
   const router = useRouter();
-  console.log('data', data);
-  console.log('current', current);
+
   return (
     <div className={styles.toursfrom_items}>
       {data.map((item, ind) => {

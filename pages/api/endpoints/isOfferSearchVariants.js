@@ -1,4 +1,4 @@
-import { api_version } from 'utils/constants';
+import { api_version, ignoreOperators } from 'utils/constants';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   const search = async () => {
     let number = 0;
     async function apiSearch(number) {
-      const url = `${process.env.OPERATOR_API}${api_version}/tours/getResults?number=${number}&transport=${transport}&from=${from}&to=${to}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${nights}&nightsTo=${nightsTo}&people=${people}&access_token=${process.env.OPERATOR_ACCESS_TOKEN}`;
+      const url = `${process.env.OPERATOR_API}${api_version}/tours/getResults?${ignoreOperators}number=${number}&transport=${transport}&from=${from}&to=${to}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${nights}&nightsTo=${nightsTo}&people=${people}&access_token=${process.env.OPERATOR_ACCESS_TOKEN}`;
       const res = await fetch(url)
         .then((response) => {
           if (response.status === 200) {

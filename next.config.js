@@ -8,7 +8,7 @@ const nextConfig = {
     defaultLocale: 'ru',
   },
   images: {
-    domains: ['a-k.name', 'newimg.otpusk.com'],
+    domains: ['anex-tour.com.ua', 'newimg.otpusk.com'],
   },
   async redirects() {
     return [

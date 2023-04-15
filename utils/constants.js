@@ -204,3 +204,25 @@ export const popCountryCode = [
   'dominican_republic',
   'maldives',
 ];
+
+// ignore operators
+/**
+ * "id": 3342,
+ * "name": "Center",
+ *            
+ * "id": 3371,
+ * "name": "Itaka",
+ * 
+ * "id": 3384,
+ * "name": "Poland",
+ * 
+ * "id": 3372,
+ * "name": "Rainbow",
+ * 
+ * "id": 3326,
+ * "name": "Tour-Group",
+ * 
+ * "id": 2700,
+ * "name": "TPG",
+ */
+export const ignoreOperators = 'ignoreOperators=3342,3371,3384,3372,3326,2700&';
