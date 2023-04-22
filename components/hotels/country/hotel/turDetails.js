@@ -344,20 +344,24 @@ export default function TurDetails({ data, country, hotel }) {
               </linearGradient>
             </defs>
           </svg>
-          добавить в Мой список
+          <FM id="offer_page.add_favor" />
         </button>
       </div>
-      <h2 className={styles.tur_title}>Детали тура</h2>
+      <h2 className={styles.tur_title}>
+        <FM id="offer_page.tur_details" />
+      </h2>
       <div className={styles.tur_grid}>
         {/* Grid Item Person */}
         <div className={styles.grid_item}>
           <div className={styles.grid_item_header}>
-            <span>Туристы</span>
+            <span>
+              <FM id="mainform.person.t" />
+            </span>
             <button
               onClick={() => setModal({ get: modal.offerPageChangePerson })}
               className={styles.change_btn}
             >
-              Изменить
+              <FM id="common.change" />
             </button>
           </div>
           <div
@@ -391,7 +395,7 @@ export default function TurDetails({ data, country, hotel }) {
           <div className={styles.grid_item_header}>
             <span>{loading ? 'Транспорт' : transportNameHelper()}</span>
             <button className={styles.change_btn} disabled>
-              Изменить
+              <FM id="common.change" />
             </button>
           </div>
           <div className={styles.grid_item_content}>
@@ -411,8 +415,12 @@ export default function TurDetails({ data, country, hotel }) {
         {/* Grid Item room */}
         <div className={styles.grid_item}>
           <div className={styles.grid_item_header}>
-            <span>Номер, питание</span>
-            <button className={styles.change_btn}>Изменить</button>
+            <span>
+              <FM id="offer_page.room_food" />
+            </span>
+            <button className={styles.change_btn}>
+              <FM id="common.change" />
+            </button>
           </div>
           <div
             className={`${styles.grid_item_content} ${
@@ -429,12 +437,14 @@ export default function TurDetails({ data, country, hotel }) {
         {/* Grid Item duration */}
         <div className={styles.grid_item}>
           <div className={styles.grid_item_header}>
-            <span>Длительность тура</span>
+            <span>
+              <FM id="offer_page.tour_duration" />
+            </span>
             <button
               className={styles.change_btn}
               onClick={() => setModal({ get: modal.offerPageChangeNight })}
             >
-              Изменить
+              <FM id="common.change" />
             </button>
           </div>
           <div
@@ -453,11 +463,10 @@ export default function TurDetails({ data, country, hotel }) {
         <div className={`${styles.grid_item} ${styles.grid_item_scroll}`}>
           <div className={styles.grid_item_header}>
             <span>
-              Нужны еще варианты?
+              <FM id="offer_page.need_v" />
               <span className={styles.grid_item_header_title_normal}>
                 {' '}
-                Мы подобрали для вас на ближайшие даты с разным количеством
-                ночей
+                <FM id="offer_page.need_v2" />
               </span>
             </span>
           </div>
@@ -476,9 +485,12 @@ export default function TurDetails({ data, country, hotel }) {
           <div
             className={`${styles.grid_item_header} ${styles.grid_item_header_green}`}
           >
-            <span>Стоимость</span>
+            <span>
+              <FM id="offer_page.cost" />
+            </span>
             <span className={styles.offer_act_time}>
-              Цена актуальна на {loading ? '' : getActTimeOffer()}{' '}
+              <FM id="offer_page.cost_actual" />{' '}
+              {loading ? '' : getActTimeOffer()}{' '}
             </span>
           </div>
           <div className={styles.grid_item_content}>
@@ -505,15 +517,13 @@ export default function TurDetails({ data, country, hotel }) {
           </div>
           <div>
             <div className={styles.varn_text}>
-              За утренний и вечерний рейс возможна доплата. Возможна доплата за
-              утренний рейс $25 за каждого туриста. Возможна доплата за вечерний
-              обратный рейс $25 за каждого туриста.
+              <FM id="offer_page.add_pay" />
             </div>
             <button
               className={styles.order_btn}
               onClick={() => setModal({ get: modal.offerPageOrder })}
             >
-              Бронировать онлайн
+              <FM id="offer_page.bron_online" />
             </button>
           </div>
         </div>

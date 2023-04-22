@@ -1,12 +1,25 @@
 import styles from './turDetails.module.css';
-import {dayMonthFormatDate} from 'utils/formattedDate'
+import { dayMonthFormatDate } from 'utils/formattedDate';
 import { useRouter } from 'next/router';
+import { useIntl } from 'react-intl';
+import declension from 'utils/declension';
 
 export default function DurationBlock({ offerData }) {
   const dStart = new Date(offerData?.d);
   const dEnd = new Date(offerData?.dt);
 
   const router = useRouter();
+
+  const intl = useIntl();
+  const dTxt1 = intl.formatMessage({
+    id: 'common.day1',
+  });
+  const dTxt2 = intl.formatMessage({
+    id: 'common.day2',
+  });
+  const dTxt5 = intl.formatMessage({
+    id: 'common.day5',
+  });
 
   return (
     <>
@@ -22,10 +35,12 @@ export default function DurationBlock({ offerData }) {
       </svg>
       <div className={styles.duration_block}>
         <div className={styles.duration_block_title}>
-          {dayMonthFormatDate(dStart, router.locale)} - {dayMonthFormatDate(dEnd, router.locale)}
+          {dayMonthFormatDate(dStart, router.locale)} -{' '}
+          {dayMonthFormatDate(dEnd, router.locale)}
         </div>
         <div>
-          {offerData?.n} дней / {offerData?.nh} ночей
+          {offerData?.n} {declension(offerData?.n, dTxt1, dTxt2, dTxt5)} /{' '}
+          {offerData?.nh} ночей
         </div>
       </div>
     </>

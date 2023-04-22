@@ -30,7 +30,6 @@ import {
 import { useRouter } from 'next/router';
 import parseUrl from '../pasteUrl/pasteUrl';
 import Cards from './cards';
-import {ignoreOperators} from 'utils/constants'
 
 const MemoCards = memo(Cards);
 
@@ -63,6 +62,7 @@ export default function SearchResult() {
   const setPerson = useSetPerson();
   const getSearchResultSort = useGetSearchResultSort();
   const setSearchResultSort = useSetSearchResultSort();
+  const setFilterData = useSetSearchFilter();
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -188,10 +188,9 @@ export default function SearchResult() {
     //   ? upTransportAvailable[0].transport.join()
     //   : 'no';
 
-    let url = `https://api.otpusk.com/api/2.6/tours/getResults?${ignoreOperators}number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
+    let url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
     if (applyFilter) {
       const { newData } = filterData;
-      // const filters = newData.change;
       const filters = filterData.default.change;
 
       if (filters.includes(5) || filters.includes(4) || filters.includes(3)) {
@@ -200,7 +199,6 @@ export default function SearchResult() {
           .join()}`;
       }
 
-      // if (filters.includes('cost')) {
       if (newData.cost[0] !== undefined || newData.cost[1] !== undefined) {
         url += `&price=${newData.cost[0]}&priceTo=${newData.cost[1]}`;
       }
@@ -243,6 +241,31 @@ export default function SearchResult() {
         .join()}`;
 
       setApplyFilter(false);
+    } else {
+      setFilterData({
+        btnTrigger: false,
+        default: {
+          change: [],
+          cost: [0, 375000],
+          hotelRating: {
+            5: false,
+            4: false,
+            3: false,
+          },
+        },
+        newData: {
+          change: [],
+          cost: [],
+          hotelRating: {
+            5: false,
+            4: false,
+            3: false,
+          },
+        },
+        costMin: 0,
+        costMax: 375000,
+        reset: true,
+      });
     }
 
     return url;
@@ -380,7 +403,7 @@ export default function SearchResult() {
     if (typeof up.name === 'string') {
       fromname = up.name;
     } else {
-      fromname = up.name.ru;
+      fromname = up.name[router.locale];
     }
 
     const params = {

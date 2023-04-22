@@ -15,6 +15,8 @@ export default function Hotel({ data, hotel }) {
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
 
+  console.log('hotel', hotel);
+
   const OpenStreetMapBtn = () => {
     if (!hotel.g) {
       return null;
@@ -60,7 +62,11 @@ export default function Hotel({ data, hotel }) {
         {isReadMore && hotel?.o?.s && <p>{hotel.o.s}</p>}
 
         <p onClick={toggleReadMore} className={styles.read_or_hide}>
-          {isReadMore ? ' Скрыть' : '... Показать больше'}
+          {isReadMore ? (
+            <FM id="offer_page.read_more_hide" />
+          ) : (
+            <FM id="offer_page.read_more" />
+          )}
         </p>
       </>
     );
@@ -151,7 +157,9 @@ export default function Hotel({ data, hotel }) {
                 })}
             </div>
             <div className={styles.hotel_descr_wrapper}>
-              <h4 className={styles.hotel_descr_title}>Описание отеля</h4>
+              <h4 className={styles.hotel_descr_title}>
+                <FM id="offer_page.hotel_desc" />
+              </h4>
               <ReadMore />
             </div>
           </div>
