@@ -9,6 +9,7 @@ export default function Accordion({ data }) {
     newState[ind] = !newState[ind];
     setState(newState);
   };
+
   return (
     <ul className={styles.accordion_wrapper}>
       {data.map((item, ind) => (
@@ -43,7 +44,9 @@ export default function Accordion({ data }) {
               />
               <circle cx="11" cy="11" r="10" stroke="#C3C3D0" strokeWidth="2" />
             </svg>
-            <span className={styles.accordion_title_emojii}>{item.emoji}</span>
+            <span className={styles.accordion_title_emojii}>
+              {item.emoji || item.emojii}
+            </span>
             {item.question}
           </h3>
           <div

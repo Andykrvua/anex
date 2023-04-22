@@ -157,10 +157,7 @@ export default function SendOrder({ closeHandler }) {
         ref={scrollable}
       >
         <p>
-          <FM id="modal.offerpageorder.p1" />
-        </p>
-        <p>
-          <FM id="modal.offerpageorder.p2" />
+          <FM id="modal.offerpageorder" />
         </p>
         <button className={styles.btn_copy} onClick={copyHandler}>
           {mainPhone}

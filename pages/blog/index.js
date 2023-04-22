@@ -1,20 +1,25 @@
 import { useIntl } from 'react-intl';
-import Head from 'next/head';
 import { links } from 'utils/links';
 import { blogApi } from 'utils/constants';
 import BlogContent from 'components/blog/blog';
-import { getPostsList, getCategories, getCountries } from 'utils/fetch';
+import {
+  getPostsList,
+  getCategories,
+  getCountries,
+  getPageSettings,
+} from 'utils/fetch';
+import SeoHead from 'components/common/seoHead/seoHead.js';
 
-export default function Blog({ postsList, categoryList, loc, countryList }) {
+export default function Blog({
+  postsList,
+  categoryList,
+  loc,
+  countryList,
+  pageSettings,
+}) {
+  console.log('pageSettings', pageSettings);
   const intl = useIntl();
 
-  //нужно для передачи в HEAD
-  const title = intl.formatMessage({ id: 'nav.tour' });
-  const description = intl.formatMessage({
-    id: 'nav.country',
-  });
-
-  // if el > 1, last el need only title
   const br_arr = [{ title: intl.formatMessage({ id: 'links.blog' }) }];
 
   const pagesCount = Math.ceil(
@@ -25,10 +30,7 @@ export default function Blog({ postsList, categoryList, loc, countryList }) {
 
   return (
     <>
-      <Head>
-        <title>Anex Blog</title>
-        <meta name="description" content="Anex Main" />
-      </Head>
+      <SeoHead content={pageSettings} />
       <BlogContent
         br_arr={br_arr}
         categoryListItems={categoryList}
@@ -50,25 +52,38 @@ export async function getStaticProps(context) {
   const resCategoryList = await getCategories();
   const resCountryList = await getCountries();
 
-  if (postsList.errors || resCategoryList.errors || resCountryList.errors) {
+  const data = 'translations.description,translations.title';
+  const pageSettings = await getPageSettings('blog_page', loc, data);
+
+  if (
+    postsList.errors ||
+    resCategoryList.errors ||
+    resCountryList.errors ||
+    pageSettings.errors
+  ) {
     // if server down and incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', postsList?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', resCategoryList?.errors);
     /* eslint-disable-next-line */
-    console.log('error: ', resCountryList.errors);
+    console.log('error: ', resCountryList?.errors);
+    /* eslint-disable-next-line */
+    console.log('error: ', pageSettings?.errors);
     throw new Error('TEST ERROR');
-    // return {
-    //   notFound: true,
-    // };
   }
 
   const categoryList = resCategoryList.data;
   const countryList = resCountryList.data;
 
   return {
-    props: { postsList, categoryList, loc, countryList },
+    props: {
+      postsList,
+      categoryList,
+      loc,
+      countryList,
+      pageSettings: pageSettings.data,
+    },
     revalidate: 30,
   };
 }

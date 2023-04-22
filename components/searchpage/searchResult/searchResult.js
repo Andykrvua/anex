@@ -284,6 +284,7 @@ export default function SearchResult() {
         }
       })
       .then((data) => {
+        console.log('data', data);
         setCountryHotelService(data);
         setHotelService(data);
       })
