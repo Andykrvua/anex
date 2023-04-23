@@ -11,16 +11,15 @@ import {
 } from 'utils/useBodyScroll';
 import Header from 'components/mainform/popups/header';
 import { svgNight } from 'components/mainform/form-fields/svg';
-import styles from 'components/mainform/popups/night.module.css';
+import styles from './offerPageChangeRoom.module.css';
 import { useGetOfferParams } from 'store/store';
 import Loader from 'components/common/loader';
 import { mainFormNightValidationRange as valRange } from 'utils/constants';
-import SvgPlus from 'components/svgPlus';
-import SvgMinus from 'components/svgMinus';
 import { FormattedMessage as FM } from 'react-intl';
 import { useRouter } from 'next/router';
+import { foodAll } from 'utils/constants';
 
-export default function Night({ closeHandler }) {
+export default function Room({ closeHandler }) {
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
@@ -213,81 +212,23 @@ export default function Night({ closeHandler }) {
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeHandler} svg={svgNight} />
       <h3 className="title">
-        <FM id="mainform.night.t" />
+        {/* <FM id="mainform.night.t" /> */}
+        Номер, питание
       </h3>
       <div
         className={`${styles.popup_scrollable_content} popup_scrollable_content`}
         ref={scrollable}
       >
-        <div className={styles.night_input_wrapper}>
-          <label htmlFor="fromNight">
-            <FM id="mainform.night.from" />
-          </label>
-          <input
-            className={styles.night_input}
-            id="fromNight"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={fromNight}
-            onChange={(e) => inputFromOnchange(e.target.value)}
-            onBlur={(e) => inputFromOnblur(e.target.value)}
-          />
-          <button
-            className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-            onClick={() => onClick('-', 'from')}
-            disabled={fromNight === valRange.fromMin}
-          >
-            <SvgMinus />
-          </button>
-          <button
-            className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-            onClick={() => onClick('+', 'from')}
-            disabled={fromNight === valRange.fromMax}
-          >
-            <SvgPlus />
-          </button>
+        <div className={styles.header}>
+          {foodAll.map((item) => (
+            <div key={item.name} className={styles.header_item}>
+              <span className={styles.header_item_title}>{item.name}</span>
+              <span className={styles.header_item_descr}>
+                <FM id={item.translate} />
+              </span>
+            </div>
+          ))}
         </div>
-        <div className={styles.night_input_wrapper}>
-          <label htmlFor="toNight">
-            <FM id="mainform.night.to" />
-          </label>
-          <input
-            className={styles.night_input}
-            type="text"
-            id="toNight"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={toNight}
-            onChange={(e) => inputToOnchange(e.target.value)}
-            onBlur={(e) => inputToOnblur(e.target.value)}
-          />
-          <button
-            className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-            onClick={() => onClick('-', 'to')}
-            disabled={toNight === valRange.toMin}
-          >
-            <SvgMinus />
-          </button>
-          <button
-            className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-            onClick={() => onClick('+', 'to')}
-            disabled={toNight === valRange.toMax}
-          >
-            <SvgPlus />
-          </button>
-        </div>
-        <span className={styles.nights_count}>
-          <FM id="mainform.night.from" /> <b>{parseInt(fromNight)}</b>{' '}
-          <span className="tolower">
-            <FM id="mainform.night.to" />
-          </span>{' '}
-          <b>{parseInt(toNight)}</b> ночей
-        </span>
-        <span className={styles.days_count}>
-          ({parseInt(fromNight) + 1} - {parseInt(toNight) + 1}{' '}
-          <FM id="common.day5" />)
-        </span>
       </div>
       <div className="apply_btn_wrapper">
         {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}

@@ -7,10 +7,6 @@
   transform: scale(1.1);
 }
 
-.card:hover .favorites_btn {
-  opacity: 1;
-}
-
 .card_img {
   position: relative;
   border-radius: var(--def-radius);
@@ -212,7 +208,6 @@
   top: 20px;
   left: 20px;
   background-color: transparent;
-  opacity: 0;
   transition: opacity var(--base-transition);
 }
 

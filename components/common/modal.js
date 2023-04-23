@@ -83,6 +83,17 @@ const Favorites = dynamic(
   }
 );
 
+const OfferPageChangeRoom = dynamic(
+  () =>
+    import(
+      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/offerPageChangeRoom`
+    ),
+  {
+    ssr: false,
+    loading: () => <Loader />,
+  }
+);
+
 export default function Modal() {
   const getModal = useGetModal();
   const setModal = useSetModal();
@@ -93,7 +104,8 @@ export default function Modal() {
   const offersPageModalLayout =
     getModal.get === modal.offerPageChangePerson ||
     getModal.get === modal.offerPageChangeNight ||
-    getModal.get === modal.offerPageOrder;
+    getModal.get === modal.offerPageOrder ||
+    getModal.get === modal.offerPageChangeRoom;
 
   const [isOpened, setIsOpened] = useState(false);
 
@@ -207,6 +219,9 @@ export default function Modal() {
               )}
               {getModal.get === modal.offerPageChangeNight && (
                 <OfferPageChangeNight closeHandler={closeHandler} />
+              )}
+              {getModal.get === modal.offerPageChangeRoom && (
+                <OfferPageChangeRoom closeHandler={closeHandler} />
               )}
               {getModal.get === modal.offerPageOrder && (
                 <OfferPageOrder closeHandler={closeHandler} />

@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     let number = 0;
     async function apiSearch(number) {
       const url = `${process.env.OPERATOR_API}${api_version}/tours/getResults?number=${number}&transport=${transport}&from=${from}&to=${to}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${nights}&nightsTo=${nightsTo}&people=${people}&access_token=${process.env.OPERATOR_ACCESS_TOKEN}`;
-      console.log('url', url);
+
       const res = await fetch(url)
         .then((response) => {
           if (response.status === 200) {

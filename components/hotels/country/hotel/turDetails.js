@@ -418,7 +418,10 @@ export default function TurDetails({ data, country, hotel }) {
             <span>
               <FM id="offer_page.room_food" />
             </span>
-            <button className={styles.change_btn}>
+            <button
+              className={styles.change_btn}
+              onClick={() => setModal({ get: modal.offerPageChangeRoom })}
+            >
               <FM id="common.change" />
             </button>
           </div>

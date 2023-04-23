@@ -128,7 +128,7 @@
   "modal.leadrequestcall.schedule": "График работы",
   "modal.subtitle.leadrequestcall": "Заказать звонок",
   "modal.title.offerpageorder": "Оформление заказа",
-  "modal.offerpageorder.p": "Для покупки тура онлайн отправьте форму заказа, а также фото документов в мессенджер.",
+  "modal.offerpageorder": "Для покупки тура онлайн отправьте форму заказа, а также фото документов в мессенджер.",
   "modal.offerpageorder.m1": "Отправить с помощью Telegram",
   "modal.offerpageorder.m2": "Отправить с помощью Viber",
   "modal.offerpageorder.inp.email.p": "Почта",

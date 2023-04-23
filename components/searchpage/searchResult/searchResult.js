@@ -329,10 +329,19 @@ export default function SearchResult() {
           setSearchInProgress(false);
         } else {
           if (number > 12) {
-            setIsLoading(false);
-            setSearchInProgress(false);
-            setError(true);
-            return;
+            if (data.total > 0) {
+              setApiRes(data);
+              ResultHandler(data);
+              setShow(true);
+              setIsLoading(false);
+              setSearchInProgress(false);
+              return;
+            } else {
+              setIsLoading(false);
+              setSearchInProgress(false);
+              setError(true);
+              return;
+            }
           }
           setTimeout(async () => {
             number++;
@@ -430,7 +439,7 @@ export default function SearchResult() {
     <>
       <div style={filterData.btnTrigger ? { opacity: '.5' } : {}}>
         {isLoading && <Loader />}
-        {show && apiRes.lastResult && (
+        {show && (
           <MemoCards
             hotels={apiData.hotelsArr}
             step={step}

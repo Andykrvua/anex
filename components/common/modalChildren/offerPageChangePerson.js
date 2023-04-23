@@ -265,7 +265,7 @@ export default function Person({ closeHandler }) {
   };
 
   const changeOffer = (offer) => {
-    const locale = router.locale === 'ru' ? '' : `${router.locale}/`;
+    const locale = router.locale === 'ru' ? '' : `/${router.locale}`;
     const newPerson = { adult, child, childAge };
     const people = paramsToString(newPerson);
 

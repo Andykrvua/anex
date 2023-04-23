@@ -114,6 +114,7 @@ export const modal = {
   hotelCardsMap: 'hotelCardsMap',
   offerPageChangePerson: 'offerPageChangePerson',
   offerPageChangeNight: 'offerPageChangeNight',
+  offerPageChangeRoom: 'offerPageChangeRoom',
   offerPageOrder: 'offerPageOrder',
 };
 
@@ -193,6 +194,15 @@ export const foodFilterItems = {
   uai: 'result.food.uai',
 };
 
+// food variants for modal change room search
+export const foodAll = [
+  { name: 'AI', translate: 'result.food.ai' },
+  { name: 'FB', translate: 'result.food.fb' },
+  { name: 'HB', translate: 'result.food.hb' },
+  { name: 'BB', translate: 'result.food.bb' },
+  { name: 'OB', translate: 'result.food.ob' },
+];
+
 // code pop country from to modal
 export const popCountryCode = [
   'egypt',
@@ -209,19 +219,19 @@ export const popCountryCode = [
 /**
  * "id": 3342,
  * "name": "Center",
- *            
+ *
  * "id": 3371,
  * "name": "Itaka",
- * 
+ *
  * "id": 3384,
  * "name": "Poland",
- * 
+ *
  * "id": 3372,
  * "name": "Rainbow",
- * 
+ *
  * "id": 3326,
  * "name": "Tour-Group",
- * 
+ *
  * "id": 2700,
  * "name": "TPG",
  */

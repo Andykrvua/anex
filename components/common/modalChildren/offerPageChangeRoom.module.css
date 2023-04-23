@@ -1,0 +1,25 @@
+.popup_scrollable_content {
+  justify-content: center;
+  text-align: center;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.header_item {
+  display: flex;
+  flex-direction: column;
+}
+
+.header_item_title {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.header_item_descr {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--primary-soft-light);
+}
