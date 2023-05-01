@@ -51,6 +51,7 @@ function App({ Component, pageProps, navData }) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
+        <meta name="google-site-verification" content="pyXKl8BzwOVBWBhNCUrAZz8kRfbCIY2wT06cObZDFFQ" />
       </Head>
       <Layout navData={navData}>
         <Component {...pageProps} />

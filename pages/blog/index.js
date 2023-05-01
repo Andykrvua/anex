@@ -17,7 +17,6 @@ export default function Blog({
   countryList,
   pageSettings,
 }) {
-  console.log('pageSettings', pageSettings);
   const intl = useIntl();
 
   const br_arr = [{ title: intl.formatMessage({ id: 'links.blog' }) }];
