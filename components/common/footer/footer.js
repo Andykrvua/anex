@@ -163,6 +163,8 @@ export default function Footer() {
               <FM id="footer.t3" />
             </h4>
             <ul className={styles.list}>
+              <li><FM id="vs_discl" /><br/><FM id="vs_discl2" /></li>
+              <li>Пн - Пт: 11:00 – 19:00<br/>Сб: 11:00 – 17:00</li>
               <li>
                 <FM id="footer.address" />
               </li>

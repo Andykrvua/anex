@@ -8,10 +8,10 @@ const options = {
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_ID,
-      clientSecret: process.env.FACEBOOK_SECRET,
-    }),
+    // FacebookProvider({
+    //   clientId: process.env.FACEBOOK_ID,
+    //   clientSecret: process.env.FACEBOOK_SECRET,
+    // }),
   ],
 };
 

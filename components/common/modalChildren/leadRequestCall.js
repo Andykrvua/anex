@@ -87,6 +87,7 @@ export default function LeadRequestCall({ closeHandler }) {
 
   return (
     <div className={styles.requestcall}>
+      <p className={styles.descr}>{intl.formatMessage({ id: 'vs_discl' })}<br/>{intl.formatMessage({ id: 'vs_discl2' })}</p>
       <div className={styles.messendgers}>
         <MessendgersLinks />
       </div>
