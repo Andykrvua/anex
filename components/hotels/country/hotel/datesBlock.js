@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import styles from './turDetails.module.css';
 import Loader from 'components/common/loader';
+import { useRouter } from 'next/router';
 
 export default function DurationBlock({ offerData, data }) {
   const [datesRow, setDatesRow] = useState([]);
@@ -8,6 +9,8 @@ export default function DurationBlock({ offerData, data }) {
   const [nightsRange, setNightsRange] = useState([]);
   const [firstMatrixFill, setFirstMatrixFill] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   // res from api
   const [apiDataRes, setApiDataRes] = useState({});
@@ -26,7 +29,7 @@ export default function DurationBlock({ offerData, data }) {
   const NewOffer = ({ nights, day, data }) => {
     let price = '';
     let current = false;
-    if (offerData.d === day && offerData.nh === nights) {
+    if (offerData.d === day && offerData.n === nights) {
       current = true;
     }
 
@@ -41,14 +44,14 @@ export default function DurationBlock({ offerData, data }) {
           !current ? (
             <a
               className={styles.offer_link}
-              href={`/hotels/${data.country}/${data.hotel}/?offer=${
+              href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${data.country}/${data.hotel}/?offer=${
                 apiDataRes[day][nights].i
               }&transport=${data.transport}&from=${data.from}&fromname=${
                 data.fromname
               }&to=${data.to}&checkIn=${apiDataRes[day][nights].d}&checkTo=${
                 apiDataRes[day][nights].dt
-              }&nights=${apiDataRes[day][nights].nh}&nightsTo=${
-                apiDataRes[day][nights].nh + 5
+              }&nights=${apiDataRes[day][nights].n}&nightsTo=${
+                apiDataRes[day][nights].n + 5
               }&people=${data.people}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -96,7 +99,7 @@ export default function DurationBlock({ offerData, data }) {
       Object.entries(value).forEach(([hotelId, data]) => {
         Object.entries(data.offers).forEach(([offerId, offerValue]) => {
           const dateStart = offerValue.d;
-          const night = offerValue.nh;
+          const night = offerValue.n;
           if (!matrixData[dateStart]) {
             matrixData[dateStart] = {};
           }
@@ -164,6 +167,7 @@ export default function DurationBlock({ offerData, data }) {
       nights: nightsRange[0],
       nightsTo: nightsRange[nightsRange.length - 1],
     };
+
     const search = await fetch(`/api/endpoints/isOfferSearchVariants/`, {
       method: 'POST',
       headers: {
@@ -196,7 +200,7 @@ export default function DurationBlock({ offerData, data }) {
 
   const calcNightsRow = () => {
     const nightRow = [];
-    const currentNights = Number(offerData?.nh);
+    const currentNights = Number(offerData?.n);
 
     if (
       currentNights - 2 >= nightsMinMaxRange[0] &&

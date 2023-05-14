@@ -12,7 +12,7 @@ import {
 import Header from 'components/mainform/popups/header';
 import { svgNight } from 'components/mainform/form-fields/svg';
 import styles from './offerPageChangeRoom.module.css';
-import { useGetOfferParams } from 'store/store';
+import { useGetOfferParams, useGetCurrentOffer } from 'store/store';
 import Loader from 'components/common/loader';
 import { mainFormNightValidationRange as valRange } from 'utils/constants';
 import { FormattedMessage as FM } from 'react-intl';
@@ -25,6 +25,7 @@ export default function Room({ closeHandler }) {
   const scrollable = useRef(null);
 
   const getOfferParams = useGetOfferParams();
+  const getCurrentOffer = useGetCurrentOffer();
 
   const router = useRouter();
 
@@ -33,18 +34,11 @@ export default function Room({ closeHandler }) {
 
   const [loading, setLoading] = useState(false);
   const [resMessage, setResMessage] = useState('');
+  const [offers, setOffers] = useState([]);
+  const [rooms, setRooms] = useState([]);
 
   const [fromNight, setFromNight] = useState(Number(getOfferParams.nights));
   const [toNight, setToNight] = useState(Number(getOfferParams.nightsTo));
-
-  useEffect(() => {
-    if (size.width < maxWidth) {
-      disableScroll(scrollable.current);
-    }
-    return () => {
-      clear();
-    };
-  }, [size.width]);
 
   function validate(str, min, max) {
     return str >= min && str <= max;
@@ -118,17 +112,26 @@ export default function Room({ closeHandler }) {
     }
   };
 
-  const checkVariants = async (newNight) => {
+  const getUniqueRooms = (arr) => {
+    // eslint-disable-next-line
+    const unique = new Set();
+    arr.forEach((obj) => {
+      unique.add(obj.r);
+    });
+    return Array.from(unique);
+  }
+
+  const checkVariants = async () => {
     setLoading(true);
 
     const postData = {
       from: getOfferParams.from,
       to: getOfferParams.hotelId,
       transport: getOfferParams.transport,
-      checkIn: getOfferParams.checkIn,
+      checkIn: getCurrentOffer.d,
       checkTo: getOfferParams.checkTo,
-      nights: newNight.from,
-      nightsTo: newNight.to,
+      nights: getCurrentOffer.n,
+      nightsTo: getCurrentOffer.n,
       people: getOfferParams.people,
     };
 
@@ -147,13 +150,16 @@ export default function Room({ closeHandler }) {
 
     if (search?.ok) {
       setLoading(false);
+      
       if (search.data.total) {
         ResultHandler(search.data.results);
       } else {
         setResMessage(
-          'В этом отеле нет предложений с такой длительностью. Попробуйте выбрать другую дату'
+          'В этом отеле нет других типов номеров и питания. Попробуйте выбрать другую дату или изменить длительность'
         );
       }
+
+      console.log('search', search);
     } else {
       setLoading(false);
       /* eslint-disable-next-line */
@@ -164,16 +170,16 @@ export default function Room({ closeHandler }) {
   const ResultHandler = (apiData) => {
     const resultData = [];
 
-    const { dateStart, food, offer } = getOfferParams;
+    const { d, n, nh } = getCurrentOffer;
 
-    // parse api res from create array and find the same food, daystart, night count
-    Object.entries(apiData).forEach(([operatorId, value]) => {
-      Object.entries(value).forEach(([hotelId, data]) => {
-        Object.entries(data.offers).forEach(([offerId, offerValue]) => {
+    // parse api res from create array and find the same night, hotel night, day start
+    Object.entries(apiData).forEach(([_operatorId, value]) => {
+      Object.entries(value).forEach(([_hotelId, data]) => {
+        Object.entries(data.offers).forEach(([_offerId, offerValue]) => {
           if (
-            offerValue.fn === food &&
-            offerValue.d === dateStart &&
-            offerValue.i !== offer
+            offerValue.d === d &&
+            offerValue.n === n &&
+            offerValue.nh === nh
           ) {
             resultData.push(offerValue);
           }
@@ -181,13 +187,14 @@ export default function Room({ closeHandler }) {
       });
     });
 
-    // find the same food and sort min price
+    // sort min price, minimum 1 offer = current offer
     const sortedData = resultData.sort((a, b) => a.pl - b.pl);
-    if (sortedData.length) {
-      changeOffer(sortedData[0]);
+    if (sortedData.length !== 1) {
+      setRooms(getUniqueRooms(sortedData))
+      setOffers(sortedData);
     } else {
       setResMessage(
-        'В этом отеле нет предложений с вашими параметрами для такой длительности. Попробуйте выбрать другую дату или изменить параметры питания'
+        'В этом отеле нет других типов номеров и питания. Попробуйте выбрать другую дату или изменить длительность'
       );
     }
   };
@@ -208,12 +215,63 @@ export default function Room({ closeHandler }) {
     router.reload();
   };
 
+  const Offer = ({food, room}) => {
+
+    const result = offers.filter(item => item.f.toUpperCase() === food && item.r === room)
+
+    if (result.length > 1) {
+      result.sort((a, b) => a.pl - b.pl);
+    }
+    else if (result.length === 0) {
+      return null
+    }
+
+    return (
+      <div className={`${styles.room_row_item} ${result[0].i === getCurrentOffer.i ? styles.room_row_item_current : '' }`}>
+        <a className={styles.offer_link}
+        href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${getOfferParams.country}/${getOfferParams.hotel}/?offer=${
+          result[0].i
+        }&transport=${result[0].t}&from=${result[0].c}&fromname=${
+          getOfferParams.fromname
+        }&to=${getOfferParams.to}&checkIn=${result[0].d}&checkTo=${
+          getOfferParams.checkTo
+        }&nights=${result[0].n}&nightsTo=${
+          getOfferParams.nightsTo
+        }&people=${result[0].a}`}
+        target="_blank"
+        rel="noopener noreferrer">
+          <span className={`${styles.room_row_item_title} ${result[0].i === getCurrentOffer.i ? styles.room_row_item_title_current : '' }`}>
+            {new Intl.NumberFormat('uk-UA', {
+              maximumFractionDigits: 0,
+              minimumFractionDigits: 0,
+            }).format(result[0].pl)}
+          </span>
+          <span className={`${styles.room_row_item_descr} ${result[0].i === getCurrentOffer.i ? styles.room_row_item_descr_current : '' }`}>
+            грн
+          </span>
+        </a>
+      </div>
+    )
+  }
+
+  useEffect(() => {
+    if (size.width < maxWidth) {
+      disableScroll(scrollable.current);
+    }
+    return () => {
+      clear();
+    };
+  }, [size.width]);
+
+  useEffect(() => {
+    checkVariants()
+  }, []);
+
   return (
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
       <Header closeModalHandler={closeHandler} svg={svgNight} />
       <h3 className="title">
-        {/* <FM id="mainform.night.t" /> */}
-        Номер, питание
+        <FM id="offer_page.room_food" />
       </h3>
       <div
         className={`${styles.popup_scrollable_content} popup_scrollable_content`}
@@ -229,6 +287,22 @@ export default function Room({ closeHandler }) {
             </div>
           ))}
         </div>
+        <div className={styles.room}>
+          {rooms.map(room => (
+            <div key={room} className={styles.room_item}>
+              <div className={styles.room_item_name}>
+                {room}
+              </div>
+              <div  className={styles.room_row}>
+              {foodAll.map((food) => (
+                <div key={food.name} className={styles.room_row_item_wrapper}>
+                  <Offer food={food.name} room={room} />
+                </div>
+              ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="apply_btn_wrapper">
         {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
@@ -236,7 +310,8 @@ export default function Room({ closeHandler }) {
         <button
           className="apply_btn"
           onClick={selectedHandler}
-          disabled={loading}
+          // disabled={loading}
+          disabled
         >
           <FM id="common.apply" />
         </button>

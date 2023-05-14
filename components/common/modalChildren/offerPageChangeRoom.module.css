@@ -6,6 +6,7 @@
 .header {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  margin-bottom: 15px;
 }
 
 .header_item {
@@ -22,4 +23,68 @@
   font-size: 12px;
   line-height: 12px;
   color: var(--primary-soft-light);
+}
+
+.room {}
+
+.room_item {
+  margin-bottom: 10px;
+}
+
+.room_item_name {
+  padding: 12px 15px 10px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 700;
+}
+
+.room_row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.room_row_item_wrapper {
+  border: 1px solid var(--line);
+  border-right: none;
+}
+
+.room_row_item {
+  display: flex;
+  justify-content: center;
+}
+
+.room_row_item a {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 4px 12px;
+}
+
+.room_row_item_current {
+  background-color: var(--green);
+}
+
+.room_row_item_wrapper:first-child {
+  border-top-left-radius: var(--def-radius);
+  border-bottom-left-radius: var(--def-radius);
+}
+
+.room_row_item_wrapper:last-child {
+  border-right: 1px solid var(--line);
+  border-top-right-radius: var(--def-radius);
+  border-bottom-right-radius: var(--def-radius);
+}
+
+.room_row_item_title {
+  line-height: 14px;
+}
+
+.room_row_item_descr {
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--primary-light);
+}
+
+.room_row_item_title_current, .room_row_item_descr_current {
+  color: var(--font-white);
 }

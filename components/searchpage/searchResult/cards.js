@@ -213,6 +213,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
                 <span className={styles.order_text__duration}>
                   <span>
                     {item.nh} {decl(item.nh)}
+                    {item.n - item.nh !== 0 ? ` + ${item.n - item.nh} ${intl.formatMessage({id: 'hotel_card.tour_time'})}` : ''}
                   </span>
                 </span>
                 <span className={styles.order_text__people}>

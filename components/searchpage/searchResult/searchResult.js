@@ -417,7 +417,7 @@ export default function SearchResult() {
     }
 
     const params = {
-      transport: up.transport,
+      transport: up.transport ? up.transport : 'no',
       from: up.value,
       fromname,
       to: down.value,
