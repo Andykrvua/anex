@@ -3,6 +3,18 @@
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
+  webpack: (config) => {
+    config.resolve = {
+      ...config.resolve,
+      fallback: {
+        fs: false,
+        path: false,
+        os: false,
+        process: false,
+      },
+    };
+    return config;
+  },
   i18n: {
     locales: ['ru', 'uk'],
     defaultLocale: 'ru',

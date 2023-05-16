@@ -1,11 +1,13 @@
-import { server } from "utils/utils";
+import { server } from 'utils/utils';
 import {
   getAPICountryList,
   getCountrySubSubpageSlug,
   getCountrySubpagesSlugs,
-} from "utils/fetch";
+} from 'utils/fetch';
 
-export const getCountriesSiteMap = async () => {
+const Promise = require('promise');
+
+export default async function getCountriesSiteMap() {
   const countries = await getAPICountryList();
 
   const countriesPaths = countries?.data
@@ -24,7 +26,6 @@ export const getCountriesSiteMap = async () => {
   let countriesSubPagesData = [];
 
   if (countries?.data) {
-    /* eslint-disable-next-line */
     await Promise.all(
       countries?.data.map(({ slug }) =>
         getCountrySubpagesSlugs(slug).then(
@@ -55,16 +56,15 @@ export const getCountriesSiteMap = async () => {
 
   let countriesSubPagesSubPagesData = [];
 
-  /* eslint-disable-next-line */
   await Promise.all(
     countriesSubPagesData.map(
-      ({ country_slug: { slug = "" }, subpage_slug, subsubpage_slug }) =>
+      ({ country_slug: { slug = '' }, subpage_slug, subsubpage_slug }) =>
         subsubpage_slug
           ? getCountrySubSubpageSlug(
               slug,
               subpage_slug,
               subsubpage_slug,
-              "uk"
+              'uk'
             ).then((resp) => {
               countriesSubPagesSubPagesData = [
                 ...countriesSubPagesSubPagesData,
@@ -105,4 +105,4 @@ export const getCountriesSiteMap = async () => {
     countriesSubPagesSubPagesPaths,
     countriesSubPagesSubPagesPathsUk,
   };
-};
+}
