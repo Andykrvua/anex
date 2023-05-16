@@ -32,6 +32,7 @@ export const getBlogSitemap = async () => {
       url: `${server}/uk/blog/${slug}/`,
       data: null,
     }));
+    /* eslint-disable-next-line */
     await Promise.all(
       blogCountriesData.data.map(({ slug }) =>
         getPostsFromCountry(slug, 1).then(

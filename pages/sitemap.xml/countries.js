@@ -24,6 +24,7 @@ export const getCountriesSiteMap = async () => {
   let countriesSubPagesData = [];
 
   if (countries?.data) {
+    /* eslint-disable-next-line */
     await Promise.all(
       countries?.data.map(({ slug }) =>
         getCountrySubpagesSlugs(slug).then(
@@ -54,6 +55,7 @@ export const getCountriesSiteMap = async () => {
 
   let countriesSubPagesSubPagesData = [];
 
+  /* eslint-disable-next-line */
   await Promise.all(
     countriesSubPagesData.map(
       ({ country_slug: { slug = "" }, subpage_slug, subsubpage_slug }) =>
