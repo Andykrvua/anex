@@ -1,11 +1,10 @@
-import { staticPaths, staticPathsUk } from "./staticPaths";
-import { getBlogSitemap } from "./blog";
-import { getCountriesSiteMap } from "./countries";
-import { getToursSiteMap } from "./tours";
+import getStaticPaths from "./staticPaths";
+import getBlogSitemap from "./blog";
+import getCountriesSiteMap from "./countries";
+import getToursSiteMap from "./tours";
 import { server } from "utils/utils";
 
-const Sitemap = ({ data }) => {
-  console.log(data);
+const Sitemap = () => {
   return null;
 };
 
@@ -28,7 +27,8 @@ export const getServerSideProps = async ({ res }) => {
   } = await getCountriesSiteMap();
 
   const { toursPaths, toursPathUk } = await getToursSiteMap();
-
+  const {staticPaths, staticPathsUk} =  getStaticPaths()
+  
   const paths = [
     { url: server, date: null },
     { url: `${server}/uk/`, date: null },

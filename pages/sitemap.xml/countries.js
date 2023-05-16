@@ -5,7 +5,9 @@ import {
   getCountrySubpagesSlugs,
 } from "utils/fetch";
 
-export const getCountriesSiteMap = async () => {
+const Promise = require('promise');
+
+export default async function getCountriesSiteMap(){
   const countries = await getAPICountryList();
 
   const countriesPaths = countries?.data
@@ -103,4 +105,4 @@ export const getCountriesSiteMap = async () => {
     countriesSubPagesSubPagesPaths,
     countriesSubPagesSubPagesPathsUk,
   };
-};
+}

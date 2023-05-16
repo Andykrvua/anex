@@ -4,8 +4,9 @@ const {
   getPostsFromCountry,
 } = require("utils/fetch");
 const { server } = require("utils/utils");
+const Promise = require('promise');
 
-export const getBlogSitemap = async () => {
+export default async function getBlogSitemap(){
   const posts = await getPostsList(1);
   const blogPaths = posts.data.map(({ slug, date_created }) => ({
     url: `${server}/blog/${slug}/`,
@@ -64,4 +65,4 @@ export const getBlogSitemap = async () => {
     blogCountriesSubPaths,
     blogCountriesSubPathsUk,
   };
-};
+}
