@@ -50,20 +50,14 @@ export const getServerSideProps = async ({ res }) => {
     ...toursPathUk,
   ];
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-      ${paths
-        .map(({ url, date }) => {
-          return `
-            <url >
-              <loc>${url}</loc>
-              <lastmod>${date ?? new Date().toISOString()}</lastmod>
-            </url>
-          `;
-        })
-        .join('')}
-    </urlset>
-`;
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths
+    .map(({ url, date }) => {
+      return `<url><loc>${url}</loc><lastmod>${
+        date ?? new Date().toISOString()
+      }</lastmod></url>`;
+    })
+    .join('')}</urlset>`;
+
   res.setHeader('Content-Type', 'application/xml');
   res.write(sitemap);
   res.end();
