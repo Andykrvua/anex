@@ -1,8 +1,8 @@
-import getStaticPaths from "./staticPaths";
-import getBlogSitemap from "./blog";
-import getCountriesSiteMap from "./countries";
-import getToursSiteMap from "./tours";
-import { server } from "utils/utils";
+import getStaticPaths from './staticPaths';
+import getBlogSitemap from './blog';
+import getCountriesSiteMap from './countries';
+import getToursSiteMap from './tours';
+import { server } from 'utils/utils';
 
 const Sitemap = () => {
   return null;
@@ -27,8 +27,8 @@ export const getServerSideProps = async ({ res }) => {
   } = await getCountriesSiteMap();
 
   const { toursPaths, toursPathUk } = await getToursSiteMap();
-  const {staticPaths, staticPathsUk} =  getStaticPaths()
-  
+  const { staticPaths, staticPathsUk } = getStaticPaths();
+
   const paths = [
     { url: server, date: null },
     { url: `${server}/uk/`, date: null },
@@ -50,21 +50,15 @@ export const getServerSideProps = async ({ res }) => {
     ...toursPathUk,
   ];
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-      ${paths
-        .map(({ url, date }) => {
-          return `
-            <url >
-              <loc>${url}</loc>
-              <lastmod>${date ?? new Date().toISOString()}</lastmod>
-            </url>
-          `;
-        })
-        .join("")}
-    </urlset>
-`;
-  res.setHeader("Content-Type", "text/json");
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${paths
+    .map(({ url, date }) => {
+      return `<url><loc>${url}</loc><lastmod>${
+        date ?? new Date().toISOString()
+      }</lastmod></url>`;
+    })
+    .join('')}</urlset>`;
+
+  res.setHeader('Content-Type', 'application/xml');
   res.write(sitemap);
   res.end();
 
@@ -73,7 +67,7 @@ export const getServerSideProps = async ({ res }) => {
       data: {
         ru: {
           pages: staticPaths,
-          blog: blogPaths,
+          blog: blogPaths ?? [],
           blogCountries: blogCountriesPaths,
           blogCountriesSub: blogCountriesSubPaths,
           countries: countriesPaths,
@@ -82,7 +76,7 @@ export const getServerSideProps = async ({ res }) => {
         },
         uk: {
           pages: staticPathsUk,
-          blog: blogPathsUk,
+          blog: blogPathsUk ?? [],
           blogCountries: blogCountriesPathsUk,
           blogCountriesSub: blogCountriesSubPathsUk,
           countries: countriesPathsUk,

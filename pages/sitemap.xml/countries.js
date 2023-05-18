@@ -1,13 +1,13 @@
-import { server } from "utils/utils";
+import { server } from 'utils/utils';
 import {
   getAPICountryList,
   getCountrySubSubpageSlug,
   getCountrySubpagesSlugs,
-} from "utils/fetch";
+} from 'utils/fetch';
 
 const Promise = require('promise');
 
-export default async function getCountriesSiteMap(){
+export default async function getCountriesSiteMap() {
   const countries = await getAPICountryList();
 
   const countriesPaths = countries?.data
@@ -58,13 +58,13 @@ export default async function getCountriesSiteMap(){
 
   await Promise.all(
     countriesSubPagesData.map(
-      ({ country_slug: { slug = "" }, subpage_slug, subsubpage_slug }) =>
+      ({ country_slug: { slug = '' }, subpage_slug, subsubpage_slug }) =>
         subsubpage_slug
           ? getCountrySubSubpageSlug(
               slug,
               subpage_slug,
               subsubpage_slug,
-              "uk"
+              'uk'
             ).then((resp) => {
               countriesSubPagesSubPagesData = [
                 ...countriesSubPagesSubPagesData,

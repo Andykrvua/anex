@@ -1,10 +1,9 @@
-import { getAllToursTextPages } from "utils/fetch";
-import { server } from "utils/utils";
+import { getAllToursTextPages } from 'utils/fetch';
+import { server } from 'utils/utils';
 
-
-export default async function getToursSiteMap(){
-  const toursRu = await getAllToursTextPages("ru");
-  const toursUk = await getAllToursTextPages("uk");
+export default async function getToursSiteMap() {
+  const toursRu = await getAllToursTextPages('ru');
+  const toursUk = await getAllToursTextPages('uk');
   let toursPaths = [];
   let toursPathUk = [];
 

@@ -1,53 +1,23 @@
-import * as fs from "fs";
-import { server } from "utils/utils";
+import { server } from 'utils/utils';
 
-export default function getCountriesSiteMap(){
-  const staticPaths = fs
-  .readdirSync("pages")
-  .filter((staticPage) => {
-    return ![
-      "api",
-      "_app.js",
-      "_document.js",
-      "404.js",
-      "sitemap.xml",
-      "index.js",
-      "500.js",
-      "hotels",
-      "search",
-      "faq.js",
-      "search.js",
-      "about-us",
-    ].includes(staticPage);
-  })
-  .map((staticPagePath) => {
-    return { url: `${server}/${staticPagePath.split(".js")[0]}/`, date: null };
-  });
+export default function getCountriesSiteMap() {
+  const staticPaths = [
+    { 'url': `${server}/blog/`, 'date': null },
+    { 'url': `${server}/contacts/`, 'date': null },
+    { 'url': `${server}/countries/`, 'date': null },
+    { 'url': `${server}/podarochnye-sertifikaty/`, 'date': null },
+    { 'url': `${server}/reviews/`, 'date': null },
+    { 'url': `${server}/tours/`, 'date': null }
+  ]
 
-  const staticPathsUk = fs
-    .readdirSync("pages")
-    .filter((staticPage) => {
-      return ![
-        "api",
-        "_app.js",
-        "_document.js",
-        "404.js",
-        "sitemap.xml",
-        "index.js",
-        "500.js",
-        "hotels",
-        "search",
-        "faq.js",
-        "search.js",
-        "about-us",
-      ].includes(staticPage);
-    })
-    .map((staticPagePath) => {
-      return {
-        url: `${server}/uk/${staticPagePath.split(".js")[0]}/`,
-        date: null,
-      };
-    });
+  const staticPathsUk = [
+    { 'url': `${server}/uk/blog/`, 'date': null },
+    { 'url': `${server}/uk/contacts/`, 'date': null },
+    { 'url': `${server}/uk/countries/`, 'date': null },
+    { 'url': `${server}/uk/podarochnye-sertifikaty/`, 'date': null },
+    { 'url': `${server}/uk/reviews/`, 'date': null },
+    { 'url': `${server}/uk/tours/`, 'date': null }
+  ];
 
-    return ({staticPaths, staticPathsUk})
+  return { staticPaths, staticPathsUk };
 }
