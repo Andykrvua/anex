@@ -67,7 +67,7 @@ export const getServerSideProps = async ({ res }) => {
       data: {
         ru: {
           pages: staticPaths,
-          blog: blogPaths,
+          blog: blogPaths ?? [],
           blogCountries: blogCountriesPaths,
           blogCountriesSub: blogCountriesSubPaths,
           countries: countriesPaths,
@@ -76,7 +76,7 @@ export const getServerSideProps = async ({ res }) => {
         },
         uk: {
           pages: staticPathsUk,
-          blog: blogPathsUk,
+          blog: blogPathsUk ?? [],
           blogCountries: blogCountriesPathsUk,
           blogCountriesSub: blogCountriesSubPathsUk,
           countries: countriesPathsUk,
