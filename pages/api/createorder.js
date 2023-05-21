@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         // user: 'andrey.kallko@gmail.com',
         user: 'touragency123@gmail.com',
         // pass: 'xlktzputxoxckisl'
-        pass: 'rfnaqfqktzagdjzf',
+        pass: 'bdwttbeefvfxbjjq',
       },
     });
 
