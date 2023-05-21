@@ -119,7 +119,7 @@ export default function Room({ closeHandler }) {
       unique.add(obj.r);
     });
     return Array.from(unique);
-  }
+  };
 
   const checkVariants = async () => {
     setLoading(true);
@@ -150,7 +150,7 @@ export default function Room({ closeHandler }) {
 
     if (search?.ok) {
       setLoading(false);
-      
+
       if (search.data.total) {
         ResultHandler(search.data.results);
       } else {
@@ -190,7 +190,7 @@ export default function Room({ closeHandler }) {
     // sort min price, minimum 1 offer = current offer
     const sortedData = resultData.sort((a, b) => a.pl - b.pl);
     if (sortedData.length !== 1) {
-      setRooms(getUniqueRooms(sortedData))
+      setRooms(getUniqueRooms(sortedData));
       setOffers(sortedData);
     } else {
       setResMessage(
@@ -215,44 +215,74 @@ export default function Room({ closeHandler }) {
     router.reload();
   };
 
-  const Offer = ({food, room}) => {
+  const Offer = ({ food, room }) => {
+    let result = offers.filter(
+      (item) => item.f.toUpperCase() === food && item.r === room
+    );
 
-    const result = offers.filter(item => item.f.toUpperCase() === food && item.r === room)
+    console.log('result', result);
 
     if (result.length > 1) {
       result.sort((a, b) => a.pl - b.pl);
-    }
-    else if (result.length === 0) {
-      return null
+
+      const isCurrent = result.filter((item) => item.i === getCurrentOffer.i);
+
+      isCurrent.length ? (result = isCurrent) : null;
+    } else if (result.length === 0) {
+      return null;
     }
 
     return (
-      <div className={`${styles.room_row_item} ${result[0].i === getCurrentOffer.i ? styles.room_row_item_current : '' }`}>
-        <a className={styles.offer_link}
-        href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${getOfferParams.country}/${getOfferParams.hotel}/?offer=${
-          result[0].i
-        }&transport=${result[0].t}&from=${result[0].c}&fromname=${
-          getOfferParams.fromname
-        }&to=${getOfferParams.to}&checkIn=${result[0].d}&checkTo=${
-          getOfferParams.checkTo
-        }&nights=${result[0].n}&nightsTo=${
-          getOfferParams.nightsTo
-        }&people=${result[0].a}`}
-        target="_blank"
-        rel="noopener noreferrer">
-          <span className={`${styles.room_row_item_title} ${result[0].i === getCurrentOffer.i ? styles.room_row_item_title_current : '' }`}>
+      <div
+        className={`${styles.room_row_item} ${
+          result[0].i === getCurrentOffer.i ? styles.room_row_item_current : ''
+        }`}
+      >
+        <a
+          className={styles.offer_link}
+          href={
+            result[0].i !== getCurrentOffer.i
+              ? `${router.locale === 'uk' ? '/uk' : ''}/hotels/${
+                  getOfferParams.country
+                }/${getOfferParams.hotel}/?offer=${result[0].i}&transport=${
+                  result[0].t
+                }&from=${result[0].c}&fromname=${getOfferParams.fromname}&to=${
+                  getOfferParams.to
+                }&checkIn=${result[0].d}&checkTo=${
+                  getOfferParams.checkTo
+                }&nights=${result[0].n}&nightsTo=${
+                  getOfferParams.nightsTo
+                }&people=${result[0].a}`
+              : null
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span
+            className={`${styles.room_row_item_title} ${
+              result[0].i === getCurrentOffer.i
+                ? styles.room_row_item_title_current
+                : ''
+            }`}
+          >
             {new Intl.NumberFormat('uk-UA', {
               maximumFractionDigits: 0,
               minimumFractionDigits: 0,
             }).format(result[0].pl)}
           </span>
-          <span className={`${styles.room_row_item_descr} ${result[0].i === getCurrentOffer.i ? styles.room_row_item_descr_current : '' }`}>
+          <span
+            className={`${styles.room_row_item_descr} ${
+              result[0].i === getCurrentOffer.i
+                ? styles.room_row_item_descr_current
+                : ''
+            }`}
+          >
             грн
           </span>
         </a>
       </div>
-    )
-  }
+    );
+  };
 
   useEffect(() => {
     if (size.width < maxWidth) {
@@ -264,11 +294,15 @@ export default function Room({ closeHandler }) {
   }, [size.width]);
 
   useEffect(() => {
-    checkVariants()
+    checkVariants();
   }, []);
 
   return (
-    <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
+    <div
+      className="main_form_popup_mobile_wrapper"
+      ref={wrapperRef}
+      style={{ maxHeight: 'inherit', overflow: 'auto' }}
+    >
       <Header closeModalHandler={closeHandler} svg={svgNight} />
       <h3 className="title">
         <FM id="offer_page.room_food" />
@@ -288,17 +322,15 @@ export default function Room({ closeHandler }) {
           ))}
         </div>
         <div className={styles.room}>
-          {rooms.map(room => (
+          {rooms.map((room) => (
             <div key={room} className={styles.room_item}>
-              <div className={styles.room_item_name}>
-                {room}
-              </div>
-              <div  className={styles.room_row}>
-              {foodAll.map((food) => (
-                <div key={food.name} className={styles.room_row_item_wrapper}>
-                  <Offer food={food.name} room={room} />
-                </div>
-              ))}
+              <div className={styles.room_item_name}>{room}</div>
+              <div className={styles.room_row}>
+                {foodAll.map((food) => (
+                  <div key={food.name} className={styles.room_row_item_wrapper}>
+                    <Offer food={food.name} room={room} />
+                  </div>
+                ))}
               </div>
             </div>
           ))}
@@ -307,14 +339,13 @@ export default function Room({ closeHandler }) {
       <div className="apply_btn_wrapper">
         {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
         {loading && <Loader />}
-        <button
+        {/* <button
           className="apply_btn"
           onClick={selectedHandler}
-          // disabled={loading}
-          disabled
+          disabled={loading}
         >
           <FM id="common.apply" />
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 .popup_scrollable_content {
-  justify-content: center;
+  /* justify-content: center; */
+  justify-content: flex-start;
   text-align: center;
 }
 
@@ -25,7 +26,8 @@
   color: var(--primary-soft-light);
 }
 
-.room {}
+.room {
+}
 
 .room_item {
   margin-bottom: 10px;
@@ -85,6 +87,7 @@
   color: var(--primary-light);
 }
 
-.room_row_item_title_current, .room_row_item_descr_current {
+.room_row_item_title_current,
+.room_row_item_descr_current {
   color: var(--font-white);
 }
