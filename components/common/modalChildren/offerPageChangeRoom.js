@@ -3,18 +3,15 @@ import useOutsideClick from 'utils/clickOutside';
 import {
   useSetBodyScroll,
   getSize,
-  enableScroll,
   clear,
   disableScroll,
   maxWidth,
-  BODY,
 } from 'utils/useBodyScroll';
 import Header from 'components/mainform/popups/header';
 import { svgNight } from 'components/mainform/form-fields/svg';
 import styles from './offerPageChangeRoom.module.css';
 import { useGetOfferParams, useGetCurrentOffer } from 'store/store';
 import Loader from 'components/common/loader';
-import { mainFormNightValidationRange as valRange } from 'utils/constants';
 import { FormattedMessage as FM } from 'react-intl';
 import { useRouter } from 'next/router';
 import { foodAll } from 'utils/constants';
@@ -36,81 +33,6 @@ export default function Room({ closeHandler }) {
   const [resMessage, setResMessage] = useState('');
   const [offers, setOffers] = useState([]);
   const [rooms, setRooms] = useState([]);
-
-  const [fromNight, setFromNight] = useState(Number(getOfferParams.nights));
-  const [toNight, setToNight] = useState(Number(getOfferParams.nightsTo));
-
-  function validate(str, min, max) {
-    return str >= min && str <= max;
-  }
-
-  const onClick = (operation, input) => {
-    if (operation === '+') {
-      if (input === 'from') {
-        setFromNight((prev) => prev + 1);
-        if (fromNight + 3 > toNight) {
-          setToNight((prev) => prev + 1);
-        }
-      } else {
-        setToNight((prev) => prev + 1);
-      }
-    } else {
-      if (input === 'to') {
-        setToNight((prev) => prev - 1);
-        if (toNight - 3 < fromNight) {
-          setFromNight((prev) => prev - 1);
-        }
-      } else {
-        setFromNight((prev) => prev - 1);
-      }
-    }
-  };
-
-  const inputFromOnchange = (val) => {
-    if (isNaN(parseInt(val))) {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    } else {
-      setFromNight(parseInt(val));
-    }
-  };
-
-  const inputToOnchange = (val) => {
-    if (isNaN(parseInt(val))) {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    } else {
-      setToNight(parseInt(val));
-    }
-  };
-
-  const inputFromOnblur = (val) => {
-    if (validate(val, valRange.fromMin, valRange.fromMax)) {
-      setFromNight(parseInt(val));
-    } else {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    }
-  };
-
-  const inputToOnblur = (val) => {
-    if (validate(val, valRange.toMin, valRange.toMax)) {
-      setToNight(parseInt(val));
-    } else {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    }
-  };
-
-  const selectedHandler = () => {
-    const newNight = { from: fromNight, to: toNight };
-    setResMessage('');
-    checkVariants(newNight);
-
-    if (size.width < maxWidth) {
-      enableScroll(BODY);
-    }
-  };
 
   const getUniqueRooms = (arr) => {
     // eslint-disable-next-line
@@ -158,8 +80,6 @@ export default function Room({ closeHandler }) {
           'В этом отеле нет других типов номеров и питания. Попробуйте выбрать другую дату или изменить длительность'
         );
       }
-
-      console.log('search', search);
     } else {
       setLoading(false);
       /* eslint-disable-next-line */
@@ -199,28 +119,20 @@ export default function Room({ closeHandler }) {
     }
   };
 
-  const changeOffer = (offer) => {
-    const locale = router.locale === 'ru' ? '' : `/${router.locale}`;
-    const nights = { from: fromNight, to: toNight };
-
-    const newUrl = `${locale}/hotels/${getOfferParams.country}/${getOfferParams.hotel}/?offer=${offer.i}&transport=${offer.t}&from=${getOfferParams.from}&fromname=${getOfferParams.fromname}&to=${getOfferParams.to}&checkIn=${getOfferParams.checkIn}&checkTo=${getOfferParams.checkTo}&nights=${nights.from}&nightsTo=${nights.to}&people=${getOfferParams.people}`;
-    const newAs = newUrl;
-
-    window.history.pushState(
-      { ...window.history.state, as: newAs, url: newUrl },
-      '',
-      newAs
-    );
-    closeHandler();
-    router.reload();
-  };
-
   const Offer = ({ food, room }) => {
-    let result = offers.filter(
-      (item) => item.f.toUpperCase() === food && item.r === room
-    );
+    let result;
 
-    console.log('result', result);
+    if (food === 'AI') {
+      result = offers.filter(
+        (item) =>
+          item.f.toUpperCase() === food ||
+          (item.f.toUpperCase() === 'UAI' && item.r === room)
+      );
+    } else {
+      result = offers.filter(
+        (item) => item.f.toUpperCase() === food && item.r === room
+      );
+    }
 
     if (result.length > 1) {
       result.sort((a, b) => a.pl - b.pl);

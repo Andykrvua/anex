@@ -38,17 +38,23 @@ export default function DurationBlock({ offerData, data }) {
         price = apiDataRes[day][nights].pl;
       }
     }
+
+    if (current) {
+      price = offerData.pl;
+    }
     return (
       <>
         {price ? (
           !current ? (
             <a
               className={styles.offer_link}
-              href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${data.country}/${data.hotel}/?offer=${
-                apiDataRes[day][nights].i
-              }&transport=${data.transport}&from=${data.from}&fromname=${
-                data.fromname
-              }&to=${data.to}&checkIn=${apiDataRes[day][nights].d}&checkTo=${
+              href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${
+                data.country
+              }/${data.hotel}/?offer=${apiDataRes[day][nights].i}&transport=${
+                data.transport
+              }&from=${data.from}&fromname=${data.fromname}&to=${
+                data.to
+              }&checkIn=${apiDataRes[day][nights].d}&checkTo=${
                 apiDataRes[day][nights].dt
               }&nights=${apiDataRes[day][nights].n}&nightsTo=${
                 apiDataRes[day][nights].n + 5
