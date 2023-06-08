@@ -39,15 +39,15 @@ export default async function handler(req, res) {
       secure: false,
       auth: {
         // user: 'andrey.kallko@gmail.com',
-        user: 'touragency123@gmail.com',
+        user: 'anextoursender@gmail.com',
         // pass: 'xlktzputxoxckisl'
-        pass: 'bdwttbeefvfxbjjq',
+        pass: 'qttgibihiipdwgaz',
       },
     });
 
     await transporter.sendMail({
-      from: 'touragency123@gmail.com',
-      to: 'andrey.kallko@gmail.com',
+      from: 'anextoursender@gmail.com',
+      to: 'andrey.kallko@gmail.com, touragency123@gmail.com',
       subject: 'test',
       text: JSON.stringify(req.body),
     });
