@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Loader from 'components/common/loader';
 
-export default function Hotel({ data, hotel }) {
+export default function HotelSearch({ data, hotel }) {
   const br_arr = [{ title: hotel?.n }];
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
