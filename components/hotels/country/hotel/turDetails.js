@@ -23,6 +23,23 @@ export default function TurDetails({ data, country, hotel }) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const orderData = {
+    country: hotel.t.n,
+    city: hotel.c.n,
+    hotel: hotel.n,
+    stars: hotel.s.n,
+    duration: '',
+    dates: '',
+    transport: '',
+    room: '',
+    food: '',
+    people: '',
+    name: '',
+    phone: '',
+    mail: '',
+    link: '',
+  };
+
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
     id: 'common.night1',

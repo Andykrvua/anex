@@ -92,6 +92,7 @@ export default function SendOrder({ closeHandler }) {
       email,
       url: window.location.href,
       order_link: getCurrentOffer.bron,
+      order: getCurrentOffer,
     });
 
     if (res.ok) {
