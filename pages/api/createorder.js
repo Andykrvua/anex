@@ -121,7 +121,7 @@ export default async function handler(req, res) {
               <img
                 src="cid:logo"
                 style="display: block"
-                alt="Anex"
+                alt="ANEX Tour"
                 width="150"
                 height="39"
               />
@@ -142,7 +142,9 @@ export default async function handler(req, res) {
             req.body.item === 'lead_order_tour'
               ? `<b style="font-size: 16px">Привіт, ${req.body.name}!</b>
           <br />
-          Дякуємо за замовлення туру.`
+          Дякуємо за замовлення туру.<br />
+          Менеджер зв'яжеться з вами найближчим часом.
+          `
               : ''
           }
           ${

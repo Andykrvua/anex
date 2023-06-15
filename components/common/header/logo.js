@@ -7,7 +7,7 @@ export default function Logo({ location = '', closeBurgerHandler = null }) {
         <a className="logo_link" onClick={closeBurgerHandler}>
           <img
             src="/assets/img/logo.svg"
-            alt="Логотип"
+            alt="ANEX Tour"
             width="150"
             height="58"
           />
