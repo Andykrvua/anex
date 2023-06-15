@@ -55,7 +55,6 @@ export default async function handler(req, res) {
     };
 
     const messText = (val) => {
-      // return `${JSON.stringify(req.body)}`;
       switch (val.body.item) {
         case 'certificates':
           return `<p>Імʼя: <strong>${val.body?.name}</strong></p>
@@ -74,26 +73,29 @@ export default async function handler(req, res) {
           return `<p>Телефон: <strong>${val.body?.phone}</strong></p>
           <p>Відправлено зі сторінки: <strong>${val.body?.url}</strong></p>`;
         case 'lead_order_tour':
-          return `<p>Країна: <strong>${val.body?.name}</strong></p>
-          <p>Курорт (місто): <strong>${val.body?.url}</strong></p>
-          <p>Готель: <strong>${val.body?.url}</strong></p>
-          <p>Кількість зірок: <strong>${val.body?.url}</strong></p>
-          <p>Тривалість туру (ночей): <strong>${val.body?.url}</strong></p>
-          <p>Дати: <strong>${val.body?.url}</strong></p>
-          <p>Транспорт: <strong>${val.body?.url}</strong></p>
-          <p>Номер: <strong>${val.body?.url}</strong></p>
-          <p>Харчування: <strong>${val.body?.url}</strong></p>
-          <p>К-сть туристів: <strong>${val.body?.url}</strong></p>
+          return `<p>Країна: <strong>${val.body?.order?.country}</strong></p>
+          <p>Курорт (місто): <strong>${val.body?.order?.city}</strong></p>
+          <p>Готель: <strong>${val.body?.order?.hotel}</strong></p>
+          <p>Кількість зірок: <strong>${val.body?.order?.stars}</strong></p>
+          <p>Тривалість туру (ночей): <strong>${val.body?.order?.duration}</strong></p>
+          <p>Дати: <strong>${val.body?.order?.dates}</strong></p>
+          <p>Транспорт: <strong>${val.body?.order?.transport}</strong></p>
+          <p>Номер: <strong>${val.body?.order?.room}</strong></p>
+          <p>Харчування: <strong>${val.body?.order?.food}</strong></p>
+          <p>К-сть туристів: <strong>${val.body?.order?.people}</strong></p>
+          <p>Вартість: <strong>${val.body?.order?.cost}</strong> грн</p>
           <br />
-          <p>Замовник: <strong>${val.body?.url}</strong></p>
-          <p>Телефон: <strong>${val.body?.url}</strong></p>
-          <p>Пошта: <strong>${val.body?.url}</strong></p>
+          <p>Замовник: <strong>${val.body?.name}</strong></p>
+          <p>Телефон: <strong>${val.body?.phone}</strong></p>
+          <p>Пошта: <strong>${val.body?.email}</strong></p>
+          <p>Ідентифікатор туру: <strong>${val.body?.order?.id}</strong></p>
           <p>Посилання на тур: <strong>${val.body?.url}</strong></p>`;
 
         default:
           return 'error message';
       }
     };
+
     const message = (req) => {
       return `<body
       style="
@@ -250,24 +252,22 @@ export default async function handler(req, res) {
       </table>
     </body>`;
     };
+
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
-        // user: 'andrey.kallko@gmail.com',
-        user: 'anextoursender@gmail.com',
-        // pass: 'xlktzputxoxckisl'
-        pass: 'qttgibihiipdwgaz',
+        user: process.env.MAIL_SENDER,
+        pass: process.env.MAIL_SENDER_PASS,
       },
     });
 
     await transporter.sendMail({
-      from: 'anextoursender@gmail.com',
+      from: process.env.MAIL_SENDER,
       // to: 'andrey.kallko@gmail.com, touragency123@gmail.com',
-      to: 'andrey.kallko@gmail.com',
+      to: process.env.MAIL_TARGET,
       subject: subject(req),
-      // html: `<div>${JSON.stringify(req.body)}</div>`,
       html: message(req),
       attachments: [
         {
@@ -287,6 +287,32 @@ export default async function handler(req, res) {
         },
       ],
     });
+
+    if (req?.body?.email) {
+      await transporter.sendMail({
+        from: process.env.MAIL_SENDER,
+        to: req.body.email,
+        subject: subject(req),
+        html: message(req),
+        attachments: [
+          {
+            filename: 'f9a093d7-c9f7-4d7c-94af-70129d39bf0d.png',
+            path: 'https://anex-tour.com.ua/directus/assets/f9a093d7-c9f7-4d7c-94af-70129d39bf0d.png',
+            cid: 'logo',
+          },
+          {
+            filename: '5e13d5de-7561-4120-b0a7-cc24f11197d1.png',
+            path: 'https://anex-tour.com.ua/directus/assets/5e13d5de-7561-4120-b0a7-cc24f11197d1.png',
+            cid: 'viber',
+          },
+          {
+            filename: '654f7c47-18ea-4583-865a-3c831b313df8.png',
+            path: 'https://anex-tour.com.ua/directus/assets/654f7c47-18ea-4583-865a-3c831b313df8.png',
+            cid: 'telegram',
+          },
+        ],
+      });
+    }
   } catch (error) {
     /* eslint-disable-next-line */
     console.log('error', error);

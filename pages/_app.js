@@ -8,7 +8,6 @@ import ru from '../lang/ru.json';
 import { getAllCountriesForNav } from 'utils/fetch';
 import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';
-// import { SessionProvider } from 'next-auth/react';
 
 const messages = {
   uk,
@@ -16,14 +15,13 @@ const messages = {
 };
 
 function App({ Component, pageProps, navData }) {
-  const { locale } = useRouter();
+  const { locale, asPath } = useRouter();
 
   useEffect(() => {
     TagManager.initialize({ gtmId: 'GTM-PJT8FLD' });
   }, []);
 
   return (
-    // <SessionProvider session={pageProps.session}>
     <IntlProvider locale={locale} messages={messages[locale]}>
       <Head>
         <link
@@ -45,19 +43,31 @@ function App({ Component, pageProps, navData }) {
         />
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <link
+          rel="alternate"
+          href={`https://anex-tour.com.ua${asPath}`}
+          hrefLang="ru-ru"
+        />
+        <link
+          rel="alternate"
+          href={`https://anex-tour.com.ua/uk${asPath}`}
+          hrefLang="uk-ua"
+        />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
-        <meta name="google-site-verification" content="pyXKl8BzwOVBWBhNCUrAZz8kRfbCIY2wT06cObZDFFQ" />
+        <meta
+          name="google-site-verification"
+          content="pyXKl8BzwOVBWBhNCUrAZz8kRfbCIY2wT06cObZDFFQ"
+        />
       </Head>
       <Layout navData={navData}>
         <Component {...pageProps} />
       </Layout>
     </IntlProvider>
-    // </SessionProvider>
   );
 }
 
@@ -78,5 +88,6 @@ App.getInitialProps = async ({ Component, ctx }) => {
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);
   }
+
   return { pageProps, navData };
 };

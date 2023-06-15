@@ -1,6 +1,6 @@
 import styles from './turDetails.module.css';
-import { useSetWindowInfo } from '/store/store';
 import { infoModal, food } from '/utils/constants';
+import { dayMonthFormatDate } from 'utils/formattedDate';
 import declension from 'utils/declension';
 import { useEffect, useState } from 'react';
 import Loader from 'components/common/loader';
@@ -14,6 +14,9 @@ import {
   useSetModal,
   useSetOfferParams,
   useSetCurrentOffer,
+  useSetWindowInfo,
+  useGetCurrentOfferMailData,
+  useSetCurrentOfferMailData,
 } from 'store/store';
 import { modal } from 'utils/constants';
 
@@ -22,23 +25,6 @@ export default function TurDetails({ data, country, hotel }) {
   const [urlData, setUrldata] = useState(data);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const orderData = {
-    country: hotel.t.n,
-    city: hotel.c.n,
-    hotel: hotel.n,
-    stars: hotel.s.n,
-    duration: '',
-    dates: '',
-    transport: '',
-    room: '',
-    food: '',
-    people: '',
-    name: '',
-    phone: '',
-    mail: '',
-    link: '',
-  };
 
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
@@ -56,6 +42,7 @@ export default function TurDetails({ data, country, hotel }) {
   const setModal = useSetModal();
   const setOfferParams = useSetOfferParams();
   const setCurrentOffer = useSetCurrentOffer();
+  const setCurrentOfferMailData = useSetCurrentOfferMailData();
 
   const router = useRouter();
 
@@ -235,6 +222,43 @@ export default function TurDetails({ data, country, hotel }) {
     return str;
   };
 
+  const makeOrderOfferData = (offerData) => {
+    let durationStr = `${offerData.nh}`;
+    if (offerData.n - offerData.nh !== 0) {
+      durationStr += ` + ${offerData.n - offerData.nh} ${intl.formatMessage({
+        id: 'hotel_card.tour_time',
+      })}`;
+    }
+
+    const dStart = new Date(offerData?.d);
+    const dEnd = new Date(offerData?.dt);
+    const datesStr = `${dayMonthFormatDate(
+      dStart,
+      router.locale
+    )} - ${dayMonthFormatDate(dEnd, router.locale)}`;
+
+    const orderData = {
+      country: hotel.t.n,
+      city: hotel.c.n,
+      hotel: hotel.n,
+      stars: hotel.s.n,
+      duration: durationStr,
+      dates: datesStr,
+      transport: offerData.t,
+      room: offerData.r,
+      food: intl.formatMessage({
+        id: food[offerData?.f],
+      }),
+      people: peopleBlockData(urlData.people),
+      id: urlData.offer,
+      cost: new Intl.NumberFormat('uk-UA', {
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0,
+      }).format(offerData.pl),
+    };
+    setCurrentOfferMailData(orderData);
+  };
+
   const getOfferData = async (currParams) => {
     if (error) {
       setError(false);
@@ -259,6 +283,7 @@ export default function TurDetails({ data, country, hotel }) {
         currParams.nightCount = data.offer.nh;
         setOfferParams(currParams);
         setCurrentOffer(data.offer);
+        makeOrderOfferData(data.offer);
         setLoading(false);
       })
       .catch((e) => {
@@ -536,9 +561,6 @@ export default function TurDetails({ data, country, hotel }) {
             )}
           </div>
           <div>
-            <div className={styles.varn_text}>
-              <FM id="offer_page.add_pay" />
-            </div>
             <button
               className={styles.order_btn}
               onClick={() => setModal({ get: modal.offerPageOrder })}

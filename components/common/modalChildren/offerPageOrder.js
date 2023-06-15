@@ -10,7 +10,11 @@ import {
 import Header from 'components/mainform/popups/header';
 import { svgNight } from 'components/mainform/form-fields/svg';
 import styles from './offerPageOrder.module.css';
-import { useSetWindowInfo, useGetCurrentOffer } from 'store/store';
+import {
+  useSetWindowInfo,
+  useGetCurrentOffer,
+  useGetCurrentOfferMailData,
+} from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 import { infoModal } from '/utils/constants';
 import { createLeadOrderTour } from 'utils/nextFetch';
@@ -29,6 +33,7 @@ export default function SendOrder({ closeHandler }) {
   const intl = useIntl();
   const setModalInfo = useSetWindowInfo();
   const getCurrentOffer = useGetCurrentOffer();
+  const getCurrentOfferMailData = useGetCurrentOfferMailData();
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -92,7 +97,7 @@ export default function SendOrder({ closeHandler }) {
       email,
       url: window.location.href,
       order_link: getCurrentOffer.bron,
-      order: getCurrentOffer,
+      order: getCurrentOfferMailData,
     });
 
     if (res.ok) {

@@ -144,6 +144,9 @@ const useStore = create(
     setOfferParams: (offerParams) => set({ offerParams }),
     currentOffer: {},
     setCurrentOffer: (currentOffer) => set({ currentOffer }),
+    currentOfferMailData: {},
+    setCurrentOfferMailData: (currentOfferMailData) =>
+      set({ currentOfferMailData }),
   }))
 );
 
@@ -236,16 +239,13 @@ export const useSetSearchResultSort = () =>
 export const useGetOfferParams = () => useStore((state) => state.offerParams);
 export const useSetOfferParams = () =>
   useStore((state) => state.setOfferParams);
-//current offer
+// current offer
 export const useGetCurrentOffer = () => useStore((state) => state.currentOffer);
 export const useSetCurrentOffer = () =>
   useStore((state) => state.setCurrentOffer);
-// example
-// export const useLogin = () => useStore((state) => state.login);
-// export const useLogout = () => useStore((state) => state.logout);
-// export const useAddToCart = (num) => useStore((state) => state.addToCart);
-// export const useUser = () => useStore((state) => state.user);
-// export const useCartCount = () => useStore((state) => state.cartCount);
-// export const usefirstName = () => useStore((state) => state.firstName);
-// export const useSetFirstName = (firstName) =>
-//   useStore((state) => state.setFirstName);
+// current offer mail data
+export const useGetCurrentOfferMailData = () =>
+  useStore((state) => state.currentOfferMailData);
+export const useSetCurrentOfferMailData = () =>
+  useStore((state) => state.setCurrentOfferMailData);
+//current offer
