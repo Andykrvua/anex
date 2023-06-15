@@ -50,8 +50,23 @@ function App({ Component, pageProps, navData }) {
         />
         <link
           rel="alternate"
+          href={`${process.env.NEXT_PUBLIC_API_HOST}${asPath}`}
+          hrefLang="ru"
+        />
+        <link
+          rel="alternate"
           href={`${process.env.NEXT_PUBLIC_API_HOST}/uk${asPath}`}
           hrefLang="uk-ua"
+        />
+        <link
+          rel="alternate"
+          href={`${process.env.NEXT_PUBLIC_API_HOST}/uk${asPath}`}
+          hrefLang="uk"
+        />
+        <link
+          rel="alternate"
+          href={`${process.env.NEXT_PUBLIC_API_HOST}${asPath}`}
+          hrefLang="x-default"
         />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
