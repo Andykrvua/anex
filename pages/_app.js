@@ -45,12 +45,12 @@ function App({ Component, pageProps, navData }) {
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         <link
           rel="alternate"
-          href={`https://anex-tour.com.ua${asPath}`}
-          hrefLang="ru-ru"
+          href={`${process.env.NEXT_PUBLIC_API_HOST}${asPath}`}
+          hrefLang="ru-ua"
         />
         <link
           rel="alternate"
-          href={`https://anex-tour.com.ua/uk${asPath}`}
+          href={`${process.env.NEXT_PUBLIC_API_HOST}/uk${asPath}`}
           hrefLang="uk-ua"
         />
         <meta name="msapplication-TileColor" content="#da532c" />
