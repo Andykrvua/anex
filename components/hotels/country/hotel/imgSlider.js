@@ -19,6 +19,7 @@ const ImgThumb = ({ img }) => {
 };
 
 export default function ImgSlider({ images }) {
+  console.log('images', images);
   const [currImg, setCurrImg] = useState(0);
   const [imgThumbs, setImgThumbs] = useState([1, 2, 3, 4]);
   const [openLightbox, setOpenLightbox] = useState(false);
@@ -154,7 +155,7 @@ export default function ImgSlider({ images }) {
           {imgThumbs.map((img) => {
             return (
               <div className={styles.card_img} key={img}>
-                <ImgThumb img={images[img].src} />
+                <ImgThumb img={images[img]?.src} />
               </div>
             );
           })}

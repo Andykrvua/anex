@@ -2,6 +2,7 @@ import styles from './turDetails.module.css';
 import { FormattedMessage as FM } from 'react-intl';
 
 export default function TransportBlock({ offerData, country, data }) {
+  console.log('offerData', offerData);
   if (offerData?.t === 'bus') {
     return (
       <>
@@ -24,7 +25,10 @@ export default function TransportBlock({ offerData, country, data }) {
   }
 
   if (offerData?.t === 'air') {
-    if (!offerData?.to?.from[0]?.begin) {
+    if (
+      typeof offerData.to['from'] === 'undefined' ||
+      !offerData?.to?.from[0]?.begin
+    ) {
       return (
         <>
           <div className={styles.transport_block_min_2items}>
