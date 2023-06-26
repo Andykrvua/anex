@@ -19,7 +19,6 @@ const ImgThumb = ({ img }) => {
 };
 
 export default function ImgSlider({ images }) {
-  console.log('images', images);
   const [currImg, setCurrImg] = useState(0);
   const [imgThumbs, setImgThumbs] = useState([1, 2, 3, 4]);
   const [openLightbox, setOpenLightbox] = useState(false);

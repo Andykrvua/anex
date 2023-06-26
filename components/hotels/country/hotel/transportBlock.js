@@ -2,7 +2,6 @@ import styles from './turDetails.module.css';
 import { FormattedMessage as FM } from 'react-intl';
 
 export default function TransportBlock({ offerData, country, data }) {
-  console.log('offerData', offerData);
   if (offerData?.t === 'bus') {
     return (
       <>

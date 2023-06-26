@@ -125,8 +125,8 @@ export default function Room({ closeHandler }) {
     if (food === 'AI') {
       result = offers.filter(
         (item) =>
-          item.f.toUpperCase() === food ||
-          (item.f.toUpperCase() === 'UAI' && item.r === room)
+          (item.f.toUpperCase() === food || item.f.toUpperCase() === 'UAI') &&
+          item.r === room
       );
     } else {
       result = offers.filter(

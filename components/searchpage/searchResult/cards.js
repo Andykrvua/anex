@@ -118,7 +118,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
       orders: [],
       id: hotel.i,
     };
-    console.log('data', data);
+
     const offArr = data.map((item, ind) => {
       if (ind < 6) {
         return {
@@ -213,7 +213,11 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
                 <span className={styles.order_text__duration}>
                   <span>
                     {item.nh} {decl(item.nh)}
-                    {item.n - item.nh !== 0 ? ` + ${item.n - item.nh} ${intl.formatMessage({id: 'hotel_card.tour_time'})}` : ''}
+                    {item.n - item.nh !== 0
+                      ? ` + ${item.n - item.nh} ${intl.formatMessage({
+                          id: 'hotel_card.tour_time',
+                        })}`
+                      : ''}
                   </span>
                 </span>
                 <span className={styles.order_text__people}>
