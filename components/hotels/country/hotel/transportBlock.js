@@ -23,9 +23,11 @@ export default function TransportBlock({ offerData, country, data }) {
     );
   }
 
+  console.log('offerData', offerData);
+
   if (offerData?.t === 'air') {
     if (
-      typeof offerData.to['from'] === 'undefined' ||
+      (offerData.to && typeof offerData?.to['from'] === 'undefined') ||
       !offerData?.to?.from[0]?.begin
     ) {
       return (
