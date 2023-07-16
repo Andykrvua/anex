@@ -18,8 +18,7 @@ function App({ Component, pageProps, navData }) {
   const { locale, asPath } = useRouter();
 
   useEffect(() => {
-    // TagManager.initialize({ gtmId: 'GTM-PJT8FLD' });
-    TagManager.initialize({ gtmId: 'G-4ECYPCN2K4' });
+    TagManager.initialize({ gtmId: 'GTM-PJT8FLD' });
   }, []);
 
   return (
