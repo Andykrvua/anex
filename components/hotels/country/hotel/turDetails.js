@@ -277,6 +277,7 @@ export default function TurDetails({ data, country, hotel }) {
           setLoading(false);
           return;
         }
+        console.log('data.offer', data.offer);
         setOfferdata(data.offer);
         currParams.food = data.offer.fn;
         currParams.dateStart = data.offer.d;

@@ -37,7 +37,7 @@ export default function CountryToursFrom({ data, current }) {
               </span>
               <span className={styles.toursfrom_item_text}>
                 <span className={styles.toursfrom_item_text_descr}>
-                  <FM id="country.tours_from" />
+                  <FM id="country.tours_from" /> &nbsp;
                 </span>
                 <span className={styles.toursfrom_item_text_title}>
                   {/* <FM

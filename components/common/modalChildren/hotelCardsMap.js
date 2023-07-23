@@ -5,6 +5,7 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import ratingColor from 'utils/ratingColor';
 import styles from './hotelCardsMap.module.css';
 import 'leaflet/dist/leaflet.css';
+import { clear, disableScroll, BODY } from 'utils/useBodyScroll';
 
 export default function HotelCardsMap() {
   const { img, hotelName, rating, foodTransMessage, price, coords, stars } =
@@ -17,6 +18,10 @@ export default function HotelCardsMap() {
 
     useEffect(() => {
       leafletRef.current.openPopup();
+      disableScroll(BODY);
+      return () => {
+        clear();
+      };
     }, []);
 
     return <Marker ref={leafletRef} {...props} />;
@@ -29,7 +34,7 @@ export default function HotelCardsMap() {
       <MapContainer
         center={position}
         zoom={coords.z}
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
         style={{ width: '80vw', height: '500px', zIndex: 1 }}
       >
         <TileLayer

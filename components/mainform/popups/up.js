@@ -137,6 +137,7 @@ export default function UpWindow({
   };
 
   const selectedHandler = () => {
+    if (!selectedUp.name) return;
     selectUp(selectedUp);
     if (size.width < maxWidth) {
       enableScroll(BODY);

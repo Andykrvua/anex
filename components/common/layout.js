@@ -3,6 +3,7 @@ import Footer from './footer/footer';
 import Modal from './modal';
 import Burger from './burger/burger';
 import InfoModal from './infoModal';
+import ScrollTop from '../controls/scrollTop';
 import { useIntl } from 'react-intl';
 import Head from 'next/head';
 
@@ -24,6 +25,7 @@ export default function Layout({ children, navData }) {
         <Footer />
         <Burger />
         <Modal />
+        <ScrollTop />
       </div>
     </>
   );

@@ -50,14 +50,62 @@ export default function Hotel({ data, hotel }) {
     };
     return (
       <>
-        {hotel?.o?.dc && <p>{hotel.o.dc}</p>}
-        {hotel?.o?.b && <p>{hotel.o.b}</p>}
-        {hotel?.o?.c && <p>{hotel.o.c}</p>}
-        {isReadMore && hotel?.o?.di && <p>{hotel.o.di}</p>}
-        {isReadMore && hotel?.o?.ds && <p>{hotel.o.ds}</p>}
-        {isReadMore && hotel?.o?.fa && <p>{hotel.o.fa}</p>}
-        {isReadMore && hotel?.o?.fh && <p>{hotel.o.fh}</p>}
-        {isReadMore && hotel?.o?.s && <p>{hotel.o.s}</p>}
+        {hotel?.o?.dc && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotel.o.dc,
+            }}
+          />
+        )}
+        {hotel?.o?.b && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotel.o.b,
+            }}
+          />
+        )}
+        {hotel?.o?.c && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotel.o.c,
+            }}
+          />
+        )}
+        {isReadMore && hotel?.o?.di && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotel.o.di,
+            }}
+          />
+        )}
+        {isReadMore && hotel?.o?.ds && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotel.o.ds,
+            }}
+          />
+        )}
+        {isReadMore && hotel?.o?.fa && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotel.o.fa,
+            }}
+          />
+        )}
+        {isReadMore && hotel?.o?.fh && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotel.o.fh,
+            }}
+          />
+        )}
+        {isReadMore && hotel?.o?.s && (
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotel.o.s,
+            }}
+          />
+        )}
 
         <p onClick={toggleReadMore} className={styles.read_or_hide}>
           {isReadMore ? (

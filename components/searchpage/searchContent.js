@@ -14,6 +14,7 @@ import FilterMobileTemplate from './filter/filterMobileTemplate';
 import FilterContent from './filter/filterContent';
 import SearchResult from './searchResult/searchResult';
 import getViewport from 'utils/getViewport';
+import { isBrowser } from 'utils/utils';
 
 export default function SearchContent() {
   const getFilterModale = useGetFilterOpen();
@@ -43,7 +44,11 @@ export default function SearchContent() {
     }
   }, [getFilterModale]);
 
-  const filteredSearch = () => {
+  const filteredSearch = async () => {
+    if (isBrowser() && windowSize.width > 809) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     const changeHelper = (arr1, arr2) => {
       // eslint-disable-next-line
       let unique = new Set();
@@ -74,7 +79,9 @@ export default function SearchContent() {
       },
       newData: { ...filterData.newData, change: [] },
     });
-    setApplyFilter(true);
+    setTimeout(() => {
+      setApplyFilter(true);
+    }, 500);
   };
 
   return (
