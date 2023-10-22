@@ -5,21 +5,10 @@ import { links } from 'utils/links';
 import BlogContent from 'components/blog/blog';
 import DefaultErrorPage from 'next/error';
 import { blogApi } from 'utils/constants';
-import {
-  getCategoriesSlug,
-  getPostsFromCategory,
-  getCategories,
-  getCountries,
-} from 'utils/fetch';
+import { getCategoriesSlug, getPostsFromCategory, getCategories, getCountries } from 'utils/fetch';
 import { GetLangField } from 'utils/getLangField';
 
-export default function Category({
-  postsList,
-  categoryList,
-  loc,
-  slug,
-  countryList,
-}) {
+export default function Category({ postsList, categoryList, loc, slug, countryList }) {
   const intl = useIntl();
 
   const router = useRouter();
@@ -41,24 +30,14 @@ export default function Category({
   let name;
   categoryList.map((item) => {
     if (item.slug === slug) {
-      return (name = GetLangField(
-        item.translations,
-        'languages_id',
-        'name',
-        loc
-      ));
+      return (name = GetLangField(item.translations, 'languages_id', 'name', loc));
     }
   });
 
   // if el > 1, last el need only title
-  const br_arr = [
-    { url: links.blog, title: intl.formatMessage({ id: 'links.blog' }) },
-    { title: name },
-  ];
+  const br_arr = [{ url: links.blog, title: intl.formatMessage({ id: 'links.blog' }) }, { title: name }];
 
-  const pagesCount = Math.ceil(
-    postsList?.meta.filter_count / blogApi.announceLimit
-  );
+  const pagesCount = Math.ceil(postsList?.meta.filter_count / blogApi.announceLimit);
 
   const current = 1;
   const searchSlug = categoryList.map((item) => item.slug === slug);
@@ -94,7 +73,7 @@ export async function getStaticPaths({ locales }) {
   if (objCatSlug.errors) {
     // if server down and incorrect request
     console.log('error: ', objCatSlug.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR BLOG CAT1');
     // return {
     //   notFound: true,
     // };
@@ -103,9 +82,7 @@ export async function getStaticPaths({ locales }) {
   const rawCatSlugs = objCatSlug.data;
 
   for (let i = 0; i < rawCatSlugs.length; i++) {
-    const pagesCount = Math.ceil(
-      rawCatSlugs[i].posts.length / blogApi.announceLimit
-    );
+    const pagesCount = Math.ceil(rawCatSlugs[i].posts.length / blogApi.announceLimit);
 
     rawCatSlugs[i].posts = [];
 
@@ -147,7 +124,7 @@ export async function getStaticProps(context) {
     console.log('error: ', resCategoryList?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', resCountryList.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR BLOG CAT2');
     // return {
     //   notFound: true,
     // };

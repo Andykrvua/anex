@@ -3,12 +3,7 @@ import PopularCountry from '/components/mainpage/popularCountry.js';
 import Blog from '/components/mainpage/blog.js';
 import Faq from '/components/mainpage/faq.js';
 import SeoBlock from '/components/common/pageSeoBlock/seoBlock.js';
-import {
-  getLastPost,
-  getPopularCountry,
-  getPageSettings,
-  getMinOffer,
-} from 'utils/fetch';
+import { getLastPost, getPopularCountry, getPageSettings, getMinOffer } from 'utils/fetch';
 import { countryUpdateMinOffer } from 'utils/nextFetch';
 import declension from 'utils/declension';
 import SeoHead from '/components/common/seoHead/seoHead.js';
@@ -37,9 +32,7 @@ export default function Home({
         /> */}
         <Blog data={postsList} />
         {faqData && <Faq data={faqData} length={faqDataLength} />}
-        {mainPageSettings.translations && (
-          <SeoBlock text={mainPageSettings.translations[0].seo_block} />
-        )}
+        {mainPageSettings.translations && <SeoBlock text={mainPageSettings.translations[0].seo_block} />}
       </div>
     </>
   );
@@ -78,20 +71,17 @@ export async function getStaticProps(context) {
     console.log('error: ', faqPageSettings?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', minOffer?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR MAIN');
   }
 
   let faqData = [];
   let faqDataLength;
   if (faqPageSettings?.data?.translations[0]?.faq_item.length > 0) {
     faqDataLength = faqPageSettings?.data?.translations[0]?.faq_item.length;
-    faqData = faqPageSettings.data.translations[0].faq_item.filter(
-      (item) => item?.ismain
-    );
+    faqData = faqPageSettings.data.translations[0].faq_item.filter((item) => item?.ismain);
   }
 
-  const count =
-    popularCountry.meta.total_count - popularCountry.meta.filter_count;
+  const count = popularCountry.meta.total_count - popularCountry.meta.filter_count;
 
   const title = {
     ru: `Еще ${count} ${declension(count, 'страна', 'страны', 'стран')}`,

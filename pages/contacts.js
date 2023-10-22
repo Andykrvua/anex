@@ -44,28 +44,20 @@ export default function Contacts({ pageSettings }) {
             <h1 className={styles.title}>{pageSettings.translations[0].h1}</h1>
             <div className={styles.phones}>
               {pageSettings.phone_numbers.map((item, index) => (
-                <a
-                  key={index}
-                  className={styles.phone}
-                  href={`tel:${item.phone_number}`}
-                >
+                <a key={index} className={styles.phone} href={`tel:${item.phone_number}`}>
                   {item.phone_text}
                 </a>
               ))}
               <a href={`mailto:${pageSettings.email}`}>{pageSettings.email}</a>
             </div>
-            <h3 className={styles.subtitle}>
-              {pageSettings.translations[0].schedule_title}
-            </h3>
+            <h3 className={styles.subtitle}>{pageSettings.translations[0].schedule_title}</h3>
             <div
               className={styles.subtitle_content}
               dangerouslySetInnerHTML={{
                 __html: pageSettings.translations[0].schedule_content,
               }}
             />
-            <h3 className={styles.subtitle}>
-              {pageSettings.translations[0].address_title}
-            </h3>
+            <h3 className={styles.subtitle}>{pageSettings.translations[0].address_title}</h3>
             <div
               className={styles.subtitle_content}
               dangerouslySetInnerHTML={{
@@ -86,9 +78,7 @@ export default function Contacts({ pageSettings }) {
             )}
           </div>
           <div className={styles.contacts_form}>
-            <h2 className={styles.form_title}>
-              {pageSettings.translations[0].form_title}
-            </h2>
+            <h2 className={styles.form_title}>{pageSettings.translations[0].form_title}</h2>
             <Form />
           </div>
         </div>
@@ -108,7 +98,7 @@ export async function getStaticProps(context) {
     // if incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', pageSettings?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR CONTACTS');
   }
 
   return {

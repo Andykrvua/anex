@@ -15,9 +15,7 @@ export default function FaqPage({ pageSettings }) {
       <div className="container">
         <Breadcrumbs data={br_arr} beforeMainFrom />
         <h1 className={styles.title}>{pageSettings.translations[0]?.h1}</h1>
-        {pageSettings.translations[0].faq_item && (
-          <Accordion data={pageSettings.translations[0].faq_item} />
-        )}
+        {pageSettings.translations[0].faq_item && <Accordion data={pageSettings.translations[0].faq_item} />}
       </div>
     </>
   );
@@ -33,7 +31,7 @@ export async function getStaticProps(context) {
     // if incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', pageSettings?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR FAQ');
   }
 
   return {

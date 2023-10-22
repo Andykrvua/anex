@@ -48,7 +48,7 @@ export async function getServerSideProps(ctx) {
     // if incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', pageSettings?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR REVIEW');
   }
 
   const page = 1;

@@ -14,14 +14,7 @@ import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
 
-export default function CountrySubPage({
-  country,
-  slug,
-  subpage,
-  loc,
-  countrySubpage,
-  countrySubpages,
-}) {
+export default function CountrySubPage({ country, slug, subpage, loc, countrySubpage, countrySubpages }) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -33,9 +26,7 @@ export default function CountrySubPage({
     );
   }
 
-  const searchSlug = countrySubpages.map(
-    (item) => item.subpage_slug === countrySubpage?.subpage_slug
-  );
+  const searchSlug = countrySubpages.map((item) => item.subpage_slug === countrySubpage?.subpage_slug);
 
   const brSubPageTitle = countrySubpage?.temp_from
     ? `${intl.formatMessage({
@@ -72,9 +63,7 @@ export default function CountrySubPage({
       ) : (
         <div className="container">
           <Breadcrumbs data={br_arr} beforeMainFrom />
-          {countrySubpage.translations[0].h1 && (
-            <H1>{countrySubpage.translations[0].h1}</H1>
-          )}
+          {countrySubpage.translations[0].h1 && <H1>{countrySubpage.translations[0].h1}</H1>}
           <MainForm />
           <CountryPageContent
             country={countrySubpage}
@@ -123,7 +112,7 @@ export async function getStaticProps(context) {
     console.log('error: ', countrySubpage?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', countrySubpages?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR COUNTRY SLUG SUBPAGE');
   }
 
   return {
@@ -132,7 +121,7 @@ export async function getStaticProps(context) {
       slug,
       subpage,
       loc,
-      countrySubpage: countrySubpage.data[0] || null,
+      countrySubpage: countrySubpage.data.filter((item) => item.subsubpage_slug === null)[0] || null,
       countrySubpages: countrySubpages.data || null,
     },
     revalidate: 30,

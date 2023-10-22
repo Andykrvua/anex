@@ -35,7 +35,7 @@ export async function getStaticProps(context) {
     console.log('error: ', allLinks?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', pageSettings?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR TOURS');
   }
 
   return {

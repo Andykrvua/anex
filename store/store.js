@@ -16,7 +16,7 @@ const defaultDownPoint = {
     // ru: 'Турция',
     ru: 'Египет',
     // uk: 'Туреччина',
-    uk: 'Египет',
+    uk: 'Єгипет',
   },
   // value: 115,
   value: 43,

@@ -14,19 +14,10 @@ import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
 
-export default function Country({
-  country,
-  countrySlugs,
-  slug,
-  loc,
-  subpagesSlugs,
-  minOffer,
-}) {
+export default function Country({ country, countrySlugs, slug, loc, subpagesSlugs, minOffer }) {
   let price = null;
   if (minOffer && minOffer.data.countries.length > 0) {
-    const temp = minOffer.data.countries.filter(
-      (item) => country.code === item.iso
-    );
+    const temp = minOffer.data.countries.filter((item) => country.code === item.iso);
     price = temp.length ? temp[0].uah : null;
   }
 
@@ -61,12 +52,7 @@ export default function Country({
           <Breadcrumbs data={br_arr} beforeMainFrom />
           <H1>{country.translations[0].h1}</H1>
           <MainForm />
-          <CountryPageContent
-            country={country}
-            loc={loc}
-            subpagesSlugs={subpagesSlugs}
-            minOffer={price}
-          />
+          <CountryPageContent country={country} loc={loc} subpagesSlugs={subpagesSlugs} minOffer={price} />
         </div>
       )}
     </>
@@ -99,12 +85,7 @@ export async function getStaticProps(context) {
 
   const minOffer = await getMinOffer();
 
-  if (
-    country.errors ||
-    countrySlugs.errors ||
-    subpagesSlugs.errors ||
-    minOffer.errors
-  ) {
+  if (country.errors || countrySlugs.errors || subpagesSlugs.errors || minOffer.errors) {
     // if incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', country?.errors);
@@ -114,7 +95,7 @@ export async function getStaticProps(context) {
     console.log('error: ', subpagesSlugs?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', minOffer?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR COUNTRY SLUG');
   }
 
   return {

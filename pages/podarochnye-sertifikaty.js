@@ -30,9 +30,7 @@ const CostItems = ({ items, value, setValue }) => {
     return (
       <div
         key={ind}
-        className={`${styles.cost_item} ${
-          itemsActive[ind] ? styles.active : ''
-        }`}
+        className={`${styles.cost_item} ${itemsActive[ind] ? styles.active : ''}`}
         data-val={item.value}
         onClick={() => {
           handlerClick(item.value, ind);
@@ -48,10 +46,7 @@ export default function Certificates({ mainPageSettings }) {
   const intl = useIntl();
   const [value, setValue] = useState(null);
 
-  const content_descr_text = changeImageUrl(
-    mainPageSettings.translations[0].content_descr_text,
-    'default'
-  );
+  const content_descr_text = changeImageUrl(mainPageSettings.translations[0].content_descr_text, 'default');
   const br_arr = [{ title: intl.formatMessage({ id: 'certificates.br' }) }];
 
   return (
@@ -77,9 +72,7 @@ export default function Certificates({ mainPageSettings }) {
               />
             </div>
             <div className={styles.content_text}>
-              <p className={styles.content_text_title}>
-                {mainPageSettings.translations[0].content_descr}
-              </p>
+              <p className={styles.content_text_title}>{mainPageSettings.translations[0].content_descr}</p>
               <div
                 className={styles.content_text_list}
                 dangerouslySetInnerHTML={{
@@ -90,22 +83,14 @@ export default function Certificates({ mainPageSettings }) {
           </div>
 
           <div className={styles.content_select_block}>
-            <p className={styles.select_block_title}>
-              {mainPageSettings.translations[0].select_title}
-            </p>
+            <p className={styles.select_block_title}>{mainPageSettings.translations[0].select_title}</p>
             <div className={styles.cost_wrapper}>
-              <CostItems
-                items={mainPageSettings.cost}
-                value={value}
-                setValue={setValue}
-              />
+              <CostItems items={mainPageSettings.cost} value={value} setValue={setValue} />
             </div>
             <Form costChecked={value} setCostChecked={setValue} />
           </div>
         </div>
-        <p className={styles.term_title}>
-          {mainPageSettings.translations[0].term_title}
-        </p>
+        <p className={styles.term_title}>{mainPageSettings.translations[0].term_title}</p>
         <div
           // className={styles.term_content}
           className={styles.content}
@@ -122,17 +107,13 @@ export async function getStaticProps(context) {
   const loc = context.locale;
   const data =
     'translations.h1,translations.content_descr,translations.content_descr_text,translations.select_title,translations.term_title,translations.term_content';
-  const mainPageSettings = await getPageSettings(
-    'certificates_page',
-    loc,
-    data
-  );
+  const mainPageSettings = await getPageSettings('certificates_page', loc, data);
 
   if (mainPageSettings.errors) {
     // if incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', mainPageSettings?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR SERTIF');
   }
 
   return {

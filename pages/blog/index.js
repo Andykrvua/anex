@@ -2,28 +2,15 @@ import { useIntl } from 'react-intl';
 import { links } from 'utils/links';
 import { blogApi } from 'utils/constants';
 import BlogContent from 'components/blog/blog';
-import {
-  getPostsList,
-  getCategories,
-  getCountries,
-  getPageSettings,
-} from 'utils/fetch';
+import { getPostsList, getCategories, getCountries, getPageSettings } from 'utils/fetch';
 import SeoHead from 'components/common/seoHead/seoHead.js';
 
-export default function Blog({
-  postsList,
-  categoryList,
-  loc,
-  countryList,
-  pageSettings,
-}) {
+export default function Blog({ postsList, categoryList, loc, countryList, pageSettings }) {
   const intl = useIntl();
 
   const br_arr = [{ title: intl.formatMessage({ id: 'links.blog' }) }];
 
-  const pagesCount = Math.ceil(
-    postsList?.meta.filter_count / blogApi.announceLimit
-  );
+  const pagesCount = Math.ceil(postsList?.meta.filter_count / blogApi.announceLimit);
 
   const current = 1;
 
@@ -54,12 +41,7 @@ export async function getStaticProps(context) {
   const data = 'translations.description,translations.title';
   const pageSettings = await getPageSettings('blog_page', loc, data);
 
-  if (
-    postsList.errors ||
-    resCategoryList.errors ||
-    resCountryList.errors ||
-    pageSettings.errors
-  ) {
+  if (postsList.errors || resCategoryList.errors || resCountryList.errors || pageSettings.errors) {
     // if server down and incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', postsList?.errors);
@@ -69,7 +51,7 @@ export async function getStaticProps(context) {
     console.log('error: ', resCountryList?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', pageSettings?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR BLOG PAGE');
   }
 
   const categoryList = resCategoryList.data;

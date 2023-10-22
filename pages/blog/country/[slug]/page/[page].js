@@ -5,22 +5,10 @@ import { links } from 'utils/links';
 import BlogContent from 'components/blog/blog';
 import DefaultErrorPage from 'next/error';
 import { blogApi } from 'utils/constants';
-import {
-  getCountrySlug,
-  getPostsFromCountry,
-  getCategories,
-  getCountries,
-} from 'utils/fetch';
+import { getCountrySlug, getPostsFromCountry, getCategories, getCountries } from 'utils/fetch';
 import { GetLangField } from 'utils/getLangField';
 
-export default function Post({
-  postsList,
-  categoryList,
-  loc,
-  current,
-  slug,
-  countryList,
-}) {
+export default function Post({ postsList, categoryList, loc, current, slug, countryList }) {
   const intl = useIntl();
 
   const router = useRouter();
@@ -42,12 +30,7 @@ export default function Post({
   let name;
   countryList.map((item) => {
     if (item.slug === slug) {
-      return (name = GetLangField(
-        item.translations,
-        'languages_code',
-        'name',
-        loc
-      ));
+      return (name = GetLangField(item.translations, 'languages_code', 'name', loc));
     }
   });
 
@@ -73,9 +56,7 @@ export default function Post({
     { code: 'DO', title: 'Доминикана', count: 1, url: '/' },
   ];
 
-  const pagesCount = Math.ceil(
-    postsList?.meta?.filter_count / blogApi.announceLimit
-  );
+  const pagesCount = Math.ceil(postsList?.meta?.filter_count / blogApi.announceLimit);
 
   return (
     <>
@@ -108,7 +89,7 @@ export async function getStaticPaths({ locales }) {
     // if server down and incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', objCountrySlug.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR BLOG COUNTRY SLUG PAGE');
     // return {
     //   notFound: true,
     // };
@@ -116,9 +97,7 @@ export async function getStaticPaths({ locales }) {
   const rawCountrySlugs = objCountrySlug.data;
 
   for (let i = 0; i < rawCountrySlugs.length; i++) {
-    const pagesCount = Math.ceil(
-      rawCountrySlugs[i].posts.length / blogApi.announceLimit
-    );
+    const pagesCount = Math.ceil(rawCountrySlugs[i].posts.length / blogApi.announceLimit);
 
     rawCountrySlugs[i].posts = [];
 
@@ -167,7 +146,7 @@ export async function getStaticProps(context) {
     console.log('error: ', resCategoryList.errors);
     /* eslint-disable-next-line */
     console.log('error: ', resCountryList.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR BLOG COUNTRY SLUG PAGE2');
     // return {
     //   notFound: true,
     // };

@@ -5,20 +5,9 @@ import { blogApi } from 'utils/constants';
 import { useRouter } from 'next/router';
 import BlogContent from 'components/blog/blog';
 import DefaultErrorPage from 'next/error';
-import {
-  getPostsMeta,
-  getPostsList,
-  getCategories,
-  getCountries,
-} from 'utils/fetch';
+import { getPostsMeta, getPostsList, getCategories, getCountries } from 'utils/fetch';
 
-export default function Blog({
-  postsList,
-  categoryList,
-  loc,
-  current,
-  countryList,
-}) {
+export default function Blog({ postsList, categoryList, loc, current, countryList }) {
   const intl = useIntl();
 
   //нужно для передачи в HEAD
@@ -55,9 +44,7 @@ export default function Blog({
     { code: 'DO', title: 'Доминикана', count: 1, url: '/' },
   ];
 
-  const pagesCount = Math.ceil(
-    postsList?.meta?.filter_count / blogApi.announceLimit
-  );
+  const pagesCount = Math.ceil(postsList?.meta?.filter_count / blogApi.announceLimit);
 
   return (
     <>
@@ -90,7 +77,7 @@ export async function getStaticPaths({ locales }) {
     // if incorrect request
     /* eslint-disable-next-line */
     console.log('error: ', filter_count.errors);
-    throw new Error('TEST ERROR');
+    throw new Error(' BLOG PAGE');
   }
 
   const pages = Math.ceil(filter_count / blogApi.announceLimit);
@@ -133,7 +120,7 @@ export async function getStaticProps(context) {
     console.log('error: ', postsList?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', resCountryList.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR BLOG PAGE');
     // return {
     //   notFound: true,
     // };

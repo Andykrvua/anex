@@ -50,9 +50,7 @@ export default function Post({ post, postsList, loc, postsSlugs, slug }) {
           <h3 style={styles}>
             <FM id="blog.read_more" />
           </h3>
-          {postsList.length && (
-            <Carousel data={postsList} instance={carouselInstance.blog} />
-          )}
+          {postsList.length && <Carousel data={postsList} instance={carouselInstance.blog} />}
         </div>
       )}
     </>
@@ -91,7 +89,7 @@ export async function getStaticProps(context) {
     console.log('error: ', postsList?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', postsSlugs?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR BLOG SLUG');
     // return {
     //   notFound: true,
     // };

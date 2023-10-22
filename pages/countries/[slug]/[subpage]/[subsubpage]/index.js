@@ -25,7 +25,6 @@ export default function CountrySubSubPage({
   countrySubSubpage,
   countrySubpages,
 }) {
-
   const intl = useIntl();
   const router = useRouter();
 
@@ -37,9 +36,7 @@ export default function CountrySubSubPage({
     );
   }
 
-  const searchSlug = countrySubpages.map(
-    (item) => item.subsubpage_slug === subsubpage
-  );
+  const searchSlug = countrySubpages.map((item) => item.subsubpage_slug === subsubpage);
 
   const br_arr = [
     {
@@ -64,9 +61,7 @@ export default function CountrySubSubPage({
       ) : (
         <div className="container">
           <Breadcrumbs data={br_arr} beforeMainFrom />
-          {countrySubSubpage.translations[0].h1 && (
-            <H1>{countrySubSubpage.translations[0].h1}</H1>
-          )}
+          {countrySubSubpage.translations[0].h1 && <H1>{countrySubSubpage.translations[0].h1}</H1>}
           <MainForm />
           <CountryPageContent
             country={countrySubSubpage}
@@ -82,9 +77,7 @@ export default function CountrySubSubPage({
 
 export async function getStaticPaths({ locales }) {
   const subsubpageField = true;
-  const countrySlugsAndSubpagesSlugs = await getCountrySlugsAndSubpagesSlugs(
-    subsubpageField
-  );
+  const countrySlugsAndSubpagesSlugs = await getCountrySlugsAndSubpagesSlugs(subsubpageField);
 
   const paths = [];
   countrySlugsAndSubpagesSlugs.data.map((item) => {
@@ -99,6 +92,7 @@ export async function getStaticPaths({ locales }) {
       });
     });
   });
+
   return { paths, fallback: true };
 }
 
@@ -112,7 +106,7 @@ export async function getStaticProps(context) {
   const countrySubpage = await getCountrySubpageSlug(slug, subpage, loc);
   const countrySubSubpage = await getCountrySubSubpageSlug(slug, subpage, subsubpage, loc);
   const countrySubpages = await getCountrySubpagesSlugs(slug);
-  
+
   if (country.errors || countrySubpage.errors || countrySubpages.errors) {
     // if incorrect request
     /* eslint-disable-next-line */
@@ -121,7 +115,7 @@ export async function getStaticProps(context) {
     console.log('error: ', countrySubpage?.errors);
     /* eslint-disable-next-line */
     console.log('error: ', countrySubpages?.errors);
-    throw new Error('TEST ERROR');
+    throw new Error('ERROR COUNTRY SLUG SUBPAGE SUBSUBPAGE');
   }
 
   return {
