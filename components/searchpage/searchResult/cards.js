@@ -3,12 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { shimmer, toBase64 } from '/utils/blurImage';
-import {
-  useSetModal,
-  useGetPerson,
-  useSetOpenStreetMap,
-  useSetWindowInfo,
-} from 'store/store';
+import { useSetModal, useGetPerson, useSetOpenStreetMap, useSetWindowInfo } from 'store/store';
 import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
 import { food, modal, infoModal } from 'utils/constants';
@@ -122,17 +117,13 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
     const offArr = data.map((item, ind) => {
       if (ind < 6) {
         return {
-          link: `${router.locale === 'uk' ? '/uk' : ''}/hotels/${hotel.t.c}/${
-            hotel.t.i
-          }-${hotel.i}-${hotel.h}?offer=${item.i}&transport=${
-            searchParams.transport
-          }&from=${searchParams.from}&fromname=${searchParams.fromname}&to=${
-            searchParams.to
-          }&checkIn=${searchParams.checkIn}&checkTo=${
-            searchParams.checkTo
-          }&nights=${searchParams.nights}&nightsTo=${
-            searchParams.nightsTo
-          }&people=${searchParams.people}`,
+          link: `${router.locale === 'uk' ? '/uk' : ''}/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${
+            hotel.h
+          }?offer=${item.i}&transport=${searchParams.transport}&from=${searchParams.from}&fromname=${
+            searchParams.fromname
+          }&to=${searchParams.to}&checkIn=${searchParams.checkIn}&checkTo=${searchParams.checkTo}&nights=${
+            searchParams.nights
+          }&nightsTo=${searchParams.nightsTo}&people=${searchParams.people}`,
           start: new Date(item.d).toLocaleDateString('default', {
             day: '2-digit',
             month: '2-digit',
@@ -172,17 +163,15 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
           return (
             <a
               className={styles.card_order}
-              href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${
-                hotel.t.c
-              }/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${item.i}&transport=${
-                searchParams.transport
-              }&from=${searchParams.from}&fromname=${
+              href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${
+                hotel.h
+              }?offer=${item.i}&transport=${searchParams.transport}&from=${searchParams.from}&fromname=${
                 searchParams.fromname
               }&to=${searchParams.to}&checkIn=${searchParams.checkIn}&checkTo=${
                 searchParams.checkTo
-              }&nights=${searchParams.nights}&nightsTo=${
-                searchParams.nightsTo
-              }&people=${searchParams.people}`}
+              }&nights=${searchParams.nights}&nightsTo=${searchParams.nightsTo}&people=${
+                searchParams.people
+              }`}
               target="_blank"
               rel="noopener noreferrer"
               key={item.i}
@@ -207,9 +196,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
                   </span>
                 </span>
               </span>
-              <span
-                className={`${styles.order_text_wrapper}, ${styles.order_text_wrapper__fluid}`}
-              >
+              <span className={`${styles.order_text_wrapper}, ${styles.order_text_wrapper__fluid}`}>
                 <span className={styles.order_text__duration}>
                   <span>
                     {item.nh} {decl(item.nh)}
@@ -241,12 +228,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
   );
 };
 
-export default function Cards({
-  hotels = [],
-  step,
-  countryHotelService = [],
-  searchParams,
-}) {
+export default function Cards({ hotels = [], step, countryHotelService = [], searchParams }) {
   const setModalInfo = useSetWindowInfo();
   const intl = useIntl();
   localStorage.removeItem('result');
@@ -271,7 +253,6 @@ export default function Cards({
     };
     setModalInfo(data);
   };
-
   return (
     <div className={styles.cards_wrapper}>
       {hotels.map((item, j) => {
@@ -287,9 +268,7 @@ export default function Cards({
                   // width={500}
                   // height={375}
                   placeholder="blur"
-                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                    shimmer(500, 375)
-                  )}`}
+                  blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(500, 375))}`}
                 />
                 {item.r ? (
                   <div className={styles.review}>
@@ -298,10 +277,7 @@ export default function Cards({
                         <FM id="hotel_card.rating" />
                       </p>
                     )}
-                    <p
-                      className={styles.review__number}
-                      style={{ color: ratingColor(parseFloat(item.r)) }}
-                    >
+                    <p className={styles.review__number} style={{ color: ratingColor(parseFloat(item.r)) }}>
                       {item.r}/10
                     </p>
                     {item.v && (
@@ -309,9 +285,7 @@ export default function Cards({
                         <FM id="hotel_card.reviews" />
                       </p>
                     )}
-                    {item.v && (
-                      <p className={styles.review__medium}>{item.v}</p>
-                    )}
+                    {item.v && <p className={styles.review__medium}>{item.v}</p>}
                   </div>
                 ) : null}
                 {/* <button
@@ -344,10 +318,7 @@ export default function Cards({
                     </defs>
                   </svg>
                 </button> */}
-                <button
-                  className={styles.favorites_btn}
-                  onClick={() => addToFavorites(item.i)}
-                >
+                <button className={styles.favorites_btn} onClick={() => addToFavorites(item.i)}>
                   <svg
                     width="26"
                     height="26"
@@ -377,19 +348,12 @@ export default function Cards({
                 </button>
               </div>
               <div className={styles.card_text}>
-                <p className={styles.country_text}>
-                  {`${item.t.n}, ${item.c.n}`}
-                </p>
+                <p className={styles.country_text}>{`${item.t.n}, ${item.c.n}`}</p>
                 <div className={styles.stars_wrapper}>
                   {new Array(parseInt(item.s)).fill(null).map((_, ind) => {
                     return (
                       <div className={styles.stars} key={ind}>
-                        <img
-                          src="/assets/img/svg/tour/star.svg"
-                          alt="star"
-                          width="12"
-                          height="12"
-                        />
+                        <img src="/assets/img/svg/tour/star.svg" alt="star" width="12" height="12" />
                       </div>
                     );
                   })}
@@ -406,18 +370,13 @@ export default function Cards({
                             .map((item) =>
                               item.map((searched) => {
                                 return searched.includes(property) ? (
-                                  <div
-                                    className={styles.tour_property}
-                                    key={ind}
-                                  >
+                                  <div className={styles.tour_property} key={ind}>
                                     <img
                                       className={styles.tour_property__icon}
                                       src={`/assets/img/svg/tour_property/${searched[0]}.svg`}
                                       alt=""
                                     />
-                                    <p className={styles.tour_property__title}>
-                                      {searched[1]}
-                                    </p>
+                                    <p className={styles.tour_property__title}>{searched[1]}</p>
                                   </div>
                                 ) : null;
                               })

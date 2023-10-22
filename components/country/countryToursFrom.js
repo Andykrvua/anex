@@ -52,12 +52,7 @@ export default function CountryToursFrom({ data, current }) {
                   {item.subpage_slug === current ? (
                     <FM id="country.from-kyyiv" />
                   ) : (
-                    GetLangField(
-                      item.translations,
-                      'languages_code',
-                      'br',
-                      router.locale
-                    )
+                    GetLangField(item.translations, 'languages_code', 'br', router.locale)
                   )}
                 </span>
               </span>

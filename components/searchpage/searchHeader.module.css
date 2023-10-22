@@ -43,6 +43,7 @@
 
 .sort_btn,
 .filter_btn {
+  position: relative;
   display: flex;
   align-items: center;
   padding: 13px 15px 12px 15px;
@@ -51,6 +52,17 @@
   line-height: 15px;
   background-color: var(--line);
   cursor: pointer;
+}
+
+.filter_btn_active::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red-btn);
 }
 
 .sort_btn {

@@ -45,11 +45,29 @@ export default function SearchHeader() {
     }
   };
 
+  const filtersIsActive = () => {
+    // add to store
+    const currentURL = window.location.href;
+    const newURL = new URL(currentURL);
+    if (
+      newURL.searchParams.get('stars') ||
+      newURL.searchParams.get('food') ||
+      newURL.searchParams.get('services')
+    ) {
+      return true;
+    } else if (newURL.searchParams.get('price') !== '0' || newURL.searchParams.get('priceTo') !== '375000') {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <div className={styles.header}>
       <div className={styles.sort_items}>
         <button
-          className={styles.filter_btn}
+          className={
+            filtersIsActive() ? `${styles.filter_btn} ${styles.filter_btn_active}` : `${styles.filter_btn}`
+          }
           onClick={() => setFilterModale(true)}
         >
           <img
@@ -64,11 +82,7 @@ export default function SearchHeader() {
         <button
           className={styles.sort_btn}
           onClick={() => sortHandler('price')}
-          style={
-            getSearchResultSort.price.active
-              ? { background: 'var(--placeholder)' }
-              : {}
-          }
+          style={getSearchResultSort.price.active ? { background: 'var(--placeholder)' } : {}}
         >
           <img
             src={
@@ -85,11 +99,7 @@ export default function SearchHeader() {
         <button
           className={styles.sort_btn}
           onClick={() => sortHandler('rating')}
-          style={
-            getSearchResultSort.rating.active
-              ? { background: 'var(--placeholder)' }
-              : {}
-          }
+          style={getSearchResultSort.rating.active ? { background: 'var(--placeholder)' } : {}}
         >
           <img
             src={
@@ -114,27 +124,20 @@ export default function SearchHeader() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: '43px',
-                  background:
-                    'linear-gradient(95.77deg, #006bd6 -23.84%, #0080ff 145.99%)',
+                  background: 'linear-gradient(95.77deg, #006bd6 -23.84%, #0080ff 145.99%)',
                   borderRadius: 'var(--def-radius)',
                 }
               : {}
           }
         >
           <img
-            src={
-              down.code.district
-                ? '/assets/img/svg/search_suggests/map-marker.svg'
-                : down.code.img
-            }
+            src={down.code.district ? '/assets/img/svg/search_suggests/map-marker.svg' : down.code.img}
             alt=""
             width={down.code.district ? '26' : '60'}
             height={down.code.district ? '26' : '43'}
           />
         </div>
-        <div className={`${styles.search_item_name}`}>
-          {down.name[loc] ? down.name[loc] : down.name}
-        </div>
+        <div className={`${styles.search_item_name}`}>{down.name[loc] ? down.name[loc] : down.name}</div>
         <div className={styles.search_item_dates}>
           {date.rawDate.toLocaleDateString('uk-UA', {
             day: 'numeric',

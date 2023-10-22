@@ -17,6 +17,7 @@ import {
 import declension from 'utils/declension';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
+import { inputRangeData } from '../../utils/constants';
 
 export default function MainForm() {
   const [modalIsOpen, setModalIsOpen] = useState('');
@@ -59,15 +60,13 @@ export default function MainForm() {
     const copiedDate = new Date(date.rawDate);
     copiedDate.setDate(copiedDate.getDate() + date.plusDays);
 
-    const childs = new Array(parseInt(person.child))
-      .fill(null)
-      .map((_, ind) => {
-        if (person.childAge[ind].toString().length === 1) {
-          return '0' + person.childAge[ind].toString();
-        } else {
-          return person.childAge[ind].toString();
-        }
-      });
+    const childs = new Array(parseInt(person.child)).fill(null).map((_, ind) => {
+      if (person.childAge[ind].toString().length === 1) {
+        return '0' + person.childAge[ind].toString();
+      } else {
+        return person.childAge[ind].toString();
+      }
+    });
 
     setStartSearch(true);
 
@@ -83,6 +82,11 @@ export default function MainForm() {
         nights: night.from,
         nightsTo: night.to,
         people: person.adult.toString() + childs.join(''),
+        price: inputRangeData.costMin,
+        priceTo: inputRangeData.costMax,
+        stars: '',
+        food: '',
+        services: '',
       },
     });
   };

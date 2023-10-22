@@ -2,42 +2,23 @@ import styles from './filterMobileTemplate.module.css';
 import { useSetFilterOpen } from 'store/store';
 import { FormattedMessage as FM } from 'react-intl';
 
-export default function FilterMobileTemplate({
-  children,
-  filteredSearch,
-  filterData,
-}) {
+export default function FilterMobileTemplate({ children, filteredSearch, filterData, isButtonShow }) {
   const setFilterModale = useSetFilterOpen();
   return (
     <div className="popup_wrapper">
-      <div
-        className="main_form_popup_mobile_wrapper"
-        style={{ overflow: 'hidden' }}
-      >
+      <div className="main_form_popup_mobile_wrapper" style={{ overflow: 'hidden' }}>
         <header className={styles.header_popup_header}>
           <button
             className={`${styles.header_popup_close} svg_btn`}
             aria-label="Закрыть"
             onClick={() => setFilterModale(false)}
           >
-            <svg
-              width="42"
-              height="42"
-              viewBox="0 0 42 42"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M30 22a1 1 0 1 0 0-2v2Zm-18.707-1.707a1 1 0 0 0 0 1.414l6.364 6.364a1 1 0 0 0 1.414-1.414L13.414 21l5.657-5.657a1 1 0 0 0-1.414-1.414l-6.364 6.364ZM30 20H12v2h18v-2Z"></path>
             </svg>
           </button>
           <div className={styles.header_header_label}>
-            <svg
-              width="26"
-              height="26"
-              viewBox="0 0 26 26"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -113,9 +94,7 @@ export default function FilterMobileTemplate({
         <h3 className="title">
           <FM id="result.filter.title" />
         </h3>
-        <div
-          className={`${styles.filter_content} popup_scrollable_content filter_scrollable`}
-        >
+        <div className={`${styles.filter_content} popup_scrollable_content filter_scrollable`}>
           {children}
         </div>
         <div className="apply_btn_wrapper">
@@ -125,7 +104,7 @@ export default function FilterMobileTemplate({
               setFilterModale(false);
               filteredSearch();
             }}
-            disabled={!filterData.btnTrigger}
+            disabled={!isButtonShow}
           >
             <FM id="common.apply" />
           </button>

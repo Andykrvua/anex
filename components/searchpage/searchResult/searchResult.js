@@ -2,7 +2,7 @@
 import styles from './searchResult.module.css';
 import { FormattedMessage as FM } from 'react-intl';
 import Loader from 'components/common/loader';
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useRef } from 'react';
 import {
   useGetUp,
   useGetDown,
@@ -33,7 +33,7 @@ import Cards from './cards';
 
 const MemoCards = memo(Cards);
 
-export default function SearchResult() {
+export default function SearchResult({ isFilterBtnShow }) {
   // help data start
   const [step, setStep] = useState(10);
   const [helper, setHelper] = useState(false);
@@ -71,6 +71,7 @@ export default function SearchResult() {
   const [isLoading, setIsLoading] = useState(false);
   const [countryHotelService, setCountryHotelService] = useState(false);
   const [searchParams, setSearchParams] = useState(false);
+  const [page, setPage] = useState(1);
 
   const ResultHandler = (apiData) => {
     if (!apiData) return;
@@ -139,15 +140,13 @@ export default function SearchResult() {
   }, [getSearchResultSort]);
 
   async function getUrl(number) {
-    const childs = new Array(parseInt(person.child))
-      .fill(null)
-      .map((_, ind) => {
-        if (person.childAge[ind].toString().length === 1) {
-          return '0' + person.childAge[ind].toString();
-        } else {
-          return person.childAge[ind].toString();
-        }
-      });
+    const childs = new Array(parseInt(person.child)).fill(null).map((_, ind) => {
+      if (person.childAge[ind].toString().length === 1) {
+        return '0' + person.childAge[ind].toString();
+      } else {
+        return person.childAge[ind].toString();
+      }
+    });
     const people = person.adult.toString() + childs.join('');
 
     const copiedDate = new Date(date.rawDate);
@@ -158,114 +157,26 @@ export default function SearchResult() {
 
     const transport = up.transport ? up.transport : 'no';
 
-    // need get available transport from point list before fetch results
-    // let upTransportAvailable;
-    // if (!upPointList.active) {
-    //   const search = await fetch(
-    //     `/api/endpoints/fromcities?geoId=${down.value}`
-    //   ).then((response) => {
-    //     if (response.status === 200) {
-    //       return response.json();
-    //     }
-    //     return null;
-    //   });
+    let url = `https://api.otpusk.com/api/2.6/tours/getResults?page=${
+      applyFilter ? 1 : page
+    }&number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${
+      down.value
+    }&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${
+      night.to
+    }&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
 
-    //   if (search?.ok) {
-    //     setUpPointList({
-    //       active: true,
-    //       list: search.result.fromCities,
-    //     });
-    //   }
-    //   upTransportAvailable = search.result.fromCities.filter(
-    //     (item) => item.id === up.value.toString()
-    //   );
-    // } else {
-    //   upTransportAvailable = upPointList.list.filter(
-    //     (item) => item.id === up.value.toString()
-    //   );
-    // }
-    // const transport = upTransportAvailable.length
-    //   ? upTransportAvailable[0].transport.join()
-    //   : 'no';
+    const currentURL = window.location.href;
+    const newURL = new URL(currentURL);
 
-    let url = `https://api.otpusk.com/api/2.6/tours/getResults?number=${number}&lang=${loc}&transport=${transport}&from=${up.value}&to=${down.value}&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${night.to}&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
+    url += `&price=${newURL.searchParams.get('price')}`;
+    url += `&priceTo=${newURL.searchParams.get('priceTo')}`;
+    url += `&stars=${newURL.searchParams.get('stars')}`;
+    url += `&food=${newURL.searchParams.get('food')}`;
+    url += `&services=${newURL.searchParams.get('services')}`;
+
     if (applyFilter) {
-      const { newData } = filterData;
-      const filters = filterData.default.change;
-
-      if (filters.includes(5) || filters.includes(4) || filters.includes(3)) {
-        url += `&stars=${filters
-          .filter((item) => item === 5 || item === 4 || item === 3)
-          .join()}`;
-      }
-
-      if (newData.cost[0] !== undefined || newData.cost[1] !== undefined) {
-        url += `&price=${newData.cost[0]}&priceTo=${newData.cost[1]}`;
-      }
-
-      if (
-        filters.includes('ob') ||
-        filters.includes('bb') ||
-        filters.includes('hb') ||
-        filters.includes('fb') ||
-        filters.includes('ai') ||
-        filters.includes('uai')
-      ) {
-        url += `&food=${filters
-          .filter(
-            (item) =>
-              item === 'ob' ||
-              item === 'bb' ||
-              item === 'hb' ||
-              item === 'fb' ||
-              item === 'ai' ||
-              item === 'uai'
-          )
-          .join()}`;
-      }
-
-      url += `&services=${filters
-        .filter(
-          (item) =>
-            item !== 5 &&
-            item !== 4 &&
-            item !== 3 &&
-            item !== 'cost' &&
-            item !== 'ob' &&
-            item !== 'bb' &&
-            item !== 'hb' &&
-            item !== 'fb' &&
-            item !== 'ai' &&
-            item !== 'uai'
-        )
-        .join()}`;
-
       setApplyFilter(false);
-    } else {
-      setFilterData({
-        btnTrigger: false,
-        default: {
-          change: [],
-          cost: [0, 375000],
-          hotelRating: {
-            5: false,
-            4: false,
-            3: false,
-          },
-        },
-        newData: {
-          change: [],
-          cost: [],
-          hotelRating: {
-            5: false,
-            4: false,
-            3: false,
-          },
-        },
-        costMin: 0,
-        costMax: 375000,
-        reset: true,
-      });
+      setPage(1);
     }
 
     return url;
@@ -394,19 +305,23 @@ export default function SearchResult() {
     }
   }, [applyFilter]);
 
+  useEffect(() => {
+    if (page !== 1) {
+      search();
+    }
+  }, [page]);
+
   const collectParams = () => {
     const copiedDate = new Date(date.rawDate);
     copiedDate.setDate(copiedDate.getDate() + date.plusDays);
 
-    const childs = new Array(parseInt(person.child))
-      .fill(null)
-      .map((_, ind) => {
-        if (person.childAge[ind].toString().length === 1) {
-          return '0' + person.childAge[ind].toString();
-        } else {
-          return person.childAge[ind].toString();
-        }
-      });
+    const childs = new Array(parseInt(person.child)).fill(null).map((_, ind) => {
+      if (person.childAge[ind].toString().length === 1) {
+        return '0' + person.childAge[ind].toString();
+      } else {
+        return person.childAge[ind].toString();
+      }
+    });
 
     let fromname;
     if (typeof up.name === 'string') {
@@ -430,13 +345,36 @@ export default function SearchResult() {
     setSearchParams(params);
   };
 
+  const ref = useRef(0);
+
+  const loadMore = () => {
+    console.log('hotels all', apiData.hotelsArr.length);
+    ref.current++;
+
+    const clicks = Math.ceil(apiData.hotelsArr.length / 10);
+    setStep((prev) => prev + 10);
+
+    console.log('ref.current', ref.current);
+    console.log('clicks', clicks);
+
+    if (ref.current === clicks) {
+      console.log('all');
+      ref.current = 0;
+      setPage((page) => page + 1);
+      setStep(10);
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 500);
+    }
+  };
+
   if (error) {
     return <h4>Error</h4>;
   }
 
   return (
     <>
-      <div style={filterData.btnTrigger ? { opacity: '.5' } : {}}>
+      <div style={isFilterBtnShow ? { opacity: '.5' } : {}}>
         {isLoading && <Loader />}
         {show && (
           <MemoCards
@@ -454,17 +392,8 @@ export default function SearchResult() {
       </div>
       {apiRes.total !== 0 && !isLoading && (
         <div className={styles.load_more_wrapper}>
-          <button
-            className={`${styles.load_more_btn} main_form_btn`}
-            onClick={() => setStep((prev) => prev + 10)}
-          >
-            <svg
-              width="28"
-              height="25"
-              viewBox="0 0 28 25"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+          <button className={`${styles.load_more_btn} main_form_btn`} onClick={loadMore}>
+            <svg width="28" height="25" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"

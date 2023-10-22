@@ -236,3 +236,9 @@ export const popCountryCode = [
  * "name": "TPG",
  */
 export const ignoreOperators = 'ignoreOperators=3342,3371,3384,3372,3326,2700&';
+
+// default price values
+export const inputRangeData = {
+  costMin: 0,
+  costMax: 375000,
+};

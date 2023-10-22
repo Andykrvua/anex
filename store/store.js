@@ -4,6 +4,7 @@ import { mainFormPersonValidationRange as personVal } from '../utils/constants';
 import { FormattedMessage as FM } from 'react-intl';
 // import { defaultDownPoint, defaultUpPoint } from 'utils/constants';
 import { persist } from 'zustand/middleware';
+import { inputRangeData } from '../utils/constants';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -12,18 +13,24 @@ const rawDate = tomorrow;
 
 const defaultDownPoint = {
   name: {
-    ru: 'Турция',
-    uk: 'Туреччина',
+    // ru: 'Турция',
+    ru: 'Египет',
+    // uk: 'Туреччина',
+    uk: 'Египет',
   },
-  value: 115,
+  // value: 115,
+  value: 43,
 };
 
 const defaultUpPoint = {
   name: {
-    ru: 'Киев',
-    uk: 'Київ',
+    // ru: 'Киев',
+    ru: 'Жешув',
+    // uk: 'Київ',
+    uk: 'Жешув',
   },
-  value: 1544,
+  // value: 1544,
+  value: 3158,
 };
 
 const useStore = create(
@@ -31,17 +38,20 @@ const useStore = create(
     up: {
       name: defaultUpPoint.name,
       value: defaultUpPoint.value,
-      transport: 'bus',
+      // transport: 'bus',
+      transport: 'air',
     },
     setUp: (up) => set({ up }),
     down: {
       name: defaultDownPoint.name,
       value: defaultDownPoint.value,
-      countryValue: 115,
+      // countryValue: 115,
+      countryValue: 43,
       code: {
         district: false,
         hotel: false,
-        img: '/assets/img/svg/flags/code/turkey.svg',
+        // img: '/assets/img/svg/flags/code/turkey.svg',
+        img: '/assets/img/svg/flags/code/egypt.svg',
       },
     },
     setDown: (down) => set({ down }),
@@ -86,31 +96,12 @@ const useStore = create(
     },
     setUpPointList: (upPointList) => set({ upPointList }),
     searchFilter: {
-      btnTrigger: false,
-      default: {
-        change: [],
-        cost: [0, 375000],
-        hotelRating: {
-          5: false,
-          4: false,
-          3: false,
-        },
-      },
-      newData: {
-        change: [],
-        cost: [],
-        hotelRating: {
-          5: false,
-          4: false,
-          3: false,
-        },
-      },
-      costMin: 0,
-      costMax: 375000,
+      costMin: inputRangeData.costMin,
+      costMax: inputRangeData.costMax,
       reset: false,
+      trigger: 1,
     },
-    setSearchFilter: (data) =>
-      set((state) => ({ searchFilter: { ...state.searchFilter, ...data } })),
+    setSearchFilter: (data) => set((state) => ({ searchFilter: { ...state.searchFilter, ...data } })),
     applyFilter: false,
     setApplyFilter: (applyFilter) =>
       set({
@@ -145,8 +136,7 @@ const useStore = create(
     currentOffer: {},
     setCurrentOffer: (currentOffer) => set({ currentOffer }),
     currentOfferMailData: {},
-    setCurrentOfferMailData: (currentOfferMailData) =>
-      set({ currentOfferMailData }),
+    setCurrentOfferMailData: (currentOfferMailData) => set({ currentOfferMailData }),
   }))
 );
 
@@ -175,8 +165,7 @@ export const useSetModal = () => useStore((state) => state.setModal);
 
 // open/close filter menu
 export const useGetFilterOpen = () => useStore((state) => state.isFilterOpen);
-export const useSetFilterOpen = () =>
-  useStore((state) => state.setIsFilterOpen);
+export const useSetFilterOpen = () => useStore((state) => state.setIsFilterOpen);
 
 // open/close burger menu
 export const useGetBurger = () => useStore((state) => state.burger);
@@ -187,65 +176,48 @@ export const useWindowInfo = () => useStore((state) => state.windowInfo);
 export const useSetWindowInfo = () => useStore((state) => state.setWindowInfo);
 
 // search list for current user search request
-export const useGetSearchCountryList = () =>
-  useStore((state) => state.searchCountryList);
-export const useSetSearchCountryList = () =>
-  useStore((state) => state.setSearchCountryList);
+export const useGetSearchCountryList = () => useStore((state) => state.searchCountryList);
+export const useSetSearchCountryList = () => useStore((state) => state.setSearchCountryList);
 
 // up points for current country
 export const useGetUpPointList = () => useStore((state) => state.upPointList);
-export const useSetUpPointList = () =>
-  useStore((state) => state.setUpPointList);
+export const useSetUpPointList = () => useStore((state) => state.setUpPointList);
 
 // data for search filter user params
 export const useGetSearchFilter = () => useStore((state) => state.searchFilter);
-export const useSetSearchFilter = () =>
-  useStore((state) => state.setSearchFilter);
+export const useSetSearchFilter = () => useStore((state) => state.setSearchFilter);
 
 // start search for filter data
 export const useGetApplyFilter = () => useStore((state) => state.applyFilter);
-export const useSetApplyFilter = () =>
-  useStore((state) => state.setApplyFilter);
+export const useSetApplyFilter = () => useStore((state) => state.setApplyFilter);
 
 // data for map view
-export const useGetOpenStreetMap = () =>
-  useStore((state) => state.openStreetMap);
-export const useSetOpenStreetMap = () =>
-  useStore((state) => state.setOpenStreetMap);
+export const useGetOpenStreetMap = () => useStore((state) => state.openStreetMap);
+export const useSetOpenStreetMap = () => useStore((state) => state.setOpenStreetMap);
 
 // flag true after make search params
 // потрібен щоб визначити прийшов користувач з іншої стоірнки чи ввів урл запит в браузер
 export const useGetStartSearch = () => useStore((state) => state.startSearch);
-export const useSetStartSearch = () =>
-  useStore((state) => state.setStartSearch);
+export const useSetStartSearch = () => useStore((state) => state.setStartSearch);
 
 // searching run right now
-export const useGetSearchInProgress = () =>
-  useStore((state) => state.searchInProgress);
-export const useSetSearchInProgress = () =>
-  useStore((state) => state.setSearchInProgress);
+export const useGetSearchInProgress = () => useStore((state) => state.searchInProgress);
+export const useSetSearchInProgress = () => useStore((state) => state.setSearchInProgress);
 
 // save hotels services
 export const useGetHotelService = () => useStore((state) => state.hotelService);
-export const useSetHotelService = () =>
-  useStore((state) => state.setHotelService);
+export const useSetHotelService = () => useStore((state) => state.setHotelService);
 
 // sort control
-export const useGetSearchResultSort = () =>
-  useStore((state) => state.searchResultSort);
-export const useSetSearchResultSort = () =>
-  useStore((state) => state.setSearchResultSort);
+export const useGetSearchResultSort = () => useStore((state) => state.searchResultSort);
+export const useSetSearchResultSort = () => useStore((state) => state.setSearchResultSort);
 // offer page req params
 export const useGetOfferParams = () => useStore((state) => state.offerParams);
-export const useSetOfferParams = () =>
-  useStore((state) => state.setOfferParams);
+export const useSetOfferParams = () => useStore((state) => state.setOfferParams);
 // current offer
 export const useGetCurrentOffer = () => useStore((state) => state.currentOffer);
-export const useSetCurrentOffer = () =>
-  useStore((state) => state.setCurrentOffer);
+export const useSetCurrentOffer = () => useStore((state) => state.setCurrentOffer);
 // current offer mail data
-export const useGetCurrentOfferMailData = () =>
-  useStore((state) => state.currentOfferMailData);
-export const useSetCurrentOfferMailData = () =>
-  useStore((state) => state.setCurrentOfferMailData);
+export const useGetCurrentOfferMailData = () => useStore((state) => state.currentOfferMailData);
+export const useSetCurrentOfferMailData = () => useStore((state) => state.setCurrentOfferMailData);
 //current offer

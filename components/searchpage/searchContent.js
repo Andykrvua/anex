@@ -1,6 +1,6 @@
 import styles from './searchContent.module.css';
 import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage as FM } from 'react-intl';
 import StickyBox from 'react-sticky-box';
 import {
@@ -22,8 +22,40 @@ export default function SearchContent() {
   const filterData = useGetSearchFilter();
   const setFilterData = useSetSearchFilter();
   const setApplyFilter = useSetApplyFilter();
-
   const windowSize = getViewport();
+
+  const getParams = () => {
+    const currentURL = window.location.href;
+    const newURL = new URL(currentURL);
+    const price = newURL.searchParams.get('price');
+    const priceTo = newURL.searchParams.get('priceTo');
+    const stars = newURL.searchParams.get('stars');
+    const food = newURL.searchParams.get('food');
+    const services = newURL.searchParams.get('services');
+
+    return {
+      price,
+      priceTo,
+      stars,
+      food,
+      services,
+    };
+  };
+
+  const [urlParams, setUrlParams] = useState(getParams());
+
+  let isButtonShow = false;
+  if (JSON.stringify(getParams()) === JSON.stringify(urlParams)) {
+    isButtonShow = false;
+  } else {
+    isButtonShow = true;
+  }
+
+  useEffect(() => {
+    if (filterData.reset) {
+      setUrlParams(getParams());
+    }
+  }, [filterData]);
 
   useEffect(() => {
     if (windowSize.width > 809) {
@@ -49,37 +81,8 @@ export default function SearchContent() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    const changeHelper = (arr1, arr2) => {
-      // eslint-disable-next-line
-      let unique = new Set();
-      // eslint-disable-next-line
-      let unique2 = new Set(arr2);
-      arr1.forEach((el) => unique.add(el));
-      [...unique2].forEach((el) => {
-        if (unique.has(el)) {
-          unique.delete(el);
-        } else {
-          unique.add(el);
-        }
-      });
-      return [...unique];
-    };
-
-    setFilterData({
-      ...filterData,
-      btnTrigger: false,
-      default: {
-        ...filterData.newData,
-        change: [
-          ...changeHelper(filterData.default.change, filterData.newData.change),
-        ],
-        cost: filterData.newData.cost.length
-          ? filterData.newData.cost
-          : filterData.default.cost,
-      },
-      newData: { ...filterData.newData, change: [] },
-    });
     setTimeout(() => {
+      setUrlParams(getParams());
       setApplyFilter(true);
     }, 500);
   };
@@ -87,16 +90,11 @@ export default function SearchContent() {
   return (
     <div className={styles.search_wrapper}>
       {windowSize.width < 810 && (
-        <div
-          className={
-            getFilterModale
-              ? 'main_form_popup filter open'
-              : 'main_form_popup filter'
-          }
-        >
+        <div className={getFilterModale ? 'main_form_popup filter open' : 'main_form_popup filter'}>
           <FilterMobileTemplate
             filteredSearch={filteredSearch}
             filterData={filterData}
+            isButtonShow={isButtonShow}
           >
             <FilterContent mobile={true} />
           </FilterMobileTemplate>
@@ -105,13 +103,9 @@ export default function SearchContent() {
 
       {windowSize.width >= 810 && (
         <div className={styles.filter_content_wrapper}>
-          {filterData.btnTrigger && (
+          {isButtonShow && (
             <div className={styles.filter_btn}>
-              <button
-                className="apply_btn"
-                onClick={() => filteredSearch()}
-                style={{ padding: '24px 36px' }}
-              >
+              <button className="apply_btn" onClick={() => filteredSearch()} style={{ padding: '24px 36px' }}>
                 <FM id="result.filter.apply" />
               </button>
             </div>
@@ -121,7 +115,7 @@ export default function SearchContent() {
           </StickyBox>
         </div>
       )}
-      <SearchResult />
+      <SearchResult isFilterBtnShow={isButtonShow} />
     </div>
   );
 }

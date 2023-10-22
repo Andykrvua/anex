@@ -3,57 +3,69 @@ import { Range, getTrackBackground } from 'react-range';
 import { useSetSearchFilter, useGetSearchFilter } from 'store/store';
 import styles from './inputRange.module.css';
 
-export default function InputRange({ min, max, val, reset }) {
+export default function InputRange({ min, max, reset }) {
   const step = 5000;
-  const [values, setValues] = useState(val);
+  const setFilterData = useSetSearchFilter();
   const filterData = useGetSearchFilter();
+
+  const initValues = () => {
+    const currentURL = window.location.href;
+    const newURL = new URL(currentURL);
+    const currentPrice = newURL.searchParams.get('price');
+    const currentPriceTo = newURL.searchParams.get('priceTo');
+    if (currentPrice && currentPriceTo) {
+      return [Number(currentPrice), Number(currentPriceTo)];
+    }
+    return filterData.default.cost;
+  };
+
+  const [values, setValues] = useState(initValues());
+
   useEffect(() => {
     if (reset) {
-      setValues(filterData.default.cost);
+      setValues([filterData.costMin, filterData.costMax]);
     }
-
-    // setValues([min, max]);
   }, [reset]);
 
-  const setFilterData = useSetSearchFilter();
+  function changeHandler(values) {
+    const currentURL = window.location.href;
+    const newURL = new URL(currentURL);
+    newURL.searchParams.set('price', values[0]);
+    newURL.searchParams.set('priceTo', values[1]);
+    window.history.pushState({}, '', newURL.toString());
 
-  function Test(values) {
-    if (
-      filterData.default.cost[0] === values[0] &&
-      filterData.default.cost[1] === values[1]
-    ) {
-      setFilterData({
-        btnTrigger: filterData.newData.change.filter((item) => item !== 'cost')
-          .length
-          ? true
-          : false,
-        default: filterData.default,
-        newData: {
-          ...filterData.newData,
-          cost: values,
-          change: filterData.newData.change.filter((item) => item !== 'cost'),
-        },
-      });
-    } else {
-      setFilterData({
-        btnTrigger: true,
-        default: filterData.default,
-        newData: {
-          ...filterData.newData,
-          cost: values,
-          change: filterData.newData.change.length
-            ? filterData.newData.change.includes('cost')
-              ? [...filterData.newData.change]
-              : [...filterData.newData.change, 'cost']
-            : ['cost'],
-        },
-      });
-    }
+    setFilterData({ ...filterData, trigger: filterData.trigger + 1 });
+
+    // if (filterData.default.cost[0] === values[0] && filterData.default.cost[1] === values[1]) {
+    //   setFilterData({
+    //     btnTrigger: filterData.newData.change.filter((item) => item !== 'cost').length ? true : false,
+    //     default: filterData.default,
+    //     newData: {
+    //       ...filterData.newData,
+    //       cost: values,
+    //       change: filterData.newData.change.filter((item) => item !== 'cost'),
+    //     },
+    //   });
+    // } else {
+    //   setFilterData({
+    //     btnTrigger: true,
+    //     default: filterData.default,
+    //     newData: {
+    //       ...filterData.newData,
+    //       cost: values,
+    //       change: filterData.newData.change.length
+    //         ? filterData.newData.change.includes('cost')
+    //           ? [...filterData.newData.change]
+    //           : [...filterData.newData.change, 'cost']
+    //         : ['cost'],
+    //     },
+    //   });
+    // }
   }
 
   const onChangeHandler = (values) => {
     setValues(values);
-    Test(values);
+    changeHandler(values);
   };
 
   return (
@@ -85,11 +97,7 @@ export default function InputRange({ min, max, val, reset }) {
                 borderRadius: '4px',
                 background: getTrackBackground({
                   values,
-                  colors: [
-                    'var(--line)',
-                    'var(--primary-light)',
-                    'var(--line)',
-                  ],
+                  colors: ['var(--line)', 'var(--primary-light)', 'var(--line)'],
                   min,
                   max,
                 }),
