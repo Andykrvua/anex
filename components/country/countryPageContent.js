@@ -11,12 +11,7 @@ const CountryPropertys = ({ country }) => {
   return (
     <div className={styles.property_wrapper}>
       <div className={styles.property_item}>
-        <img
-          src={`/assets/img/svg/flags/${country.code}.svg`}
-          width="85"
-          height="62"
-          alt=""
-        />
+        <img src={`/assets/img/svg/flags/${country.code}.svg`} width="85" height="62" alt="" />
       </div>
       {country.translations[0].property_list.map((item) => {
         return (
@@ -40,10 +35,7 @@ const TourBlock = ({ code }) => {
 
 const SubpagesLinks = ({ subpagesSlugs, countryName, current = 0 }) => {
   const intl = useIntl();
-  const from = subpagesSlugs.filter(
-    (item) => item.temp_from === null && item?.is_district !== true
-  );
-
+  const from = subpagesSlugs.filter((item) => item.temp_from === null && item?.is_district !== true);
   const month = subpagesSlugs.filter((item) => item.temp_from !== null);
   return (
     <>
@@ -79,31 +71,27 @@ export default function CountryPageContent({
   subpageSlug,
   subsubpage,
   minOffer = null,
+  subpagesFromCities = null,
 }) {
   return (
     <section className={styles.page_wrapper}>
       {country?.translations[0].declension_title && (
-        <h2 className={styles.title}>
-          {country?.translations[0].declension_title}
-        </h2>
+        <h2 className={styles.title}>{country?.translations[0].declension_title}</h2>
       )}
-      {country.translations[0].property_list && (
-        <CountryPropertys country={country} />
-      )}
+      {country.translations[0].property_list && <CountryPropertys country={country} />}
       {subpagesSlugs.filter((item) => item.is_district === true).length &&
-      !subsubpage ? (
+      (!subsubpage || !country.is_district) ? (
         <DistrictList
           data={
             isDistrict
               ? subpagesSlugs.filter(
-                  (item) =>
-                    item.is_district &&
-                    item.subsubpage &&
-                    item.subpage_slug === subpageSlug
+                  (item) => item.is_district && item.subsubpage && item.subpage_slug === subpageSlug
                 )
-              : subpagesSlugs.filter(
-                  (item) => item.is_district && !item.subsubpage
+              : country.district_from_cities
+              ? subpagesSlugs.filter(
+                  (item) => item.subpage_slug === country.subpage_slug && item.is_district && item.subsubpage
                 )
+              : subpagesSlugs.filter((item) => item.is_district && !item.subsubpage)
           }
           title={country.translations[0].country_district_title}
           country={country.slug ? country.slug : country.country_slug.slug}
@@ -123,11 +111,14 @@ export default function CountryPageContent({
         <SubpagesLinks
           current={country?.subpage_slug}
           subpagesSlugs={subpagesSlugs}
-          // country.translations[0].name new code possibly generate bugs
-          countryName={
-            country.translations[0].from_month_country_name ||
-            country.translations[0].name
-          }
+          countryName={country.translations[0].from_month_country_name || country.translations[0].name}
+        />
+      ) : null}
+      {subpagesFromCities && subpagesFromCities.length > 0 ? (
+        <SubpagesLinks
+          current={country?.subpage_slug}
+          subpagesSlugs={subpagesFromCities}
+          countryName={country.translations[0].from_month_country_name || country.translations[0].name}
         />
       ) : null}
     </section>

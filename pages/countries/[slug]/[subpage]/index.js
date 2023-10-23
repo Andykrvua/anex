@@ -14,7 +14,15 @@ import MainForm from '/components/mainform/mainForm.js';
 import H1 from 'components/country/countryPageH1';
 import CountryPageContent from 'components/country/countryPageContent';
 
-export default function CountrySubPage({ country, slug, subpage, loc, countrySubpage, countrySubpages }) {
+export default function CountrySubPage({
+  country,
+  slug,
+  subpage,
+  loc,
+  countrySubpage,
+  countrySubpages,
+  districtSubpagesFromCities,
+}) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -71,6 +79,7 @@ export default function CountrySubPage({ country, slug, subpage, loc, countrySub
             subpagesSlugs={countrySubpages}
             isDistrict={countrySubpage.is_district}
             subpageSlug={subpage}
+            subpagesFromCities={districtSubpagesFromCities}
           />
         </div>
       )}
@@ -122,7 +131,10 @@ export async function getStaticProps(context) {
       subpage,
       loc,
       countrySubpage: countrySubpage.data.filter((item) => item.subsubpage_slug === null)[0] || null,
-      countrySubpages: countrySubpages.data || null,
+      countrySubpages: countrySubpages.data.filter((item) => !item.district_from_cities) || null,
+      districtSubpagesFromCities:
+        countrySubpages.data.filter((item) => item.district_from_cities && item.subpage_slug === subpage) ||
+        null,
     },
     revalidate: 30,
   };

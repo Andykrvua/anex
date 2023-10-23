@@ -24,6 +24,7 @@ export default function CountrySubSubPage({
   countrySubpage,
   countrySubSubpage,
   countrySubpages,
+  districtSubpagesFromCities,
 }) {
   const intl = useIntl();
   const router = useRouter();
@@ -68,6 +69,7 @@ export default function CountrySubSubPage({
             loc={loc}
             subpagesSlugs={countrySubpages}
             subsubpage
+            subpagesFromCities={districtSubpagesFromCities}
           />
         </div>
       )}
@@ -117,6 +119,16 @@ export async function getStaticProps(context) {
     console.log('error: ', countrySubpages?.errors);
     throw new Error('ERROR COUNTRY SLUG SUBPAGE SUBSUBPAGE');
   }
+  const test = {
+    country: country.data[0] || null,
+    slug,
+    subpage,
+    subsubpage,
+    loc,
+    countrySubpage: countrySubpage.data[0] || null,
+    countrySubSubpage: countrySubSubpage.data[0] || null,
+    countrySubpages: countrySubpages.data || null,
+  };
 
   return {
     props: {
@@ -128,6 +140,13 @@ export async function getStaticProps(context) {
       countrySubpage: countrySubpage.data[0] || null,
       countrySubSubpage: countrySubSubpage.data[0] || null,
       countrySubpages: countrySubpages.data || null,
+      districtSubpagesFromCities:
+        countrySubpages.data.filter(
+          (item) =>
+            item.district_from_cities &&
+            item.subpage_slug === subpage &&
+            !countrySubSubpage.data[0].is_district
+        ) || null,
     },
     revalidate: 30,
   };

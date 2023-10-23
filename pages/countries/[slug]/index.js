@@ -104,7 +104,7 @@ export async function getStaticProps(context) {
       countrySlugs,
       slug,
       loc,
-      subpagesSlugs: subpagesSlugs.data,
+      subpagesSlugs: subpagesSlugs.data.filter((item) => !item.district_from_cities),
       minOffer: minOffer.data || null,
     },
     revalidate: 30,
