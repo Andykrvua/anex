@@ -38,7 +38,6 @@ export default function CountrySubSubPage({
   }
 
   const searchSlug = countrySubpages.map((item) => item.subsubpage_slug === subsubpage);
-
   const br_arr = [
     {
       url: links.countries,
@@ -50,7 +49,11 @@ export default function CountrySubSubPage({
       title: countrySubpage?.translations[0].br,
     },
     {
-      title: countrySubSubpage?.translations[0].br,
+      title: countrySubSubpage.district_from_cities
+        ? `${intl.formatMessage({
+            id: 'country.tours_from',
+          })} ${countrySubSubpage?.translations[0].br}`
+        : countrySubSubpage?.translations[0].br,
     },
   ];
 
@@ -119,16 +122,6 @@ export async function getStaticProps(context) {
     console.log('error: ', countrySubpages?.errors);
     throw new Error('ERROR COUNTRY SLUG SUBPAGE SUBSUBPAGE');
   }
-  const test = {
-    country: country.data[0] || null,
-    slug,
-    subpage,
-    subsubpage,
-    loc,
-    countrySubpage: countrySubpage.data[0] || null,
-    countrySubSubpage: countrySubSubpage.data[0] || null,
-    countrySubpages: countrySubpages.data || null,
-  };
 
   return {
     props: {
@@ -137,8 +130,8 @@ export async function getStaticProps(context) {
       subpage,
       subsubpage,
       loc,
-      countrySubpage: countrySubpage.data[0] || null,
-      countrySubSubpage: countrySubSubpage.data[0] || null,
+      countrySubpage: countrySubpage.data.filter((item) => !item.subsubpage_slug)[0] || null,
+      countrySubSubpage: countrySubSubpage.data.filter((item) => !item.subdistrict_slug)[0] || null,
       countrySubpages: countrySubpages.data || null,
       districtSubpagesFromCities:
         countrySubpages.data.filter(

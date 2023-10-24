@@ -33,10 +33,38 @@ const TourBlock = ({ code }) => {
   );
 };
 
-const SubpagesLinks = ({ subpagesSlugs, countryName, current = 0 }) => {
+const SubpagesLinks = ({
+  subpagesSlugs,
+  countryName,
+  current = 0,
+  subsubpage = null,
+  nestingDistrict = null,
+  district = null,
+}) => {
   const intl = useIntl();
-  const from = subpagesSlugs.filter((item) => item.temp_from === null && item?.is_district !== true);
+  let from = subpagesSlugs.filter((item) => item.temp_from === null && item?.is_district !== true);
   const month = subpagesSlugs.filter((item) => item.temp_from !== null);
+
+  if (subsubpage && district) {
+    from = from.filter((item) => item.subsubpage_slug === current);
+  }
+
+  if (subsubpage && !district) {
+    from = from.filter((item) => !item.subdistrict_slug);
+  }
+
+  if (nestingDistrict && from.length === 1 && from[0].subdistrict_slug === current) {
+    return null;
+  }
+  if (nestingDistrict) {
+    from = from.filter((item) => item.subdistrict_slug !== current && item.subdistrict_slug);
+  }
+  if (from.length === 1 && from[0].subsubpage_slug === current) {
+    if (!from[0].subdistrict_slug) {
+      return null;
+    }
+  }
+
   return (
     <>
       {from.length ? (
@@ -72,6 +100,7 @@ export default function CountryPageContent({
   subsubpage,
   minOffer = null,
   subpagesFromCities = null,
+  nestingDistrict = null,
 }) {
   return (
     <section className={styles.page_wrapper}>
@@ -80,7 +109,7 @@ export default function CountryPageContent({
       )}
       {country.translations[0].property_list && <CountryPropertys country={country} />}
       {subpagesSlugs.filter((item) => item.is_district === true).length &&
-      (!subsubpage || !country.is_district) ? (
+      (!subsubpage || (!country.is_district && !nestingDistrict)) ? (
         <DistrictList
           data={
             isDistrict
@@ -114,11 +143,21 @@ export default function CountryPageContent({
           countryName={country.translations[0].from_month_country_name || country.translations[0].name}
         />
       ) : null}
-      {subpagesFromCities && subpagesFromCities.length > 0 ? (
+      {subpagesFromCities && subpagesFromCities.length > 0 && !nestingDistrict ? (
         <SubpagesLinks
-          current={country?.subpage_slug}
+          current={subsubpage ? country?.subsubpage_slug : country?.subpage_slug}
           subpagesSlugs={subpagesFromCities}
           countryName={country.translations[0].from_month_country_name || country.translations[0].name}
+          subsubpage={subsubpage}
+          district={country?.is_district}
+        />
+      ) : null}
+      {nestingDistrict ? (
+        <SubpagesLinks
+          current={country.subdistrict_slug}
+          subpagesSlugs={subpagesFromCities}
+          countryName={country.translations[0].from_month_country_name || country.translations[0].name}
+          nestingDistrict
         />
       ) : null}
     </section>

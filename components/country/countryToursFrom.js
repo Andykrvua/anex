@@ -6,14 +6,22 @@ import { GetLangField } from 'utils/getLangField';
 import { useRouter } from 'next/router';
 
 export default function CountryToursFrom({ data, current }) {
+  // console.log(data);
+  // console.log(current);
   const router = useRouter();
+  // console.log(router.query.subsubpage);
   return (
     <div className={styles.toursfrom_items}>
       {data.map((item, ind) => {
-        if (item.district_from_cities && router.query.subsubpage !== item.subsubpage_slug) {
+        if (
+          item.district_from_cities &&
+          (router.query.subsubpage !== item.subsubpage_slug || item.subdistrict_slug)
+        ) {
           return (
             <Link
-              href={`${links.countries}/${item.country_slug.slug}/${item.subpage_slug}/${item.subsubpage_slug}`}
+              href={`${links.countries}/${item.country_slug.slug}/${item.subpage_slug}/${
+                item.subsubpage_slug
+              }/${item.subdistrict_slug ? item.subdistrict_slug : ''}`}
               key={ind}
             >
               <a className={`${styles.toursfrom_item} touch`}>

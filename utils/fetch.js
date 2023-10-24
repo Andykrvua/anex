@@ -104,12 +104,18 @@ export const getPopularCountry = async (loc) => {
   return req(url);
 };
 
-export const getCountrySlugsAndSubpagesSlugs = async (subsubpageField = false) => {
+export const getCountrySlugsAndSubpagesSlugs = async (
+  subsubpageField = false,
+  nestingDistrictFrom = false
+) => {
   let filter = '';
   if (subsubpageField) {
     filter = '&filter[subsubpage_slug][_neq]=null';
   }
-  const url = `api_countries_subpage?fields=country_slug.slug,status,subpage_slug,subsubpage,subsubpage_slug&filter[status]=published${filter}`;
+  if (nestingDistrictFrom) {
+    filter = '&filter[subdistrict_slug][_neq]=null';
+  }
+  const url = `api_countries_subpage?fields=country_slug.slug,status,subpage_slug,subdistrict_slug,subsubpage,subsubpage_slug&filter[status]=published${filter}`;
   return req(url);
 };
 
@@ -126,12 +132,18 @@ export const getCountrySubpageSlug = async (slug, subpage, loc) => {
 
 export const getCountrySubSubpageSlug = async (slug, subpage, subsubpage, loc) => {
   const locale = languagesApi[loc];
-  const url = `api_countries_subpage?fields=subsubpage,subsubpage_slug,district_from_cities,country_slug.slug,isNewCity,status,is_district,img,subpage_slug,temp_from,temp_to,translations.languages_code,translations.country_district_title,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[subsubpage]=true&filter[subsubpage_slug]=${subsubpage}&filter[status]=published`;
+  const url = `api_countries_subpage?fields=subsubpage,subsubpage_slug,subdistrict_slug,district_from_cities,country_slug.slug,isNewCity,status,is_district,img,subpage_slug,temp_from,temp_to,translations.languages_code,translations.country_district_title,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[subsubpage]=true&filter[subsubpage_slug]=${subsubpage}&filter[status]=published`;
+  return req(url);
+};
+
+export const getCountrySubSubpageNestingSlug = async (slug, subpage, subsubpage, nesting, loc) => {
+  const locale = languagesApi[loc];
+  const url = `api_countries_subpage?fields=subsubpage,subsubpage_slug,subdistrict_slug,district_from_cities,country_slug.slug,isNewCity,status,is_district,img,subpage_slug,temp_from,temp_to,translations.languages_code,translations.country_district_title,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[subsubpage]=true&filter[subsubpage_slug]=${subsubpage}&filter[subdistrict_slug]=${nesting}&filter[status]=published`;
   return req(url);
 };
 
 export const getCountrySubpagesSlugs = async (slug) => {
-  const url = `api_countries_subpage?fields=country_slug.slug,img,popular,district_from_cities,subsubpage,subsubpage_slug,status,isNewCity,is_district,subpage_slug,temp_from,temp_to,translations.languages_code,translations.name,translations.br&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
+  const url = `api_countries_subpage?fields=country_slug.slug,img,popular,subdistrict_slug,district_from_cities,subsubpage,subsubpage_slug,status,isNewCity,is_district,subpage_slug,temp_from,temp_to,translations.languages_code,translations.name,translations.br&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
   return req(url);
 };
 
