@@ -16,6 +16,10 @@ const colors = {
   october: '#f37572',
   november: '#f37572',
   december: '#4dc2f6',
+  spring: '#ffb54b',
+  winter: '#4dc2f6',
+  autumn: '#f37572',
+  summer: '#80c683',
 };
 
 const AContent = ({ item, current }) => {
@@ -77,26 +81,27 @@ const AContent = ({ item, current }) => {
 };
 
 export default function CountryToursMonth({ data, current }) {
+  const month = [];
+  const timeOfYear = [];
+
+  const timeOfYearTemplate = ['spring', 'winter', 'autumn', 'summer'];
+
+  data.forEach((item) => {
+    if (timeOfYearTemplate.includes(item.subpage_slug)) {
+      timeOfYear.push(item);
+    } else {
+      month.push(item);
+    }
+  });
+
   return (
-    <div className={styles.toursmonth_items}>
-      {data.map((item, ind) => {
-        if (item.subpage_slug === current) {
-          return (
-            <a
-              key={ind}
-              className={
-                item.subpage_slug !== current
-                  ? `${styles.toursmonth_item} touch`
-                  : `${styles.toursmonth_item} ${styles.toursmonth_item__current} touch`
-              }
-            >
-              <AContent item={item} current={current} />
-            </a>
-          );
-        } else {
-          return (
-            <Link href={`${links.countries}/${item.country_slug.slug}/${item.subpage_slug}`} key={ind}>
+    <div className={styles.toursmonth_andtimeyears_items}>
+      <div className={styles.toursmonth_items}>
+        {month.map((item, ind) => {
+          if (item.subpage_slug === current) {
+            return (
               <a
+                key={ind}
                 className={
                   item.subpage_slug !== current
                     ? `${styles.toursmonth_item} touch`
@@ -105,10 +110,56 @@ export default function CountryToursMonth({ data, current }) {
               >
                 <AContent item={item} current={current} />
               </a>
-            </Link>
-          );
-        }
-      })}
+            );
+          } else {
+            return (
+              <Link href={`${links.countries}/${item.country_slug.slug}/${item.subpage_slug}`} key={ind}>
+                <a
+                  className={
+                    item.subpage_slug !== current
+                      ? `${styles.toursmonth_item} touch`
+                      : `${styles.toursmonth_item} ${styles.toursmonth_item__current} touch`
+                  }
+                >
+                  <AContent item={item} current={current} />
+                </a>
+              </Link>
+            );
+          }
+        })}
+      </div>
+      <div className={`${styles.toursmonth_items} ${styles.timeyeras_items}`}>
+        {timeOfYear.map((item, ind) => {
+          if (item.subpage_slug === current) {
+            return (
+              <a
+                key={ind}
+                className={
+                  item.subpage_slug !== current
+                    ? `${styles.toursmonth_item} touch`
+                    : `${styles.toursmonth_item} ${styles.toursmonth_item__current} touch`
+                }
+              >
+                <AContent item={item} current={current} />
+              </a>
+            );
+          } else {
+            return (
+              <Link href={`${links.countries}/${item.country_slug.slug}/${item.subpage_slug}`} key={ind}>
+                <a
+                  className={
+                    item.subpage_slug !== current
+                      ? `${styles.toursmonth_item} touch`
+                      : `${styles.toursmonth_item} ${styles.toursmonth_item__current} touch`
+                  }
+                >
+                  <AContent item={item} current={current} />
+                </a>
+              </Link>
+            );
+          }
+        })}
+      </div>
     </div>
   );
 }

@@ -155,6 +155,13 @@ export default function Footer() {
                     </a>
                   </Link>
                 </li>
+                <li>
+                  <Link href="/countries/tanzania/tur-zanzibar/">
+                    <a>
+                      <FM id="footer.links.poptour.Zanzibar" />
+                    </a>
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -163,8 +170,16 @@ export default function Footer() {
               <FM id="footer.t3" />
             </h4>
             <ul className={styles.list}>
-              <li><FM id="vs_discl" /><br/><FM id="vs_discl2" /></li>
-              <li>Пн - Пт: 11:00 – 19:00<br/>Сб: 11:00 – 17:00</li>
+              <li>
+                <FM id="vs_discl" />
+                <br />
+                <FM id="vs_discl2" />
+              </li>
+              <li>
+                Пн - Пт: 11:00 – 19:00
+                <br />
+                Сб: 11:00 – 17:00
+              </li>
               <li>
                 <FM id="footer.address" />
               </li>
@@ -181,9 +196,7 @@ export default function Footer() {
                 <a href="tel:+380635914144 ">+38 063 591 41 44 </a>
               </li>
               <li>
-                <a href="mailto:agency@anex-tour.com.ua">
-                  agency@anex-tour.com.ua
-                </a>
+                <a href="mailto:agency@anex-tour.com.ua">agency@anex-tour.com.ua</a>
               </li>
             </ul>
           </div>

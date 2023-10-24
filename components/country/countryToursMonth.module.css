@@ -1,7 +1,18 @@
+.toursmonth_andtimeyears_items {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  column-gap: 35px;
+}
+
 .toursmonth_items {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 97px);
+  grid-template-columns: repeat(6, 97px);
   gap: 15px;
+  align-content: start;
+}
+
+.timeyeras_items {
+  grid-template-columns: 97px 97px;
 }
 
 .toursmonth_item {
@@ -54,5 +65,31 @@
 @media (min-width: 810px) {
   .toursmonth_items {
     row-gap: 25px;
+  }
+}
+
+@media (max-width: 970px) {
+  .toursmonth_items {
+    grid-template-columns: repeat(auto-fill, 97px);
+  }
+  .timeyeras_items {
+    grid-template-columns: 97px 97px;
+  }
+}
+
+@media (max-width: 600px) {
+  .timeyeras_items {
+    grid-template-columns: 97px;
+  }
+}
+
+@media (max-width: 500px) {
+  .toursmonth_andtimeyears_items {
+    grid-template-columns: 1fr;
+    row-gap: 35px;
+  }
+
+  .timeyeras_items {
+    grid-template-columns: repeat(auto-fill, 97px);
   }
 }

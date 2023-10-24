@@ -159,7 +159,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
       </div>
 
       {data.map((item, ind) => {
-        if (ind < 6) {
+        if (ind < 4) {
           return (
             <a
               className={styles.card_order}
