@@ -133,13 +133,7 @@ export async function getStaticProps(context) {
       countrySubpage: countrySubpage.data.filter((item) => !item.subsubpage_slug)[0] || null,
       countrySubSubpage: countrySubSubpage.data.filter((item) => !item.subdistrict_slug)[0] || null,
       countrySubpages: countrySubpages.data || null,
-      districtSubpagesFromCities:
-        countrySubpages.data.filter(
-          (item) =>
-            item.district_from_cities &&
-            item.subpage_slug === subpage &&
-            !countrySubSubpage.data[0].is_district
-        ) || null,
+      districtSubpagesFromCities: countrySubpages.data.filter((item) => item.district_from_cities) || null,
     },
     revalidate: 30,
   };
