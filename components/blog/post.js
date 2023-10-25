@@ -17,9 +17,7 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
   return (
     <article className={`${styles.post} ${styles[variant]}`}>
       {variant === location.postContent.countryPage && (
-        <h2 className={styles.countrypage_title}>
-          {post.translations[0].post_title}
-        </h2>
+        <h2 className={styles.countrypage_title}>{post.translations[0].post_title}</h2>
       )}
       {variant === location.postContent.tourPage ? null : (
         <header className={styles.header}>
@@ -32,16 +30,13 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
               objectFit="cover"
               objectPosition="center"
               placeholder="blur"
-              blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                shimmer(333, 360)
-              )}`}
+              blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(333, 360))}`}
               priority={true}
             />
-            {variant === location.postContent.countryPage &&
-            post.translations[0].badge !== null ? (
+            {variant === location.postContent.countryPage && post.translations[0].badge ? (
               <p className={styles.badge}>{post.translations[0].badge}</p>
             ) : null}
-            {variant === location.postContent.countryPage && (
+            {variant === location.postContent.countryPage && post.translations[0].name && (
               <div className={styles.card_text}>
                 <h3>{post.translations[0].name}</h3>
                 {minOffer && (
@@ -58,9 +53,7 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
               {variant === null ? (
                 <h1 className={styles.title}>{post.translations[0].title}</h1>
               ) : (
-                <h1 className={`${styles.title} ${styles[variant]}`}>
-                  {post.translations[0].post_title}
-                </h1>
+                <h1 className={`${styles.title} ${styles[variant]}`}>{post.translations[0].post_title}</h1>
               )}
               {post?.categories?.[0] && (
                 <span
@@ -69,19 +62,12 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
                     backgroundColor: post.categories[0].categories_id.bg_color,
                   }}
                 >
-                  {GetLangField(
-                    post.categories[0].categories_id.translations,
-                    'languages_id',
-                    'name',
-                    loc
-                  )}
+                  {GetLangField(post.categories[0].categories_id.translations, 'languages_id', 'name', loc)}
                 </span>
               )}
 
               {variant === null && (
-                <span className={styles.date}>
-                  {directusFormattedDate(post.date_created)}
-                </span>
+                <span className={styles.date}>{directusFormattedDate(post.date_created)}</span>
               )}
             </div>
           </div>

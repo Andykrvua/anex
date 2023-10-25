@@ -6,17 +6,26 @@ import { useIntl } from 'react-intl';
 import Post from '/components/blog/post.js';
 import { location } from 'utils/constants';
 import LinksBlock from 'components/tours/tours-text/links';
+import DistrictList from 'components/country/districtList';
 
-export default function Tour({ pageSettings, allLinks }) {
+export default function Tour({ pageSettings, allLinks, loc }) {
   const intl = useIntl();
   const br_arr = [{ title: intl.formatMessage({ id: 'tour.br' }) }];
+
   return (
     <>
       <SeoHead content={pageSettings} />
       <div className="container">
         <Breadcrumbs data={br_arr} beforeMainFrom />
         <MainForm />
-        <LinksBlock allLinks={allLinks} />
+        {/* <LinksBlock allLinks={allLinks} /> */}
+        <DistrictList
+          data={allLinks}
+          title={pageSettings.translations[0].post_title}
+          country={''}
+          loc={loc}
+          variant={location.districtList.allToursPage}
+        />
         <Post variant={location.postContent.tourPage} post={pageSettings} />
       </div>
     </>
@@ -42,6 +51,7 @@ export async function getStaticProps(context) {
     props: {
       pageSettings: pageSettings.data,
       allLinks: allLinks.data,
+      loc,
     },
     revalidate: 30,
   };

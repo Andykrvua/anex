@@ -9,8 +9,9 @@ import LinksBlock from 'components/tours/tours-text/links';
 import { links } from 'utils/links';
 import { useRouter } from 'next/router';
 import DefaultErrorPage from 'next/error';
+import DistrictList from 'components/country/districtList';
 
-export default function Tours({ toursTextPage, allLinks, slug }) {
+export default function Tours({ toursTextPage, allLinks, slug, loc }) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -30,6 +31,13 @@ export default function Tours({ toursTextPage, allLinks, slug }) {
     { title: toursTextPage?.translations[0].name },
   ];
 
+  const style = {
+    margin: 'var(--h1margin) 0',
+    fontSize: '20px',
+    lineHeight: '23px',
+    fontWeight: 700,
+  };
+
   return (
     <>
       <SeoHead content={toursTextPage} />
@@ -38,9 +46,12 @@ export default function Tours({ toursTextPage, allLinks, slug }) {
       ) : (
         <div className="container">
           <Breadcrumbs data={br_arr} beforeMainFrom />
+          <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
           <MainForm />
-          <LinksBlock allLinks={allLinks} />
-          <Post variant={location.postContent.tourPage} post={toursTextPage} />
+          {/* <LinksBlock allLinks={allLinks} /> */}
+          {/* <DistrictList data={allLinks} title={'aaa'} country={'bbb'} loc={loc} /> */}
+          {/* <Post variant={location.postContent.tourPage} post={toursTextPage} /> */}
+          <Post post={toursTextPage} variant={location.postContent.countryPage} />
         </div>
       )}
     </>
@@ -82,6 +93,7 @@ export async function getStaticProps(context) {
       toursTextPage: toursTextPage.data[0] || null,
       allLinks: allLinks.data,
       slug,
+      loc,
     },
     revalidate: 30,
   };

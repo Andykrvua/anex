@@ -4,20 +4,17 @@ import DistrictCards from '/components/common/districtCards/districtCards.js';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useEffect } from 'react';
-import { districtCardsShowSwitcher } from 'utils/constants';
+import { districtCardsShowSwitcher, location } from 'utils/constants';
 
-export default function DistrictList({ data, title, country, loc }) {
+export default function DistrictList({ data, title, country, loc, variant = null }) {
   const intl = useIntl();
-  const [name, setName] = useState(
-    data.length > districtCardsShowSwitcher ? 'popular' : null
-  );
+  const [name, setName] = useState(data.length > districtCardsShowSwitcher ? 'popular' : null);
 
   useEffect(() => {
     setName(data.length > districtCardsShowSwitcher ? 'popular' : null);
   }, [data.length]);
 
   if (!data.length) return null;
-
   return (
     <>
       <h2 className={styles.title}>{title}</h2>
@@ -25,11 +22,17 @@ export default function DistrictList({ data, title, country, loc }) {
         <SwitchMenu
           items={[
             {
-              name: `${intl.formatMessage({ id: 'country.popular' })}`,
+              name:
+                variant === location.districtList.allToursPage
+                  ? `${intl.formatMessage({ id: 'tour.populap' })}`
+                  : `${intl.formatMessage({ id: 'country.popular' })}`,
               value: 'popular',
             },
             {
-              name: `${intl.formatMessage({ id: 'country.all' })}`,
+              name:
+                variant === location.districtList.allToursPage
+                  ? `${intl.formatMessage({ id: 'tour.all' })}`
+                  : `${intl.formatMessage({ id: 'country.all' })}`,
               value: 'all',
             },
           ]}
@@ -37,7 +40,7 @@ export default function DistrictList({ data, title, country, loc }) {
           callback={[name, setName]}
         />
       )}
-      <DistrictCards current={name} cards={data} country={country} loc={loc} />
+      <DistrictCards variant={variant} current={name} cards={data} country={country} loc={loc} />
     </>
   );
 }

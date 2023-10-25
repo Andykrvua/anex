@@ -37,6 +37,9 @@ export const location = {
     countryPage: 'countryPage',
     tourPage: 'tourPage',
   },
+  districtList: {
+    allToursPage: 'allToursPage',
+  },
   nav: {
     desktop: 'desktop',
     mobile: 'mobile',
