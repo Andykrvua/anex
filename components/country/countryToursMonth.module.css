@@ -37,6 +37,10 @@
   color: var(--primary-light);
 }
 
+.timeyeras_items .toursmonth_item_title {
+  text-align: center;
+}
+
 .toursmonth_item_title__current {
   color: var(--green-badge);
 }
@@ -47,6 +51,10 @@
   font-size: 12px;
   line-height: 14px;
   color: var(--primary-light);
+}
+
+.timeyeras_items .toursmonth_temp {
+  justify-content: center;
 }
 
 .toursmonth_temp + .toursmonth_temp {
@@ -60,6 +68,10 @@
   width: 28px;
   height: 28px;
   margin-right: 8px;
+}
+
+.timeyeras_items .toursmonth_temp_img_wrapper {
+  margin-right: 0;
 }
 
 @media (min-width: 810px) {

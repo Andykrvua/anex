@@ -22,7 +22,7 @@ const colors = {
   summer: '#80c683',
 };
 
-const AContent = ({ item, current }) => {
+const AContent = ({ item, current, timeYear = false }) => {
   return (
     <>
       <span
@@ -46,7 +46,7 @@ const AContent = ({ item, current }) => {
             />
           </svg>
         </span>
-        {item.temp_from}°
+        {timeYear ? '' : `${item.temp_from}°`}
       </span>
       <span className={styles.toursmonth_temp}>
         <span className={styles.toursmonth_temp_img_wrapper}>
@@ -74,7 +74,7 @@ const AContent = ({ item, current }) => {
             />
           </svg>
         </span>
-        {item.temp_to}°
+        {timeYear ? '' : `${item.temp_to}°`}
       </span>
     </>
   );
@@ -82,17 +82,28 @@ const AContent = ({ item, current }) => {
 
 export default function CountryToursMonth({ data, current }) {
   const month = [];
-  const timeOfYear = [];
+  const timeOfYearTemp = [];
 
   const timeOfYearTemplate = ['spring', 'winter', 'autumn', 'summer'];
 
   data.forEach((item) => {
     if (timeOfYearTemplate.includes(item.subpage_slug)) {
-      timeOfYear.push(item);
+      if (item.subpage_slug === 'winter') {
+        item.order = 1;
+      } else if (item.subpage_slug === 'spring') {
+        item.order = 2;
+      } else if (item.subpage_slug === 'summer') {
+        item.order = 3;
+      } else if (item.subpage_slug === 'autumn') {
+        item.order = 4;
+      }
+      timeOfYearTemp.push(item);
     } else {
       month.push(item);
     }
   });
+
+  const timeOfYear = timeOfYearTemp.sort((a, b) => a.order - b.order);
 
   return (
     <div className={styles.toursmonth_andtimeyears_items}>
@@ -140,7 +151,7 @@ export default function CountryToursMonth({ data, current }) {
                     : `${styles.toursmonth_item} ${styles.toursmonth_item__current} touch`
                 }
               >
-                <AContent item={item} current={current} />
+                <AContent item={item} current={current} timeYear={true} />
               </a>
             );
           } else {
@@ -153,7 +164,7 @@ export default function CountryToursMonth({ data, current }) {
                       : `${styles.toursmonth_item} ${styles.toursmonth_item__current} touch`
                   }
                 >
-                  <AContent item={item} current={current} />
+                  <AContent item={item} current={current} timeYear={true} />
                 </a>
               </Link>
             );
