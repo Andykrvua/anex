@@ -147,26 +147,10 @@ export default async function handler(req, res) {
           `
               : ''
           }
-          ${
-            req.body.item === 'certificates'
-              ? `<b style="font-size: 16px">Замовлення сертифікату</b>`
-              : ''
-          }
-          ${
-            req.body.item === 'lead'
-              ? `<b style="font-size: 16px">Форма зі сторінки контактів</b>`
-              : ''
-          }
-          ${
-            req.body.item === 'lead_pick_tour'
-              ? `<b style="font-size: 16px">Підберіть тур</b>`
-              : ''
-          }
-          ${
-            req.body.item === 'lead_request_call'
-              ? `<b style="font-size: 16px">Замовлено дзвінок</b>`
-              : ''
-          }
+          ${req.body.item === 'certificates' ? `<b style="font-size: 16px">Замовлення сертифікату</b>` : ''}
+          ${req.body.item === 'lead' ? `<b style="font-size: 16px">Форма зі сторінки контактів</b>` : ''}
+          ${req.body.item === 'lead_pick_tour' ? `<b style="font-size: 16px">Підберіть тур</b>` : ''}
+          ${req.body.item === 'lead_request_call' ? `<b style="font-size: 16px">Замовлено дзвінок</b>` : ''}
             <br />
           </td>
         </tr>
@@ -194,9 +178,9 @@ export default async function handler(req, res) {
               padding: 25px 10px 25px 10px;
             "
           >
-            Пн - Пт: 11:00 – 19:00
+            Пн - Пт: 10:00 – 18:00
             <br />
-            Сб: 11:00 – 17:00
+            Сб: 11:00 – 15:00
             <br />
             03022, м. Київ, вул. Васильківська 32
             <br />

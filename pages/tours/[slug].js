@@ -52,6 +52,7 @@ export default function Tours({ toursTextPage, allLinks, slug, loc }) {
           {/* <DistrictList data={allLinks} title={'aaa'} country={'bbb'} loc={loc} /> */}
           {/* <Post variant={location.postContent.tourPage} post={toursTextPage} /> */}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
+          <LinksBlock allLinks={allLinks} />
         </div>
       )}
     </>

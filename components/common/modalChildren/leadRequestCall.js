@@ -87,33 +87,29 @@ export default function LeadRequestCall({ closeHandler }) {
 
   return (
     <div className={styles.requestcall}>
-      <p className={styles.descr}>{intl.formatMessage({ id: 'vs_discl' })}<br/>{intl.formatMessage({ id: 'vs_discl2' })}</p>
+      <p className={styles.descr}>
+        {intl.formatMessage({ id: 'vs_discl' })}
+        <br />
+        {intl.formatMessage({ id: 'vs_discl2' })}
+      </p>
       <div className={styles.messendgers}>
         <MessendgersLinks />
       </div>
       <div className={styles.phones}>
         {phone_numbers.map((item, index) => (
-          <a
-            key={index}
-            className={styles.phone}
-            href={`tel:${item.phone_number}`}
-          >
+          <a key={index} className={styles.phone} href={`tel:${item.phone_number}`}>
             {item.phone_text}
           </a>
         ))}
       </div>
       <div className={styles.schedule}>
         <h6>{intl.formatMessage({ id: 'modal.leadrequestcall.schedule' })}</h6>
-        <p>Пн - Пт: 11:00 – 19:00</p>
-        <p>Сб: 11:00 – 17:00</p>
+        <p>Пн - Пт: 10:00 – 18:00</p>
+        <p>Сб: 11:00 – 15:00</p>
       </div>
-      <h5 className={styles.title}>
-        {intl.formatMessage({ id: 'modal.subtitle.leadrequestcall' })}
-      </h5>
+      <h5 className={styles.title}>{intl.formatMessage({ id: 'modal.subtitle.leadrequestcall' })}</h5>
       <form
-        className={
-          loading ? `${styles.form} ${styles.loading}` : `${styles.form}`
-        }
+        className={loading ? `${styles.form} ${styles.loading}` : `${styles.form}`}
         onSubmit={submitHandler}
       >
         <input
