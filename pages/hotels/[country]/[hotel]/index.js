@@ -170,7 +170,11 @@ export default function Hotel({ data, hotel }) {
                 <div className={styles.review}>
                   {hotelRat.map((el) => {
                     return (
-                      <div className={styles.review_item} key={el.site}>
+                      <div
+                        className={styles.review_item}
+                        key={el.site}
+                        style={el.site === 'booking' ? { marginLeft: '6px' } : {}}
+                      >
                         <img src={`/assets/img/svg/${el.site}-big.svg`} alt={el.site} title={el.site} />
 
                         <div className={styles.review_item_text}>
