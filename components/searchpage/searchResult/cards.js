@@ -14,8 +14,6 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
   const person = useGetPerson();
   const setOpenStreetMapData = useSetOpenStreetMap();
 
-  console.log(hotel);
-
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
     id: 'common.night1',
@@ -157,7 +155,18 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
   const saveRatingCookie = () => {
     if (!hotel?.rb) return;
 
-    const data = JSON.stringify(hotel.rb);
+    const items = [];
+    Object.entries(hotel.rb).map((el) => {
+      if (el[1].site === 'tripadvisor' || el[1].site === 'booking') {
+        if (el[1].rating !== 0) {
+          items.push(el[1]);
+        }
+      }
+    });
+
+    if (!items.length) return null;
+
+    const data = JSON.stringify(items);
     let expires = '';
 
     const date = new Date();
@@ -270,6 +279,43 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
     setModalInfo(data);
   };
 
+  const Rating = ({ item }) => {
+    if (!item?.rb) return null;
+
+    const items = [];
+    Object.entries(item.rb).map((el) => {
+      if (el[1].site === 'tripadvisor' || el[1].site === 'booking') {
+        if (el[1].rating !== 0) {
+          items.push(el[1]);
+        }
+      }
+    });
+
+    if (!items.length) return null;
+
+    return (
+      <div className={styles.review}>
+        {items.map((el) => {
+          return (
+            <div className={styles.review_item} key={el.site}>
+              <img
+                src={`/assets/img/svg/${el.site}.svg`}
+                alt={el.site}
+                title={el.site}
+                width="24"
+                height="24"
+              />
+
+              <p className={styles.review__number} style={{ color: ratingColor(parseFloat(el.rating)) }}>
+                {el.rating}/10
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className={styles.cards_wrapper}>
       {hotels.map((item, j) => {
@@ -287,32 +333,7 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
                   placeholder="blur"
                   blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(500, 375))}`}
                 />
-                {item.rb ? (
-                  <div className={styles.review}>
-                    {Object.entries(item.rb).map((el) => {
-                      if (el[1].site === 'tripadvisor' || el[1].site === 'booking') {
-                        return (
-                          <div className={styles.review_item} key={el[1].site}>
-                            <img
-                              src={`/assets/img/svg/${el[1].site}.svg`}
-                              alt={el[1].site}
-                              title={el[1].site}
-                              width="24"
-                              height="24"
-                            />
-
-                            <p
-                              className={styles.review__number}
-                              style={{ color: ratingColor(parseFloat(el[1].rating)) }}
-                            >
-                              {el[1].rating}/10
-                            </p>
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
-                ) : null}
+                <Rating item={item} />
                 <button className={styles.favorites_btn} onClick={() => addToFavorites(item.i)}>
                   <svg
                     width="26"

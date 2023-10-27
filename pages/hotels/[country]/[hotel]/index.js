@@ -1,5 +1,5 @@
 import styles from 'components/hotels/country/hotel/hotel.module.css';
-import { FormattedMessage as FM, useIntl } from 'react-intl';
+import { FormattedMessage as FM } from 'react-intl';
 import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import ratingColor from 'utils/ratingColor';
@@ -10,12 +10,11 @@ import TurDetails from 'components/hotels/country/hotel/turDetails';
 import ImgSlider from 'components/hotels/country/hotel/imgSlider';
 
 export default function Hotel({ data, hotel }) {
-  const intl = useIntl();
   const br_arr = [{ title: hotel?.n }];
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
 
-  const [hotelRat, setHotelRat] = useState({});
+  const [hotelRat, setHotelRat] = useState([]);
 
   const OpenStreetMapBtn = () => {
     if (!hotel.g) {
@@ -167,44 +166,26 @@ export default function Hotel({ data, hotel }) {
                 <p className={styles.country_text}>{`${hotel.t.n}, ${hotel.c.n}`}</p>
                 <OpenStreetMapBtn />
               </div>
-              {/* {hotel.r ? (
+              {hotelRat.length ? (
                 <div className={styles.review}>
-                  <p className={styles.review__number} style={{ color: ratingColor(parseFloat(hotel.r)) }}>
-                    {hotel.r}/10
-                  </p>
-                  {hotel.v && (
-                    <p>
-                      <FM id="hotel_card.reviews" />
-                    </p>
-                  )}
-                </div>
-              ) : null} */}
-              {hotelRat ? (
-                <div className={styles.review}>
-                  {Object.entries(hotelRat).map((el) => {
-                    if (el[1].site === 'tripadvisor' || el[1].site === 'booking') {
-                      return (
-                        <div className={styles.review_item} key={el[1].site}>
-                          <img
-                            src={`/assets/img/svg/${el[1].site}-big.svg`}
-                            alt={el[1].site}
-                            title={el[1].site}
-                          />
+                  {hotelRat.map((el) => {
+                    return (
+                      <div className={styles.review_item} key={el.site}>
+                        <img src={`/assets/img/svg/${el.site}-big.svg`} alt={el.site} title={el.site} />
 
-                          <div className={styles.review_item_text}>
-                            <p
-                              className={styles.review__number}
-                              style={{ color: ratingColor(parseFloat(el[1].rating)) }}
-                            >
-                              {el[1].rating}/10
-                            </p>
-                            <span>
-                              <FM id="hotel_card.reviews" /> {el[1].reviews}
-                            </span>
-                          </div>
+                        <div className={styles.review_item_text}>
+                          <p
+                            className={styles.review__number}
+                            style={{ color: ratingColor(parseFloat(el.rating)) }}
+                          >
+                            {el.rating}/10
+                          </p>
+                          <span>
+                            <FM id="hotel_card.reviews" /> {el.reviews}
+                          </span>
                         </div>
-                      );
-                    }
+                      </div>
+                    );
                   })}
                 </div>
               ) : null}
