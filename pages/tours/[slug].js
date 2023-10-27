@@ -9,7 +9,6 @@ import LinksBlock from 'components/tours/tours-text/links';
 import { links } from 'utils/links';
 import { useRouter } from 'next/router';
 import DefaultErrorPage from 'next/error';
-import DistrictList from 'components/country/districtList';
 
 export default function Tours({ toursTextPage, allLinks, slug, loc }) {
   const intl = useIntl();
@@ -49,7 +48,6 @@ export default function Tours({ toursTextPage, allLinks, slug, loc }) {
           <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
           <MainForm />
           {/* <LinksBlock allLinks={allLinks} /> */}
-          {/* <DistrictList data={allLinks} title={'aaa'} country={'bbb'} loc={loc} /> */}
           {/* <Post variant={location.postContent.tourPage} post={toursTextPage} /> */}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
           <LinksBlock allLinks={allLinks} />

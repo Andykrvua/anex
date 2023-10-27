@@ -5,7 +5,7 @@ import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import ratingColor from 'utils/ratingColor';
 import { stars, modal, languagesOperatorApi } from 'utils/constants';
 import { useSetModal, useSetOpenStreetMap } from 'store/store';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TurDetails from 'components/hotels/country/hotel/turDetails';
 import ImgSlider from 'components/hotels/country/hotel/imgSlider';
 
@@ -14,6 +14,8 @@ export default function Hotel({ data, hotel }) {
   const br_arr = [{ title: hotel?.n }];
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
+
+  const [hotelRat, setHotelRat] = useState({});
 
   const OpenStreetMapBtn = () => {
     if (!hotel.g) {
@@ -108,15 +110,29 @@ export default function Hotel({ data, hotel }) {
         )}
 
         <p onClick={toggleReadMore} className={styles.read_or_hide}>
-          {isReadMore ? (
-            <FM id="offer_page.read_more_hide" />
-          ) : (
-            <FM id="offer_page.read_more" />
-          )}
+          {isReadMore ? <FM id="offer_page.read_more_hide" /> : <FM id="offer_page.read_more" />}
         </p>
       </>
     );
   };
+
+  function getCookie(name) {
+    var nameEQ = name + '=';
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  useEffect(() => {
+    const x = getCookie(hotel.i);
+    if (x) {
+      setHotelRat(JSON.parse(x));
+    }
+  }, []);
 
   if (!hotel) {
     return (
@@ -127,6 +143,7 @@ export default function Hotel({ data, hotel }) {
       </div>
     );
   }
+
   return (
     <>
       <SeoHead content={null} />
@@ -137,17 +154,22 @@ export default function Hotel({ data, hotel }) {
           <div className={styles.card_text}>
             <h1 className={styles.hotel_name}>{hotel.n}</h1>
             <div className={styles.texts_grid}>
-              {hotel.r ? (
+              <div className={styles.texts_grid_right}>
+                <div className={styles.stars_wrapper}>
+                  {new Array(Number(stars[hotel.s.s]) ? stars[hotel.s.s] : 0).fill(null).map((_, ind) => {
+                    return (
+                      <div className={styles.stars} key={ind}>
+                        <img src="/assets/img/svg/tour/star.svg" alt="star" width="12" height="12" />
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className={styles.country_text}>{`${hotel.t.n}, ${hotel.c.n}`}</p>
+                <OpenStreetMapBtn />
+              </div>
+              {/* {hotel.r ? (
                 <div className={styles.review}>
-                  {!hotel.v && (
-                    <p>
-                      <FM id="hotel_card.rating" />
-                    </p>
-                  )}
-                  <p
-                    className={styles.review__number}
-                    style={{ color: ratingColor(parseFloat(hotel.r)) }}
-                  >
+                  <p className={styles.review__number} style={{ color: ratingColor(parseFloat(hotel.r)) }}>
                     {hotel.r}/10
                   </p>
                   {hotel.v && (
@@ -155,33 +177,37 @@ export default function Hotel({ data, hotel }) {
                       <FM id="hotel_card.reviews" />
                     </p>
                   )}
-                  {hotel.v && (
-                    <p className={styles.review__medium}>{hotel.v}</p>
-                  )}
                 </div>
-              ) : null}
-              <div className={styles.texts_grid_right}>
-                <div className={styles.stars_wrapper}>
-                  {new Array(Number(stars[hotel.s.s]) ? stars[hotel.s.s] : 0)
-                    .fill(null)
-                    .map((_, ind) => {
+              ) : null} */}
+              {hotelRat ? (
+                <div className={styles.review}>
+                  {Object.entries(hotelRat).map((el) => {
+                    if (el[1].site === 'tripadvisor' || el[1].site === 'booking') {
                       return (
-                        <div className={styles.stars} key={ind}>
+                        <div className={styles.review_item} key={el[1].site}>
                           <img
-                            src="/assets/img/svg/tour/star.svg"
-                            alt="star"
-                            width="12"
-                            height="12"
+                            src={`/assets/img/svg/${el[1].site}-big.svg`}
+                            alt={el[1].site}
+                            title={el[1].site}
                           />
+
+                          <div className={styles.review_item_text}>
+                            <p
+                              className={styles.review__number}
+                              style={{ color: ratingColor(parseFloat(el[1].rating)) }}
+                            >
+                              {el[1].rating}/10
+                            </p>
+                            <span>
+                              <FM id="hotel_card.reviews" /> {el[1].reviews}
+                            </span>
+                          </div>
                         </div>
                       );
-                    })}
+                    }
+                  })}
                 </div>
-                <p className={styles.country_text}>
-                  {`${hotel.t.n}, ${hotel.c.n}`}
-                </p>
-                <OpenStreetMapBtn />
-              </div>
+              ) : null}
             </div>
 
             <div className={styles.tour_propertys}>
@@ -210,9 +236,7 @@ export default function Hotel({ data, hotel }) {
             </div>
           </div>
         </div>
-        {data.offer && (
-          <TurDetails data={data} country={hotel.t.n} hotel={hotel} />
-        )}
+        {data.offer && <TurDetails data={data} country={hotel.t.n} hotel={hotel} />}
       </div>
     </>
   );
@@ -249,18 +273,18 @@ export async function getServerSideProps(ctx) {
 
   let hotel;
   try {
-    hotel = await fetch(
-      `http://localhost:3000/api/endpoints/hotels?hotelId=${hotelId}&locale=${loc}`
-    ).then((response) => {
-      if (response.status === 200) {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return null;
+    hotel = await fetch(`http://localhost:3000/api/endpoints/hotels?hotelId=${hotelId}&locale=${loc}`).then(
+      (response) => {
+        if (response.status === 200) {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return null;
+          }
         }
+        return null;
       }
-      return null;
-    });
+    );
   } catch (error) {
     hotel = null;
   }

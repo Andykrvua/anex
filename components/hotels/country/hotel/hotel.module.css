@@ -3,41 +3,40 @@
 }
 
 .texts_grid {
-  display: grid;
-  grid-template-columns: min-content max-content;
-  column-gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 30px;
+  row-gap: 15px;
   margin-top: 10px;
 }
 
-.texts_grid_right {
-}
-
 .review {
-  padding: 10px 15px;
-  text-align: center;
-  border: 1px solid var(--line);
-  border-radius: var(--def-radius);
-  background-color: var(--white);
-  font-size: 10px;
-  line-height: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 30px;
+  row-gap: 15px;
 }
 
-.review p:not(:last-child) {
-  margin: 0 0 3px;
+.review_item {
+  display: flex;
+  align-items: center;
 }
 
-.review p:last-child {
-  margin: 0;
+.review_item_text {
+  margin-left: 15px;
 }
 
 .review__number {
-  font-size: 12px;
-  line-height: 14px;
-  font-weight: bold;
+  margin: 0;
+  font-size: 14px;
+  line-height: 10px;
+  font-weight: 900;
 }
 
-.review__medium {
-  font-weight: 700;
+.review span {
+  font-size: 11px;
+  line-height: 11px;
 }
 
 .card_text {

@@ -17,8 +17,6 @@
   position: absolute;
   display: block;
   width: 100%;
-  /* height: auto; */
-  /* height: 300px; */
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease-in-out;
@@ -26,11 +24,10 @@
 
 .review {
   position: absolute;
-  right: 20px;
-  bottom: 20px;
+  top: 15px;
+  right: 15px;
   padding: 10px 15px;
   text-align: center;
-  /* transform: translateY(-50%); */
   border: 1px solid var(--line);
   border-radius: var(--def-radius);
   background-color: var(--white);
@@ -38,8 +35,10 @@
   line-height: 12px;
 }
 
-.review p:not(:last-child) {
-  margin: 0 0 3px;
+.review_item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
 }
 
 .review p:last-child {

@@ -8,17 +8,12 @@ import CloseSvg from 'components/common/closeSvg';
 import { useState } from 'react';
 
 export default function Favorites() {
-  const [cards, setCards] = useState(
-    JSON.parse(localStorage.getItem('favorites') || '[]')
-  );
+  const [cards, setCards] = useState(JSON.parse(localStorage.getItem('favorites') || '[]'));
   const intl = useIntl();
 
   const deleteFavorites = (id) => {
     setCards([...cards.filter((item) => item.id !== id)]);
-    localStorage.setItem(
-      'favorites',
-      JSON.stringify(cards.filter((item) => item.id !== id))
-    );
+    localStorage.setItem('favorites', JSON.stringify(cards.filter((item) => item.id !== id)));
   };
 
   return (
@@ -42,9 +37,7 @@ export default function Favorites() {
                   width={333}
                   height={240}
                   placeholder="blur"
-                  blurDataURL={`data:image/svg+xml;base64,${toBase64(
-                    shimmer(333, 240)
-                  )}`}
+                  blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(333, 240))}`}
                 />
                 <button
                   className={`${styles.delete_favorites} svg_btn svg_btn_stroke`}
@@ -55,18 +48,11 @@ export default function Favorites() {
                 </button>
               </div>
               <div className={styles.card_text}>
-                <p className={styles.country_text}>
-                  {`${item.country}, ${item.district}`}
-                </p>
+                <p className={styles.country_text}>{`${item.country}, ${item.district}`}</p>
                 {new Array(parseInt(item.stars)).fill(null).map((_, ind) => {
                   return (
                     <div className={styles.stars} key={ind}>
-                      <img
-                        src="/assets/img/svg/tour/star.svg"
-                        alt="star"
-                        width="12"
-                        height="12"
-                      />
+                      <img src="/assets/img/svg/tour/star.svg" alt="star" width="12" height="12" />
                     </div>
                   );
                 })}
@@ -74,7 +60,7 @@ export default function Favorites() {
                 <div className={styles.maps_and_options}>
                   <p className={styles.options}>{item.description}</p>
                 </div>
-                {item.rating > 0 && (
+                {/* {item.rating > 0 && (
                   <div className={styles.review}>
                     {!item.reviews && <p>Рейтинг</p>}
                     <p
@@ -84,11 +70,9 @@ export default function Favorites() {
                       {item.rating}
                     </p>
                     {item.reviews && <p>Отзывов:</p>}
-                    {item.reviews && (
-                      <p className={styles.review__medium}>{item.reviews}</p>
-                    )}
+                    {item.reviews && <p className={styles.review__medium}>{item.reviews}</p>}
                   </div>
-                )}
+                )} */}
               </div>
               {item.orders.map((order, ind) => {
                 return (

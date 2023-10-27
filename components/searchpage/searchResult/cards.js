@@ -14,6 +14,8 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
   const person = useGetPerson();
   const setOpenStreetMapData = useSetOpenStreetMap();
 
+  console.log(hotel);
+
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
     id: 'common.night1',
@@ -151,6 +153,19 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
     localStorage.setItem('result', JSON.stringify(res));
   };
   saveToLocalStorage();
+
+  const saveRatingCookie = () => {
+    if (!hotel?.rb) return;
+
+    const data = JSON.stringify(hotel.rb);
+    let expires = '';
+
+    const date = new Date();
+    date.setTime(date.getTime() + 3 * 24 * 60 * 60 * 1000);
+    expires = '; expires=' + date.toUTCString();
+
+    document.cookie = hotel.i + '=' + (data || '') + expires + '; path=/';
+  };
   return (
     <>
       <div className={styles.maps_and_options}>
@@ -163,6 +178,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
           return (
             <a
               className={styles.card_order}
+              onClick={saveRatingCookie}
               href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${
                 hotel.h
               }?offer=${item.i}&transport=${searchParams.transport}&from=${searchParams.from}&fromname=${
@@ -253,6 +269,7 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
     };
     setModalInfo(data);
   };
+
   return (
     <div className={styles.cards_wrapper}>
       {hotels.map((item, j) => {
@@ -270,54 +287,32 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
                   placeholder="blur"
                   blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(500, 375))}`}
                 />
-                {item.r ? (
+                {item.rb ? (
                   <div className={styles.review}>
-                    {!item.v && (
-                      <p>
-                        <FM id="hotel_card.rating" />
-                      </p>
-                    )}
-                    <p className={styles.review__number} style={{ color: ratingColor(parseFloat(item.r)) }}>
-                      {item.r}/10
-                    </p>
-                    {item.v && (
-                      <p>
-                        <FM id="hotel_card.reviews" />
-                      </p>
-                    )}
-                    {item.v && <p className={styles.review__medium}>{item.v}</p>}
+                    {Object.entries(item.rb).map((el) => {
+                      if (el[1].site === 'tripadvisor' || el[1].site === 'booking') {
+                        return (
+                          <div className={styles.review_item} key={el[1].site}>
+                            <img
+                              src={`/assets/img/svg/${el[1].site}.svg`}
+                              alt={el[1].site}
+                              title={el[1].site}
+                              width="24"
+                              height="24"
+                            />
+
+                            <p
+                              className={styles.review__number}
+                              style={{ color: ratingColor(parseFloat(el[1].rating)) }}
+                            >
+                              {el[1].rating}/10
+                            </p>
+                          </div>
+                        );
+                      }
+                    })}
                   </div>
                 ) : null}
-                {/* <button
-                  className={styles.favorites_btn}
-                  onClick={() => addToFavorites(item.i)}
-                >
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 26 26"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M18.027 5.2002C17.2754 5.20027 16.5316 5.35099 15.8393 5.64344C15.147 5.93588 14.5203 6.36413 13.9963 6.90287L13.1661 7.75843L12.3274 6.90287C11.8034 6.36424 11.1767 5.9361 10.4844 5.64376C9.79215 5.35141 9.04829 5.20079 8.2968 5.20079C7.54531 5.20079 6.80145 5.35141 6.10915 5.64376C5.41686 5.9361 4.79018 6.36424 4.26615 6.90287C3.19752 8.00622 2.60001 9.482 2.60001 11.018C2.60001 12.554 3.19752 14.0298 4.26615 15.1332L13.1661 24.2127L22.0576 15.1332C23.1263 14.0298 23.7238 12.554 23.7238 11.018C23.7238 9.482 23.1263 8.00622 22.0576 6.90287C21.5336 6.36413 20.907 5.93588 20.2147 5.64344C19.5224 5.35099 18.7785 5.20027 18.027 5.2002Z"
-                      fill="url(#paint0_linear_4515_5688)"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="paint0_linear_4515_5688"
-                        x1="2.86405"
-                        y1="-12.3034"
-                        x2="32.844"
-                        y2="-6.48617"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop offset="0.240837" stopColor="#FF9400" />
-                        <stop offset="1" stopColor="#FF1821" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </button> */}
                 <button className={styles.favorites_btn} onClick={() => addToFavorites(item.i)}>
                   <svg
                     width="26"
@@ -393,32 +388,4 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
       })}
     </div>
   );
-}
-
-{
-  /* <div key={ind} style={{ border: '1px solid blue' }}>
-          <div>OfferId: {item.i}</div>
-          <div>4 Количество взрослых: {item.ah}</div>
-          <div>Город отправления: {item.c}</div>
-          <div>1 Дата: {item.d}</div>
-          <div>2 Дата возврата: {item.dt}</div>
-          <div>Питание: {item.f}</div>
-          <div>3 Длительность тура в ночах: {item.n}</div>
-          <div>Длительность проживания в отеле в ночах: {item.nh}</div>
-          <div>Что включено: {item.o}</div>
-          <div>operatorId: {item.oi}</div>
-          <div>5 Стоимость: {item.pl}</div>
-          <div>Тип номера: {item.r}</div>
-          <div>Room Id: {item.ri}</div>
-          <div>Дата получения цены от оператора: {item.last}</div>
-          <div>Stop Sale: {JSON.stringify(item.ss)}</div>
-          <div>Тип транспорта: {item.t}</div>
-          <div>
-            Варианты перелетов туда: {JSON.stringify(item.to.from, null, '\t')}
-          </div>
-          <div>
-            Варианты перелетов обратно: {JSON.stringify(item.to.to, null, '\t')}
-          </div>
-          <div>Размещение: {item.y}</div>
-        </div> */
 }
