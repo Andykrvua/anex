@@ -32,9 +32,7 @@ export default function Burger() {
 
   useEffect(() => {
     if (getBurger) {
-      router.events.on('routeChangeComplete', () =>
-        closeBurgerHandler('changeRoute')
-      );
+      router.events.on('routeChangeComplete', () => closeBurgerHandler('changeRoute'));
     }
     return () => {
       router.events.off('routeChangeComplete');
@@ -105,9 +103,7 @@ export default function Burger() {
 
       <div className={styles.burger} style={{ top: offsetTop }}>
         <BurgerHeader closeBurgerHandler={closeBurgerHandler} />
-        <div
-          className={`${styles.burger_content_wrapper} burger_content_wrapper`}
-        >
+        <div className={`${styles.burger_content_wrapper} burger_content_wrapper`}>
           <ul className={styles.burger_nav}>
             <li>
               <Link href={links.main}>
@@ -185,16 +181,11 @@ export default function Burger() {
               />
             </div>
             <div>
-              <button
-                className={styles.circle_btn}
-                onClick={() => pickTourHandler()}
-              >
+              <button className={styles.circle_btn} onClick={() => pickTourHandler()}>
                 <FM id="nav.pick_tour" />
               </button>
             </div>
-            <div className={styles.burger_messendger}>
-              <MessendgersLinks />
-            </div>
+            <div className={styles.burger_messendger}>{/* <MessendgersLinks /> */}</div>
           </div>
           <p className={styles.buregr_copyright}>
             © 2023 <FM id="nav.copyright" />
