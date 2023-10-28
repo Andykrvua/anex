@@ -27,7 +27,9 @@ export default function Burger() {
     if (locale === lang) {
       return;
     }
-    router.push({ pathname, query }, asPath, { locale: lang });
+    setTimeout(() => {
+      router.push({ pathname, query }, asPath, { locale: lang });
+    }, 300);
   }, [lang]);
 
   useEffect(() => {
