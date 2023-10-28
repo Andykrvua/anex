@@ -1,0 +1,72 @@
+.mess_wrapper {
+  position: fixed;
+  right: 25px;
+  bottom: 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 48px;
+  padding: 4px;
+  border-radius: var(--def-radius);
+  opacity: 0.9;
+  background-color: var(--primary);
+  z-index: 1;
+}
+
+.link {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  opacity: 0;
+  transition: opacity var(--base-transition), transform var(--base-transition);
+}
+
+.show .link {
+  opacity: 1;
+  transform: translateY(-50px);
+}
+.show .link:nth-child(2) {
+  transform: translateY(-100px);
+}
+
+.mess_btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background-color: transparent;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.icon,
+.text {
+  position: absolute;
+  transition: transform var(--base-transition);
+}
+
+.icon {
+  transform: translateY(0);
+}
+
+.text {
+  font-size: 11px;
+  color: var(--white);
+  transform: translateY(100px);
+}
+
+.mess_btn.change .icon {
+  transform: translateY(100px);
+}
+.mess_btn.change .text {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .mess_wrapper {
+    right: 8px;
+    bottom: 90px;
+  }
+}
