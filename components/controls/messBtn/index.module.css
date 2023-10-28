@@ -41,6 +41,10 @@
   z-index: 1;
 }
 
+.mess_btn:active {
+  box-shadow: none !important;
+}
+
 .icon,
 .text {
   position: absolute;
