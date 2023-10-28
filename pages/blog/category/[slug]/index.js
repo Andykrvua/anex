@@ -72,6 +72,7 @@ export async function getStaticPaths({ locales }) {
 
   if (objCatSlug.errors) {
     // if server down and incorrect request
+    /* eslint-disable-next-line */
     console.log('error: ', objCatSlug.errors);
     throw new Error('ERROR BLOG CAT1');
     // return {

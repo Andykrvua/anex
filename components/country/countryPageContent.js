@@ -53,18 +53,6 @@ const SubpagesLinks = ({
     from = from.filter((item) => !item.subdistrict_slug);
   }
 
-  if (nestingDistrict && from.length === 1 && from[0].subdistrict_slug === current) {
-    return null;
-  }
-  if (nestingDistrict) {
-    from = from.filter((item) => item.subdistrict_slug !== current && item.subdistrict_slug);
-  }
-  if (from.length === 1 && from[0].subsubpage_slug === current) {
-    if (!from[0].subdistrict_slug) {
-      return null;
-    }
-  }
-
   return (
     <>
       {from.length ? (
@@ -74,7 +62,7 @@ const SubpagesLinks = ({
             <span className="mark">{countryName}</span>
             {intl.formatMessage({ id: 'country.from_2' })}
           </h2>
-          <CountryToursFrom data={from} current={current} />
+          <CountryToursFrom data={from} current={current} nestingDistrict={nestingDistrict} />
         </>
       ) : null}
       {month.length ? (

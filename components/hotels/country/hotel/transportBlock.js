@@ -23,13 +23,8 @@ export default function TransportBlock({ offerData, country, data }) {
     );
   }
 
-  console.log('offerData', offerData);
-
   if (offerData?.t === 'air') {
-    if (
-      (offerData.to && typeof offerData?.to['from'] === 'undefined') ||
-      !offerData?.to?.from[0]?.begin
-    ) {
+    if ((offerData.to && typeof offerData?.to['from'] === 'undefined') || !offerData?.to?.from[0]?.begin) {
       return (
         <>
           <div className={styles.transport_block_min_2items}>
@@ -71,9 +66,7 @@ export default function TransportBlock({ offerData, country, data }) {
             </svg>
             <div className={styles.transport_block_from_to}>
               <div>
-                <span className={styles.transport_block_from_to_airlines}>
-                  {offerData.to.from[0].line}
-                </span>{' '}
+                <span className={styles.transport_block_from_to_airlines}>{offerData.to.from[0].line}</span>{' '}
                 {data.fromname} → {country}
               </div>
               <div>
@@ -98,14 +91,11 @@ export default function TransportBlock({ offerData, country, data }) {
             </svg>
             <div className={styles.transport_block_from_to}>
               <div>
-                <span className={styles.transport_block_from_to_airlines}>
-                  {offerData.to.to[0].line}
-                </span>{' '}
+                <span className={styles.transport_block_from_to_airlines}>{offerData.to.to[0].line}</span>{' '}
                 {country} → {data.fromname}
               </div>
               <div>
-                {toBegin.toLocaleDateString('uk-UA', optBegin)} →{' '}
-                {toEnd.toLocaleTimeString('uk-UA', optEnd)}
+                {toBegin.toLocaleDateString('uk-UA', optBegin)} → {toEnd.toLocaleTimeString('uk-UA', optEnd)}
               </div>
               <div className={styles.craft_code}>
                 Рейс {offerData.to.to[0].code} {offerData.to.to[0].craft}

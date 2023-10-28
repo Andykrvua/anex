@@ -48,9 +48,7 @@ export default function TurDetails({ data, country, hotel }) {
 
   const offerOptions = () => {
     const offerAllOpt = ['transfer', 'insurance', 'noNeedVisa'];
-    const offerNotIncluded = offerAllOpt.filter(
-      (item) => !offerData.o.includes(item)
-    );
+    const offerNotIncluded = offerAllOpt.filter((item) => !offerData.o.includes(item));
     const notIncl = offerNotIncluded.length ? true : false;
     return (
       <>
@@ -62,10 +60,7 @@ export default function TurDetails({ data, country, hotel }) {
         )}
         {offerData.o.length < 3 && (
           <p className={styles.price_block_notincl}>
-            <span>Не включено:</span>{' '}
-            {offerNotIncluded.map((item, ind) =>
-              offerOptText(item, ind, notIncl)
-            )}
+            <span>Не включено:</span> {offerNotIncluded.map((item, ind) => offerOptText(item, ind, notIncl))}
           </p>
         )}
       </>
@@ -232,10 +227,10 @@ export default function TurDetails({ data, country, hotel }) {
 
     const dStart = new Date(offerData?.d);
     const dEnd = new Date(offerData?.dt);
-    const datesStr = `${dayMonthFormatDate(
-      dStart,
+    const datesStr = `${dayMonthFormatDate(dStart, router.locale)} - ${dayMonthFormatDate(
+      dEnd,
       router.locale
-    )} - ${dayMonthFormatDate(dEnd, router.locale)}`;
+    )}`;
 
     const orderData = {
       country: hotel.t.n,
@@ -277,7 +272,6 @@ export default function TurDetails({ data, country, hotel }) {
           setLoading(false);
           return;
         }
-        console.log('data.offer', data.offer);
         setOfferdata(data.offer);
         currParams.food = data.offer.fn;
         currParams.dateStart = data.offer.d;
@@ -313,13 +307,7 @@ export default function TurDetails({ data, country, hotel }) {
     return (
       <button className={styles.btn_copy} onClick={copyHandler}>
         Код: {code}
-        <svg
-          width="15"
-          height="14"
-          viewBox="0 0 15 14"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M5.16667 2.33317V9.33317C5.16667 9.64259 5.28958 9.93934 5.50838 10.1581C5.72717 10.3769 6.02391 10.4998 6.33333 10.4998H11C11.3094 10.4998 11.6062 10.3769 11.825 10.1581C12.0437 9.93934 12.1667 9.64259 12.1667 9.33317V4.22434C12.1666 4.06891 12.1356 3.91506 12.0753 3.77181C12.015 3.62857 11.9266 3.49881 11.8155 3.39017L9.88175 1.499C9.66379 1.28589 9.37108 1.16654 9.06625 1.1665H6.33333C6.02391 1.1665 5.72717 1.28942 5.50838 1.50821C5.28958 1.72701 5.16667 2.02375 5.16667 2.33317V2.33317Z"
             stroke="currentColor"
@@ -346,9 +334,7 @@ export default function TurDetails({ data, country, hotel }) {
   if (error) {
     return (
       <div className={styles.tur_wrapper}>
-        <h4 style={{ color: 'var(--font-white)' }}>
-          Произошла ошибка во время запроса
-        </h4>
+        <h4 style={{ color: 'var(--font-white)' }}>Произошла ошибка во время запроса</h4>
       </div>
     );
   }
@@ -358,13 +344,7 @@ export default function TurDetails({ data, country, hotel }) {
       <div className={styles.tur_header}>
         <CopyCode code={urlData.offer} />
         <button className={styles.btn_add_to_list} onClick={addToListHandler}>
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 17 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M8.61043 5.7892L8.25156 5.42309L7.7032 4.86369L7.70188 4.86234L7.70189 4.86234C7.40584 4.55805 7.05181 4.31618 6.66071 4.15103C6.26961 3.98587 5.84938 3.90078 5.42484 3.90078C5.0003 3.90078 4.58006 3.98587 4.18896 4.15103C3.79803 4.31611 3.44413 4.55785 3.14816 4.86196C2.54003 5.49007 2.20001 6.33007 2.20001 7.20435C2.20001 8.07834 2.5398 8.91807 3.14755 9.54611C3.14789 9.54646 3.14823 9.54682 3.14857 9.54717L8.60845 15.1172L14.0631 9.54717C14.0635 9.54684 14.0638 9.54651 14.0641 9.54618C14.6719 8.91814 15.0117 8.07837 15.0117 7.20435C15.0117 6.33005 14.6717 5.49003 14.0635 4.86192C13.7676 4.55774 13.4137 4.31594 13.0227 4.15079C12.6317 3.98559 12.2115 3.90045 11.7869 3.90039L8.61043 5.7892ZM8.61043 5.7892L8.96745 5.42128M8.61043 5.7892L8.96745 5.42128M8.96745 5.42128L9.50988 4.86229C9.51 4.86216 9.51013 4.86204 9.51025 4.86191C9.51026 4.8619 9.51027 4.86189 9.51028 4.86187C9.80622 4.55772 10.1601 4.31593 10.551 4.15079C10.9421 3.98559 11.3623 3.90045 11.7868 3.90039L8.96745 5.42128Z"
               stroke="#53536E"
@@ -407,11 +387,7 @@ export default function TurDetails({ data, country, hotel }) {
               <FM id="common.change" />
             </button>
           </div>
-          <div
-            className={`${styles.grid_item_content} ${
-              !loading ? styles.col_2_grid : ''
-            }`}
-          >
+          <div className={`${styles.grid_item_content} ${!loading ? styles.col_2_grid : ''}`}>
             {loading ? (
               <Loader />
             ) : (
@@ -426,9 +402,7 @@ export default function TurDetails({ data, country, hotel }) {
                 >
                   <path d="M15.75 26.25h-3.5a1.75 1.75 0 0 1-1.75-1.75v-6.125a1.75 1.75 0 0 1-1.75-1.75v-5.25a2.625 2.625 0 0 1 2.625-2.625h5.25a2.625 2.625 0 0 1 2.625 2.625v5.25a1.75 1.75 0 0 1-1.75 1.75V24.5a1.75 1.75 0 0 1-1.75 1.75ZM11.375 10.5a.824.824 0 0 0-.875.875v5.25h1.75V24.5h3.5v-7.875h1.75v-5.25a.824.824 0 0 0-.875-.875h-5.25ZM14 7.875a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0-5.25a1.75 1.75 0 1 0 0 3.5 1.75 1.75 0 0 0 0-3.5Z"></path>
                 </svg>
-                <div className={styles.grid_item_content_text}>
-                  {peopleBlockData(urlData.people)}
-                </div>
+                <div className={styles.grid_item_content_text}>{peopleBlockData(urlData.people)}</div>
               </>
             )}
           </div>
@@ -445,13 +419,7 @@ export default function TurDetails({ data, country, hotel }) {
             {loading ? (
               <Loader />
             ) : (
-              offerData && (
-                <TransportBlock
-                  offerData={offerData}
-                  country={country}
-                  data={urlData}
-                />
-              )
+              offerData && <TransportBlock offerData={offerData} country={country} data={urlData} />
             )}
           </div>
         </div>
@@ -468,16 +436,8 @@ export default function TurDetails({ data, country, hotel }) {
               <FM id="common.change" />
             </button>
           </div>
-          <div
-            className={`${styles.grid_item_content} ${
-              !loading ? styles.col_2_grid : ''
-            }`}
-          >
-            {loading ? (
-              <Loader />
-            ) : (
-              offerData && <RoomBlock offerData={offerData} />
-            )}
+          <div className={`${styles.grid_item_content} ${!loading ? styles.col_2_grid : ''}`}>
+            {loading ? <Loader /> : offerData && <RoomBlock offerData={offerData} />}
           </div>
         </div>
         {/* Grid Item duration */}
@@ -493,16 +453,8 @@ export default function TurDetails({ data, country, hotel }) {
               <FM id="common.change" />
             </button>
           </div>
-          <div
-            className={`${styles.grid_item_content} ${
-              !loading ? styles.col_2_grid : ''
-            }`}
-          >
-            {loading ? (
-              <Loader />
-            ) : (
-              offerData && <DurationBlock offerData={offerData} />
-            )}
+          <div className={`${styles.grid_item_content} ${!loading ? styles.col_2_grid : ''}`}>
+            {loading ? <Loader /> : offerData && <DurationBlock offerData={offerData} />}
           </div>
         </div>
         {/* Grid Item dates */}
@@ -516,27 +468,18 @@ export default function TurDetails({ data, country, hotel }) {
               </span>
             </span>
           </div>
-          <div
-            className={`${styles.grid_item_content} ${styles.grid_item_content_calendar}`}
-          >
-            {loading ? (
-              <Loader />
-            ) : (
-              offerData && <DatesBlock offerData={offerData} data={urlData} />
-            )}
+          <div className={`${styles.grid_item_content} ${styles.grid_item_content_calendar}`}>
+            {loading ? <Loader /> : offerData && <DatesBlock offerData={offerData} data={urlData} />}
           </div>
         </div>
         {/* Grid Item price */}
         <div className={styles.grid_item}>
-          <div
-            className={`${styles.grid_item_header} ${styles.grid_item_header_green}`}
-          >
+          <div className={`${styles.grid_item_header} ${styles.grid_item_header_green}`}>
             <span>
               <FM id="offer_page.cost" />
             </span>
             <span className={styles.offer_act_time}>
-              <FM id="offer_page.cost_actual" />{' '}
-              {loading ? '' : getActTimeOffer()}{' '}
+              <FM id="offer_page.cost_actual" /> {loading ? '' : getActTimeOffer()}{' '}
             </span>
           </div>
           <div className={styles.grid_item_content}>
@@ -562,10 +505,7 @@ export default function TurDetails({ data, country, hotel }) {
             )}
           </div>
           <div>
-            <button
-              className={styles.order_btn}
-              onClick={() => setModal({ get: modal.offerPageOrder })}
-            >
+            <button className={styles.order_btn} onClick={() => setModal({ get: modal.offerPageOrder })}>
               <FM id="offer_page.bron_online" />
             </button>
           </div>

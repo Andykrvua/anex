@@ -348,17 +348,12 @@ export default function SearchResult({ isFilterBtnShow }) {
   const ref = useRef(0);
 
   const loadMore = () => {
-    console.log('hotels all', apiData.hotelsArr.length);
     ref.current++;
 
     const clicks = Math.ceil(apiData.hotelsArr.length / 10);
     setStep((prev) => prev + 10);
 
-    console.log('ref.current', ref.current);
-    console.log('clicks', clicks);
-
     if (ref.current === clicks) {
-      console.log('all');
       ref.current = 0;
       setPage((page) => page + 1);
       setStep(10);
