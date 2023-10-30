@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useGetModal, useSetModal } from 'store/store';
+import { useGetModal, useSetModal, useGetCurrentOfferMailData } from 'store/store';
 import CloseSvg from './closeSvg';
 import styles from './modal.module.css';
 import { modal, transitionTime } from '../../utils/constants';
@@ -9,10 +9,7 @@ import Loader from 'components/common/loader';
 import useWindowSize from 'utils/getViewport';
 
 const LeadGetTours = dynamic(
-  () =>
-    import(
-      /* webpackChunkName: "leadGetTours" */ `./modalChildren/leadGetTours`
-    ),
+  () => import(/* webpackChunkName: "leadGetTours" */ `./modalChildren/leadGetTours`),
   {
     ssr: false,
     loading: () => <Loader />,
@@ -20,10 +17,7 @@ const LeadGetTours = dynamic(
 );
 
 const LeadRequestCall = dynamic(
-  () =>
-    import(
-      /* webpackChunkName: "leadGetTours" */ `./modalChildren/leadRequestCall`
-    ),
+  () => import(/* webpackChunkName: "leadGetTours" */ `./modalChildren/leadRequestCall`),
   {
     ssr: false,
     loading: () => <Loader />,
@@ -31,10 +25,7 @@ const LeadRequestCall = dynamic(
 );
 
 const HotelCardsMap = dynamic(
-  () =>
-    import(
-      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/hotelCardsMap`
-    ),
+  () => import(/* webpackChunkName: "hotelCardsMap" */ `./modalChildren/hotelCardsMap`),
   {
     ssr: false,
     loading: () => <Loader />,
@@ -42,10 +33,7 @@ const HotelCardsMap = dynamic(
 );
 
 const OfferPageChangePerson = dynamic(
-  () =>
-    import(
-      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/offerPageChangePerson`
-    ),
+  () => import(/* webpackChunkName: "offerPageChangePerson" */ `./modalChildren/offerPageChangePerson`),
   {
     ssr: false,
     loading: () => <Loader />,
@@ -53,10 +41,7 @@ const OfferPageChangePerson = dynamic(
 );
 
 const OfferPageChangeNight = dynamic(
-  () =>
-    import(
-      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/offerPageChangeNight`
-    ),
+  () => import(/* webpackChunkName: "offerPageChangeNight" */ `./modalChildren/offerPageChangeNight`),
   {
     ssr: false,
     loading: () => <Loader />,
@@ -64,35 +49,30 @@ const OfferPageChangeNight = dynamic(
 );
 
 const OfferPageOrder = dynamic(
-  () =>
-    import(
-      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/offerPageOrder`
-    ),
+  () => import(/* webpackChunkName: "offerPageOrder" */ `./modalChildren/offerPageOrder`),
   {
     ssr: false,
     loading: () => <Loader />,
   }
 );
 
-const Favorites = dynamic(
-  () =>
-    import(/* webpackChunkName: "hotelCardsMap" */ `./modalChildren/favorites`),
-  {
-    ssr: false,
-    loading: () => <Loader />,
-  }
-);
+const Favorites = dynamic(() => import(/* webpackChunkName: "favorites" */ `./modalChildren/favorites`), {
+  ssr: false,
+  loading: () => <Loader />,
+});
 
 const OfferPageChangeRoom = dynamic(
-  () =>
-    import(
-      /* webpackChunkName: "hotelCardsMap" */ `./modalChildren/offerPageChangeRoom`
-    ),
+  () => import(/* webpackChunkName: "offerPageChangeRoom" */ `./modalChildren/offerPageChangeRoom`),
   {
     ssr: false,
     loading: () => <Loader />,
   }
 );
+
+const HotelImg = dynamic(() => import(/* webpackChunkName: "hotelImg" */ `./modalChildren/hotelImg`), {
+  ssr: false,
+  loading: () => <Loader />,
+});
 
 export default function Modal() {
   const getModal = useGetModal();
@@ -100,6 +80,7 @@ export default function Modal() {
   const intl = useIntl();
   const size = useWindowSize();
   const maxWidth = 810;
+  const { hotel } = useGetCurrentOfferMailData();
 
   const offersPageModalLayout =
     getModal.get === modal.offerPageChangePerson ||
@@ -146,10 +127,7 @@ export default function Modal() {
     : {};
   const modal_content_text = offersPageModalLayout
     ? {
-        maxHeight:
-          getModal.get === modal.offerPageOrder
-            ? '100%'
-            : 'var(--mainform-desktop-maxheight)',
+        maxHeight: getModal.get === modal.offerPageOrder ? '100%' : 'var(--mainform-desktop-maxheight)',
         width: '360px',
         padding: 0,
       }
@@ -165,20 +143,14 @@ export default function Modal() {
 
   return (
     <>
-      {getModal && (
+      {getModal && getModal.get !== modal.hotelimg && (
         <div
-          className={
-            isOpened
-              ? `${styles.modal} ${styles.open} modal`
-              : `${styles.modal} modal`
-          }
+          className={isOpened ? `${styles.modal} ${styles.open} modal` : `${styles.modal} modal`}
           onClick={(e) => closeEventHandler(e)}
         >
           <div
             className={styles.modal_content}
-            style={
-              size.width >= maxWidth ? modal_content : modal_content_mobile
-            }
+            style={size.width >= maxWidth ? modal_content : modal_content_mobile}
           >
             {!offersPageModalLayout && (
               <header className={styles.modal_content_header}>
@@ -188,32 +160,18 @@ export default function Modal() {
                     __html: modalTitle[getModal.get],
                   }}
                 ></h5>
-                <button
-                  className="svg_btn svg_btn_stroke"
-                  aria-label="Закрыть"
-                  onClick={closeHandler}
-                >
+                <button className="svg_btn svg_btn_stroke" aria-label="Закрыть" onClick={closeHandler}>
                   <CloseSvg />
                 </button>
               </header>
             )}
             <div
               className={styles.modal_content_text}
-              style={
-                size.width >= maxWidth
-                  ? modal_content_text
-                  : modal_content_text_mobile
-              }
+              style={size.width >= maxWidth ? modal_content_text : modal_content_text_mobile}
             >
-              {getModal.get === modal.leadGetTours && (
-                <LeadGetTours closeHandler={closeHandler} />
-              )}
-              {getModal.get === modal.leadRequestCall && (
-                <LeadRequestCall closeHandler={closeHandler} />
-              )}
-              {getModal.get === modal.hotelCardsMap && (
-                <HotelCardsMap closeHandler={closeHandler} />
-              )}
+              {getModal.get === modal.leadGetTours && <LeadGetTours closeHandler={closeHandler} />}
+              {getModal.get === modal.leadRequestCall && <LeadRequestCall closeHandler={closeHandler} />}
+              {getModal.get === modal.hotelCardsMap && <HotelCardsMap closeHandler={closeHandler} />}
               {getModal.get === modal.offerPageChangePerson && (
                 <OfferPageChangePerson closeHandler={closeHandler} />
               )}
@@ -223,10 +181,27 @@ export default function Modal() {
               {getModal.get === modal.offerPageChangeRoom && (
                 <OfferPageChangeRoom closeHandler={closeHandler} />
               )}
-              {getModal.get === modal.offerPageOrder && (
-                <OfferPageOrder closeHandler={closeHandler} />
-              )}
+              {getModal.get === modal.offerPageOrder && <OfferPageOrder closeHandler={closeHandler} />}
               {getModal.get === modal.favorites && <Favorites />}
+              {getModal.get === modal.hotelimg && <HotelImg />}
+            </div>
+          </div>
+        </div>
+      )}
+      {getModal && getModal.get === modal.hotelimg && (
+        <div className={isOpened ? `${styles.modal} ${styles.open} modal` : `${styles.modal} modal`}>
+          <div className={`${styles.modal_content} ${styles.fullscreen}`}>
+            <header className={styles.modal_content_header}>
+              <h5 className={`${styles.title} one-line`}>{hotel}</h5>
+              <button className="svg_btn svg_btn_stroke" aria-label="Закрыть" onClick={closeHandler}>
+                <CloseSvg />
+              </button>
+            </header>
+            <div
+              className={styles.modal_content_text}
+              style={size.width >= maxWidth ? modal_content_text : modal_content_text_mobile}
+            >
+              {getModal.get === modal.hotelimg && <HotelImg />}
             </div>
           </div>
         </div>

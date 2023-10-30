@@ -4,6 +4,8 @@ import styles from './imgSlider.module.css';
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import 'yet-another-react-lightbox/styles.css';
+import { modal } from 'utils/constants';
+import { useSetModal, useSetHotelImg } from 'store/store';
 
 const ImgThumb = ({ img }) => {
   return (
@@ -19,6 +21,10 @@ const ImgThumb = ({ img }) => {
 };
 
 export default function ImgSlider({ images }) {
+  // max url images withnout watermark 2/500x375
+  const setModal = useSetModal();
+  const setHotelImgData = useSetHotelImg();
+
   const [currImg, setCurrImg] = useState(0);
   const [imgThumbs, setImgThumbs] = useState([1, 2, 3, 4]);
   const [openLightbox, setOpenLightbox] = useState(false);
@@ -26,7 +32,8 @@ export default function ImgSlider({ images }) {
     ssr: false,
   });
   const openLightboxHandler = async () => {
-    setOpenLightbox(true);
+    // setOpenLightbox(true);
+    setModal({ get: modal.hotelimg });
   };
   let slides = [];
   if (images) {
@@ -35,6 +42,7 @@ export default function ImgSlider({ images }) {
     });
   }
 
+  console.log(images);
   const nextImg = (e) => {
     e.stopPropagation();
     if (currImg === images.length - 1) {
@@ -72,6 +80,10 @@ export default function ImgSlider({ images }) {
     }
   }, [currImg]);
 
+  useEffect(() => {
+    setHotelImgData(images);
+  }, []);
+
   return (
     <>
       <div className={styles.card_img_wrapper}>
@@ -82,19 +94,11 @@ export default function ImgSlider({ images }) {
             alt=""
             layout="fill"
             placeholder="blur"
-            blurDataURL={`data:image/svg+xml;base64,${toBase64(
-              shimmer(500, 375)
-            )}`}
+            blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(500, 375))}`}
           />
-          <div
-            className={styles.img_overlay}
-            onClick={() => openLightboxHandler()}
-          >
+          <div className={styles.img_overlay} onClick={() => openLightboxHandler()}>
             <div className={styles.zoom_wrapper}>
-              <button
-                className={styles.zoom}
-                onClick={() => openLightboxHandler()}
-              >
+              <button className={styles.zoom} onClick={() => openLightboxHandler()}>
                 <svg
                   width="28"
                   height="28"
@@ -111,13 +115,7 @@ export default function ImgSlider({ images }) {
             </div>
             <div className={styles.control_btns}>
               <button onClick={(e) => prevImg(e)}>
-                <svg
-                  width="8"
-                  height="12"
-                  viewBox="0 0 8 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M6.5 1L1 6L6.5 11"
                     stroke="currentColor"
@@ -131,13 +129,7 @@ export default function ImgSlider({ images }) {
                 {currImg + 1} - {images.length}
               </div>
               <button onClick={(e) => nextImg(e)}>
-                <svg
-                  width="8"
-                  height="12"
-                  viewBox="0 0 8 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M1 11L6.5 6L1 1"
                     stroke="currentColor"

@@ -127,7 +127,7 @@ export default function Hotel({ data, hotel }) {
   }
 
   useEffect(() => {
-    const x = getCookie(hotel.i);
+    const x = getCookie(hotel?.i);
     if (x) {
       setHotelRat(JSON.parse(x));
     }

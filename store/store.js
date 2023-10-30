@@ -113,6 +113,8 @@ const useStore = create(
       }),
     openStreetMap: {},
     setOpenStreetMap: (openStreetMap) => set({ openStreetMap }),
+    hotelImg: {},
+    setHotelImg: (hotelImg) => set({ hotelImg }),
     startSearch: false,
     setStartSearch: (startSearch) => set({ startSearch }),
     searchInProgress: false,
@@ -194,6 +196,10 @@ export const useSetApplyFilter = () => useStore((state) => state.setApplyFilter)
 // data for map view
 export const useGetOpenStreetMap = () => useStore((state) => state.openStreetMap);
 export const useSetOpenStreetMap = () => useStore((state) => state.setOpenStreetMap);
+
+// hotel img
+export const useGetHotelImg = () => useStore((state) => state.hotelImg);
+export const useSetHotelImg = () => useStore((state) => state.setHotelImg);
 
 // flag true after make search params
 // потрібен щоб визначити прийшов користувач з іншої стоірнки чи ввів урл запит в браузер

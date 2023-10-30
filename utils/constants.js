@@ -119,6 +119,7 @@ export const modal = {
   offerPageChangeNight: 'offerPageChangeNight',
   offerPageChangeRoom: 'offerPageChangeRoom',
   offerPageOrder: 'offerPageOrder',
+  hotelimg: 'hotelimg',
 };
 
 // time to fetch request
