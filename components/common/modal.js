@@ -199,7 +199,7 @@ export default function Modal() {
             </header>
             <div
               className={styles.modal_content_text}
-              style={size.width >= maxWidth ? modal_content_text : modal_content_text_mobile}
+              style={{ height: 'calc(100% - 60px)', overflow: 'auto', padding: '0' }}
             >
               {getModal.get === modal.hotelimg && <HotelImg />}
             </div>

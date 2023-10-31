@@ -14,6 +14,7 @@ export default function HotelImg() {
   const useGetHotelImgData = useGetHotelImg();
   /* eslint-disable-next-line */
   const [imgs, _] = useState(useGetHotelImgData);
+  console.log(imgs);
   const DynamicLightbox = dynamic(() => import('yet-another-react-lightbox'), {
     ssr: false,
   });
@@ -44,8 +45,9 @@ export default function HotelImg() {
   useEffect(() => {
     const BODY = document.querySelector('body');
     // const SCROLLABLE = document.querySelector('.bbb');
+    const SCROLLABLE = scroll.current.el;
     lock(BODY);
-    // unlock(SCROLLABLE);
+    unlock(SCROLLABLE);
     BODY.classList.add('iosfix');
 
     return () => {
@@ -83,66 +85,66 @@ export default function HotelImg() {
   };
 
   return (
-    <>
-      <SimpleBar
+    <div ref={scroll} style={{ height: '100%' }}>
+      {/* <SimpleBar
         ref={scroll}
         style={{
           minWidth: '320px',
           // maxHeight: '80vh',
-          maxHeight: 'calc(100vh - 60px)',
+          maxHeight: '100%',
           margin: '-20px',
           paddingBottom: '26px',
         }}
-      >
-        <div className={styles.cat_list}>
-          {catList.map((item, ind) => {
-            return (
-              <a href={`#imgId${item.catId}`} onClick={(e) => scrollToEl(e, `#imgId${item.catId}`)} key={ind}>
-                {item.category}
-              </a>
-            );
-          })}
-        </div>
-        <div className={`${styles.fav_list} bbb`}>
-          {catList.map((item, ind) => {
-            return (
-              <div id={`imgId${item.catId}`} key={ind}>
-                <h4 className={styles.title}>{item.category}</h4>
-                <div
-                  className={
-                    isOne(item.catId)
-                      ? `${styles.img_grid} ${styles.one}`
-                      : isTwo(item.catId)
-                      ? `${styles.img_grid} ${styles.two}`
-                      : `${styles.img_grid}`
-                  }
-                >
-                  {imgs.map((img, ind) => {
-                    if (img.catId !== item.catId) return null;
-                    return (
-                      <div key={ind}>
-                        <Image
-                          className={styles.img}
-                          src={`https://newimg.otpusk.com/2/500x375/${img.src}`}
-                          alt=""
-                          // layout="fill"
-                          layout="responsive"
-                          // objectFit="contain"
-                          width={500}
-                          height={375}
-                          placeholder="blur"
-                          blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(500, 375))}`}
-                          onClick={() => openLightboxHandler(img.src)}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
+      > */}
+      <div className={styles.cat_list}>
+        {catList.map((item, ind) => {
+          return (
+            <a href={`#imgId${item.catId}`} onClick={(e) => scrollToEl(e, `#imgId${item.catId}`)} key={ind}>
+              {item.category}
+            </a>
+          );
+        })}
+      </div>
+      <div className={`${styles.fav_list} bbb`}>
+        {catList.map((item, ind) => {
+          return (
+            <div id={`imgId${item.catId}`} key={ind}>
+              <h4 className={styles.title}>{item.category}</h4>
+              <div
+                className={
+                  isOne(item.catId)
+                    ? `${styles.img_grid} ${styles.one}`
+                    : isTwo(item.catId)
+                    ? `${styles.img_grid} ${styles.two}`
+                    : `${styles.img_grid}`
+                }
+              >
+                {imgs.map((img, ind) => {
+                  if (img.catId !== item.catId) return null;
+                  return (
+                    <div key={ind}>
+                      <Image
+                        className={styles.img}
+                        src={`https://newimg.otpusk.com/2/500x375/${img.src}`}
+                        alt=""
+                        // layout="fill"
+                        layout="responsive"
+                        // objectFit="contain"
+                        width={500}
+                        height={375}
+                        placeholder="blur"
+                        blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(500, 375))}`}
+                        onClick={() => openLightboxHandler(img.src)}
+                      />
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
-        </div>
-      </SimpleBar>
+            </div>
+          );
+        })}
+      </div>
+      {/* </SimpleBar> */}
       {imgs && openLightbox ? (
         <DynamicLightbox
           open={openLightbox}
@@ -152,6 +154,6 @@ export default function HotelImg() {
           className={`${styles.lightbox} hotel-img-lightbox`}
         />
       ) : null}
-    </>
+    </div>
   );
 }
