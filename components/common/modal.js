@@ -198,7 +198,7 @@ export default function Modal() {
               </button>
             </header>
             <div
-              className={styles.modal_content_text}
+              className={`${styles.modal_content_text} scroll-container`}
               style={{ height: 'calc(100% - 60px)', overflow: 'auto', padding: '0' }}
             >
               {getModal.get === modal.hotelimg && <HotelImg />}

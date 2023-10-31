@@ -8,16 +8,18 @@ import { lock, unlock, clearBodyLocks } from 'tua-body-scroll-lock';
 import { useGetHotelImg } from 'store/store';
 import dynamic from 'next/dynamic';
 import 'yet-another-react-lightbox/styles.css';
+import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 
 export default function HotelImg() {
   const intl = useIntl();
   const useGetHotelImgData = useGetHotelImg();
   /* eslint-disable-next-line */
   const [imgs, _] = useState(useGetHotelImgData);
-  console.log(imgs);
+
   const DynamicLightbox = dynamic(() => import('yet-another-react-lightbox'), {
     ssr: false,
   });
+
   const [openLightbox, setOpenLightbox] = useState(false);
   const [currImgIndex, setCurrImgIndex] = useState(0);
 
@@ -58,9 +60,9 @@ export default function HotelImg() {
 
   const scrollToEl = (e, val) => {
     e.preventDefault();
-    const currentScroll = scroll.current.getScrollElement();
+    const currentScroll = document.querySelector('.scroll-container');
     const scrollEl = document.querySelector(val);
-    currentScroll.scrollTo({ top: scrollEl.offsetTop - 42, behavior: 'smooth' });
+    currentScroll.scrollTo({ top: scrollEl.offsetTop - 60, behavior: 'smooth' });
   };
 
   const isOne = (id) => {
@@ -73,7 +75,6 @@ export default function HotelImg() {
   let slides = [];
   if (imgs) {
     slides = imgs.map((item) => {
-      // return { src: `https://newimg.otpusk.com/2/500x375/${item.src}` };
       return { src: `https://newimg.otpusk.com/3/1200x900/${item.src}` };
     });
   }
@@ -86,16 +87,6 @@ export default function HotelImg() {
 
   return (
     <div ref={scroll} style={{ height: '100%' }}>
-      {/* <SimpleBar
-        ref={scroll}
-        style={{
-          minWidth: '320px',
-          // maxHeight: '80vh',
-          maxHeight: '100%',
-          margin: '-20px',
-          paddingBottom: '26px',
-        }}
-      > */}
       <div className={styles.cat_list}>
         {catList.map((item, ind) => {
           return (
@@ -105,7 +96,7 @@ export default function HotelImg() {
           );
         })}
       </div>
-      <div className={`${styles.fav_list} bbb`}>
+      <div className={`bbb`}>
         {catList.map((item, ind) => {
           return (
             <div id={`imgId${item.catId}`} key={ind}>
@@ -144,9 +135,9 @@ export default function HotelImg() {
           );
         })}
       </div>
-      {/* </SimpleBar> */}
       {imgs && openLightbox ? (
         <DynamicLightbox
+          plugins={[Zoom]}
           open={openLightbox}
           index={currImgIndex}
           close={() => setOpenLightbox(false)}
