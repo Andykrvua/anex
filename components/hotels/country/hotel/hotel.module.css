@@ -80,6 +80,16 @@
   margin-top: 20px;
 }
 
+.tour_inside_propertys {
+  margin-top: 10px;
+}
+
+.tour_inside_propertys .tour_property__title {
+  margin: 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
 .tour_property {
   margin: 0 10px;
 }
@@ -199,8 +209,9 @@
 .hotel_descr_wrapper p {
   margin-top: 5px;
   margin-bottom: 0;
-  font-size: 16px;
-  line-height: 22px;
+  padding: 0 10px;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .read_or_hide {

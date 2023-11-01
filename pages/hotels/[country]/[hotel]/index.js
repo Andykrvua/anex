@@ -8,6 +8,7 @@ import { useSetModal, useSetOpenStreetMap } from 'store/store';
 import { useEffect, useState } from 'react';
 import TurDetails from 'components/hotels/country/hotel/turDetails';
 import ImgSlider from 'components/hotels/country/hotel/imgSlider';
+import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
 
 const HotelProp = ({ hotel }) => {
   return (
@@ -15,6 +16,7 @@ const HotelProp = ({ hotel }) => {
       {Object.entries(hotel.e)
         .sort()
         .map(([key1, value1], ind1) => {
+          if (key1 === 'h' || key1 === 'r') return null;
           return (
             <div className={styles.tour_propertys} key={ind1}>
               {Object.entries(value1).map(([key, value], ind) => {
@@ -119,13 +121,13 @@ export default function Hotel({ data, hotel }) {
             }}
           />
         )}
-        {isReadMore && hotel?.o?.fa && (
+        {/* {isReadMore && hotel?.o?.fa && (
           <p
             dangerouslySetInnerHTML={{
               __html: hotel.o.fa,
             }}
           />
-        )}
+        )} */}
         {isReadMore && hotel?.o?.fh && (
           <p
             dangerouslySetInnerHTML={{
@@ -139,6 +141,28 @@ export default function Hotel({ data, hotel }) {
               __html: hotel.o.s,
             }}
           />
+        )}
+        {isReadMore && hotel?.e?.h && (
+          <div className={`${styles.tour_propertys} ${styles.tour_inside_propertys}`}>
+            {hotel?.e?.h &&
+              Object.entries(hotel.e.h).map(([key, value], ind) => {
+                return (
+                  <div className={styles.tour_property} key={ind}>
+                    <img
+                      className={styles.tour_property__icon}
+                      src={`/assets/img/svg/tour_property/${key}.svg`}
+                      alt=""
+                    />
+                    <p className={styles.tour_property__title}>
+                      {value.name === 'год реновации' || value.name === 'Год реновации'
+                        ? `${value.name} ${key}`
+                        : `${value.name}`}
+                      <span> {value.title}</span>
+                    </p>
+                  </div>
+                );
+              })}
+          </div>
         )}
 
         <p onClick={toggleReadMore} className={styles.read_or_hide}>
@@ -165,6 +189,8 @@ export default function Hotel({ data, hotel }) {
       setHotelRat(JSON.parse(x));
     }
   }, []);
+
+  const [name, setName] = useState('descr');
 
   if (!hotel) {
     return (
@@ -229,10 +255,59 @@ export default function Hotel({ data, hotel }) {
             </div>
             <HotelProp hotel={hotel} />
             <div className={styles.hotel_descr_wrapper}>
-              <h4 className={styles.hotel_descr_title}>
+              {/* <h4 className={styles.hotel_descr_title}>
                 <FM id="offer_page.hotel_desc" />
-              </h4>
-              <ReadMore />
+              </h4> */}
+              {hotel?.e?.h && (
+                <SwitchMenu
+                  items={[
+                    {
+                      name: <FM id="offer_page.hotel_desc" />,
+                      value: 'descr',
+                    },
+                    {
+                      name: `В номерах`,
+                      value: 'room',
+                    },
+                  ]}
+                  name={'district_switcher'}
+                  callback={[name, setName]}
+                />
+              )}
+              {name === 'descr' ? (
+                <ReadMore />
+              ) : (
+                <>
+                  {hotel?.o?.fa && (
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: hotel.o.fa,
+                      }}
+                    />
+                  )}
+
+                  <div className={`${styles.tour_propertys} ${styles.tour_inside_propertys}`}>
+                    {hotel?.e?.r &&
+                      Object.entries(hotel.e.r).map(([key, value], ind) => {
+                        return (
+                          <div className={styles.tour_property} key={ind}>
+                            <img
+                              className={styles.tour_property__icon}
+                              src={`/assets/img/svg/tour_property/${key}.svg`}
+                              alt=""
+                            />
+                            <p className={styles.tour_property__title}>
+                              {value.name === 'год реновации' || value.name === 'Год реновации'
+                                ? `${value.name} ${key}`
+                                : `${value.name}`}
+                              <span> {value.title}</span>
+                            </p>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
