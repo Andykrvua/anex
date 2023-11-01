@@ -76,7 +76,7 @@
 .tour_propertys {
   display: flex;
   flex-wrap: wrap;
-  /* margin-top: 10px; */
+  row-gap: 4px;
   margin-top: 20px;
 }
 

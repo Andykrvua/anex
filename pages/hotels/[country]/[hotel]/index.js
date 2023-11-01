@@ -9,7 +9,40 @@ import { useEffect, useState } from 'react';
 import TurDetails from 'components/hotels/country/hotel/turDetails';
 import ImgSlider from 'components/hotels/country/hotel/imgSlider';
 
+const HotelProp = ({ hotel }) => {
+  return (
+    <>
+      {Object.entries(hotel.e)
+        .sort()
+        .map(([key1, value1], ind1) => {
+          return (
+            <div className={styles.tour_propertys} key={ind1}>
+              {Object.entries(value1).map(([key, value], ind) => {
+                return (
+                  <div className={styles.tour_property} key={ind}>
+                    <img
+                      className={styles.tour_property__icon}
+                      src={`/assets/img/svg/tour_property/${key}.svg`}
+                      alt=""
+                    />
+                    <p className={styles.tour_property__title}>
+                      {value.name === 'год реновации' || value.name === 'Год реновации'
+                        ? `${value.name} ${key}`
+                        : `${value.name}`}
+                      <span> {value.title}</span>
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+    </>
+  );
+};
+
 export default function Hotel({ data, hotel }) {
+  console.log('hotel', hotel);
   const br_arr = [{ title: hotel?.n }];
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
@@ -194,25 +227,7 @@ export default function Hotel({ data, hotel }) {
                 </div>
               ) : null}
             </div>
-
-            <div className={styles.tour_propertys}>
-              {hotel?.e?.b &&
-                Object.entries(hotel.e.b).map(([key, value], ind) => {
-                  return (
-                    <div className={styles.tour_property} key={ind}>
-                      <img
-                        className={styles.tour_property__icon}
-                        src={`/assets/img/svg/tour_property/${key}.svg`}
-                        alt=""
-                      />
-                      <p className={styles.tour_property__title}>
-                        {value.name}
-                        <span> {value.title}</span>
-                      </p>
-                    </div>
-                  );
-                })}
-            </div>
+            <HotelProp hotel={hotel} />
             <div className={styles.hotel_descr_wrapper}>
               <h4 className={styles.hotel_descr_title}>
                 <FM id="offer_page.hotel_desc" />
