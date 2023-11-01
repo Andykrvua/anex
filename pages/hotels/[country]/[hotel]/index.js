@@ -259,20 +259,23 @@ export default function Hotel({ data, hotel }) {
                 <FM id="offer_page.hotel_desc" />
               </h4> */}
               {hotel?.e?.h && (
-                <SwitchMenu
-                  items={[
-                    {
-                      name: <FM id="offer_page.hotel_desc" />,
-                      value: 'descr',
-                    },
-                    {
-                      name: `В номерах`,
-                      value: 'room',
-                    },
-                  ]}
-                  name={'district_switcher'}
-                  callback={[name, setName]}
-                />
+                <>
+                  <SwitchMenu
+                    items={[
+                      {
+                        name: <FM id="offer_page.hotel_desc" />,
+                        value: 'descr',
+                      },
+                      {
+                        name: <FM id="offer_page.hotel_room" />,
+                        value: 'room',
+                      },
+                    ]}
+                    name={'district_switcher'}
+                    callback={[name, setName]}
+                  />
+                  <div style={{ height: '5px' }} />
+                </>
               )}
               {name === 'descr' ? (
                 <ReadMore />
@@ -286,9 +289,9 @@ export default function Hotel({ data, hotel }) {
                     />
                   )}
 
-                  <div className={`${styles.tour_propertys} ${styles.tour_inside_propertys}`}>
-                    {hotel?.e?.r &&
-                      Object.entries(hotel.e.r).map(([key, value], ind) => {
+                  {hotel?.e?.r && (
+                    <div className={`${styles.tour_propertys}`} style={{ marginTop: '10px' }}>
+                      {Object.entries(hotel.e.r).map(([key, value], ind) => {
                         return (
                           <div className={styles.tour_property} key={ind}>
                             <img
@@ -305,7 +308,8 @@ export default function Hotel({ data, hotel }) {
                           </div>
                         );
                       })}
-                  </div>
+                    </div>
+                  )}
                 </>
               )}
             </div>
