@@ -75,7 +75,7 @@ export default function HotelImg() {
   let slides = [];
   if (imgs) {
     slides = imgs.map((item) => {
-      return { src: `https://newimg.otpusk.com/3/1200x900/${item.src}` };
+      return { src: `https://newimg.otpusk.com/3_anex/1200x900/${item.src}` };
     });
   }
 
