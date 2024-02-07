@@ -6,11 +6,12 @@ import { useIntl } from 'react-intl';
 import Post from '/components/blog/post.js';
 import { location } from 'utils/constants';
 import LinksBlock from 'components/tours/tours-text/links';
+import SubpagesLinksBlock from 'components/tours/subpages-links/subpageslinks';
 import { links } from 'utils/links';
 import { useRouter } from 'next/router';
 import DefaultErrorPage from 'next/error';
 
-export default function Tours({ toursTextPage, allLinks, slug, loc }) {
+export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLinks }) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -47,10 +48,16 @@ export default function Tours({ toursTextPage, allLinks, slug, loc }) {
           <Breadcrumbs data={br_arr} beforeMainFrom />
           <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
           <MainForm />
-          {/* <LinksBlock allLinks={allLinks} /> */}
-          {/* <Post variant={location.postContent.tourPage} post={toursTextPage} /> */}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
           <LinksBlock allLinks={allLinks} />
+          {subpagesLinks && subpagesLinks.length && (
+            <SubpagesLinksBlock
+              allLinks={subpagesLinks}
+              title={toursTextPage?.translations[0].name}
+              current={slug}
+              level={1}
+            />
+          )}
         </div>
       )}
     </>
@@ -61,14 +68,17 @@ export async function getStaticPaths({ locales }) {
   const allLinks = await getAllToursTextPages();
 
   const paths = [];
-  allLinks.data.map((item) => {
-    return locales.map((locale) => {
-      return paths.push({
-        params: { slug: item.slug },
-        locale,
+  allLinks.data
+    .filter((nosubpage) => !nosubpage.subpage)
+    .map((item) => {
+      return locales.map((locale) => {
+        return paths.push({
+          params: { slug: item.slug },
+          locale,
+        });
       });
     });
-  });
+
   return { paths, fallback: true };
 }
 
@@ -76,7 +86,10 @@ export async function getStaticProps(context) {
   const loc = context.locale;
   const slug = context.params.slug;
 
-  const toursTextPage = await getToursTextPage(loc, slug);
+  const toursTextPageTemp = await getToursTextPage(loc, slug);
+  const subpagesLinks = toursTextPageTemp.data.filter((nosubpage) => nosubpage.subpage);
+  const toursTextPage = toursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
+
   const allLinks = await getAllToursTextPages(loc);
   if (allLinks.errors || toursTextPage.errors) {
     // if incorrect request
@@ -89,10 +102,11 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      toursTextPage: toursTextPage.data[0] || null,
-      allLinks: allLinks.data,
+      toursTextPage: toursTextPage[0] || null,
+      allLinks: allLinks.data.filter((nosubpage) => !nosubpage.subpage),
       slug,
       loc,
+      subpagesLinks: subpagesLinks.length ? subpagesLinks : null,
     },
     revalidate: 30,
   };

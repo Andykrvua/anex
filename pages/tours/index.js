@@ -38,6 +38,7 @@ export async function getStaticProps(context) {
   const data = 'translations.content';
   const pageSettings = await getPageSettings('alltours_tex_page', loc, data);
   const allLinks = await getAllToursTextPages(loc);
+
   if (allLinks.errors || pageSettings.errors) {
     // if incorrect request
     /* eslint-disable-next-line */
@@ -50,7 +51,7 @@ export async function getStaticProps(context) {
   return {
     props: {
       pageSettings: pageSettings.data,
-      allLinks: allLinks.data,
+      allLinks: allLinks.data.filter((nosubpage) => !nosubpage.subpage),
       loc,
     },
     revalidate: 30,

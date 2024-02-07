@@ -155,13 +155,14 @@ export const getAllCountriesForNav = async (loc) => {
 
 export const getAllToursTextPages = async (loc = languagesApi.ru) => {
   const locale = languagesApi[loc];
-  const url = `tours_text?fields=slug,img,popular,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
+  const url = `tours_text?fields=slug,subpage,img,popular,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
   return req(url);
 };
 
-export const getToursTextPage = async (loc, slug) => {
+export const getToursTextPage = async (loc, slug, subpage = null) => {
   const locale = languagesApi[loc];
-  const url = `tours_text?fields=img,slug,translations.languages_code,translations.name,translations.h1,translations.post_title,translations.title,translations.description,translations.content,translations.post_content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}&filter[status]=published`;
+  const filter = subpage ? `&filter[subpage]=${subpage}` : '';
+  const url = `tours_text?fields=img,slug,subpage,translations.languages_code,translations.name,translations.h1,translations.post_title,translations.title,translations.description,translations.content,translations.post_content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}${filter}&filter[status]=published`;
   return req(url);
 };
 
