@@ -18,6 +18,7 @@ export default function ToursSubsubpage({
   allLinks,
   slug,
   subpage,
+  subsubpage,
   subpagesLinks,
   subsubpagesLinks,
   loc,
@@ -35,7 +36,7 @@ export default function ToursSubsubpage({
   }
 
   // all false if country slug not found
-  const searchSlug = subpagesLinks.map((item) => item.subpage === subpage);
+  const searchSlug = subpagesLinks.map((item) => item.subsubpage === subsubpage);
 
   const br_arr = [
     { url: links.tours, title: intl.formatMessage({ id: 'tour.br' }) },
@@ -145,6 +146,7 @@ export async function getStaticProps(context) {
       allLinks: allLinks.data.filter((nosubpage) => !nosubpage.subpage),
       slug,
       subpage,
+      subsubpage,
       subpagesLinks,
       subsubpagesLinks,
       loc,

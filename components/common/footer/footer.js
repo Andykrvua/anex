@@ -142,9 +142,9 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/countries/meksika/">
+                  <Link href="/countries/bulgaria/">
                     <a>
-                      <FM id="footer.links.poptour.Mexico" />
+                      <FM id="footer.links.poptour.Bulgaria" />
                     </a>
                   </Link>
                 </li>

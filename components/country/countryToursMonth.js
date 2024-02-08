@@ -16,10 +16,10 @@ const colors = {
   october: '#f37572',
   november: '#f37572',
   december: '#4dc2f6',
-  spring: '#ffb54b',
+  spring: '#80c683',
   winter: '#4dc2f6',
   autumn: '#f37572',
-  summer: '#80c683',
+  summer: '#ffb54b',
 };
 
 const AContent = ({ item, current, timeYear = false }) => {
