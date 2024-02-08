@@ -18,7 +18,9 @@ export default function ToursSubpage({
   slug,
   subpage,
   subpagesLinks,
+  subsubpagesLinks,
   loc,
+  bus,
 }) {
   const intl = useIntl();
   const router = useRouter();
@@ -32,12 +34,16 @@ export default function ToursSubpage({
   }
 
   // all false if country slug not found
-  const searchSlug = allLinks.map((item) => item.subpage === subpage);
+  const searchSlug = subpagesLinks.map((item) => item.subpage === subpage);
 
   const br_arr = [
     { url: links.tours, title: intl.formatMessage({ id: 'tour.br' }) },
     { url: `${links.tours}/${prevToursTextPage.slug}`, title: prevToursTextPage?.translations[0].name },
-    { title: intl.formatMessage({ id: 'country.tours_from' }) + ' ' + toursTextPage?.translations[0].name },
+    {
+      title: bus
+        ? intl.formatMessage({ id: 'country.from_1' }) + ' ' + toursTextPage?.translations[0].name
+        : intl.formatMessage({ id: 'country.tours_from' }) + ' ' + toursTextPage?.translations[0].name,
+    },
   ];
 
   const style = {
@@ -62,9 +68,11 @@ export default function ToursSubpage({
           {subpagesLinks && subpagesLinks.length && (
             <SubpagesLinksBlock
               allLinks={subpagesLinks}
+              level3links={subsubpagesLinks}
               title={prevToursTextPage?.translations[0].name}
               current={subpage}
               level={2}
+              bus={bus}
             />
           )}
         </div>
@@ -96,13 +104,19 @@ export async function getStaticProps(context) {
   const subpage = context.params.subpage;
 
   const prevToursTextPageTemp = await getToursTextPage(loc, slug);
-  const prevToursTextPage = prevToursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
 
-  const subpagesLinksTemp = await getToursTextPage(loc, slug);
-  const subpagesLinks = subpagesLinksTemp.data.filter((nosubpage) => nosubpage.subpage);
+  const prevToursTextPage = prevToursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
+  const subpagesLinks = prevToursTextPageTemp.data.filter(
+    (nosubpage) => nosubpage.subpage && !nosubpage.subsubpage
+  );
+  const subsubpagesLinks = prevToursTextPageTemp.data.filter(
+    (nosubpage) => nosubpage.subsubpage && nosubpage.subpage === subpage
+  );
 
   const toursTextPage = await getToursTextPage(loc, slug, subpage);
   const allLinks = await getAllToursTextPages(loc);
+
+  const bus = !!toursTextPage.data.filter((item) => item.bus).length;
 
   // const subpagesLinks = toursTextPageTemp.data.filter((nosubpage) => nosubpage.subpage);
   // const toursTextPage = toursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
@@ -120,11 +134,13 @@ export async function getStaticProps(context) {
     props: {
       toursTextPage: toursTextPage.data[0] || null,
       prevToursTextPage: prevToursTextPage[0] || null,
-      allLinks: allLinks.data,
+      allLinks: allLinks.data.filter((nosubpage) => !nosubpage.subpage),
       slug,
       subpage,
       subpagesLinks,
+      subsubpagesLinks,
       loc,
+      bus,
     },
     revalidate: 30,
   };

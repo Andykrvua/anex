@@ -11,7 +11,18 @@ import { links } from 'utils/links';
 import { useRouter } from 'next/router';
 import DefaultErrorPage from 'next/error';
 
-export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLinks, bus }) {
+export default function ToursSubsubpage({
+  toursTextPage,
+  prevPrevToursTextPage,
+  prevToursTextPage,
+  allLinks,
+  slug,
+  subpage,
+  subpagesLinks,
+  subsubpagesLinks,
+  loc,
+  bus,
+}) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -24,11 +35,21 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
   }
 
   // all false if country slug not found
-  const searchSlug = allLinks.map((item) => item.slug === slug);
+  const searchSlug = subpagesLinks.map((item) => item.subpage === subpage);
 
   const br_arr = [
     { url: links.tours, title: intl.formatMessage({ id: 'tour.br' }) },
-    { title: toursTextPage?.translations[0].name },
+    {
+      url: `${links.tours}/${prevPrevToursTextPage.slug}`,
+      title: prevPrevToursTextPage?.translations[0].name,
+    },
+    {
+      url: `${links.tours}/${prevPrevToursTextPage.slug}/${prevToursTextPage.subpage}`,
+      title: `в ${prevToursTextPage?.translations[0].name}`,
+    },
+    {
+      title: intl.formatMessage({ id: 'country.tours_from' }) + ' ' + toursTextPage?.translations[0].name,
+    },
   ];
 
   const style = {
@@ -53,9 +74,10 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
           {subpagesLinks && subpagesLinks.length && (
             <SubpagesLinksBlock
               allLinks={subpagesLinks}
-              title={toursTextPage?.translations[0].name}
-              current={slug}
-              level={1}
+              level3links={subsubpagesLinks}
+              title={prevToursTextPage?.translations[0].name}
+              current={subpage}
+              level={3}
               bus={bus}
             />
           )}
@@ -69,16 +91,15 @@ export async function getStaticPaths({ locales }) {
   const allLinks = await getAllToursTextPages();
 
   const paths = [];
-  allLinks.data
-    .filter((nosubpage) => !nosubpage.subpage)
-    .map((item) => {
-      return locales.map((locale) => {
-        return paths.push({
-          params: { slug: item.slug },
-          locale,
-        });
+  allLinks.data.map((item) => {
+    if (!item.subpage || !item.subsubpage) return;
+    return locales.map((locale) => {
+      return paths.push({
+        params: { slug: item.slug, subpage: item.subpage, subsubpage: item.subsubpage },
+        locale,
       });
     });
+  });
 
   return { paths, fallback: true };
 }
@@ -86,16 +107,27 @@ export async function getStaticPaths({ locales }) {
 export async function getStaticProps(context) {
   const loc = context.locale;
   const slug = context.params.slug;
+  const subpage = context.params.subpage;
+  const subsubpage = context.params.subsubpage;
 
-  const toursTextPageTemp = await getToursTextPage(loc, slug);
-  const subpagesLinks = toursTextPageTemp.data.filter(
-    (nosubpage) => nosubpage.subpage && !nosubpage.subsubpage
+  const prevToursTextPageTemp = await getToursTextPage(loc, slug);
+
+  const prevPrevToursTextPage = prevToursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
+  const prevToursTextPage = prevToursTextPageTemp.data.filter(
+    (nosubpage) => nosubpage.subpage === subpage && !nosubpage.subsubpage
   );
 
-  const toursTextPage = toursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
-  const bus = !!subpagesLinks.filter((item) => item.bus).length;
+  const subpagesLinks = prevToursTextPageTemp.data.filter((nosubpage) => nosubpage.subpage);
+  const subsubpagesLinks = prevToursTextPageTemp.data.filter((nosubpage) => nosubpage.subsubpage);
 
+  const toursTextPage = await getToursTextPage(loc, slug, subpage, subsubpage);
   const allLinks = await getAllToursTextPages(loc);
+
+  const bus = !!toursTextPage.data.filter((item) => item.bus).length;
+
+  // const subpagesLinks = toursTextPageTemp.data.filter((nosubpage) => nosubpage.subpage);
+  // const toursTextPage = toursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
+
   if (allLinks.errors || toursTextPage.errors) {
     // if incorrect request
     /* eslint-disable-next-line */
@@ -107,11 +139,15 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      toursTextPage: toursTextPage[0] || null,
+      toursTextPage: toursTextPage.data[0] || null,
+      prevPrevToursTextPage: prevPrevToursTextPage[0] || null,
+      prevToursTextPage: prevToursTextPage[0] || null,
       allLinks: allLinks.data.filter((nosubpage) => !nosubpage.subpage),
       slug,
+      subpage,
+      subpagesLinks,
+      subsubpagesLinks,
       loc,
-      subpagesLinks: subpagesLinks.length ? subpagesLinks : null,
       bus,
     },
     revalidate: 30,
