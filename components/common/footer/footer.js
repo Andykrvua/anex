@@ -180,7 +180,7 @@ export default function Footer() {
                 <br />
                 Сб: 11:00 – 15:00
               </li>
-              <li>
+              <li style={{ opacity: 0 }}>
                 <FM id="footer.address" />
               </li>
               <li>
