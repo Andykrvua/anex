@@ -57,12 +57,9 @@ export default function Contacts({ pageSettings }) {
                 __html: pageSettings.translations[0].schedule_content,
               }}
             />
-            <h3 className={styles.subtitle} style={{ opacity: 0 }}>
-              {pageSettings.translations[0].address_title}
-            </h3>
+            <h3 className={styles.subtitle}>{pageSettings.translations[0].address_title}</h3>
             <div
               className={styles.subtitle_content}
-              style={{ opacity: 0 }}
               dangerouslySetInnerHTML={{
                 __html: pageSettings.translations[0].address_content,
               }}
