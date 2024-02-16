@@ -5,11 +5,17 @@ import { GetLangField } from '/utils/getLangField';
 import Link from 'next/link';
 import { links } from 'utils/links';
 import { location } from 'utils/constants';
+import { FormattedMessage as FM } from 'react-intl';
+import { useRouter } from 'next/router';
 
 export default function TourCards({ current, cards, country, loc, variant = null }) {
+  const router = useRouter();
+
   const getLink = (item) => {
     if (variant === location.districtList.allToursPage) {
       return `${links.tours}/${item.slug}`;
+    } else if (variant === location.districtList.busToursPage) {
+      return `${links.tours}/${item.slug}/${item.subpage}${item.subsubpage ? '/' + item.subsubpage : ''}`;
     } else {
       return `${links.countries}/${country}/${item.subsubpage_slug ? item.subpage_slug : ''}${
         item.subsubpage_slug ? '/' : ''
@@ -37,7 +43,15 @@ export default function TourCards({ current, cards, country, loc, variant = null
                 />
                 <p className={styles.card_name}>
                   <img src="/assets/img/svg/palm-tree.svg" alt="" />
-                  <span>{GetLangField(item.translations, 'languages_code', 'name', loc)}</span>
+                  <span>
+                    {variant === location.districtList.busToursPage && !router.query.subpage && (
+                      <FM id="country.from_1" />
+                    )}
+                    {variant === location.districtList.busToursPage && router.query.subpage && (
+                      <FM id="country.tours_from" />
+                    )}{' '}
+                    {GetLangField(item.translations, 'languages_code', 'name', loc)}
+                  </span>
                 </p>
               </span>
             </a>

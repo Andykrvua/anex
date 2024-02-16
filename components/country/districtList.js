@@ -18,7 +18,8 @@ export default function DistrictList({ data, title, country, loc, variant = null
   return (
     <>
       <h2 className={styles.title}>{title}</h2>
-      {data.length > districtCardsShowSwitcher && (
+
+      {data.length > districtCardsShowSwitcher && variant !== location.districtList.busToursPage && (
         <SwitchMenu
           items={[
             {

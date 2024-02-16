@@ -10,6 +10,7 @@ import SubpagesLinksBlock from 'components/tours/subpages-links/subpageslinks';
 import { links } from 'utils/links';
 import { useRouter } from 'next/router';
 import DefaultErrorPage from 'next/error';
+import DistrictList from 'components/country/districtList';
 
 export default function ToursSubpage({
   toursTextPage,
@@ -63,6 +64,21 @@ export default function ToursSubpage({
           <Breadcrumbs data={br_arr} beforeMainFrom />
           <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
           <MainForm />
+          {bus && (
+            <DistrictList
+              data={subsubpagesLinks}
+              title={
+                intl.formatMessage({ id: 'country.from_1' }) +
+                ' ' +
+                toursTextPage?.translations[0].name +
+                ' ' +
+                intl.formatMessage({ id: 'country.from_2' })
+              }
+              country={''}
+              loc={loc}
+              variant={location.districtList.busToursPage}
+            />
+          )}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
           <LinksBlock allLinks={allLinks} />
           {subpagesLinks && subpagesLinks.length && (

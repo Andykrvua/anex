@@ -73,7 +73,7 @@ export default function Links({ allLinks, level3links = null, title, current, le
           </div>
         </>
       )}
-      {bus && level === 2 && !!level3links?.length && (
+      {/* {bus && level === 2 && !!level3links?.length && (
         <>
           <h2 className={`${styles.subtitle} block_title`}>
             {title} в <span className="mark">{getNameTo.length && getNameTo[0].translations[0].name}</span>
@@ -107,7 +107,7 @@ export default function Links({ allLinks, level3links = null, title, current, le
             })}
           </div>
         </>
-      )}
+      )} */}
       {level === 3 && (
         <>
           <h2 className={`${styles.subtitle} block_title`}>

@@ -10,6 +10,7 @@ import SubpagesLinksBlock from 'components/tours/subpages-links/subpageslinks';
 import { links } from 'utils/links';
 import { useRouter } from 'next/router';
 import DefaultErrorPage from 'next/error';
+import DistrictList from 'components/country/districtList';
 
 export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLinks, bus }) {
   const intl = useIntl();
@@ -48,9 +49,18 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
           <Breadcrumbs data={br_arr} beforeMainFrom />
           <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
           <MainForm />
+          {bus && (
+            <DistrictList
+              data={subpagesLinks}
+              title={toursTextPage?.translations[0].name}
+              country={''}
+              loc={loc}
+              variant={location.districtList.busToursPage}
+            />
+          )}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
           <LinksBlock allLinks={allLinks} />
-          {subpagesLinks && subpagesLinks.length && (
+          {subpagesLinks && subpagesLinks.length && !bus && (
             <SubpagesLinksBlock
               allLinks={subpagesLinks}
               title={toursTextPage?.translations[0].name}
