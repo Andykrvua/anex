@@ -11,7 +11,7 @@ import { FormattedMessage as FM } from 'react-intl';
 // variant null = post content
 // variant countryPage = country page post content
 // variant tourPage = tour page post content
-export default function Post({ post, loc, variant = null, minOffer = null }) {
+export default function Post({ post, loc, variant = null, minOffer = null, tours = null }) {
   const content = changeImageUrl(post, variant);
 
   return (
@@ -33,12 +33,12 @@ export default function Post({ post, loc, variant = null, minOffer = null }) {
               blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(333, 360))}`}
               priority={true}
             />
-            {variant === location.postContent.countryPage && post.translations[0].badge ? (
+            {variant === location.postContent.countryPage && !tours && post.translations[0].badge ? (
               <p className={styles.badge}>{post.translations[0].badge}</p>
             ) : null}
             {variant === location.postContent.countryPage && post.translations[0].name && (
               <div className={styles.card_text}>
-                <h3>{post.translations[0].name}</h3>
+                <h3>{tours ? post.translations[0].badge : post.translations[0].name}</h3>
                 {minOffer && (
                   <span>
                     <FM id="common.ot" />

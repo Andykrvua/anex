@@ -79,7 +79,7 @@ export default function ToursSubpage({
               variant={location.districtList.busToursPage}
             />
           )}
-          <Post post={toursTextPage} variant={location.postContent.countryPage} />
+          <Post post={toursTextPage} variant={location.postContent.countryPage} tours />
           {!bus && <LinksBlock allLinks={allLinks} />}
           {subpagesLinks && subpagesLinks.length && (
             <SubpagesLinksBlock
