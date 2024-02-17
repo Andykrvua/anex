@@ -52,7 +52,7 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
           {bus && (
             <DistrictList
               data={subpagesLinks}
-              title={toursTextPage?.translations[0].name}
+              title={intl.formatMessage({ id: 'country.tours_pop' })}
               country={''}
               loc={loc}
               variant={location.districtList.busToursPage}
