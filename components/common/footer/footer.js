@@ -30,6 +30,20 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
+                  <Link href={`${links.tours}${links.toursBus}`}>
+                    <a>
+                      <FM id="nav.tour.bus" />
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href={`${links.tours}${links.toursHot}`}>
+                    <a>
+                      <FM id="nav.tour.hot" />
+                    </a>
+                  </Link>
+                </li>
+                <li>
                   <Link href={links.countries}>
                     <a>
                       <FM id="nav.country" />
@@ -100,6 +114,13 @@ export default function Footer() {
               </h4>
               <ul className={styles.list}>
                 <li>
+                  <Link href="/countries/turkey/">
+                    <a>
+                      <FM id="footer.links.poptour.Turkey" />
+                    </a>
+                  </Link>
+                </li>
+                <li>
                   <Link href="/countries/egypt/">
                     <a>
                       <FM id="footer.links.poptour.Egipet" />
@@ -121,9 +142,23 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/countries/turkey/">
+                  <Link href="/countries/bulgaria/">
                     <a>
-                      <FM id="footer.links.poptour.Turkey" />
+                      <FM id="footer.links.poptour.Bulgaria" />
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/countries/spain/">
+                    <a>
+                      <FM id="footer.links.poptour.Spain" />
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/countries/montenegro/">
+                    <a>
+                      <FM id="footer.links.poptour.Montenegro" />
                     </a>
                   </Link>
                 </li>
@@ -138,13 +173,6 @@ export default function Footer() {
                   <Link href="/countries/maldives/">
                     <a>
                       <FM id="footer.links.poptour.Maldives" />
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/countries/bulgaria/">
-                    <a>
-                      <FM id="footer.links.poptour.Bulgaria" />
                     </a>
                   </Link>
                 </li>

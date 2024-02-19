@@ -2,6 +2,8 @@ export const links = {
   faq: '/faq',
   main: '/',
   tours: '/tours',
+  toursHot: '/hottours',
+  toursBus: '/charter-bus',
   countries: '/countries',
   hotTours: '/hot-tours',
   hotels: '/hotels',

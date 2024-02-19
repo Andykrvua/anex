@@ -28,7 +28,13 @@ export default function TourCards({ current, cards, country, loc, variant = null
       {cards.map((item, ind) => {
         return (
           <Link href={getLink(item)} key={ind}>
-            <a style={current === 'popular' && !item.popular ? { display: 'none' } : {}}>
+            <a
+              style={
+                current === 'popular' && !item.popular && variant !== location.districtList.busToursPage
+                  ? { display: 'none' }
+                  : {}
+              }
+            >
               <span className={styles.card} key={item.id}>
                 <Image
                   className={styles.img}

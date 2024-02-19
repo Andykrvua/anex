@@ -59,7 +59,7 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
             />
           )}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
-          <LinksBlock allLinks={allLinks} />
+          {/* <LinksBlock allLinks={allLinks} /> */}
           {subpagesLinks && subpagesLinks.length && !bus && (
             <SubpagesLinksBlock
               allLinks={subpagesLinks}
