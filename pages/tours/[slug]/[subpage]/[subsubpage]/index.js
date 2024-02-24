@@ -47,10 +47,11 @@ export default function ToursSubsubpage({
     },
     {
       url: `${links.tours}/${prevPrevToursTextPage.slug}/${prevToursTextPage.subpage}`,
-      title: `в ${prevToursTextPage?.translations[0].name}`,
+      title: `${prevToursTextPage?.translations[0].name}`,
     },
     {
-      title: intl.formatMessage({ id: 'country.tours_from' }) + ' ' + toursTextPage?.translations[0].name,
+      title:
+        intl.formatMessage({ id: 'country.tours_from_short' }) + ' ' + toursTextPage?.translations[0].name,
     },
   ];
 
@@ -71,7 +72,7 @@ export default function ToursSubsubpage({
           <Breadcrumbs data={br_arr} beforeMainFrom />
           <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
           <MainForm />
-          {bus && (
+          {/* {bus && (
             <DistrictList
               data={subsubpagesLinks.filter((item) => item.subsubpage !== router.query.subsubpage)}
               title={
@@ -85,19 +86,19 @@ export default function ToursSubsubpage({
               loc={loc}
               variant={location.districtList.busToursPage}
             />
-          )}
+          )} */}
           <Post post={toursTextPage} variant={location.postContent.countryPage} tours />
           {/* <LinksBlock allLinks={allLinks} /> */}
-          {/* {subpagesLinks && subpagesLinks.length && (
+          {subpagesLinks && subpagesLinks.length && (
             <SubpagesLinksBlock
               allLinks={subpagesLinks}
-              level3links={subsubpagesLinks}
-              title={prevToursTextPage?.translations[0].name}
+              level3links={subsubpagesLinks.filter((item) => item.subsubpage !== router.query.subsubpage)}
+              title={prevToursTextPage?.translations[0].h1}
               current={subpage}
               level={3}
               bus={bus}
             />
-          )} */}
+          )}
         </div>
       )}
     </>

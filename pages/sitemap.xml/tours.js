@@ -8,15 +8,27 @@ export default async function getToursSiteMap() {
   let toursPathUk = [];
 
   if (toursRu.data) {
-    toursPaths = toursRu.data.map(({ slug }) => ({
-      url: `${server}/tours/${slug}/`,
-    }));
+    toursPaths = toursRu.data.map(({ slug, subpage, subsubpage }) => {
+      if (subsubpage && subpage && slug) {
+        return { url: `${server}/tours/${slug}/${subpage}/${subsubpage}/` };
+      } else if (subpage && slug) {
+        return { url: `${server}/tours/${slug}/${subpage}/` };
+      } else if (slug) {
+        return { url: `${server}/tours/${slug}/` };
+      }
+    });
   }
 
   if (toursUk.data) {
-    toursPathUk = toursUk.data.map(({ slug }) => ({
-      url: `${server}/uk/tours/${slug}/`,
-    }));
+    toursPathUk = toursUk.data.map(({ slug, subpage, subsubpage }) => {
+      if (subsubpage && subpage && slug) {
+        return { url: `${server}/uk/tours/${slug}/${subpage}/${subsubpage}/` };
+      } else if (subpage && slug) {
+        return { url: `${server}/uk/tours/${slug}/${subpage}/` };
+      } else if (slug) {
+        return { url: `${server}/uk/tours/${slug}/` };
+      }
+    });
   }
 
   return { toursPaths, toursPathUk };

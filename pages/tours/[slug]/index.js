@@ -51,7 +51,7 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
           <MainForm />
           {bus && (
             <DistrictList
-              data={subpagesLinks}
+              data={subpagesLinks.filter((item) => item.bus)}
               title={intl.formatMessage({ id: 'country.tours_pop' })}
               country={''}
               loc={loc}
@@ -60,9 +60,9 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
           )}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
           {/* <LinksBlock allLinks={allLinks} /> */}
-          {subpagesLinks && subpagesLinks.length && !bus && (
+          {subpagesLinks && !!subpagesLinks.filter((item) => !item.bus).length && (
             <SubpagesLinksBlock
-              allLinks={subpagesLinks}
+              allLinks={subpagesLinks.filter((item) => !item.bus)}
               title={toursTextPage?.translations[0].name}
               current={slug}
               level={1}

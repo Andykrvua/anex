@@ -42,8 +42,8 @@ export default function ToursSubpage({
     { url: `${links.tours}/${prevToursTextPage.slug}`, title: prevToursTextPage?.translations[0].name },
     {
       title: bus
-        ? intl.formatMessage({ id: 'country.from_1' }) + ' ' + toursTextPage?.translations[0].name
-        : intl.formatMessage({ id: 'country.tours_from' }) + ' ' + toursTextPage?.translations[0].name,
+        ? toursTextPage?.translations[0].name
+        : intl.formatMessage({ id: 'country.tours_from_short' }) + ' ' + toursTextPage?.translations[0].name,
     },
   ];
 
@@ -64,7 +64,7 @@ export default function ToursSubpage({
           <Breadcrumbs data={br_arr} beforeMainFrom />
           <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
           <MainForm />
-          {bus && (
+          {/* {bus && (
             <DistrictList
               data={subsubpagesLinks}
               title={
@@ -78,12 +78,14 @@ export default function ToursSubpage({
               loc={loc}
               variant={location.districtList.busToursPage}
             />
-          )}
+          )} */}
           <Post post={toursTextPage} variant={location.postContent.countryPage} tours />
           {/* {!bus && <LinksBlock allLinks={allLinks} />} */}
-          {subpagesLinks && subpagesLinks.length && (
+          {subpagesLinks && (
             <SubpagesLinksBlock
-              allLinks={subpagesLinks}
+              allLinks={
+                bus ? subpagesLinks : subpagesLinks.filter((item) => !item.bus && item.subpage !== subpage)
+              }
               level3links={subsubpagesLinks}
               title={prevToursTextPage?.translations[0].name}
               current={subpage}
@@ -148,7 +150,8 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      toursTextPage: toursTextPage.data[0] || null,
+      // toursTextPage: toursTextPage.data[0] || null,
+      toursTextPage: toursTextPage.data.filter((item) => !item.subsubpage)[0] || null,
       prevToursTextPage: prevToursTextPage[0] || null,
       allLinks: allLinks.data.filter((nosubpage) => !nosubpage.subpage),
       slug,
