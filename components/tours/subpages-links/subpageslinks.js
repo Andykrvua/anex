@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 export default function Links({ allLinks, level3links = null, title, current, level, bus }) {
   const intl = useIntl();
   const router = useRouter();
+  console.log('level3links', level3links);
 
   const getNameForCitiesBlockLevel2Bus = allLinks.filter(
     (item) => item.subpage === router.query.subpage && item.slug === router.query.slug && !item.subsubpage

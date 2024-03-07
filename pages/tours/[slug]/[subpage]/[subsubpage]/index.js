@@ -92,7 +92,9 @@ export default function ToursSubsubpage({
           {subpagesLinks && subpagesLinks.length && (
             <SubpagesLinksBlock
               allLinks={subpagesLinks}
-              level3links={subsubpagesLinks.filter((item) => item.subsubpage !== router.query.subsubpage)}
+              level3links={subsubpagesLinks.filter(
+                (item) => item.subsubpage !== router.query.subsubpage && item.subpage === router.query.subpage
+              )}
               title={prevToursTextPage?.translations[0].h1}
               current={subpage}
               level={3}
