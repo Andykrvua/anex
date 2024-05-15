@@ -1,4 +1,6 @@
 User-agent: *
 Disallow: /*?f=img*
+Disallow: /tours/excursion/
+Disallow: /uk/tours/excursion/
 
 Sitemap: https://anex-tour.com.ua/sitemap.xml
