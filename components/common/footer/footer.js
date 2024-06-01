@@ -204,9 +204,9 @@ export default function Footer() {
                 <FM id="vs_discl2" />
               </li>
               <li>
-                Пн - Пт: 10:00 – 18:00
+                Пн - Пт: 10:00 – 19:00
                 <br />
-                Сб: 11:00 – 15:00
+                Сб: 11:00 – 16:00
               </li>
               <li>
                 <FM id="footer.address" />

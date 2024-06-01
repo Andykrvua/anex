@@ -104,8 +104,8 @@ export default function LeadRequestCall({ closeHandler }) {
       </div>
       <div className={styles.schedule}>
         <h6>{intl.formatMessage({ id: 'modal.leadrequestcall.schedule' })}</h6>
-        <p>Пн - Пт: 10:00 – 18:00</p>
-        <p>Сб: 11:00 – 15:00</p>
+        <p>Пн - Пт: 10:00 – 19:00</p>
+        <p>Сб: 11:00 – 16:00</p>
       </div>
       <h5 className={styles.title}>{intl.formatMessage({ id: 'modal.subtitle.leadrequestcall' })}</h5>
       <form
