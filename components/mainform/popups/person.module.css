@@ -67,3 +67,70 @@
   right: 0;
   fill: var(--primary);
 }
+
+.children_details_container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add_children_button{
+  background-color: var(--secondary);
+}
+
+.chosen_ages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px
+}
+
+.chosen_ages button {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: var(--def-radius);
+  background-color: var(--bg);
+
+  @media (max-width: 767px) {
+    background-color: white;
+  }
+}
+
+.close_svg_clipper {
+  margin-left: 10px;
+  display: inline-block;
+  width: 11.31px;
+  height: 11.31px;
+  overflow: hidden;
+  position: relative;
+}
+
+.close_svg_clipper svg {
+  position: absolute;
+  transform: scale(0.65);
+  transform-origin: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  opacity: 0.5;
+}
+
+.age_selector {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.age_selector button {
+  background-color: var(--bg);
+  padding: 8px 0;
+
+  @media (max-width: 767px) {
+    background-color: white;
+  }
+}
+
+.age_selector button:hover {
+  background-color: var(--line);
+}

@@ -63,7 +63,7 @@ const useStore = create(
     person: {
       adult: 2,
       child: 0,
-      childAge: new Array(personVal.childMax).fill(0),
+      childAge: [],
     },
     setPerson: (person) => set({ person }),
     fieldsNames: {
