@@ -23,7 +23,7 @@ export const mainFormPersonValidationRange = {
   adultMin: 1,
   adultMax: 8,
   childMin: 0,
-  childMax: 4,
+  childMax: 3,
   childAgeMin: 1,
   childAgeMax: 16,
 };
