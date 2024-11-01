@@ -235,7 +235,6 @@ export default function Person({
             )}
           </div>
         </div>
-
         <div className="apply_btn_wrapper">
           <button className="apply_btn" onClick={selectedHandler}>
             <FM id="common.apply" />
