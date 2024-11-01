@@ -5,7 +5,7 @@ const { childAgeMax, childAgeMin, defaultAdultsAmount } = mainFormPersonValidati
 export const stringifyCrewComposition = ({ adult, childAge = [] }) => {
   const childs = childAge.map(age => age.toString().padStart(2, '0'));
 
-  return (adult || '').toString() + childs;
+  return (adult || '').toString() + childs.join('');
 }
 
 export const parseCrewComposition = (peopleStr = '') => {
