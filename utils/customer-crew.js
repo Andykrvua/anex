@@ -2,10 +2,10 @@ import { mainFormPersonValidationRange } from './constants';
 
 const { childAgeMax, childAgeMin, defaultAdultsAmount } = mainFormPersonValidationRange;
 
-export const stringifyCrewComposition = ({ adult, childAge }) => {
+export const stringifyCrewComposition = ({ adult, childAge = [] }) => {
   const childs = childAge.map(age => age.toString().padStart(2, '0'));
 
-  return adult.toString() + childs;
+  return (adult || '').toString() + childs;
 }
 
 export const parseCrewComposition = (peopleStr = '') => {
