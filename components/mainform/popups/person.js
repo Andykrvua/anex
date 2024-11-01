@@ -158,15 +158,13 @@ export default function Person({ setModalIsOpen, modalIsOpen, cName }) {
             {childrenAges.length > 0 && (
               <>
                 {/* header */}
-                {/* <label htmlFor="child">
-                  <button
-                    className={styles.info_btn}
-                    onClick={() => setModal(childTxt)}
-                  >
+                <label htmlFor="child">
+                  <FM id="mainform.person.child" />
+                  {/* <button className={styles.info_btn} onClick={() => setModal(childTxt)}>
                     <FM id="mainform.person.child" />
                     <InfoSvg />
-                  </button>
-                </label> */}
+                  </button> */}
+                </label>
 
                 {/* selected children */}
                 <div className={styles.chosen_ages}>

@@ -232,15 +232,16 @@ export default function Person({ closeHandler }) {
             {childAge.length > 0 && (
               <>
                 {/* header */}
-                {/* <label htmlFor="child">
-                  <button
+                <label htmlFor="child">
+                  <FM id="mainform.person.child" />
+                  {/* <button
                     className={styles.info_btn}
                     onClick={() => setModal(childTxt)}
                   >
                     <FM id="mainform.person.child" />
                     <InfoSvg />
-                  </button>
-                </label> */}
+                  </button> */}
+                </label>
 
                 {/* selected children */}
                 <div className={styles.chosen_ages}>
