@@ -4,7 +4,7 @@ import { mainFormPersonValidationRange as personVal } from '../utils/constants';
 import { FormattedMessage as FM } from 'react-intl';
 // import { defaultDownPoint, defaultUpPoint } from 'utils/constants';
 import { persist } from 'zustand/middleware';
-import { inputRangeData } from '../utils/constants';
+import { inputRangeData, mainFormPersonValidationRange } from '../utils/constants';
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -61,9 +61,9 @@ const useStore = create(
     night: { from: 7, to: 9 },
     setNight: (night) => set({ night }),
     person: {
-      adult: 2,
+      adult: mainFormPersonValidationRange.defaultAdultsAmount,
       child: 0,
-      childAge: new Array(personVal.childMax).fill(0),
+      childAge: [],
     },
     setPerson: (person) => set({ person }),
     fieldsNames: {

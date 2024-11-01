@@ -1,3 +1,4 @@
+import { parseCrewComposition } from '../../../utils/customer-crew'
 // todo ru and ua
 // todo fetch hide token
 
@@ -169,25 +170,7 @@ const searchDate = (router) => {
 };
 
 const searchPeople = (router) => {
-  if (!router.query.people || !router.query.people.length) return null;
-  const str = router.query.people;
-  const str_length = router.query.people.length;
-
-  const adult = Number(str[0]);
-  const childTemp = str_length - 1;
-  const child = childTemp === 0 ? 0 : childTemp / 2;
-  let childAge = [];
-  if (childTemp === 0) {
-    childAge = [0, 0, 0, 0];
-  } else {
-    childAge = [
-      str[2] ? Number(str[1] === '0' ? str[2] : str[1] + str[2]) : 0,
-      str[4] ? Number(str[3] === '0' ? str[4] : str[3] + str[4]) : 0,
-      str[6] ? Number(str[5] === '0' ? str[6] : str[5] + str[6]) : 0,
-      str[8] ? Number(str[7] === '0' ? str[8] : str[7] + str[8]) : 0,
-    ];
-  }
-  return { adult, child, childAge };
+  return parseCrewComposition(router.query.people);
 };
 
 export default async function parseUrl(router, loc) {

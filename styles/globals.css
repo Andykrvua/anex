@@ -735,6 +735,15 @@ header.header .header_container {
 .apply_btn_wrapper {
   margin: 20px var(--cont-padding-popup);
 }
+
+.apply_btn_mobile_only_wrapper button {
+  display: none;
+
+  @media (max-width: 767px) {
+    display: inline-block;
+  }
+}
+
 /* Popup content end */
 /* Popup end */
 /* Main form end */

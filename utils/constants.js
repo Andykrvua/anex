@@ -20,10 +20,11 @@ export const mainFormNightValidationRange = {
 
 // person popup validation range
 export const mainFormPersonValidationRange = {
+  defaultAdultsAmount: 2,
   adultMin: 1,
   adultMax: 8,
   childMin: 0,
-  childMax: 4,
+  childMax: 3,
   childAgeMin: 1,
   childAgeMax: 16,
 };
