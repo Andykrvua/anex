@@ -25,7 +25,7 @@ import { useRouter } from 'next/router';
 import {
   covertStoreAgesToComponent,
   parseCrewComposition,
-  stringifyCrewComposition
+  stringifyCrewComposition,
 } from '../../../utils/customer-crew';
 
 // change scroll depending on mobile or desktop
@@ -64,9 +64,7 @@ export default function Person({ closeHandler }) {
     id: 'mainform.person.child.modal',
   });
 
-  const { adult: _adult, childAge: _childAge } = parseCrewComposition(
-    getOfferParams.people
-  );
+  const { adult: _adult, childAge: _childAge } = parseCrewComposition(getOfferParams.people);
 
   const [isAgeSelectorShown, setIsAgeSelectorShown] = useState(false);
   const [adult, setAdult] = useState(_adult);
@@ -107,15 +105,15 @@ export default function Person({ closeHandler }) {
     const newChildAge = [...childAge, newChild];
 
     setIsAgeSelectorShown(false);
-    setChildAge(newChildAge)
+    setChildAge(newChildAge);
   };
 
   const dropChild = (key) => {
-    const index = childAge.findIndex(ageObject => ageObject.key === key);
+    const index = childAge.findIndex((ageObject) => ageObject.key === key);
     const newChildAge = childAge.slice(0);
 
     newChildAge.splice(index, 1);
-    setChildAge(newChildAge)
+    setChildAge(newChildAge);
   };
 
   const checkVariants = async (newPerson) => {
@@ -170,11 +168,7 @@ export default function Person({ closeHandler }) {
     Object.entries(apiData).forEach(([operatorId, value]) => {
       Object.entries(value).forEach(([hotelId, data]) => {
         Object.entries(data.offers).forEach(([offerId, offerValue]) => {
-          if (
-            offerValue.fn === food &&
-            offerValue.d === dateStart &&
-            offerValue.nh === nightCount
-          ) {
+          if (offerValue.fn === food && offerValue.d === dateStart && offerValue.nh === nightCount) {
             resultData.push(offerValue);
           }
         });
@@ -200,11 +194,7 @@ export default function Person({ closeHandler }) {
     const newUrl = `${locale}/hotels/${getOfferParams.country}/${getOfferParams.hotel}/?offer=${offer.i}&transport=${offer.t}&from=${getOfferParams.from}&fromname=${getOfferParams.fromname}&to=${getOfferParams.to}&checkIn=${getOfferParams.checkIn}&checkTo=${getOfferParams.checkTo}&nights=${getOfferParams.nights}&nightsTo=${getOfferParams.nightsTo}&people=${people}`;
     const newAs = newUrl;
 
-    window.history.pushState(
-      { ...window.history.state, as: newAs, url: newUrl },
-      '',
-      newAs
-    );
+    window.history.pushState({ ...window.history.state, as: newAs, url: newUrl }, '', newAs);
     closeHandler();
     router.reload();
   };
@@ -221,13 +211,7 @@ export default function Person({ closeHandler }) {
             <label htmlFor="adult">
               <FM id="mainform.person.adult" />
             </label>
-            <input
-              className={styles.night_input}
-              id="adult"
-              type="text"
-              disabled
-              value={adult}
-            />
+            <input className={styles.night_input} id="adult" type="text" disabled value={adult} />
             <button
               className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
               onClick={() => updateFieldsPerson('-', 'adult')}
@@ -248,7 +232,7 @@ export default function Person({ closeHandler }) {
             {childAge.length > 0 && (
               <>
                 {/* header */}
-                <label htmlFor="child">
+                {/* <label htmlFor="child">
                   <button
                     className={styles.info_btn}
                     onClick={() => setModal(childTxt)}
@@ -256,17 +240,17 @@ export default function Person({ closeHandler }) {
                     <FM id="mainform.person.child" />
                     <InfoSvg />
                   </button>
-                </label>
+                </label> */}
 
                 {/* selected children */}
                 <div className={styles.chosen_ages}>
-                  {childAge.map(ageObject => (
+                  {childAge.map((ageObject) => (
                     <button
                       key={ageObject.key}
                       onClick={() => dropChild(ageObject.key)}
                       className="svg_btn_stroke"
                     >
-                      <FM id="mainform.person.child_age" values={{age: ageObject.age}} />
+                      <FM id="mainform.person.child_age" values={{ age: ageObject.age }} />
                       <div className={styles.close_svg_clipper}>
                         <CloseSvg />
                       </div>
@@ -277,7 +261,7 @@ export default function Person({ closeHandler }) {
             )}
 
             {/* add children button */}
-            {(!isAgeSelectorShown && childAge.length < valRange.childMax) && (
+            {!isAgeSelectorShown && childAge.length < valRange.childMax && (
               <button
                 className={`apply_btn ${styles.add_children_button}`}
                 onClick={() => setIsAgeSelectorShown(true)}
@@ -292,10 +276,7 @@ export default function Person({ closeHandler }) {
                 <div className={styles.age_q}>
                   <FM id="mainform.person.whats_age" />
                 </div>
-                <div
-                  className={styles.age_selector}
-                  onClick={setCurrentChildAge}
-                >
+                <div className={styles.age_selector} onClick={setCurrentChildAge}>
                   <button value="1">
                     <FM id="mainform.person.child_age_till_2" />
                   </button>
@@ -320,15 +301,9 @@ export default function Person({ closeHandler }) {
           </div>
         </div>
         <div className="apply_btn_wrapper">
-          {resMessage && (
-            <div style={{ marginBottom: '20px' }}>{resMessage}</div>
-          )}
+          {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
           {loading && <Loader />}
-          <button
-            className="apply_btn"
-            onClick={selectedHandler}
-            disabled={loading}
-          >
+          <button className="apply_btn" onClick={selectedHandler} disabled={loading}>
             <FM id="common.apply" />
           </button>
         </div>

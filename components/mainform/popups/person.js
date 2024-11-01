@@ -41,11 +41,7 @@ const SimpleBarWrapper = ({ size, children }) => {
   );
 };
 
-export default function Person({
-  setModalIsOpen,
-  modalIsOpen,
-  cName,
-}) {
+export default function Person({ setModalIsOpen, modalIsOpen, cName }) {
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
@@ -61,9 +57,7 @@ export default function Person({
   });
 
   const [isAgeSelectorShown, setIsAgeSelectorShown] = useState(false);
-  const [childrenAges, setChildrenAges] = useState(
-    covertStoreAgesToComponent(initialPerson.childAge)
-  );
+  const [childrenAges, setChildrenAges] = useState(covertStoreAgesToComponent(initialPerson.childAge));
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
@@ -88,7 +82,7 @@ export default function Person({
 
   const updateFieldsPerson = (operation) => {
     const newAdult = initialPerson.adult + (operation === '+' ? 1 : -1);
-    selectedPerson({...initialPerson, adult: newAdult });
+    selectedPerson({ ...initialPerson, adult: newAdult });
   };
 
   const selectedHandler = () => {
@@ -111,7 +105,7 @@ export default function Person({
   };
 
   const dropChild = (key) => {
-    const index = childrenAges.findIndex(ageObject => ageObject.key === key);
+    const index = childrenAges.findIndex((ageObject) => ageObject.key === key);
     const newChildrenAges = childrenAges.slice(0);
 
     newChildrenAges.splice(index, 1);
@@ -123,7 +117,7 @@ export default function Person({
     selectedPerson({
       ...initialPerson,
       child: newChildrenAges.length,
-      childAge: newChildrenAges.map(ageObject => ageObject.age)
+      childAge: newChildrenAges.map((ageObject) => ageObject.age),
     });
   };
 
@@ -164,7 +158,7 @@ export default function Person({
             {childrenAges.length > 0 && (
               <>
                 {/* header */}
-                <label htmlFor="child">
+                {/* <label htmlFor="child">
                   <button
                     className={styles.info_btn}
                     onClick={() => setModal(childTxt)}
@@ -172,17 +166,17 @@ export default function Person({
                     <FM id="mainform.person.child" />
                     <InfoSvg />
                   </button>
-                </label>
+                </label> */}
 
                 {/* selected children */}
                 <div className={styles.chosen_ages}>
-                  {childrenAges.map(ageObject => (
+                  {childrenAges.map((ageObject) => (
                     <button
                       key={ageObject.key}
                       onClick={() => dropChild(ageObject.key)}
                       className="svg_btn_stroke"
                     >
-                      <FM id="mainform.person.child_age" values={{age: ageObject.age}} />
+                      <FM id="mainform.person.child_age" values={{ age: ageObject.age }} />
                       <div className={styles.close_svg_clipper}>
                         <CloseSvg />
                       </div>
@@ -193,7 +187,7 @@ export default function Person({
             )}
 
             {/* add children button */}
-            {(!isAgeSelectorShown && childrenAges.length < valRange.childMax) && (
+            {!isAgeSelectorShown && childrenAges.length < valRange.childMax && (
               <button
                 className={`apply_btn ${styles.add_children_button}`}
                 onClick={() => setIsAgeSelectorShown(true)}
@@ -208,10 +202,7 @@ export default function Person({
                 <div className={styles.age_q}>
                   <FM id="mainform.person.whats_age" />
                 </div>
-                <div
-                  className={styles.age_selector}
-                  onClick={setCurrentChildAge}
-                >
+                <div className={styles.age_selector} onClick={setCurrentChildAge}>
                   <button value="1">
                     <FM id="mainform.person.child_age_till_2" />
                   </button>
