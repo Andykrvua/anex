@@ -30,6 +30,7 @@ import {
 import { useRouter } from 'next/router';
 import parseUrl from '../pasteUrl/pasteUrl';
 import Cards from './cards';
+import { stringifyCrewComposition } from '../../../utils/customer-crew';
 
 const MemoCards = memo(Cards);
 
@@ -140,14 +141,7 @@ export default function SearchResult({ isFilterBtnShow }) {
   }, [getSearchResultSort]);
 
   async function getUrl(number) {
-    const childs = new Array(parseInt(person.child)).fill(null).map((_, ind) => {
-      if (person.childAge[ind].toString().length === 1) {
-        return '0' + person.childAge[ind].toString();
-      } else {
-        return person.childAge[ind].toString();
-      }
-    });
-    const people = person.adult.toString() + childs.join('');
+    const people = stringifyCrewComposition(person);
 
     const copiedDate = new Date(date.rawDate);
     copiedDate.setDate(copiedDate.getDate() + date.plusDays);
@@ -315,14 +309,6 @@ export default function SearchResult({ isFilterBtnShow }) {
     const copiedDate = new Date(date.rawDate);
     copiedDate.setDate(copiedDate.getDate() + date.plusDays);
 
-    const childs = new Array(parseInt(person.child)).fill(null).map((_, ind) => {
-      if (person.childAge[ind].toString().length === 1) {
-        return '0' + person.childAge[ind].toString();
-      } else {
-        return person.childAge[ind].toString();
-      }
-    });
-
     let fromname;
     if (typeof up.name === 'string') {
       fromname = up.name;
@@ -339,7 +325,7 @@ export default function SearchResult({ isFilterBtnShow }) {
       checkTo: copiedDate.toISOString().substr(0, 10),
       nights: night.from,
       nightsTo: night.to,
-      people: person.adult.toString() + childs.join(''),
+      people: stringifyCrewComposition(person),
     };
 
     setSearchParams(params);

@@ -16,14 +16,11 @@ import SvgPlus from 'components/svgPlus';
 import SvgMinus from 'components/svgMinus';
 import CloseSvg from 'components/common/closeSvg';
 import { mainFormPersonValidationRange as valRange } from '../../../utils/constants';
-import { useGetPerson, useSetPerson, useSetModal } from '../../../store/store';
+import { useGetPerson, useSetPerson, useSetModal, useGetFieldsNames } from '../../../store/store';
 import SimpleBar from 'simplebar-react';
 import InfoSvg from '../../common/infoSvg';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
-
-const covertStoreAgesToComponent = (ages) => {
-  return ages.map(age => ({key: String(Math.random()), age}));
-};
+import { covertStoreAgesToComponent } from '../../../utils/customer-crew';
 
 // change scroll depending on mobile or desktop
 const SimpleBarWrapper = ({ size, children }) => {
@@ -48,12 +45,12 @@ export default function Person({
   setModalIsOpen,
   modalIsOpen,
   cName,
-  popupName,
 }) {
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
 
+  const fieldsNames = useGetFieldsNames();
   const initialPerson = useGetPerson();
   const selectedPerson = useSetPerson();
   const setModal = useSetModal();
@@ -63,7 +60,6 @@ export default function Person({
     id: 'mainform.person.child.modal',
   });
 
-  const [adult, setAdult] = useState(initialPerson.adult);
   const [isAgeSelectorShown, setIsAgeSelectorShown] = useState(false);
   const [childrenAges, setChildrenAges] = useState(
     covertStoreAgesToComponent(initialPerson.childAge)
@@ -91,17 +87,11 @@ export default function Person({
   };
 
   const updateFieldsPerson = (operation) => {
-    if (operation === '+') {
-      setAdult((prev) => prev + 1);
-    } else {
-      setAdult((prev) => prev - 1);
-    }
+    const newAdult = initialPerson.adult + (operation === '+' ? 1 : -1);
+    selectedPerson({...initialPerson, adult: newAdult });
   };
 
   const selectedHandler = () => {
-    const childAge = childrenAges.map(ageObject => ageObject.age);
-    const newPerson = { adult, child: childrenAges.length, childAge };
-    selectedPerson(newPerson);
     if (size.width < maxWidth) {
       enableScroll(BODY);
     }
@@ -110,11 +100,14 @@ export default function Person({
 
   const setCurrentChildAge = (event) => {
     const age = parseInt(event.target.value, 10);
+
+    if (Number.isNaN(age)) return;
+
     const newChild = { key: String(Math.random()), age };
     const newChildAge = [...childrenAges, newChild];
 
     setIsAgeSelectorShown(false);
-    setChildrenAges(newChildAge);
+    setValues(newChildAge);
   };
 
   const dropChild = (key) => {
@@ -122,15 +115,23 @@ export default function Person({
     const newChildrenAges = childrenAges.slice(0);
 
     newChildrenAges.splice(index, 1);
+    setValues(newChildrenAges);
+  };
 
+  const setValues = (newChildrenAges) => {
     setChildrenAges(newChildrenAges);
+    selectedPerson({
+      ...initialPerson,
+      child: newChildrenAges.length,
+      childAge: newChildrenAges.map(ageObject => ageObject.age)
+    });
   };
 
   return (
     <SimpleBarWrapper size={size}>
       <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
         <Header closeModalHandler={closeModalHandler} svg={svgPerson} />
-        <h3 className="title">{popupName}</h3>
+        <h3 className="title">{fieldsNames.person}</h3>
         <div className="popup_scrollable_content" ref={scrollable}>
           <div className={styles.night_input_wrapper}>
             <label htmlFor="adult">
@@ -141,19 +142,19 @@ export default function Person({
               id="adult"
               type="text"
               disabled
-              value={adult}
+              value={initialPerson.adult}
             />
             <button
               className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-              onClick={() => updateFieldsPerson('-', 'adult')}
-              disabled={adult === valRange.adultMin}
+              onClick={() => updateFieldsPerson('-')}
+              disabled={initialPerson.adult === valRange.adultMin}
             >
               <SvgMinus />
             </button>
             <button
               className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-              onClick={() => updateFieldsPerson('+', 'adult')}
-              disabled={adult === valRange.adultMax}
+              onClick={() => updateFieldsPerson('+')}
+              disabled={initialPerson.adult === valRange.adultMax}
             >
               <SvgPlus />
             </button>
