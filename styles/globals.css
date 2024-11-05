@@ -745,22 +745,47 @@ header.header .header_container {
 }
 
 /* custom nights scroll */
-.night_nights_custom_wrapper__Jayru::-webkit-scrollbar-button {
-  display: none;
+
+.night_nights_custom_wrapper_main__VivbI::-webkit-scrollbar {
+  width: 3px; /* Ширина вертикального скролл-бара */
 }
 
-/* Стилизация самого скроллбара */
-.night_nights_custom_wrapper__Jayru::-webkit-scrollbar {
-  width: 2px !important;
+/* Стиль для ползунка (thumb) */
+.night_nights_custom_wrapper_main__VivbI::-webkit-scrollbar-thumb {
+  background-color: #91989e; /* Светло-серый цвет */
+  border-radius: 8px; /* Закругление */
 }
 
-.night_nights_custom_wrapper__Jayru::-webkit-scrollbar-track {
-  background: transparent;
+/* Стиль для track (полосы скролл-бара) */
+.night_nights_custom_wrapper_main__VivbI::-webkit-scrollbar-track {
+  background: transparent; /* Прозрачный фон */
 }
 
-.night_nights_custom_wrapper__Jayru::-webkit-scrollbar-thumb {
-  width: 2px !important;
-  border-radius: 10px !important;
+/* Убираем кнопки скролл-бара */
+.night_nights_custom_wrapper_main__VivbI::-webkit-scrollbar-button {
+  display: none; /* Скрыть кнопки */
+}
+
+/* main nights scroll */
+
+.night_nights_custom_wrapper_main__VivbI::-webkit-scrollbar {
+  width: 3px; /* Ширина вертикального скролл-бара */
+}
+
+/* Стиль для ползунка (thumb) */
+.night_nights_custom_wrapper_main__VivbI::-webkit-scrollbar-thumb {
+  background-color: #91989e; /* Светло-серый цвет */
+  border-radius: 8px; /* Закругление */
+}
+
+/* Стиль для track (полосы скролл-бара) */
+.night_nights_custom_wrapper_main__VivbI::-webkit-scrollbar-track {
+  background: transparent; /* Прозрачный фон */
+}
+
+/* Убираем кнопки скролл-бара */
+.night_nights_custom_wrapper_main__VivbI::-webkit-scrollbar-button {
+  display: none; /* Скрыть кнопки */
 }
 
 /* Popup content end */

@@ -17,6 +17,7 @@ import Loader from 'components/common/loader';
 import { mainFormNightValidationRange as valRange } from 'utils/constants';
 import { FormattedMessage as FM } from 'react-intl';
 import { useRouter } from 'next/router';
+import SimpleBar from 'simplebar-react';
 
 export default function Night({ closeHandler }) {
   const size = getSize();
@@ -32,6 +33,7 @@ export default function Night({ closeHandler }) {
   const [loading, setLoading] = useState(false);
   const [resMessage, setResMessage] = useState('');
   
+  const [selectedRange, setSelectedRange] = useState([fromNight, toNight]);
   const [fromNight, setFromNight] = useState(Number(getOfferParams.nights));
   const [toNight, setToNight] = useState(Number(getOfferParams.nightsTo));
 
@@ -48,9 +50,8 @@ export default function Night({ closeHandler }) {
   const selectNightRange = (from, to) => {
     setFromNight(from);
     setToNight(to);
-    
+    setSelectedRange([from, to]);
   };
-
 
   const selectedHandler = () => {
     const newNight = { from: fromNight, to: toNight };
@@ -151,125 +152,176 @@ export default function Night({ closeHandler }) {
 
   return (
     <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
-      <Header closeModalHandler={closeHandler} svg={svgNight} />
-      <h3 className="title">
-        <FM id="mainform.night.t" />
-      </h3>
-      <div className={styles.nights_custom_wrapper}>
-        <div
-          className={`${styles.popup_scrollable_content} popup_scrollable_content`}
-          ref={scrollable}
-        >
-          <div className={styles.night_button_wrapper}>
-            <button onClick={() => selectNightRange(1, 3)} className={styles.night_button_new}>
-              1-3 ночи<span className={styles.night_button_span}>, 2-4 дня</span>
-            </button>
-            <button onClick={() => selectNightRange(2, 4)} className={styles.night_button_new}>
-              2-4 ночи<span className={styles.night_button_span}>, 3-5 дня</span>
-            </button>
-            <button onClick={() => selectNightRange(3, 5)} className={styles.night_button_new}>
-              3-5 ночей<span className={styles.night_button_span}>, 4-6 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(4, 6)} className={styles.night_button_new}>
-              4-6 ночей<span className={styles.night_button_span}>, 5-7 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(5, 7)} className={styles.night_button_new}>
-              5-7 ночей<span className={styles.night_button_span}>, 6-8 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(6, 8)} className={styles.night_button_new}>
-              6-8 ночей<span className={styles.night_button_span}>, 7-9 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              7-9 ночей<span className={styles.night_button_span}>, 8-10 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              8-10 ночей<span className={styles.night_button_span}>, 9-11 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              9-11 ночей<span className={styles.night_button_span}>, 10-12 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              10-12 ночей<span className={styles.night_button_span}>, 11-13 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              11-13 ночей<span className={styles.night_button_span}>, 12-14 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              12-14 ночей<span className={styles.night_button_span}>, 13-15 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              13-15 ночей<span className={styles.night_button_span}>, 14-16 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              14-16 ночей<span className={styles.night_button_span}>, 15-17 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              15-17 ночей<span className={styles.night_button_span}>, 16-18 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              16-18 ночей<span className={styles.night_button_span}>, 17-19 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              17-19 ночей<span className={styles.night_button_span}>, 18-20 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              18-20 ночей<span className={styles.night_button_span}>, 19-21 день</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              19-21 ночей<span className={styles.night_button_span}>, 20-22 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              20-22 ночей<span className={styles.night_button_span}>, 21-23 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              21-23 ночей<span className={styles.night_button_span}>, 22-24 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              22-24 ночей<span className={styles.night_button_span}>, 23-25 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              23-25 ночей<span className={styles.night_button_span}>, 24-26 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              24-26 ночей<span className={styles.night_button_span}>, 25-27 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              25-27 ночей<span className={styles.night_button_span}>, 26-28 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              26-28 ночей<span className={styles.night_button_span}>, 27-29 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              27-29 ночей<span className={styles.night_button_span}>, 28-30 дней</span>
-            </button>
-            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
-              28-30 ночей<span className={styles.night_button_span}>, 29-31 день</span>
-            </button>
-          </div>
+        <Header closeModalHandler={closeHandler} svg={svgNight} />
+        <h3 className="title">
+          <FM id="mainform.night.t" />
+        </h3>
+        <div className={styles.nights_custom_wrapper}>
+          <div
+            className={`${styles.popup_scrollable_content} popup_scrollable_content`}
+            ref={scrollable}
+          >
+            <div className={styles.night_button_wrapper}>
+              <button 
+                onClick={() => selectNightRange(1, 3)}
+                className={`${styles.night_button_new} ${selectedRange[0] === 1 && selectedRange[1] === 3 ? styles.night_button_new_selected : ''}`}>
+                1-3 <FM id="common.night2" /><span className={styles.night_button_span}>, 2-4 <FM id="common.day2" /></span>
+              </button>
+              <button 
+                onClick={() => selectNightRange(3, 5)} 
+                className={`${styles.night_button_new} ${selectedRange[0] === 3 && selectedRange[1] === 5 ? styles.night_button_new_selected : ''}`}>
+                3-5 <FM id="common.night5" /><span className={styles.night_button_span}>, 4-6 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(4, 6)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 4 && selectedRange[1] === 6 ? styles.night_button_new_selected : ''}`}>
+                4-6 <FM id="common.night5" /><span className={styles.night_button_span}>, 5-7 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(5, 7)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 5 && selectedRange[1] === 7 ? styles.night_button_new_selected : ''}`}>
+                5-7 <FM id="common.night5" /><span className={styles.night_button_span}>, 6-8 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(6, 8)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 6 && selectedRange[1] === 8 ? styles.night_button_new_selected : ''}`}>
+                6-8 <FM id="common.night5" /><span className={styles.night_button_span}>, 7-9 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(7, 9)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 7 && selectedRange[1] === 9 ? styles.night_button_new_selected : ''}`}>
+                7-9 <FM id="common.night5" /><span className={styles.night_button_span}>, 8-10 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(8, 10)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 8 && selectedRange[1] === 10 ? styles.night_button_new_selected : ''}`}>
+                8-10 <FM id="common.night5" /><span className={styles.night_button_span}>, 9-11 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(9, 11)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 9 && selectedRange[1] === 11 ? styles.night_button_new_selected : ''}`}>
+                9-11 <FM id="common.night5" /><span className={styles.night_button_span}>, 10-12 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(10, 12)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 10 && selectedRange[1] === 12 ? styles.night_button_new_selected : ''}`}>
+                10-12 <FM id="common.night5" /><span className={styles.night_button_span}>, 11-13 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(11, 13)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 11 && selectedRange[1] === 13 ? styles.night_button_new_selected : ''}`}>
+                11-13 <FM id="common.night5" /><span className={styles.night_button_span}>, 12-14 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(12, 14)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 12 && selectedRange[1] === 14 ? styles.night_button_new_selected : ''}`}>
+                12-14 <FM id="common.night5" /><span className={styles.night_button_span}>, 13-15 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(13, 15)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 13 && selectedRange[1] === 15 ? styles.night_button_new_selected : ''}`}>
+                13-15 <FM id="common.night5" /><span className={styles.night_button_span}>, 14-16 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(14, 16)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 14 && selectedRange[1] === 16 ? styles.night_button_new_selected : ''}`}>
+                14-16 <FM id="common.night5" /><span className={styles.night_button_span}>, 15-17 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(15, 17)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 15 && selectedRange[1] === 17 ? styles.night_button_new_selected : ''}`}>
+                15-17 <FM id="common.night5" /><span className={styles.night_button_span}>, 16-18 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(16, 18)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 16 && selectedRange[1] === 18 ? styles.night_button_new_selected : ''}`}>
+                16-18 <FM id="common.night5" /><span className={styles.night_button_span}>, 17-19 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(17, 19)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 17 && selectedRange[1] === 19 ? styles.night_button_new_selected : ''}`}>
+                17-19 <FM id="common.night5" /><span className={styles.night_button_span}>, 18-20 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(18, 20)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 18 && selectedRange[1] === 20 ? styles.night_button_new_selected : ''}`}>
+                18-20 <FM id="common.night5" /><span className={styles.night_button_span}>, 19-21 <FM id="common.day1" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(19, 21)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 19 && selectedRange[1] === 21 ? styles.night_button_new_selected : ''}`}>
+                19-21 <FM id="common.night1" /><span className={styles.night_button_span}>, 20-22 <FM id="common.day2" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(20, 22)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 20 && selectedRange[1] === 22 ? styles.night_button_new_selected : ''}`}>
+                20-22 <FM id="common.night2" /><span className={styles.night_button_span}>, 21-23 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(21, 23)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 21 && selectedRange[1] === 23 ? styles.night_button_new_selected : ''}`}>
+                21-23 <FM id="common.night2" /><span className={styles.night_button_span}>, 22-24 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(22, 24)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 22 && selectedRange[1] === 24 ? styles.night_button_new_selected : ''}`}>
+                22-24 <FM id="common.night2" /><span className={styles.night_button_span}>, 23-25 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(23, 25)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 23 && selectedRange[1] === 25 ? styles.night_button_new_selected : ''}`}>
+                23-25 <FM id="common.night5" /><span className={styles.night_button_span}>, 24-26 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(24, 26)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 24 && selectedRange[1] === 26 ? styles.night_button_new_selected : ''}`}>
+                24-26 <FM id="common.night5" /><span className={styles.night_button_span}>, 25-27 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(25, 27)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 25 && selectedRange[1] === 27 ? styles.night_button_new_selected : ''}`}>
+                25-27 <FM id="common.night5" /><span className={styles.night_button_span}>, 26-28 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(26, 28)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 26 && selectedRange[1] === 28 ? styles.night_button_new_selected : ''}`}>
+                26-28 <FM id="common.night5" /><span className={styles.night_button_span}>, 27-29 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(27, 29)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 27 && selectedRange[1] === 29 ? styles.night_button_new_selected : ''}`}>
+                27-29 <FM id="common.night5" /><span className={styles.night_button_span}>, 28-30 <FM id="common.day5" /></span>
+              </button>
+              <button 
+              onClick={() => selectNightRange(28, 30)} 
+              className={`${styles.night_button_new} ${selectedRange[0] === 28 && selectedRange[1] === 30 ? styles.night_button_new_selected : ''}`}>
+                28-30 <FM id="common.night5" /><span className={styles.night_button_span}>, 29-31 <FM id="common.day5" /></span>
+              </button>
+            </div>
 
-          <span className={styles.nights_count}>
-            <FM id="mainform.night.from" /> <b>{fromNight}</b>{' '}
-            <span className="tolower">
-              <FM id="mainform.night.to" />
-            </span>{' '}
-            <b>{toNight}</b> ночей
-          </span>
-          <span className={styles.days_count}>
-            ({fromNight + 1} - {toNight + 1} <FM id="common.day5" />)
-          </span>
+            {/* <span className={styles.nights_count}>
+              <FM id="mainform.night.from" /> <b>{fromNight}</b>{' '}
+              <span className="tolower">
+                <FM id="mainform.night.to" />
+              </span>{' '}
+              <b>{toNight}</b> ночей
+            </span>
+            <span className={styles.days_count}>
+              ({fromNight + 1} - {toNight + 1} <FM id="common.day5" />)
+            </span> */}
+          </div>
         </div>
-      </div>
-      <div className="apply_btn_wrapper">
-        {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
-        {loading && <Loader />}
-        <button
-          className="apply_btn"
-          onClick={selectedHandler}
-          disabled={loading}
-        >
-          <FM id="common.apply" />
-        </button>
-      </div>
+        <div className="apply_btn_wrapper">
+          {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
+          {loading && <Loader />}
+          <button
+            className="apply_btn"
+            onClick={selectedHandler}
+            disabled={loading}
+          >
+            <FM id="common.apply" />
+          </button>
+        </div>
     </div>
   );
 }
