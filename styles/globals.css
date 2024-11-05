@@ -744,6 +744,25 @@ header.header .header_container {
   }
 }
 
+/* custom nights scroll */
+.night_nights_custom_wrapper__Jayru::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Стилизация самого скроллбара */
+.night_nights_custom_wrapper__Jayru::-webkit-scrollbar {
+  width: 2px !important;
+}
+
+.night_nights_custom_wrapper__Jayru::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.night_nights_custom_wrapper__Jayru::-webkit-scrollbar-thumb {
+  width: 2px !important;
+  border-radius: 10px !important;
+}
+
 /* Popup content end */
 /* Popup end */
 /* Main form end */

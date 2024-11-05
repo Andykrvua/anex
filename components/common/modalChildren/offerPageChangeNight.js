@@ -15,8 +15,6 @@ import styles from 'components/mainform/popups/night.module.css';
 import { useGetOfferParams } from 'store/store';
 import Loader from 'components/common/loader';
 import { mainFormNightValidationRange as valRange } from 'utils/constants';
-import SvgPlus from 'components/svgPlus';
-import SvgMinus from 'components/svgMinus';
 import { FormattedMessage as FM } from 'react-intl';
 import { useRouter } from 'next/router';
 
@@ -26,7 +24,6 @@ export default function Night({ closeHandler }) {
   const scrollable = useRef(null);
 
   const getOfferParams = useGetOfferParams();
-
   const router = useRouter();
 
   useOutsideClick(wrapperRef);
@@ -34,7 +31,7 @@ export default function Night({ closeHandler }) {
 
   const [loading, setLoading] = useState(false);
   const [resMessage, setResMessage] = useState('');
-
+  
   const [fromNight, setFromNight] = useState(Number(getOfferParams.nights));
   const [toNight, setToNight] = useState(Number(getOfferParams.nightsTo));
 
@@ -47,67 +44,13 @@ export default function Night({ closeHandler }) {
     };
   }, [size.width]);
 
-  function validate(str, min, max) {
-    return str >= min && str <= max;
-  }
-
-  const onClick = (operation, input) => {
-    if (operation === '+') {
-      if (input === 'from') {
-        setFromNight((prev) => prev + 1);
-        if (fromNight + 3 > toNight) {
-          setToNight((prev) => prev + 1);
-        }
-      } else {
-        setToNight((prev) => prev + 1);
-      }
-    } else {
-      if (input === 'to') {
-        setToNight((prev) => prev - 1);
-        if (toNight - 3 < fromNight) {
-          setFromNight((prev) => prev - 1);
-        }
-      } else {
-        setFromNight((prev) => prev - 1);
-      }
-    }
+  // Функция выбора диапазона ночей и дней
+  const selectNightRange = (from, to) => {
+    setFromNight(from);
+    setToNight(to);
+    
   };
 
-  const inputFromOnchange = (val) => {
-    if (isNaN(parseInt(val))) {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    } else {
-      setFromNight(parseInt(val));
-    }
-  };
-
-  const inputToOnchange = (val) => {
-    if (isNaN(parseInt(val))) {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    } else {
-      setToNight(parseInt(val));
-    }
-  };
-
-  const inputFromOnblur = (val) => {
-    if (validate(val, valRange.fromMin, valRange.fromMax)) {
-      setFromNight(parseInt(val));
-    } else {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    }
-  };
-
-  const inputToOnblur = (val) => {
-    if (validate(val, valRange.toMin, valRange.toMax)) {
-      setToNight(parseInt(val));
-    } else {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    }
-  };
 
   const selectedHandler = () => {
     const newNight = { from: fromNight, to: toNight };
@@ -133,7 +76,7 @@ export default function Night({ closeHandler }) {
       people: getOfferParams.people,
     };
 
-    const search = await fetch(`/api/endpoints/isOfferSearchVariants/`, {
+    const search = await fetch('/api/endpoints/isOfferSearchVariants/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -157,7 +100,6 @@ export default function Night({ closeHandler }) {
       }
     } else {
       setLoading(false);
-      /* eslint-disable-next-line */
       console.log('api bad res');
     }
   };
@@ -167,7 +109,6 @@ export default function Night({ closeHandler }) {
 
     const { dateStart, food, offer } = getOfferParams;
 
-    // parse api res from create array and find the same food, daystart, night count
     Object.entries(apiData).forEach(([operatorId, value]) => {
       Object.entries(value).forEach(([hotelId, data]) => {
         Object.entries(data.offers).forEach(([offerId, offerValue]) => {
@@ -182,7 +123,6 @@ export default function Night({ closeHandler }) {
       });
     });
 
-    // find the same food and sort min price
     const sortedData = resultData.sort((a, b) => a.pl - b.pl);
     if (sortedData.length) {
       changeOffer(sortedData[0]);
@@ -215,79 +155,109 @@ export default function Night({ closeHandler }) {
       <h3 className="title">
         <FM id="mainform.night.t" />
       </h3>
-      <div
-        className={`${styles.popup_scrollable_content} popup_scrollable_content`}
-        ref={scrollable}
-      >
-        <div className={styles.night_input_wrapper}>
-          <label htmlFor="fromNight">
-            <FM id="mainform.night.from" />
-          </label>
-          <input
-            className={styles.night_input}
-            id="fromNight"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={fromNight}
-            onChange={(e) => inputFromOnchange(e.target.value)}
-            onBlur={(e) => inputFromOnblur(e.target.value)}
-          />
-          <button
-            className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-            onClick={() => onClick('-', 'from')}
-            disabled={fromNight === valRange.fromMin}
-          >
-            <SvgMinus />
-          </button>
-          <button
-            className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-            onClick={() => onClick('+', 'from')}
-            disabled={fromNight === valRange.fromMax}
-          >
-            <SvgPlus />
-          </button>
+      <div className={styles.nights_custom_wrapper}>
+        <div
+          className={`${styles.popup_scrollable_content} popup_scrollable_content`}
+          ref={scrollable}
+        >
+          <div className={styles.night_button_wrapper}>
+            <button onClick={() => selectNightRange(1, 3)} className={styles.night_button_new}>
+              1-3 ночи<span className={styles.night_button_span}>, 2-4 дня</span>
+            </button>
+            <button onClick={() => selectNightRange(2, 4)} className={styles.night_button_new}>
+              2-4 ночи<span className={styles.night_button_span}>, 3-5 дня</span>
+            </button>
+            <button onClick={() => selectNightRange(3, 5)} className={styles.night_button_new}>
+              3-5 ночей<span className={styles.night_button_span}>, 4-6 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(4, 6)} className={styles.night_button_new}>
+              4-6 ночей<span className={styles.night_button_span}>, 5-7 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(5, 7)} className={styles.night_button_new}>
+              5-7 ночей<span className={styles.night_button_span}>, 6-8 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(6, 8)} className={styles.night_button_new}>
+              6-8 ночей<span className={styles.night_button_span}>, 7-9 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              7-9 ночей<span className={styles.night_button_span}>, 8-10 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              8-10 ночей<span className={styles.night_button_span}>, 9-11 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              9-11 ночей<span className={styles.night_button_span}>, 10-12 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              10-12 ночей<span className={styles.night_button_span}>, 11-13 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              11-13 ночей<span className={styles.night_button_span}>, 12-14 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              12-14 ночей<span className={styles.night_button_span}>, 13-15 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              13-15 ночей<span className={styles.night_button_span}>, 14-16 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              14-16 ночей<span className={styles.night_button_span}>, 15-17 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              15-17 ночей<span className={styles.night_button_span}>, 16-18 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              16-18 ночей<span className={styles.night_button_span}>, 17-19 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              17-19 ночей<span className={styles.night_button_span}>, 18-20 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              18-20 ночей<span className={styles.night_button_span}>, 19-21 день</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              19-21 ночей<span className={styles.night_button_span}>, 20-22 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              20-22 ночей<span className={styles.night_button_span}>, 21-23 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              21-23 ночей<span className={styles.night_button_span}>, 22-24 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              22-24 ночей<span className={styles.night_button_span}>, 23-25 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              23-25 ночей<span className={styles.night_button_span}>, 24-26 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              24-26 ночей<span className={styles.night_button_span}>, 25-27 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              25-27 ночей<span className={styles.night_button_span}>, 26-28 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              26-28 ночей<span className={styles.night_button_span}>, 27-29 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              27-29 ночей<span className={styles.night_button_span}>, 28-30 дней</span>
+            </button>
+            <button onClick={() => selectNightRange(7, 9)} className={styles.night_button_new}>
+              28-30 ночей<span className={styles.night_button_span}>, 29-31 день</span>
+            </button>
+          </div>
+
+          <span className={styles.nights_count}>
+            <FM id="mainform.night.from" /> <b>{fromNight}</b>{' '}
+            <span className="tolower">
+              <FM id="mainform.night.to" />
+            </span>{' '}
+            <b>{toNight}</b> ночей
+          </span>
+          <span className={styles.days_count}>
+            ({fromNight + 1} - {toNight + 1} <FM id="common.day5" />)
+          </span>
         </div>
-        <div className={styles.night_input_wrapper}>
-          <label htmlFor="toNight">
-            <FM id="mainform.night.to" />
-          </label>
-          <input
-            className={styles.night_input}
-            type="text"
-            id="toNight"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={toNight}
-            onChange={(e) => inputToOnchange(e.target.value)}
-            onBlur={(e) => inputToOnblur(e.target.value)}
-          />
-          <button
-            className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-            onClick={() => onClick('-', 'to')}
-            disabled={toNight === valRange.toMin}
-          >
-            <SvgMinus />
-          </button>
-          <button
-            className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-            onClick={() => onClick('+', 'to')}
-            disabled={toNight === valRange.toMax}
-          >
-            <SvgPlus />
-          </button>
-        </div>
-        <span className={styles.nights_count}>
-          <FM id="mainform.night.from" /> <b>{parseInt(fromNight)}</b>{' '}
-          <span className="tolower">
-            <FM id="mainform.night.to" />
-          </span>{' '}
-          <b>{parseInt(toNight)}</b> ночей
-        </span>
-        <span className={styles.days_count}>
-          ({parseInt(fromNight) + 1} - {parseInt(toNight) + 1}{' '}
-          <FM id="common.day5" />)
-        </span>
       </div>
       <div className="apply_btn_wrapper">
         {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
