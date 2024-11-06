@@ -9,64 +9,6 @@
   text-align: center;
 }
 
-.nights_custom_wrapper_main {
-  max-height: 350px;
-  overflow-y: scroll;
-}
-
-@media screen and (max-width: 500px) {
-  .nights_custom_wrapper_main {
-    padding: 20px 0;
-    max-height: 100vh;
-    overflow-y: scroll;
-  }
-}
-
-.nights_custom_wrapper {
-  max-height: 350px;
-  overflow-y: scroll;
-}
-
-.night_button_wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.night_button_new {
-  width: 100%;
-  padding: 16px;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: .09px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  background: transparent;
-  border-bottom: 2px solid #f8f8f9;
-  border-radius: 0 !important;
-}
-
-.night_button_new_selected {
-  width: 100%;
-  padding: 16px;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 600;
-  color: #000;
-  letter-spacing: .09px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  background: transparent;
-  border-bottom: 2px solid #f8f8f9;
-  border-radius: 0 !important;
-}
-
-.night_button_span {
-  color: #91989e;
-}
-
 .night_input_wrapper + .night_input_wrapper {
   margin-top: 30px;
 }
