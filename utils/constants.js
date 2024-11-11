@@ -8,16 +8,6 @@ export const countryListVariants = {
 // base css transition
 export const transitionTime = 300;
 
-// night popup validation range
-export const mainFormNightValidationRange = {
-  fromMin: 1,
-  fromMax: 28,
-  toMin: 3,
-  toMax: 30,
-  defaultFrom: 7,
-  defaultTo: 9,
-};
-
 // person popup validation range
 export const mainFormPersonValidationRange = {
   defaultAdultsAmount: 2,

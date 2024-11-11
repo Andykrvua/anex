@@ -1,3 +1,6 @@
+import SimpleBar from 'simplebar-react';
+import declension from 'utils/declension';
+import { useIntl } from 'react-intl';
 import { useRef, useEffect, useState } from 'react';
 import useOutsideClick from 'utils/clickOutside';
 import {
@@ -14,11 +17,28 @@ import { svgNight } from 'components/mainform/form-fields/svg';
 import styles from 'components/mainform/popups/night.module.css';
 import { useGetOfferParams } from 'store/store';
 import Loader from 'components/common/loader';
-import { mainFormNightValidationRange as valRange } from 'utils/constants';
-import SvgPlus from 'components/svgPlus';
-import SvgMinus from 'components/svgMinus';
 import { FormattedMessage as FM } from 'react-intl';
 import { useRouter } from 'next/router';
+
+// change scroll depending on mobile or desktop
+const SimpleBarWrapper = ({ size, children }) => {
+  return (
+    <>
+      {size.width >= maxWidth ? (
+        <SimpleBar
+          className="mobile_default"
+          // style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
+          style={{ height: 'var(--mainform-desktop-maxheight)' }}
+          autoHide={true}
+        >
+          {children}
+        </SimpleBar>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
+};
 
 export default function Night({ closeHandler }) {
   const size = getSize();
@@ -46,78 +66,6 @@ export default function Night({ closeHandler }) {
       clear();
     };
   }, [size.width]);
-
-  function validate(str, min, max) {
-    return str >= min && str <= max;
-  }
-
-  const onClick = (operation, input) => {
-    if (operation === '+') {
-      if (input === 'from') {
-        setFromNight((prev) => prev + 1);
-        if (fromNight + 3 > toNight) {
-          setToNight((prev) => prev + 1);
-        }
-      } else {
-        setToNight((prev) => prev + 1);
-      }
-    } else {
-      if (input === 'to') {
-        setToNight((prev) => prev - 1);
-        if (toNight - 3 < fromNight) {
-          setFromNight((prev) => prev - 1);
-        }
-      } else {
-        setFromNight((prev) => prev - 1);
-      }
-    }
-  };
-
-  const inputFromOnchange = (val) => {
-    if (isNaN(parseInt(val))) {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    } else {
-      setFromNight(parseInt(val));
-    }
-  };
-
-  const inputToOnchange = (val) => {
-    if (isNaN(parseInt(val))) {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    } else {
-      setToNight(parseInt(val));
-    }
-  };
-
-  const inputFromOnblur = (val) => {
-    if (validate(val, valRange.fromMin, valRange.fromMax)) {
-      setFromNight(parseInt(val));
-    } else {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    }
-  };
-
-  const inputToOnblur = (val) => {
-    if (validate(val, valRange.toMin, valRange.toMax)) {
-      setToNight(parseInt(val));
-    } else {
-      setFromNight(valRange.defaultFrom);
-      setToNight(valRange.defaultTo);
-    }
-  };
-
-  const selectedHandler = () => {
-    const newNight = { from: fromNight, to: toNight };
-    setResMessage('');
-    checkVariants(newNight);
-
-    if (size.width < maxWidth) {
-      enableScroll(BODY);
-    }
-  };
 
   const checkVariants = async (newNight) => {
     setLoading(true);
@@ -151,9 +99,7 @@ export default function Night({ closeHandler }) {
       if (search.data.total) {
         ResultHandler(search.data.results);
       } else {
-        setResMessage(
-          'В этом отеле нет предложений с такой длительностью. Попробуйте выбрать другую дату'
-        );
+        setResMessage('В этом отеле нет предложений с такой длительностью. Попробуйте выбрать другую дату');
       }
     } else {
       setLoading(false);
@@ -171,11 +117,7 @@ export default function Night({ closeHandler }) {
     Object.entries(apiData).forEach(([operatorId, value]) => {
       Object.entries(value).forEach(([hotelId, data]) => {
         Object.entries(data.offers).forEach(([offerId, offerValue]) => {
-          if (
-            offerValue.fn === food &&
-            offerValue.d === dateStart &&
-            offerValue.i !== offer
-          ) {
+          if (offerValue.fn === food && offerValue.d === dateStart && offerValue.i !== offer) {
             resultData.push(offerValue);
           }
         });
@@ -200,106 +142,95 @@ export default function Night({ closeHandler }) {
     const newUrl = `${locale}/hotels/${getOfferParams.country}/${getOfferParams.hotel}/?offer=${offer.i}&transport=${offer.t}&from=${getOfferParams.from}&fromname=${getOfferParams.fromname}&to=${getOfferParams.to}&checkIn=${getOfferParams.checkIn}&checkTo=${getOfferParams.checkTo}&nights=${nights.from}&nightsTo=${nights.to}&people=${getOfferParams.people}`;
     const newAs = newUrl;
 
-    window.history.pushState(
-      { ...window.history.state, as: newAs, url: newUrl },
-      '',
-      newAs
-    );
+    window.history.pushState({ ...window.history.state, as: newAs, url: newUrl }, '', newAs);
     closeHandler();
     router.reload();
   };
 
+  const selectedHandler = (from, to) => {
+    const newNight = { from, to };
+    setResMessage('');
+    checkVariants(newNight);
+
+    if (size.width < maxWidth) {
+      enableScroll(BODY);
+    }
+  };
+
+  const generateDurationEnumList = (start, end) => {
+    const durationEnumList = [];
+
+    for (let i = start; i <= end; i++) {
+      const obj = {
+        args: [i, i + 2],
+        txt: `${i + 1}-${i + 3}`,
+      };
+      durationEnumList.push(obj);
+    }
+
+    return durationEnumList;
+  };
+
+  const durationEnum = generateDurationEnumList(1, 26);
+
+  const intl = useIntl();
+
+  const night1 = intl.formatMessage({
+    id: 'common.night1',
+  });
+  const night2 = intl.formatMessage({
+    id: 'common.night2',
+  });
+  const night5 = intl.formatMessage({
+    id: 'common.night5',
+  });
+  const day1 = intl.formatMessage({
+    id: 'common.day1',
+  });
+  const day2 = intl.formatMessage({
+    id: 'common.day2',
+  });
+  const day5 = intl.formatMessage({
+    id: 'common.day5',
+  });
+
   return (
-    <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
-      <Header closeModalHandler={closeHandler} svg={svgNight} />
-      <h3 className="title">
-        <FM id="mainform.night.t" />
-      </h3>
-      <div
-        className={`${styles.popup_scrollable_content} popup_scrollable_content`}
-        ref={scrollable}
-      >
-        <div className={styles.night_input_wrapper}>
-          <label htmlFor="fromNight">
-            <FM id="mainform.night.from" />
-          </label>
-          <input
-            className={styles.night_input}
-            id="fromNight"
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={fromNight}
-            onChange={(e) => inputFromOnchange(e.target.value)}
-            onBlur={(e) => inputFromOnblur(e.target.value)}
-          />
-          <button
-            className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-            onClick={() => onClick('-', 'from')}
-            disabled={fromNight === valRange.fromMin}
-          >
-            <SvgMinus />
-          </button>
-          <button
-            className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-            onClick={() => onClick('+', 'from')}
-            disabled={fromNight === valRange.fromMax}
-          >
-            <SvgPlus />
+    <SimpleBarWrapper size={size}>
+      <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
+        <Header closeModalHandler={closeHandler} svg={svgNight} />
+        <h3 className="title">
+          <FM id="mainform.night.t" />
+        </h3>
+        <div className={`${styles.popup_scrollable_content} popup_scrollable_content`} ref={scrollable}>
+          {durationEnum.map((dur) => {
+            return (
+              <button
+                key={dur.txt}
+                onClick={() => selectedHandler(dur.args[0], dur.args[1])}
+                className={
+                  dur.args[0] === fromNight && dur.args[1] === toNight
+                    ? `${styles.night_handler_btn} ${styles.night_handler_btn_active}`
+                    : `${styles.night_handler_btn}`
+                }
+              >
+                {`${dur.args[0]}-${dur.args[1]} `}
+                {declension(dur.args[1], night1, night2, night5)}
+                <span>
+                  , {`${dur.txt} `}
+                  {declension(dur.args[1], day1, day2, day5)}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        <div className={`apply_btn_wrapper ${styles.apply2_btn_wrapper}`}>
+          {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
+          {loading && <Loader />}
+          <button className="apply_btn" onClick={closeHandler} disabled={loading}>
+            <FM id="common.apply" />
           </button>
         </div>
-        <div className={styles.night_input_wrapper}>
-          <label htmlFor="toNight">
-            <FM id="mainform.night.to" />
-          </label>
-          <input
-            className={styles.night_input}
-            type="text"
-            id="toNight"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={toNight}
-            onChange={(e) => inputToOnchange(e.target.value)}
-            onBlur={(e) => inputToOnblur(e.target.value)}
-          />
-          <button
-            className={`${styles.plus_minus_btn} ${styles.minus_btn}`}
-            onClick={() => onClick('-', 'to')}
-            disabled={toNight === valRange.toMin}
-          >
-            <SvgMinus />
-          </button>
-          <button
-            className={`${styles.plus_minus_btn} ${styles.plus_btn}`}
-            onClick={() => onClick('+', 'to')}
-            disabled={toNight === valRange.toMax}
-          >
-            <SvgPlus />
-          </button>
-        </div>
-        <span className={styles.nights_count}>
-          <FM id="mainform.night.from" /> <b>{parseInt(fromNight)}</b>{' '}
-          <span className="tolower">
-            <FM id="mainform.night.to" />
-          </span>{' '}
-          <b>{parseInt(toNight)}</b> ночей
-        </span>
-        <span className={styles.days_count}>
-          ({parseInt(fromNight) + 1} - {parseInt(toNight) + 1}{' '}
-          <FM id="common.day5" />)
-        </span>
       </div>
-      <div className="apply_btn_wrapper">
-        {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
-        {loading && <Loader />}
-        <button
-          className="apply_btn"
-          onClick={selectedHandler}
-          disabled={loading}
-        >
-          <FM id="common.apply" />
-        </button>
-      </div>
-    </div>
+    </SimpleBarWrapper>
   );
 }

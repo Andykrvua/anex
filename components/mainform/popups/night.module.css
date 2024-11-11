@@ -1,58 +1,19 @@
 .popup_scrollable_content {
-  justify-content: center;
   text-align: center;
 }
 
-.night_input_wrapper {
-  position: relative;
-  margin: 0 30px;
-  text-align: center;
-}
-
-.night_input_wrapper + .night_input_wrapper {
-  margin-top: 30px;
-}
-
-.night_input[type='text'] {
-  margin-top: 10px;
-  text-align: center;
-}
-
-.plus_minus_btn {
-  position: absolute;
-  bottom: 10px;
-  width: 40px;
-  height: 40px;
-  border: 0;
+.night_handler_btn {
+  display: block;
+  width: 100%;
   background-color: transparent;
+  padding-block: 22px;
 }
 
-.plus_minus_btn:disabled svg,
-.plus_minus_btn[disabled] svg {
-  stroke: var(--secondary-disabled);
+.night_handler_btn_active {
+  color: var(--font-white);
+  background-color: var(--secondary);
 }
 
-.plus_minus_btn svg {
-  stroke: var(--secondary);
-}
-
-.minus_btn {
-  left: 10px;
-}
-
-.plus_btn {
-  right: 10px;
-}
-
-.nights_count {
-  display: block;
-  margin: 30px 0 10px;
-  font-size: 16px;
-  line-height: 19px;
-}
-.days_count {
-  display: block;
-  font-size: 13px;
-  line-height: 15px;
-  color: var(--primary-soft-light);
+.apply_btn_wrapper_night {
+  display: none;
 }
