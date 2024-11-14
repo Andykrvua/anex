@@ -57,7 +57,23 @@ export default function Night({ setModalIsOpen, modalIsOpen, cName, popupName })
       if (modalIsOpen) {
         disableScroll(scrollable.current);
       }
+    } else {
+      if (scrollable.current) {
+        const parentElement = scrollable.current.closest('.simplebar-content-wrapper');
+        const targetElement = parentElement.querySelector('[class*="night_handler_btn_active"]');
+
+        if (targetElement) {
+          const offsetTop = targetElement?.offsetTop;
+          const targetHeight = targetElement?.offsetHeight;
+          const parentHeight = parentElement?.clientHeight;
+
+          parentElement.scrollTo({
+            top: offsetTop - parentHeight + targetHeight + 20,
+          });
+        }
+      }
     }
+
     return () => {
       clear();
     };
@@ -145,11 +161,11 @@ export default function Night({ setModalIsOpen, modalIsOpen, cName, popupName })
             );
           })}
         </div>
-        <div className={`apply_btn_wrapper ${styles.apply_btn_wrapper_night}`}>
+        {/* <div className={`apply_btn_wrapper ${styles.apply_btn_wrapper_night}`}>
           <button className="apply_btn" onClick={selectedHandler}>
             <FM id="common.apply" />
           </button>
-        </div>
+        </div> */}
       </div>
     </SimpleBarWrapper>
   );

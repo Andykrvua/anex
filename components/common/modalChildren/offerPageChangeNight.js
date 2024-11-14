@@ -97,9 +97,11 @@ export default function Night({ closeHandler }) {
     if (search?.ok) {
       setLoading(false);
       if (search.data.total) {
-        ResultHandler(search.data.results);
+        ResultHandler(search.data.results, newNight);
       } else {
-        setResMessage('В этом отеле нет предложений с такой длительностью. Попробуйте выбрать другую дату');
+        setResMessage(
+          'В этом отеле нет предложений с такой длительностью. Попробуйте выбрать другую дату/длительность'
+        );
       }
     } else {
       setLoading(false);
@@ -108,7 +110,7 @@ export default function Night({ closeHandler }) {
     }
   };
 
-  const ResultHandler = (apiData) => {
+  const ResultHandler = (apiData, newNight) => {
     const resultData = [];
 
     const { dateStart, food, offer } = getOfferParams;
@@ -127,7 +129,7 @@ export default function Night({ closeHandler }) {
     // find the same food and sort min price
     const sortedData = resultData.sort((a, b) => a.pl - b.pl);
     if (sortedData.length) {
-      changeOffer(sortedData[0]);
+      changeOffer(sortedData[0], newNight);
     } else {
       setResMessage(
         'В этом отеле нет предложений с вашими параметрами для такой длительности. Попробуйте выбрать другую дату или изменить параметры питания'
@@ -135,9 +137,10 @@ export default function Night({ closeHandler }) {
     }
   };
 
-  const changeOffer = (offer) => {
+  const changeOffer = (offer, newNight) => {
     const locale = router.locale === 'ru' ? '' : `/${router.locale}`;
-    const nights = { from: fromNight, to: toNight };
+    // const nights = { from: fromNight, to: toNight };
+    const nights = newNight;
 
     const newUrl = `${locale}/hotels/${getOfferParams.country}/${getOfferParams.hotel}/?offer=${offer.i}&transport=${offer.t}&from=${getOfferParams.from}&fromname=${getOfferParams.fromname}&to=${getOfferParams.to}&checkIn=${getOfferParams.checkIn}&checkTo=${getOfferParams.checkTo}&nights=${nights.from}&nightsTo=${nights.to}&people=${getOfferParams.people}`;
     const newAs = newUrl;
@@ -148,6 +151,8 @@ export default function Night({ closeHandler }) {
   };
 
   const selectedHandler = (from, to) => {
+    setFromNight(from);
+    setToNight(to);
     const newNight = { from, to };
     setResMessage('');
     checkVariants(newNight);
@@ -201,34 +206,41 @@ export default function Night({ closeHandler }) {
         <h3 className="title">
           <FM id="mainform.night.t" />
         </h3>
-        <div className={`${styles.popup_scrollable_content} popup_scrollable_content`} ref={scrollable}>
-          {durationEnum.map((dur) => {
-            return (
-              <button
-                key={dur.txt}
-                onClick={() => selectedHandler(dur.args[0], dur.args[1])}
-                className={
-                  dur.args[0] === fromNight && dur.args[1] === toNight
-                    ? `${styles.night_handler_btn} ${styles.night_handler_btn_active}`
-                    : `${styles.night_handler_btn}`
-                }
-              >
-                {`${dur.args[0]}-${dur.args[1]} `}
-                {declension(dur.args[1], night1, night2, night5)}
-                <span>
-                  , {`${dur.txt} `}
-                  {declension(dur.args[1], day1, day2, day5)}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-        <div className={`apply_btn_wrapper ${styles.apply2_btn_wrapper}`}>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <div className={`${styles.popup_scrollable_content} popup_scrollable_content`} ref={scrollable}>
+              {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
+              {durationEnum.map((dur) => {
+                return (
+                  <button
+                    key={dur.txt}
+                    onClick={() => selectedHandler(dur.args[0], dur.args[1])}
+                    className={
+                      dur.args[0] === fromNight && dur.args[1] === toNight
+                        ? `${styles.night_handler_btn} ${styles.night_handler_btn_active}`
+                        : `${styles.night_handler_btn}`
+                    }
+                  >
+                    {`${dur.args[0]}-${dur.args[1]} `}
+                    {declension(dur.args[1], night1, night2, night5)}
+                    <span>
+                      , {`${dur.txt} `}
+                      {declension(dur.args[1], day1, day2, day5)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
+        <div className="apply_btn_wrapper">
           {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
-          {loading && <Loader />}
-          <button className="apply_btn" onClick={closeHandler} disabled={loading}>
+          {/* {!loading && <Loader />} */}
+          {/* <button className="apply_btn" onClick={closeHandler} disabled={loading}>
             <FM id="common.apply" />
-          </button>
+          </button> */}
         </div>
       </div>
     </SimpleBarWrapper>

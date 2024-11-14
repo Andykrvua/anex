@@ -9,9 +9,17 @@
   padding-block: 22px;
 }
 
+.night_handler_btn span {
+  color: var(--placeholder);
+}
+
 .night_handler_btn_active {
   color: var(--font-white);
   background-color: var(--secondary);
+}
+
+.night_handler_btn_active span {
+  color: var(--font-white);
 }
 
 .apply_btn_wrapper_night {
