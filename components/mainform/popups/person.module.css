@@ -5,12 +5,12 @@
 
 .night_input_wrapper {
   position: relative;
-  margin: 0 30px;
+  /* margin: 0 30px; */
   text-align: center;
 }
 
 .night_input_wrapper + .night_input_wrapper {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .night_input[type='text'] {
@@ -81,7 +81,7 @@
 .chosen_ages {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px
+  gap: 10px;
 }
 
 .chosen_ages button {

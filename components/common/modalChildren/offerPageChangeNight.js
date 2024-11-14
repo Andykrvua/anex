@@ -61,6 +61,33 @@ export default function Night({ closeHandler }) {
   useEffect(() => {
     if (size.width < maxWidth) {
       disableScroll(scrollable.current);
+      if (scrollable.current) {
+        const targetElement = scrollable.current.querySelector('[class*="night_handler_btn_active"]');
+
+        if (targetElement) {
+          const offsetTop = targetElement?.offsetTop;
+          const targetHeight = targetElement?.offsetHeight;
+          const parentHeight = scrollable.current?.clientHeight;
+          scrollable.current.scrollTo({
+            top: offsetTop - parentHeight + targetHeight + 20,
+          });
+        }
+      }
+    } else {
+      if (scrollable.current) {
+        const parentElement = scrollable.current.closest('.simplebar-content-wrapper');
+        const targetElement = parentElement.querySelector('[class*="night_handler_btn_active"]');
+
+        if (targetElement) {
+          const offsetTop = targetElement?.offsetTop;
+          const targetHeight = targetElement?.offsetHeight;
+          const parentHeight = parentElement?.clientHeight;
+
+          parentElement.scrollTo({
+            top: offsetTop - parentHeight + targetHeight + 20,
+          });
+        }
+      }
     }
     return () => {
       clear();
@@ -235,13 +262,6 @@ export default function Night({ closeHandler }) {
             </div>
           </>
         )}
-        <div className="apply_btn_wrapper">
-          {resMessage && <div style={{ marginBottom: '20px' }}>{resMessage}</div>}
-          {/* {!loading && <Loader />} */}
-          {/* <button className="apply_btn" onClick={closeHandler} disabled={loading}>
-            <FM id="common.apply" />
-          </button> */}
-        </div>
       </div>
     </SimpleBarWrapper>
   );

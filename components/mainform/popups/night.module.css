@@ -1,5 +1,6 @@
 .popup_scrollable_content {
   text-align: center;
+  padding-bottom: var(--cont-padding-popup);
 }
 
 .night_handler_btn {
@@ -16,6 +17,7 @@
 .night_handler_btn_active {
   color: var(--font-white);
   background-color: var(--secondary);
+  box-shadow: var(--base-btn-shadow);
 }
 
 .night_handler_btn_active span {

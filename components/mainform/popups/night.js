@@ -27,6 +27,7 @@ const SimpleBarWrapper = ({ size, children }) => {
           className="mobile_default"
           // style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
           style={{ height: 'var(--mainform-desktop-maxheight)' }}
+          // style={{ height: 'min(calc(100vh - 313px), var(--mainform-desktop-maxheight)' }}
           autoHide={true}
         >
           {children}
@@ -56,6 +57,19 @@ export default function Night({ setModalIsOpen, modalIsOpen, cName, popupName })
     if (size.width < maxWidth) {
       if (modalIsOpen) {
         disableScroll(scrollable.current);
+      }
+
+      if (scrollable.current) {
+        const targetElement = scrollable.current.querySelector('[class*="night_handler_btn_active"]');
+
+        if (targetElement) {
+          const offsetTop = targetElement?.offsetTop;
+          const targetHeight = targetElement?.offsetHeight;
+          const parentHeight = scrollable.current?.clientHeight;
+          scrollable.current.scrollTo({
+            top: offsetTop - parentHeight + targetHeight + 20,
+          });
+        }
       }
     } else {
       if (scrollable.current) {
