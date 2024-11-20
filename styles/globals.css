@@ -370,6 +370,52 @@ header.header .header_container {
   box-shadow: var(--formfield-shadow);
 }
 
+.main_form_open_scroll {
+  --mainMenuHeight: 75px;
+  --mainMenuItemOpenOffsetBottom: 20px;
+  --mainMenuOpenMinHeight: 200px;
+  --smallMenuMargin: 5px;
+  --smallMenuItemHeight: 58px;
+  max-height: min(
+    calc(100vh - var(--mainMenuOffsetTop) - var(--mainMenuHeight) - var(--mainMenuItemOpenOffsetBottom)),
+    var(--mainform-desktop-maxheight)
+  );
+  min-height: var(--mainMenuOpenMinHeight);
+}
+
+@media (max-width: 1109px) {
+  .wrapper_btn_down .main_form_open_scroll,
+  .wrapper_btn_up .main_form_open_scroll {
+    max-height: min(
+      calc(
+        100vh - var(--mainMenuOffsetTop) - var(--smallMenuItemHeight) - var(--mainMenuItemOpenOffsetBottom)
+      ),
+      var(--mainform-desktop-maxheight)
+    );
+  }
+
+  .wrapper_btn_date .main_form_open_scroll,
+  .wrapper_btn_night .main_form_open_scroll {
+    max-height: min(
+      calc(
+        100vh - var(--mainMenuOffsetTop) - var(--smallMenuItemHeight) * 2 - var(--smallMenuMargin) -
+          var(--mainMenuItemOpenOffsetBottom)
+      ),
+      var(--mainform-desktop-maxheight)
+    );
+  }
+
+  .wrapper_btn_person .main_form_open_scroll {
+    max-height: min(
+      calc(
+        100vh - var(--mainMenuOffsetTop) - var(--smallMenuItemHeight) * 3 - var(--smallMenuMargin) * 2 -
+          var(--mainMenuItemOpenOffsetBottom)
+      ),
+      var(--mainform-desktop-maxheight)
+    );
+  }
+}
+
 /* ios grid fix */
 .main_formfield .main_formfield_inner {
   display: grid;
@@ -658,7 +704,7 @@ header.header .header_container {
   }
 
   .popup_wrapper {
-    max-height: var(--mainform-desktop-maxheight);
+    /* max-height: var(--mainform-desktop-maxheight); */
     overflow: auto;
   }
 }

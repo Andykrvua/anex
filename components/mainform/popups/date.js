@@ -23,6 +23,22 @@ import SvgPlus from 'components/svgPlus';
 import SvgMinus from 'components/svgMinus';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
+import SimpleBar from 'simplebar-react';
+
+// change scroll depending on mobile or desktop
+const SimpleBarWrapper = ({ size, children }) => {
+  return (
+    <>
+      {size.width >= maxWidth ? (
+        <SimpleBar className="mobile_default main_form_open_scroll" autoHide={true}>
+          {children}
+        </SimpleBar>
+      ) : (
+        <>{children}</>
+      )}
+    </>
+  );
+};
 
 const PlusMinusBtns = ({ setPlusDays, plusDays }) => {
   const [dayText, setDayText] = useState('');
@@ -65,14 +81,7 @@ const PlusMinusBtns = ({ setPlusDays, plusDays }) => {
   );
 };
 
-export default function Date({
-  setModalIsOpen,
-  modalIsOpen,
-  cName,
-  popupName,
-  storeDate,
-  initialPlusDays,
-}) {
+export default function Date({ setModalIsOpen, modalIsOpen, cName, popupName, storeDate, initialPlusDays }) {
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
@@ -129,30 +138,29 @@ export default function Date({
   };
 
   return (
-    <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
-      <Header closeModalHandler={closeModalHandler} svg={svgDate} />
-      <h3 className="title">{popupName}</h3>
-      <div
-        className={`${styles.popup_scrollable_content} popup_scrollable_content`}
-        ref={scrollable}
-      >
-        <DatePicker
-          showPopperArrow={false}
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          minDate={initialDate}
-          inline
-          maxDate={addYears(initialDate, 1)}
-          highlightDates={highlightWithRanges}
-        />
-        <PlusMinusBtns setPlusDays={setPlusDays} plusDays={plusDays} />
+    <SimpleBarWrapper size={size}>
+      <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
+        <Header closeModalHandler={closeModalHandler} svg={svgDate} />
+        <h3 className="title">{popupName}</h3>
+        <div className={`${styles.popup_scrollable_content} popup_scrollable_content`} ref={scrollable}>
+          <DatePicker
+            showPopperArrow={false}
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            minDate={initialDate}
+            inline
+            maxDate={addYears(initialDate, 1)}
+            highlightDates={highlightWithRanges}
+          />
+          <PlusMinusBtns setPlusDays={setPlusDays} plusDays={plusDays} />
+        </div>
+        <div className="apply_btn_wrapper">
+          <button className="apply_btn" onClick={selectedHandler}>
+            <FM id="common.apply" />
+          </button>
+        </div>
+        <DatePickerGlobalStyle />
       </div>
-      <div className="apply_btn_wrapper">
-        <button className="apply_btn" onClick={selectedHandler}>
-          <FM id="common.apply" />
-        </button>
-      </div>
-      <DatePickerGlobalStyle />
-    </div>
+    </SimpleBarWrapper>
   );
 }

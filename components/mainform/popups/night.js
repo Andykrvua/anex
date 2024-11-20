@@ -23,13 +23,7 @@ const SimpleBarWrapper = ({ size, children }) => {
   return (
     <>
       {size.width >= maxWidth ? (
-        <SimpleBar
-          className="mobile_default"
-          // style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
-          style={{ height: 'var(--mainform-desktop-maxheight)' }}
-          // style={{ height: 'min(calc(100vh - 313px), var(--mainform-desktop-maxheight)' }}
-          autoHide={true}
-        >
+        <SimpleBar className="mobile_default main_form_open_scroll" autoHide={true}>
           {children}
         </SimpleBar>
       ) : (

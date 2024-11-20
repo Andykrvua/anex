@@ -32,12 +32,9 @@ import { useRouter } from 'next/router';
 import { languagesOperatorApi, transitionTime } from 'utils/constants';
 
 const ResultItem = ({ data, clickHandler }) => {
-  if (data.type === 'country')
-    return <ItemCountry data={data} clickHandler={clickHandler} />;
-  if (data.type === 'city')
-    return <ItemCity data={data} clickHandler={clickHandler} />;
-  if (data.type === 'hotel')
-    return <ItemHotel data={data} clickHandler={clickHandler} />;
+  if (data.type === 'country') return <ItemCountry data={data} clickHandler={clickHandler} />;
+  if (data.type === 'city') return <ItemCity data={data} clickHandler={clickHandler} />;
+  if (data.type === 'hotel') return <ItemHotel data={data} clickHandler={clickHandler} />;
   return null;
 };
 
@@ -46,12 +43,7 @@ const SimpleBarWrapper = ({ size, children }) => {
   return (
     <>
       {size.width >= maxWidth ? (
-        <SimpleBar
-          className="mobile_default"
-          // style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
-          style={{ height: 'var(--mainform-desktop-maxheight)' }}
-          autoHide={true}
-        >
+        <SimpleBar className="mobile_default main_form_open_scroll" autoHide={true}>
           {children}
         </SimpleBar>
       ) : (
@@ -62,24 +54,16 @@ const SimpleBarWrapper = ({ size, children }) => {
 };
 
 // selected item confirmation block
-const DownApplySelected = dynamic(
-  () => import(/* webpackChunkName: "downApply" */ './downApplySelected'),
-  {
-    ssr: false,
-    loading: () => {
-      return <Loader />;
-    },
-  }
-);
+const DownApplySelected = dynamic(() => import(/* webpackChunkName: "downApply" */ './downApplySelected'), {
+  ssr: false,
+  loading: () => {
+    return <Loader />;
+  },
+});
 
 const MemoCountryList = memo(CountryList);
 
-export default function Down({
-  setModalIsOpen,
-  modalIsOpen,
-  cName,
-  popupName,
-}) {
+export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) {
   const selectDown = useSetDown();
   const getSearchCountryList = useGetSearchCountryList();
   const setSearchCountryList = useSetSearchCountryList();
@@ -152,9 +136,7 @@ export default function Down({
     if (country.length > 2) {
       setLoading(true);
 
-      const search = await fetch(
-        `/api/endpoints/suggests?text=${country}&loc=${loc}`
-      ).then((response) => {
+      const search = await fetch(`/api/endpoints/suggests?text=${country}&loc=${loc}`).then((response) => {
         if (response.status === 200) {
           return response.json();
         }
@@ -173,8 +155,7 @@ export default function Down({
       if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
         if (!window.visualViewport) return;
         window.visualViewport.addEventListener('resize', resizeHandler);
-        return () =>
-          window.visualViewport.removeEventListener('resize', resizeHandler);
+        return () => window.visualViewport.removeEventListener('resize', resizeHandler);
       }
     }
   }, []);
@@ -246,13 +227,7 @@ export default function Down({
           {searchResult.length > 0 ? (
             <div style={{ marginBottom: '30px' }}>
               {searchResult.map((item, ind) => {
-                return (
-                  <ResultItem
-                    key={ind}
-                    data={item[1]}
-                    clickHandler={clickSearchResultItem}
-                  />
-                );
+                return <ResultItem key={ind} data={item[1]} clickHandler={clickSearchResultItem} />;
               })}
             </div>
           ) : null}

@@ -12,13 +12,7 @@ import {
 } from '../../../utils/useBodyScroll';
 import Header from './header';
 import { svgUp, svgBus, svgNo } from '../form-fields/svg';
-import {
-  useSetUp,
-  useGetDown,
-  useGetUp,
-  useGetUpPointList,
-  useSetUpPointList,
-} from '../../../store/store';
+import { useSetUp, useGetDown, useGetUp, useGetUpPointList, useSetUpPointList } from '../../../store/store';
 import styles from './up.module.css';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import Loader from 'components/common/loader';
@@ -30,12 +24,7 @@ const SimpleBarWrapper = ({ size, children }) => {
   return (
     <>
       {size.width >= maxWidth ? (
-        <SimpleBar
-          className="mobile_default"
-          // style={{ maxHeight: 'var(--mainform-desktop-maxheight)' }}
-          style={{ height: 'var(--mainform-desktop-maxheight)' }}
-          autoHide={true}
-        >
+        <SimpleBar className="mobile_default main_form_open_scroll" autoHide={true}>
           {children}
         </SimpleBar>
       ) : (
@@ -45,13 +34,7 @@ const SimpleBarWrapper = ({ size, children }) => {
   );
 };
 
-export default function UpWindow({
-  setModalIsOpen,
-  modalIsOpen,
-  cName,
-  popupName,
-  value,
-}) {
+export default function UpWindow({ setModalIsOpen, modalIsOpen, cName, popupName, value }) {
   const size = getSize();
   const wrapperRef = useRef(null);
   const scrollable = useRef(null);
@@ -82,14 +65,14 @@ export default function UpWindow({
     if (!getUpPointList.active) {
       setLoading(true);
 
-      const search = await fetch(
-        `/api/endpoints/fromcities?geoId=${getDown.value}&locale=${loc}`
-      ).then((response) => {
-        if (response.status === 200) {
-          return response.json();
+      const search = await fetch(`/api/endpoints/fromcities?geoId=${getDown.value}&locale=${loc}`).then(
+        (response) => {
+          if (response.status === 200) {
+            return response.json();
+          }
+          return null;
         }
-        return null;
-      });
+      );
 
       if (search?.ok) {
         setUpPointList({
@@ -147,24 +130,13 @@ export default function UpWindow({
 
   return (
     <SimpleBarWrapper size={size}>
-      <div
-        className="main_form_popup_mobile_wrapper"
-        ref={wrapperRef}
-        style={{ overflow: 'hidden' }}
-      >
+      <div className="main_form_popup_mobile_wrapper" ref={wrapperRef} style={{ overflow: 'hidden' }}>
         <Header
           closeModalHandler={closeModalHandler}
-          svg={
-            getUp.transport
-              ? headerTransportIcon[getUp.transport]
-              : headerTransportIcon.no
-          }
+          svg={getUp.transport ? headerTransportIcon[getUp.transport] : headerTransportIcon.no}
         />
         <h3 className="title">{popupName}</h3>
-        <div
-          className={`${styles.popup_scrollable_content} popup_scrollable_content`}
-          ref={scrollable}
-        >
+        <div className={`${styles.popup_scrollable_content} popup_scrollable_content`} ref={scrollable}>
           {loading && <Loader />}
           {!loading && (
             <div className={styles.input_wrapper}>
@@ -208,9 +180,7 @@ export default function UpWindow({
                         data-transport={item.transport[0]}
                       />
                       <span className={styles.input_label_content}>
-                        <span className={styles.input_label_text}>
-                          {item.name}
-                        </span>
+                        <span className={styles.input_label_text}>{item.name}</span>
                         <span className={styles.input_label_icons}>
                           <img
                             src={`/assets/img/svg/up/${
