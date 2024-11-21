@@ -7,6 +7,14 @@
   justify-content: center;
 }
 
+.input_block_header {
+  margin: 0;
+  padding: 22px 20px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--primary-light);
+}
+
 .input_label {
   display: block;
   margin-bottom: 10px;
@@ -24,6 +32,12 @@
   padding: 22px 20px;
   transition: background-color var(--base-transition);
   cursor: pointer;
+}
+
+.input_label_content_active {
+  font-weight: bold;
+  color: var(--font-white);
+  background-color: var(--secondary);
 }
 
 .input_label_text {
@@ -44,10 +58,4 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.input:checked + span {
-  font-weight: bold;
-  color: var(--font-white);
-  background-color: var(--secondary);
 }

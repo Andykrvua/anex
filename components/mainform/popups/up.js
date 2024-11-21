@@ -52,6 +52,8 @@ export default function UpWindow({ setModalIsOpen, modalIsOpen, cName, popupName
   const setUpPointList = useSetUpPointList();
   const getUp = useGetUp();
 
+  let lastCountry = '';
+
   const headerTransportIcon = {
     bus: svgBus,
     air: svgUp,
@@ -75,9 +77,17 @@ export default function UpWindow({ setModalIsOpen, modalIsOpen, cName, popupName
       );
 
       if (search?.ok) {
+        const data = search.result.fromCities;
+        data.sort((a, b) => {
+          const countryComparison = a.country.localeCompare(b.country, 'ru');
+          if (countryComparison !== 0) {
+            return countryComparison;
+          }
+          return a.name.localeCompare(b.name, 'ru');
+        });
         setUpPointList({
           active: true,
-          list: search.result.fromCities,
+          list: data,
         });
       }
       setLoading(false);
@@ -89,7 +99,36 @@ export default function UpWindow({ setModalIsOpen, modalIsOpen, cName, popupName
       if (modalIsOpen) {
         disableScroll(scrollable.current);
       }
+
+      if (scrollable.current) {
+        const targetElement = scrollable.current.querySelector('[class*="input_label_content_active"]');
+
+        if (targetElement) {
+          const offsetTop = targetElement?.offsetTop;
+          const targetHeight = targetElement?.offsetHeight;
+          const parentHeight = scrollable.current?.clientHeight;
+          scrollable.current.scrollTo({
+            top: offsetTop - parentHeight + targetHeight + 20,
+          });
+        }
+      }
+    } else {
+      if (scrollable.current) {
+        const parentElement = scrollable.current.closest('.simplebar-content-wrapper');
+        const targetElement = parentElement.querySelector('[class*="input_label_content_active"]');
+
+        if (targetElement) {
+          const offsetTop = targetElement?.offsetTop;
+          const targetHeight = targetElement?.offsetHeight;
+          const parentHeight = parentElement?.clientHeight;
+
+          parentElement.scrollTo({
+            top: offsetTop - parentHeight + targetHeight + 20,
+          });
+        }
+      }
     }
+
     return () => {
       clear();
     };
@@ -103,30 +142,30 @@ export default function UpWindow({ setModalIsOpen, modalIsOpen, cName, popupName
   };
 
   const inputHandler = (e) => {
-    if (size.width >= maxWidth) {
-      selectUp({
-        name: e.target.dataset.name,
-        value: e.target.value,
-        transport: e.target.dataset.transport ? e.target.dataset.transport : '',
-      });
-      setModalIsOpen('');
-    } else {
-      setSelectedUp({
-        name: e.target.dataset.name,
-        value: e.target.value,
-        transport: e.target.dataset.transport ? e.target.dataset.transport : '',
-      });
-    }
+    // if (size.width >= maxWidth) {
+    selectUp({
+      name: e.target.dataset.name,
+      value: e.target.value,
+      transport: e.target.dataset.transport ? e.target.dataset.transport : '',
+    });
+    setModalIsOpen('');
+    // } else {
+    // setSelectedUp({
+    //   name: e.target.dataset.name,
+    //   value: e.target.value,
+    //   transport: e.target.dataset.transport ? e.target.dataset.transport : '',
+    // });
+    // }
   };
 
-  const selectedHandler = () => {
-    if (!selectedUp.name) return;
-    selectUp(selectedUp);
-    if (size.width < maxWidth) {
-      enableScroll(BODY);
-    }
-    setModalIsOpen('');
-  };
+  // const selectedHandler = () => {
+  //   if (!selectedUp.name) return;
+  //   selectUp(selectedUp);
+  //   if (size.width < maxWidth) {
+  //     enableScroll(BODY);
+  //   }
+  //   setModalIsOpen('');
+  // };
 
   return (
     <SimpleBarWrapper size={size}>
@@ -147,13 +186,18 @@ export default function UpWindow({ setModalIsOpen, modalIsOpen, cName, popupName
                   name="up"
                   id="no_transport"
                   onChange={(e) => inputHandler(e)}
-                  // value="9999"
                   value=""
                   data-name={intl.formatMessage({
                     id: 'mainform.up.no_tr',
                   })}
                 />
-                <span className={styles.input_label_content}>
+                <span
+                  className={
+                    !getUp.value
+                      ? `${styles.input_label_content} ${styles.input_label_content_active}`
+                      : `${styles.input_label_content}`
+                  }
+                >
                   <span className={styles.input_label_text}>
                     {intl.formatMessage({
                       id: 'mainform.up.no_tr',
@@ -166,44 +210,48 @@ export default function UpWindow({ setModalIsOpen, modalIsOpen, cName, popupName
               </label>
               {getUpPointList.active &&
                 getUpPointList.list.map((item, i) => {
+                  const showCountryHeader = lastCountry !== item.country;
+                  lastCountry = item.country;
                   return (
-                    <label className={styles.input_label} key={i}>
-                      <input
-                        className={styles.input}
-                        type="radio"
-                        name="up"
-                        id={i}
-                        onChange={(e) => inputHandler(e)}
-                        value={item.id}
-                        defaultChecked={item.id === value.toString()}
-                        data-name={item.name}
-                        data-transport={item.transport[0]}
-                      />
-                      <span className={styles.input_label_content}>
-                        <span className={styles.input_label_text}>{item.name}</span>
-                        <span className={styles.input_label_icons}>
-                          <img
-                            src={`/assets/img/svg/up/${
-                              transportIcon[item.transport[0]]
-                              // transportIcon[item.transport.map((tr) => tr)]
-                            }`}
-                            alt=""
-                          />
+                    <div key={i}>
+                      {showCountryHeader && <p className={styles.input_block_header}>{item.country}</p>}
+                      <label className={styles.input_label}>
+                        <input
+                          className={styles.input}
+                          type="radio"
+                          name="up"
+                          id={i}
+                          onChange={(e) => inputHandler(e)}
+                          value={item.id}
+                          defaultChecked={item.id === value.toString()}
+                          data-name={item.name}
+                          data-transport={item.transport[0]}
+                        />
+                        <span
+                          className={
+                            getUp.value == item.id
+                              ? `${styles.input_label_content} ${styles.input_label_content_active}`
+                              : `${styles.input_label_content}`
+                          }
+                        >
+                          <span className={styles.input_label_text}>{item.name}</span>
+                          <span className={styles.input_label_icons}>
+                            <img
+                              src={`/assets/img/svg/up/${
+                                transportIcon[item.transport[0]]
+                                // transportIcon[item.transport.map((tr) => tr)]
+                              }`}
+                              alt=""
+                            />
+                          </span>
                         </span>
-                      </span>
-                    </label>
+                      </label>
+                    </div>
                   );
                 })}
             </div>
           )}
         </div>
-        {size.width < maxWidth && (
-          <div className="apply_btn_wrapper">
-            <button className="apply_btn" onClick={selectedHandler}>
-              <FM id="common.apply" />
-            </button>
-          </div>
-        )}
       </div>
     </SimpleBarWrapper>
   );

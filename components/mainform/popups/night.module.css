@@ -1,11 +1,14 @@
 .popup_scrollable_content {
+  margin: 0;
+  padding: 0;
   text-align: center;
-  padding-bottom: var(--cont-padding-popup);
+  /* padding-bottom: var(--cont-padding-popup); */
 }
 
 .night_handler_btn {
   display: block;
   width: 100%;
+  border-radius: 0;
   background-color: transparent;
   padding-block: 22px;
 }
@@ -15,9 +18,9 @@
 }
 
 .night_handler_btn_active {
+  font-weight: bold;
   color: var(--font-white);
   background-color: var(--secondary);
-  box-shadow: var(--base-btn-shadow);
 }
 
 .night_handler_btn_active span {
