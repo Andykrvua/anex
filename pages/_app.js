@@ -55,7 +55,9 @@ export default App;
 App.getInitialProps = async ({ Component, ctx }) => {
   const loc = ctx.locale;
 
-  const [navResData, staticResData] = await Promise.all([getAllCountriesForNav(loc), getStaticData(loc)]);
+  // const [navResData, staticResData] = await Promise.all([getAllCountriesForNav(loc), getStaticData(loc)]);
+  const navResData = await getAllCountriesForNav(loc);
+  const staticResData = await getStaticData(loc);
   let navData;
   let staticData;
 
