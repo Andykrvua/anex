@@ -13,24 +13,18 @@ const rawDate = tomorrow;
 
 const defaultDownPoint = {
   name: {
-    // ru: 'Турция',
-    ru: 'Египет',
-    // uk: 'Туреччина',
-    uk: 'Єгипет',
+    ru: 'Куда',
+    uk: 'Куди',
   },
-  // value: 115,
-  value: 43,
+  value: null,
 };
 
 const defaultUpPoint = {
   name: {
-    // ru: 'Киев',
-    ru: 'Жешув',
-    // uk: 'Київ',
-    uk: 'Жешув',
+    ru: 'Откуда',
+    uk: 'Звідки',
   },
-  // value: 1544,
-  value: 3158,
+  value: null,
 };
 
 const useStore = create(
@@ -139,6 +133,8 @@ const useStore = create(
     setCurrentOffer: (currentOffer) => set({ currentOffer }),
     currentOfferMailData: {},
     setCurrentOfferMailData: (currentOfferMailData) => set({ currentOfferMailData }),
+    staticData: {},
+    setStaticData: (staticData) => set(staticData),
   }))
 );
 
@@ -226,4 +222,6 @@ export const useSetCurrentOffer = () => useStore((state) => state.setCurrentOffe
 // current offer mail data
 export const useGetCurrentOfferMailData = () => useStore((state) => state.currentOfferMailData);
 export const useSetCurrentOfferMailData = () => useStore((state) => state.setCurrentOfferMailData);
-//current offer
+// base site data
+export const useGetStaticData = () => useStore((state) => state.staticData);
+export const useSetStaticData = () => useStore((state) => state.setStaticData);

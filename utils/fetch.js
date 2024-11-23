@@ -153,6 +153,12 @@ export const getAllCountriesForNav = async (loc) => {
   return req(url);
 };
 
+export const getStaticData = async (loc) => {
+  const locale = languagesApi[loc];
+  const url = `static_data?fields=tag_manager_id,google_site_ver,no_transport,translations.filter_value,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
+  return req(url);
+};
+
 export const getAllToursTextPages = async (loc = languagesApi.ru) => {
   const locale = languagesApi[loc];
   const url = `tours_text?fields=slug,subpage,subsubpage,img,popular,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
