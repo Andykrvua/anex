@@ -1,7 +1,74 @@
 .footer {
   margin-top: 50px;
-  padding: 50px 0 30px;
+  padding: 0 0 30px;
   background-color: var(--footer-bg);
+}
+
+.footer_container {
+  padding-top: 50px !important;
+}
+
+.tg_banner_wrapper {
+  padding-bottom: 80px;
+  background-color: var(--bg);
+}
+
+.tg_banner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 47px 80px 0;
+  border-radius: 20px;
+  background: linear-gradient(278.9deg, #fd8945 -9.66%, #f6b1f5 102.94%);
+  overflow: hidden;
+}
+
+.tg_banner_texts {
+  position: relative;
+  flex-shrink: 0;
+  color: var(--white);
+}
+
+.tg_banner_texts_title {
+  max-width: 420px;
+  font-size: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 36px;
+}
+
+.tg_banner_texts_desc {
+  max-width: 362px;
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.tg_banner_texts_subtitle {
+  margin: 20px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+}
+
+.tg_banner_link {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  margin: 30px 0 60px;
+  padding: 15px 20px 15px 15px;
+  border-radius: 10px;
+  background: var(--red-btn);
+  box-shadow: var(--red-btn-shadow);
+}
+
+.tg_banner_img_mobile {
+  display: none;
+}
+
+.tg_banner_link:active,
+.tg_banner_link:focus-visible {
+  box-shadow: var(--red-btn-shadow), var(--btn-focus);
 }
 
 .two_col_wrapper {
@@ -42,7 +109,7 @@
   transition: color var(--base-transition);
 }
 
-.footer a:hover {
+.footer a:not(.tg_banner_link):hover {
   color: var(--secondary);
 }
 
@@ -62,10 +129,44 @@
   display: block;
 }
 
+@media (max-width: 768px) {
+  .tg_banner {
+    padding: 40px;
+  }
+
+  .tg_banner_texts {
+    flex-shrink: 1;
+  }
+
+  .tg_banner_texts_title {
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  .tg_banner_link {
+    margin-bottom: 0;
+  }
+
+  .tg_banner_img_mobile {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: block;
+  }
+
+  .tg_banner_img {
+    display: none;
+  }
+}
+
 @media (min-width: 810px) {
   .footer {
     margin-top: 60px;
-    padding: 60px 0 30px;
+    padding: 0 0 30px;
+  }
+
+  .footer_container {
+    padding-top: 60px !important;
   }
 
   .wrapper {

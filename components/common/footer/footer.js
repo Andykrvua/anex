@@ -7,7 +7,50 @@ import { FormattedMessage as FM } from 'react-intl';
 export default function Footer() {
   return (
     <footer className={`${styles.footer} footer`}>
-      <div className="container">
+      <div className={styles.tg_banner_wrapper}>
+        <div className="container">
+          <div className={styles.tg_banner}>
+            <div className={styles.tg_banner_texts}>
+              <h5 className={styles.tg_banner_texts_title}>Бажаєте отримувати найкращі добірки турів?</h5>
+              <p className={styles.tg_banner_texts_desc}>
+                Ретельно підбираємо для Вас лише найцікавіші пропозиції та публікуємо їх у нашому
+                телеграм-каналі
+              </p>
+              <p className={styles.tg_banner_texts_subtitle}>Тільки корисна інформація — без зайвого шуму!</p>
+              <a href={links.telegram} className={styles.tg_banner_link}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.41718 15.1809L9.02018 20.7649C9.58818 20.7649 9.83418 20.5209 10.1292 20.2279L12.7922 17.6829L18.3102 21.7239C19.3222 22.2879 20.0352 21.9909 20.3082 20.7929L23.9302 3.82092L23.9312 3.81992C24.2522 2.32392 23.3902 1.73892 22.4042 2.10592L1.11418 10.2569C-0.338822 10.8209 -0.316822 11.6309 0.867178 11.9979L6.31018 13.6909L18.9532 5.77992C19.5482 5.38592 20.0892 5.60392 19.6442 5.99792L9.41718 15.1809Z"
+                    fill="white"
+                  />
+                </svg>
+                Приєднатися
+              </a>
+              <img
+                className={styles.tg_banner_img_mobile}
+                src="/assets/img/tg_banner_fly.webp"
+                width={55}
+                height={55}
+                aria-hidden="true"
+              />
+            </div>
+            <img
+              className={styles.tg_banner_img}
+              src="/assets/img/tg_banner.webp"
+              width={473}
+              height={303}
+              alt="Telegram канал ua_anextour"
+            />
+          </div>
+        </div>
+      </div>
+      <div className={`${styles.footer_container} container`}>
         <div className={styles.wrapper}>
           <div className={styles.two_col_wrapper}>
             <div className={styles.nav}>
