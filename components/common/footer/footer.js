@@ -17,7 +17,7 @@ export default function Footer() {
                 телеграм-каналі
               </p>
               <p className={styles.tg_banner_texts_subtitle}>Тільки корисна інформація — без зайвого шуму!</p>
-              <a href={links.telegram} className={styles.tg_banner_link}>
+              <a href={links.telegram_banner} className={styles.tg_banner_link}>
                 <svg
                   width="24"
                   height="24"
@@ -45,7 +45,7 @@ export default function Footer() {
               src="/assets/img/tg_banner.webp"
               width={473}
               height={303}
-              alt="Telegram канал ua_anextour"
+              alt="Telegram канал anex_ua"
             />
           </div>
         </div>

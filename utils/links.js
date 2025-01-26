@@ -15,5 +15,6 @@ export const links = {
   contacts: '/contacts',
   privacy_policy: '/about-us/privacy-policy',
   telegram: 'https://t.me/ua_anextour',
+  telegram_banner: 'https://t.me/anex_ua',
   viber: 'viber://chat?number=0635914144',
 };
