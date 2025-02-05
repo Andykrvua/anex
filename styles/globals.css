@@ -578,7 +578,7 @@ header.header .header_container {
   }
 
   .btn_date {
-    width: 220px;
+    width: 250px;
   }
 
   .second_btn_date {
@@ -697,6 +697,8 @@ header.header .header_container {
     transform: scaleY(0);
     transform-origin: top;
     border: 1px solid var(--line);
+    left: 0;
+    width: calc(100% * 2.02);
   }
 
   .main_form_popup.open {
@@ -712,9 +714,11 @@ header.header .header_container {
 @media (min-width: 1110px) {
   .main_form_popup {
     top: 100%;
-    left: initial;
-    right: -6px;
-    width: 360px;
+    /*left: initial;*/
+    /*right: -6px;*/
+    /*width: 360px;*/
+    left: 0;
+    width: calc(1050px - 253px);
   }
 
   .wrapper_btn_down .main_form_popup {

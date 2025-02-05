@@ -1,14 +1,16 @@
 import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
 import MainFormBtn from './mainFormBtn';
 import { svgDate } from './svg';
+import { useEffect, useMemo, useState } from "react";
+import { useIntl } from "react-intl";
+import declension from "../../../utils/declension";
+import { useGetDate } from "../../../store/store";
+import { formattedDate } from "../../../utils/formattedDate";
+
 import Loader from 'components/common/loader';
-import { formattedDate } from '../../../utils/formattedDate';
-import declension from '../../../utils/declension';
-import { useIntl } from 'react-intl';
 
 const DynamicUpWindow = dynamic(
-  () => import(/* webpackChunkName: "Date" */ '../popups/date'),
+  () => import(/* webpackChunkName: "Date" */ '../popups/multiple-datepicker'),
   {
     ssr: false,
     loading: () => {
@@ -18,7 +20,6 @@ const DynamicUpWindow = dynamic(
 );
 
 export default function DateField({
-  title,
   aria,
   modalIsOpen,
   setModalIsOpen,
@@ -29,9 +30,8 @@ export default function DateField({
   // // tomorrow.setDate(tomorrow.getDate() + 1);
   // tomorrow.setDate(tomorrow.getDate() - 15);
   // const initialDate = tomorrow;
-  const storeDate = title.rawDate;
-  const plusDays = title.plusDays;
-
+  const date = useGetDate();
+  const additionalDays = useMemo(() => date.additionalDays,[date]);
   const intl = useIntl();
   const dTxt1 = intl.formatMessage({
     id: 'common.day1',
@@ -46,39 +46,37 @@ export default function DateField({
   const [dayText, setDayText] = useState(dTxt2);
 
   useEffect(() => {
-    setDayText(declension(plusDays, dTxt1, dTxt2, dTxt5));
-  }, [plusDays]);
-
-  title = formattedDate(title.rawDate);
+        setDayText(declension(additionalDays, dTxt1, dTxt2, dTxt5));
+  }, [additionalDays]);
 
   const SecondaryBtn = () => {
-    return (
-      <div className="second_btn_date">
-        <span className="second_btn_date__text">
-          +{plusDays} {dayText}
-        </span>
-      </div>
-    );
+        return (
+            <div className="second_btn_date">
+                <span className="second_btn_date__text">
+                  +{additionalDays} {dayText}
+                </span>
+            </div>
+        );
   };
+
+  const title = useMemo(() => formattedDate(date.rawDate),[date]);
 
   return (
     <MainFormBtn
-      cName={'btn_date'}
       title={title}
+      cName={'btn_date'}
       aria={aria}
       svg={svgDate}
-      SecondaryBtn={SecondaryBtn}
-      plusDays={plusDays}
       modalIsOpen={modalIsOpen}
       setModalIsOpen={setModalIsOpen}
+      SecondaryBtn={SecondaryBtn}
+      plusDays={additionalDays}
     >
       <DynamicUpWindow
         setModalIsOpen={setModalIsOpen}
         modalIsOpen={modalIsOpen}
         cName={'btn_date'}
         popupName={popupName}
-        storeDate={storeDate}
-        initialPlusDays={plusDays}
       />
     </MainFormBtn>
   );

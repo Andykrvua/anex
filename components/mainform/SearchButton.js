@@ -11,6 +11,7 @@ import {
 } from '../../store/store';
 import { inputRangeData } from '../../utils/constants';
 import { stringifyCrewComposition } from '../../utils/customer-crew';
+import {addDays, format} from "date-fns";
 
 export default function SearchButton() {
   const router = useRouter();
@@ -27,8 +28,6 @@ export default function SearchButton() {
     if (getSearchInProgress) {
       return;
     }
-    const copiedDate = new Date(date.rawDate);
-    copiedDate.setDate(copiedDate.getDate() + date.plusDays);
 
     setStartSearch(true);
 
@@ -39,8 +38,9 @@ export default function SearchButton() {
         from: up.value,
         to: down.value,
         country: down.countryValue,
-        checkIn: date.rawDate.toISOString().substr(0, 10),
-        checkTo: copiedDate.toISOString().substr(0, 10),
+        checkIn: format(date.rawDate,'yyyy-MM-dd'),
+        checkTo: format(addDays(date.rawDate,date.additionalDays - 1),'yyyy-MM-dd'),
+        plusDays: date.plusDays,
         nights: night.from,
         nightsTo: night.to,
         people: stringifyCrewComposition(person),

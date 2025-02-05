@@ -4,10 +4,9 @@ import DateField from './form-fields/dateField';
 import NightField from './form-fields/nightField';
 import PersonField from './form-fields/personField';
 import { useState, memo, useRef, useEffect } from 'react';
-import { useGetUp, useGetDown, useGetDate, useGetNight, useGetFieldsNames } from '../../store/store';
+import { useGetUp, useGetDown, useGetNight, useGetFieldsNames } from '../../store/store';
 import { useRouter } from 'next/router';
 import SearchButton from './SearchButton';
-import useDebounce from 'utils/useDebounce';
 
 export default function MainForm() {
   const [modalIsOpen, setModalIsOpen] = useState('');
@@ -45,7 +44,6 @@ export default function MainForm() {
 
   const up = useGetUp();
   const down = useGetDown();
-  const date = useGetDate();
   const night = useGetNight();
   const fieldsNames = useGetFieldsNames();
 
@@ -87,11 +85,10 @@ export default function MainForm() {
         popupName={fieldsNames.up}
       />
       <MemoDateField
-        title={date}
-        aria={'Дата вылета'}
-        modalIsOpen={modalIsOpen}
-        setModalIsOpen={setModalIsOpen}
-        popupName={fieldsNames.date}
+          aria={'Дата вылета'}
+          modalIsOpen={modalIsOpen}
+          setModalIsOpen={setModalIsOpen}
+          popupName={fieldsNames.date}
       />
       <MemoNightField
         title={`${night.from} - ${night.to} ночей`}

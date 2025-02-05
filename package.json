@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "leaflet": "^1.9.3",
     "next": "12.1.0",
     "next-auth": "^4.10.3",

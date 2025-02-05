@@ -50,7 +50,7 @@ const useStore = create(
     },
     setDown: (down) => set({ down }),
     initialDate: rawDate,
-    date: { rawDate, plusDays: 3 },
+    date: { rawDate, plusDays: 3, additionalDays: 3 },
     setDate: (date) => set({ date }),
     night: { from: 7, to: 9 },
     setNight: (night) => set({ night }),

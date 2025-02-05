@@ -1,0 +1,92 @@
+.popup_container {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.popup_nav {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup_nav_btn {
+    width: 40px;
+    height: 40px;
+    background-color: #F8F9FA;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup_datepicker :global(.react-datepicker__day--outside-month) {
+    visibility: hidden;
+}
+
+.popup_footer {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-gap: 15px;
+}
+
+.popup_plus_days_list {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+}
+
+.popup_plus_days_btn {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F6F6F8;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.popup_plus_days_btn:hover,.popup_plus_days_btn:global(.active) {
+    color: #fff;
+    background-color: var(--secondary);
+}
+
+.popup_apply {
+    padding: 15px;
+    background-color: var(--secondary);
+    border-radius: 5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+@media (min-width: 810px) {
+    .popup_nav {
+        justify-content: space-between;
+    }
+
+    .popup_nav_btn {
+        display: flex;
+    }
+
+    .popup_datepicker :global(.react-datepicker) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10%;
+    }
+
+    .popup_datepicker :global(.react-datepicker__navigation) {
+        display: none;
+    }
+
+    .popup_footer {
+        grid-template-columns: 2fr 1fr;
+        justify-content: space-between;
+    }
+
+    .popup_plus_days_list {
+        justify-content: flex-start;
+    }
+}
