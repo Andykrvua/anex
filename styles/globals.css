@@ -578,7 +578,7 @@ header.header .header_container {
   }
 
   .btn_date {
-    width: 250px;
+    width: 240px;
   }
 
   .second_btn_date {
@@ -689,7 +689,7 @@ header.header .header_container {
 }
 
 @media (min-width: 810px) {
-  .main_form_popup {
+  .main_form_popup,.main_form_popup_with_datepicker {
     position: absolute;
     top: calc(100% - 1px);
     bottom: initial;
@@ -697,6 +697,9 @@ header.header .header_container {
     transform: scaleY(0);
     transform-origin: top;
     border: 1px solid var(--line);
+  }
+
+  .main_form_popup_with_datepicker {
     left: 0;
     width: calc(100% * 2.02);
   }
@@ -712,13 +715,17 @@ header.header .header_container {
 }
 
 @media (min-width: 1110px) {
-  .main_form_popup {
+  .main_form_popup,.main_form_popup_with_datepicker {
     top: 100%;
-    /*left: initial;*/
-    /*right: -6px;*/
-    /*width: 360px;*/
+    left: initial;
+    right: -6px;
+    width: 360px;
+  }
+
+  .main_form_popup_with_datepicker {
     left: 0;
-    width: calc(1050px - 253px);
+    right: 0;
+    width: calc(1050px - 258px);
   }
 
   .wrapper_btn_down .main_form_popup {

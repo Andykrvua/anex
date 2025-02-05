@@ -65,6 +65,7 @@ export default function DateField({
     <MainFormBtn
       title={title}
       cName={'btn_date'}
+      wrapperClassName="main_form_popup_with_datepicker"
       aria={aria}
       svg={svgDate}
       modalIsOpen={modalIsOpen}

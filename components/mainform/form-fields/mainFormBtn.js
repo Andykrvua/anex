@@ -10,6 +10,7 @@ export default function MainFormBtn({
       modalIsOpen,
       setModalIsOpen,
       children,
+      wrapperClassName = ''
    }) {
   const clickHandler = () => {
     if (modalIsOpen === cName) {
@@ -48,7 +49,7 @@ export default function MainFormBtn({
         </span>
         </button>
         {SecondaryBtn && <SecondaryBtn />}
-        <DynamicWrapper modalIsOpen={modalIsOpen} cName={cName}>
+        <DynamicWrapper modalIsOpen={modalIsOpen} cName={cName} className={wrapperClassName}>
           {children}
         </DynamicWrapper>
       </div>
