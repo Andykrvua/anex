@@ -21,6 +21,7 @@
     display: none;
     align-items: center;
     justify-content: center;
+    border: 1px solid #EEEEF1;
 }
 
 .popup_datepicker :global(.react-datepicker__day--outside-month) {
@@ -80,10 +81,14 @@
     .popup_datepicker :global(.react-datepicker) {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10%;
+        gap: 5%;
     }
 
-    .popup_datepicker :global(.react-datepicker__navigation) {
+    .popup_datepicker :global(.react-datepicker__custom-header) {
+        justify-content: center;
+    }
+
+    .popup_datepicker :global(.react-datepicker__custom-header button) {
         display: none;
     }
 

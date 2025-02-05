@@ -9,7 +9,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useGetDate, useGetInitialDate, useSetDate } from "../../../store/store";
 import {
     addMonths,
-    differenceInDays,
+    differenceInDays, format,
     isAfter,
     isSameDay,
     isSameMonth,
@@ -245,6 +245,22 @@ const MultipleDatepicker = ({ setModalIsOpen, modalIsOpen, cName, popupName }) =
                     selected={viewMonth}
                     onMonthChange={setViewMonth}
                     disabledKeyboardNavigation
+                    renderCustomHeader={({
+                                             monthDate,
+                         decreaseMonth,
+                         increaseMonth,
+                         prevMonthButtonDisabled,
+                         nextMonthButtonDisabled,
+                    }) => (
+                        <div className="react-datepicker__custom-header">
+                            <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled} dangerouslySetInnerHTML={{__html: svgPrev}} className={`${styles.popup_nav_btn}`} />
+                            <span className="react-datepicker__current-month">{monthDate.toLocaleString(locale, {
+                                month: "long",
+                            })}
+                            </span>
+                            <button onClick={increaseMonth} disabled={nextMonthButtonDisabled} dangerouslySetInnerHTML={{__html: svgNext}} className={`${styles.popup_nav_btn}`} />
+                        </div>
+                    )}
                 />
             </div>
             <div className={`${styles.popup_footer}`}>

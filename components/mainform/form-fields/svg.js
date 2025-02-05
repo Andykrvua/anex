@@ -77,11 +77,11 @@ export const svgNo = `
 `;
 export const svgPrev = `
 <svg width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M7.57495 14.6001L2.14162 9.16672C1.49995 8.52505 1.49995 7.47506 2.14162 6.83339L7.57495 1.40005" stroke="#ff9400" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.57495 14.6001L2.14162 9.16672C1.49995 8.52505 1.49995 7.47506 2.14162 6.83339L7.57495 1.40005" stroke="#54546F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
 export const svgNext = `
 <svg width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.4248 14.6001L6.85814 9.16672C7.49981 8.52505 7.49981 7.47506 6.85814 6.83339L1.4248 1.40005" stroke="#ff9400" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1.4248 14.6001L6.85814 9.16672C7.49981 8.52505 7.49981 7.47506 6.85814 6.83339L1.4248 1.40005" stroke="#54546F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;

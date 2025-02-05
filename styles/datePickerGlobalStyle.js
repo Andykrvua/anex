@@ -15,6 +15,13 @@ export default function datePickerStyle() {
         text-transform: capitalize;
         font-weight: bold;
       }
+      
+      .react-datepicker__custom-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 5px;
+      }
 
       .react-datepicker__navigation {
         position: absolute;
