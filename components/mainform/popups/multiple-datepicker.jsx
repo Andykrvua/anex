@@ -39,20 +39,6 @@ const DATE_TYPES = {
     RANGE: 'range'
 }
 
-const SimpleBarWrapper = ({ isMobile = false, children }) => {
-    return (
-        <>
-            {isMobile ? (
-                <SimpleBar  className="mobile_default main_form_open_scroll" autoHide={true}>
-                    {children}
-                </SimpleBar>
-            ) : (
-                <>{children}</>
-            )}
-        </>
-    );
-};
-
 const calcDateTypeHandler = ({ date, plusDays = 0, initialDate}) => {
     let startDate, calculatedAdditionalDays = 0, middleDate;
     const normalizedDate = startOfDay(date);
@@ -92,12 +78,14 @@ const MultipleDatepicker = ({ setModalIsOpen, modalIsOpen, cName, popupName }) =
     const [endDate, setEndDate] = useState(null);
     const [middleDate, setMiddleDate] = useState(null);
     const [plusDays, setPlusDays] = useState(0);
+    const [activePlusDay, setActivePlusDay] = useState(0);
     const [additionalDays, setAdditionalDays] = useState(0);
     const [dateType, setDateType] = useState(DATE_TYPES.DATE);
     const [viewMonth, setViewMonth] = useState(initialDate);
 
     useEffect(() => {
         setPlusDays(initialPlusDays);
+        setActivePlusDay(initialPlusDays);
         setAdditionalDays(initialAddPlusDays);
         const { newStartDate, newEndDate, newMiddleDate } = calcDateTypeHandler({
             date: startOfDay(storeDate),
@@ -123,6 +111,25 @@ const MultipleDatepicker = ({ setModalIsOpen, modalIsOpen, cName, popupName }) =
             },
         ];
     }, [startDate, additionalDays,middleDate,viewMonth]);
+
+    const handleChangeDateType = ({date, plusDays = 0}) => {
+        const { newStartDate, newEndDate, newMiddleDate, calculatedAdditionalDays } = calcDateTypeHandler({
+            date,
+            plusDays,
+            initialDate
+        });
+        setStartDate(newStartDate);
+        setEndDate(newEndDate);
+        setAdditionalDays(calculatedAdditionalDays);
+        setMiddleDate(newMiddleDate);
+        setViewMonth(!isSameMonth(newStartDate, newMiddleDate) ? newStartDate: newEndDate);
+
+        confirmDates({
+            rawDate: newStartDate,
+            plusDays,
+            additionalDays: calculatedAdditionalDays,
+        });
+    }
 
     const datePickerProps = useMemo(() => dateType === DATE_TYPES.RANGE ? {
         startDate,
@@ -151,24 +158,7 @@ const MultipleDatepicker = ({ setModalIsOpen, modalIsOpen, cName, popupName }) =
             }
         }
     }: {
-        onChange: date => {
-            const { newStartDate, newEndDate, newMiddleDate, calculatedAdditionalDays } = calcDateTypeHandler({
-                date,
-                plusDays,
-                initialDate
-            });
-            setStartDate(newStartDate);
-            setEndDate(newEndDate);
-            setAdditionalDays(calculatedAdditionalDays);
-            setMiddleDate(newMiddleDate);
-            setViewMonth(!isSameMonth(newStartDate, newMiddleDate) ? newStartDate: newEndDate);
-
-            confirmDates({
-                rawDate: newStartDate,
-                plusDays,
-                additionalDays: calculatedAdditionalDays,
-            });
-        },
+        onChange: date => handleChangeDateType({ date, plusDays }),
         highlightDates
     },[dateType,startDate,endDate,highlightDates,plusDays]);
 
@@ -232,56 +222,58 @@ const MultipleDatepicker = ({ setModalIsOpen, modalIsOpen, cName, popupName }) =
     }
 
     return (
-        <SimpleBarWrapper isMobile={isMobile}>
-            <div className={`${styles.popup_container}`} ref={wrapperRef}>
-                <Header closeModalHandler={closeModalHandler} svg={svgDate} />
-                <h3 className="title">{popupName}</h3>
-                <div className={`${styles.popup_nav}`}>
-                    <button onClick={() => navHandler(true)} dangerouslySetInnerHTML={{__html: svgPrev}} className={`${styles.popup_nav_btn}`} />
-                    <SwitchMenu
-                        items={dateTypesList}
-                        name={'date_types_switcher'}
-                        callback={[dateType, setDateType]}
-                    />
-                    <button onClick={() => navHandler(false)} dangerouslySetInnerHTML={{__html: svgNext}} className={`${styles.popup_nav_btn}`} />
-                </div>
-                <div className={`${styles.popup_datepicker}`}>
-                    <DatePicker
-                        {...datePickerProps}
-                        showPopperArrow={false}
-                        minDate={initialDate}
-                        maxDate={addYears(initialDate, 1)}
-                        monthsShown={isMobile ? 1: 2}
-                        inline
-                        selected={viewMonth}
-                        onMonthChange={setViewMonth}
-                        disabledKeyboardNavigation
-                    />
-                </div>
-                <div className={`${styles.popup_footer}`}>
-                    {
-                        dateType === DATE_TYPES.DATE ? (
-                            <div className={`${styles.popup_plus_days_list}`}>
-                                {
-                                    plusDaysList.map(({name,value}) => (
-                                        <button className={`${styles.popup_plus_days_btn} ${value === plusDays ? 'active': ''}`} key={value} onClick={() => {
-                                            setPlusDays(value);
-                                            setAdditionalDays(value);
-                                        }}>
-                                            {name}
-                                        </button>
-                                    ))
-                                }
-                            </div>
-                        ): <div/>
-                    }
-                    <button className={`${styles.popup_apply}`} onClick={selectedHandler}>
-                        <FM id="common.apply" />
-                    </button>
-                </div>
-                <DatePickerGlobalStyle />
+        <div className={`${styles.popup_container}`} ref={wrapperRef}>
+            <Header closeModalHandler={closeModalHandler} svg={svgDate} />
+            <h3 className="title">{popupName}</h3>
+            <div className={`${styles.popup_nav}`}>
+                <button onClick={() => navHandler(true)} dangerouslySetInnerHTML={{__html: svgPrev}} className={`${styles.popup_nav_btn}`} />
+                <SwitchMenu
+                    items={dateTypesList}
+                    name={'date_types_switcher'}
+                    callback={[dateType, setDateType]}
+                />
+                <button onClick={() => navHandler(false)} dangerouslySetInnerHTML={{__html: svgNext}} className={`${styles.popup_nav_btn}`} />
             </div>
-        </SimpleBarWrapper>
+            <div className={`${styles.popup_datepicker}`}>
+                <DatePicker
+                    {...datePickerProps}
+                    showPopperArrow={false}
+                    minDate={initialDate}
+                    maxDate={addYears(initialDate, 1)}
+                    monthsShown={isMobile ? 1: 2}
+                    inline
+                    selected={viewMonth}
+                    onMonthChange={setViewMonth}
+                    disabledKeyboardNavigation
+                />
+            </div>
+            <div className={`${styles.popup_footer}`}>
+                {
+                    dateType === DATE_TYPES.DATE ? (
+                        <div className={`${styles.popup_plus_days_list}`}>
+                            {
+                                plusDaysList.map(({name,value}) => (
+                                    <button className={`${styles.popup_plus_days_btn} ${value === plusDays && activePlusDay === value ? 'active': ''}`} key={value} onClick={() => {
+                                        setPlusDays(value);
+                                        setActivePlusDay(prev => prev !== value ? value: 0);
+                                        handleChangeDateType({
+                                            date: middleDate,
+                                            plusDays: activePlusDay !== value  ? value: 0
+                                        });
+                                    }}>
+                                        {name}
+                                    </button>
+                                ))
+                            }
+                        </div>
+                    ): <div/>
+                }
+                <button className={`${styles.popup_apply}`} onClick={selectedHandler}>
+                    <FM id="common.apply" />
+                </button>
+            </div>
+            <DatePickerGlobalStyle />
+        </div>
 
     )
 }

@@ -13,6 +13,7 @@ export default function datePickerStyle() {
       .react-datepicker__current-month {
         line-height: 50px;
         text-transform: capitalize;
+        font-weight: bold;
       }
 
       .react-datepicker__navigation {

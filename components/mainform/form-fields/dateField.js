@@ -31,7 +31,7 @@ export default function DateField({
   // tomorrow.setDate(tomorrow.getDate() - 15);
   // const initialDate = tomorrow;
   const date = useGetDate();
-  const additionalDays = useMemo(() => date.additionalDays,[date]);
+  const plusDays = useMemo(() => date.plusDays,[date]);
   const intl = useIntl();
   const dTxt1 = intl.formatMessage({
     id: 'common.day1',
@@ -46,14 +46,14 @@ export default function DateField({
   const [dayText, setDayText] = useState(dTxt2);
 
   useEffect(() => {
-        setDayText(declension(additionalDays, dTxt1, dTxt2, dTxt5));
-  }, [additionalDays]);
+        setDayText(declension(plusDays, dTxt1, dTxt2, dTxt5));
+  }, [plusDays]);
 
   const SecondaryBtn = () => {
         return (
             <div className="second_btn_date">
                 <span className="second_btn_date__text">
-                  +{additionalDays} {dayText}
+                  +{plusDays} {dayText}
                 </span>
             </div>
         );
@@ -71,7 +71,7 @@ export default function DateField({
       modalIsOpen={modalIsOpen}
       setModalIsOpen={setModalIsOpen}
       SecondaryBtn={SecondaryBtn}
-      plusDays={additionalDays}
+      plusDays={plusDays}
     >
       <DynamicUpWindow
         setModalIsOpen={setModalIsOpen}
