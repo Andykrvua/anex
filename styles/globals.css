@@ -684,6 +684,18 @@ header.header .header_container {
   z-index: var(--main-form-popup-z);
 }
 
+.main_form_popup_with_datepicker header div {
+  display: none;
+}
+
+.main_form_popup_with_datepicker header button {
+  margin: 0;
+}
+
+.main_form_popup_with_datepicker header {
+  border-bottom: 0;
+}
+
 .main_form_popup.open {
   transform: translateX(0);
 }
@@ -723,7 +735,7 @@ header.header .header_container {
   }
 
   .main_form_popup_with_datepicker {
-    left: 0;
+    left: -53%;
     right: 0;
     width: calc(1050px - 258px);
   }

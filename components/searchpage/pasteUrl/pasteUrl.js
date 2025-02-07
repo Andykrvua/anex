@@ -1,5 +1,6 @@
 import { parseCrewComposition } from '../../../utils/customer-crew'
 import { differenceInDays } from "date-fns";
+import {DATE_TYPES} from "../../../store/store";
 // todo ru and ua
 // todo fetch hide token
 
@@ -161,9 +162,10 @@ const searchDate = (router) => {
 
   if (!date1 || !date2) return null;
 
-  const plusDays = router.query?.plusDays || 3;
+  const plusDays = +(router.query?.plusDays || 3);
+  const dateType = router?.query?.dateType || DATE_TYPES.RANGE;
 
-  return { rawDate: new Date(router.query.checkIn), plusDays, additionalDays: differenceInDays(date2,date1) + 1 };
+  return { rawDate: new Date(router.query.checkIn), plusDays, additionalDays: differenceInDays(date2,date1) + (dateType === DATE_TYPES.DATE ? 1: 0), dateType };
 };
 
 const searchPeople = (router) => {

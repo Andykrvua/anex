@@ -4,6 +4,10 @@ export default function datePickerStyle() {
       .react-datepicker {
         position: relative;
       }
+      
+      .react-datepicker__aria-live {
+        display: none;
+      }
 
       .react-datepicker__header {
         position: relative;
@@ -119,8 +123,9 @@ export default function datePickerStyle() {
       }
       
       .react-datepicker__day--active,
-      .react-datepicker__day--in-selecting-range,
+      //.react-datepicker__day--in-selecting-range,
       .react-datepicker__day--in-range,
+      //.react-datepicker__day--selected,
       .react-datepicker__month-text--selected,
       .react-datepicker__month-text--in-selecting-range,
       .react-datepicker__month-text--in-range,
