@@ -1,16 +1,14 @@
 import dynamic from 'next/dynamic';
+import { useState, useEffect } from 'react';
 import MainFormBtn from './mainFormBtn';
 import { svgDate } from './svg';
-import { useMemo } from "react";
-import { useGetDate, useGetInitialDate } from "../../../store/store";
-import { formattedDate } from "../../../utils/formattedDate";
-import { addDays, isSameDay } from "date-fns";
-
 import Loader from 'components/common/loader';
-
+import { formattedDate } from '../../../utils/formattedDate';
+import declension from '../../../utils/declension';
+import { useIntl } from 'react-intl';
 
 const DynamicUpWindow = dynamic(
-  () => import(/* webpackChunkName: "Date" */ '../popups/multiple-datepicker'),
+  () => import(/* webpackChunkName: "Date" */ '../popups/date'),
   {
     ssr: false,
     loading: () => {
@@ -20,34 +18,67 @@ const DynamicUpWindow = dynamic(
 );
 
 export default function DateField({
+  title,
   aria,
   modalIsOpen,
   setModalIsOpen,
   popupName,
 }) {
-  const date = useGetDate();
-  const plusDays = useMemo(() => date.plusDays,[date]);
-  const initialDate = useGetInitialDate();
+  // не могу получить дату во внутреннем компоненте, хз
+  // const tomorrow = new Date();
+  // // tomorrow.setDate(tomorrow.getDate() + 1);
+  // tomorrow.setDate(tomorrow.getDate() - 15);
+  // const initialDate = tomorrow;
+  const storeDate = title.rawDate;
+  const plusDays = title.plusDays;
 
+  const intl = useIntl();
+  const dTxt1 = intl.formatMessage({
+    id: 'common.day1',
+  });
+  const dTxt2 = intl.formatMessage({
+    id: 'common.day2',
+  });
+  const dTxt5 = intl.formatMessage({
+    id: 'common.day5',
+  });
 
-  const title = useMemo(() => `${formattedDate(date.rawDate)} - ${formattedDate(addDays(date.rawDate,date.additionalDays - (isSameDay(date.rawDate, initialDate) ? 0 : 1)))}`,[date]);
+  const [dayText, setDayText] = useState(dTxt2);
+
+  useEffect(() => {
+    setDayText(declension(plusDays, dTxt1, dTxt2, dTxt5));
+  }, [plusDays]);
+
+  title = formattedDate(title.rawDate);
+
+  const SecondaryBtn = () => {
+    return (
+      <div className="second_btn_date">
+        <span className="second_btn_date__text">
+          +{plusDays} {dayText}
+        </span>
+      </div>
+    );
+  };
 
   return (
     <MainFormBtn
-      title={title}
       cName={'btn_date'}
-      wrapperClassName="main_form_popup_with_datepicker"
+      title={title}
       aria={aria}
       svg={svgDate}
+      SecondaryBtn={SecondaryBtn}
+      plusDays={plusDays}
       modalIsOpen={modalIsOpen}
       setModalIsOpen={setModalIsOpen}
-      plusDays={plusDays}
     >
       <DynamicUpWindow
         setModalIsOpen={setModalIsOpen}
         modalIsOpen={modalIsOpen}
         cName={'btn_date'}
         popupName={popupName}
+        storeDate={storeDate}
+        initialPlusDays={plusDays}
       />
     </MainFormBtn>
   );

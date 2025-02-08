@@ -7,11 +7,10 @@ import {
   useGetNight,
   useGetPerson,
   useSetStartSearch,
-  useGetSearchInProgress, useGetInitialDate,
+  useGetSearchInProgress,
 } from '../../store/store';
 import { inputRangeData } from '../../utils/constants';
 import { stringifyCrewComposition } from '../../utils/customer-crew';
-import {addDays, format, isSameDay} from "date-fns";
 
 export default function SearchButton() {
   const router = useRouter();
@@ -23,12 +22,13 @@ export default function SearchButton() {
   const setStartSearch = useSetStartSearch();
   const getSearchInProgress = useGetSearchInProgress();
   const person = useGetPerson();
-  const initialDate = useGetInitialDate();
 
   const makeSearchParams = () => {
     if (getSearchInProgress) {
       return;
     }
+    const copiedDate = new Date(date.rawDate);
+    copiedDate.setDate(copiedDate.getDate() + date.plusDays);
 
     setStartSearch(true);
 
@@ -39,10 +39,8 @@ export default function SearchButton() {
         from: up.value,
         to: down.value,
         country: down.countryValue,
-        checkIn: format(date.rawDate,'yyyy-MM-dd'),
-        checkTo: format(addDays(date.rawDate,date.additionalDays - (isSameDay(date.rawDate, initialDate) ? 0 : 1)),'yyyy-MM-dd'),
-        plusDays: date.plusDays,
-        dateType: date.dateType,
+        checkIn: date.rawDate.toISOString().substr(0, 10),
+        checkTo: copiedDate.toISOString().substr(0, 10),
         nights: night.from,
         nightsTo: night.to,
         people: stringifyCrewComposition(person),
