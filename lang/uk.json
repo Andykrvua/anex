@@ -28,6 +28,8 @@
   "mainform.down.placeholder": "Країна / Курорт / Готель",
   "mainform.date.t": "Дата вильоту",
   "mainform.date.t2": "Обрана дата",
+  "mainform.multiple-datepicker.types.date": "Дата",
+  "mainform.multiple-datepicker.types.range": "Проміжок",
   "mainform.night.t": "Тривалість",
   "mainform.person.t": "Туристи",
   "mainform.person.adult": "Дорослі",

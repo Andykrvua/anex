@@ -7,7 +7,9 @@ import {
   useSetFilterOpen,
   useSetSearchResultSort,
   useGetSearchResultSort,
+  useGetInitialDate,
 } from 'store/store';
+import {isSameDay} from "date-fns";
 
 export default function SearchHeader() {
   const router = useRouter();
@@ -19,9 +21,10 @@ export default function SearchHeader() {
   const setFilterModale = useSetFilterOpen();
   const setSearchResultSort = useSetSearchResultSort();
   const getSearchResultSort = useGetSearchResultSort();
+  const initialDate = useGetInitialDate();
 
   const copiedDate = new Date(date.rawDate);
-  copiedDate.setDate(copiedDate.getDate() + date.plusDays);
+  copiedDate.setDate(copiedDate.getDate() + date.additionalDays - (isSameDay(date.rawDate, initialDate) ? 0 : 1));
 
   const sortHandler = (type) => {
     if (type === 'price') {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { transitionTime } from '../../../utils/constants';
 
-export default function DynamicWrapper({ modalIsOpen, cName, children }) {
+export default function DynamicWrapper({ modalIsOpen, cName, children, className = '' }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenHelper, setIsOpenHelper] = useState(false);
   const [destroy, setDestroy] = useState(true);
@@ -46,7 +46,7 @@ export default function DynamicWrapper({ modalIsOpen, cName, children }) {
   return (
     <div
       className={
-        isOpenHelper === cName ? 'main_form_popup open' : 'main_form_popup'
+        isOpenHelper === cName ? `main_form_popup ${className} open` : `main_form_popup ${className}`
       }
     >
       {isOpen === cName && (
