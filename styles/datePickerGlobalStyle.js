@@ -4,10 +4,6 @@ export default function datePickerStyle() {
       .react-datepicker {
         position: relative;
       }
-      
-      .react-datepicker__aria-live {
-        display: none;
-      }
 
       .react-datepicker__header {
         position: relative;
@@ -17,14 +13,6 @@ export default function datePickerStyle() {
       .react-datepicker__current-month {
         line-height: 50px;
         text-transform: capitalize;
-        font-weight: bold;
-      }
-      
-      .react-datepicker__custom-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 5px;
       }
 
       .react-datepicker__navigation {
@@ -121,11 +109,10 @@ export default function datePickerStyle() {
         border-radius: var(--def-radius);
         background-color: var(--white);
       }
-      
-      .react-datepicker__day--active,
-      //.react-datepicker__day--in-selecting-range,
+
+      .react-datepicker__day--selected,
+      .react-datepicker__day--in-selecting-range,
       .react-datepicker__day--in-range,
-      //.react-datepicker__day--selected,
       .react-datepicker__month-text--selected,
       .react-datepicker__month-text--in-selecting-range,
       .react-datepicker__month-text--in-range,
@@ -212,17 +199,6 @@ export default function datePickerStyle() {
         font-weight: bold;
         cursor: pointer;
         background: #f0f0f0;
-      }
-      
-      .react-datepicker__day:has(.resetSelectedDay) {
-        color: var(--primary) !important;
-        border-color: transparent !important;
-        font-weight: normal;
-      }
-
-      .react-datepicker__day:has(.resetSelectedDayText) {
-        color: var(--primary) !important;
-        font-weight: normal;
       }
     `}</style>
   );

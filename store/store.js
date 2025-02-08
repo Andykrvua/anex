@@ -27,12 +27,6 @@ const defaultUpPoint = {
   value: null,
 };
 
-export const DATE_TYPES = {
-    DATE: 'date',
-    RANGE: 'range'
-}
-
-
 const useStore = create(
   devtools((set) => ({
     up: {
@@ -56,7 +50,7 @@ const useStore = create(
     },
     setDown: (down) => set({ down }),
     initialDate: rawDate,
-    date: { rawDate, plusDays: 3, additionalDays: 3, dateType: DATE_TYPES.DATE },
+    date: { rawDate, plusDays: 3 },
     setDate: (date) => set({ date }),
     night: { from: 7, to: 9 },
     setNight: (night) => set({ night }),

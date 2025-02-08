@@ -1,8 +1,6 @@
-import { format } from "date-fns";
-
 export function formattedDate(date) {
   // if (typeof window === 'undefined') {
-  return format(date,'dd.MM.yyyy');
+  return date.toISOString().slice(0, 10).split('-').reverse().join('.');
   // }
   // return null;
 }
