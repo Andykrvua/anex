@@ -25,12 +25,13 @@ import {
   useSetHotelService,
   useSetSearchResultSort,
   useSetDate,
-  useGetSearchResultSort,
+  useGetSearchResultSort, useGetInitialDate,
 } from 'store/store';
 import { useRouter } from 'next/router';
 import parseUrl from '../pasteUrl/pasteUrl';
 import Cards from './cards';
 import { stringifyCrewComposition } from '../../../utils/customer-crew';
+import {addDays, format, isSameDay} from "date-fns";
 
 const MemoCards = memo(Cards);
 
@@ -64,6 +65,7 @@ export default function SearchResult({ isFilterBtnShow }) {
   const getSearchResultSort = useGetSearchResultSort();
   const setSearchResultSort = useSetSearchResultSort();
   const setFilterData = useSetSearchFilter();
+  const initialDate = useGetInitialDate();
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -143,11 +145,8 @@ export default function SearchResult({ isFilterBtnShow }) {
   async function getUrl(number) {
     const people = stringifyCrewComposition(person);
 
-    const copiedDate = new Date(date.rawDate);
-    copiedDate.setDate(copiedDate.getDate() + date.plusDays);
-
-    const checkIn = date.rawDate.toISOString().substr(0, 10);
-    const checkTo = copiedDate.toISOString().substr(0, 10);
+    const checkIn = format(date.rawDate,'yyyy-MM-dd');
+    const checkTo =  format(addDays(date.rawDate,date.additionalDays - (isSameDay(date.rawDate, initialDate) ? 0 : 1)),'yyyy-MM-dd')
 
     const transport = up.transport ? up.transport : 'no';
 
@@ -199,7 +198,7 @@ export default function SearchResult({ isFilterBtnShow }) {
         return null;
       });
 
-    let number = 0;
+    const number = 0;
     async function apiSearch(number) {
       const url = await getUrl(number);
       const res = await fetch(url)
@@ -223,7 +222,7 @@ export default function SearchResult({ isFilterBtnShow }) {
     async function recursiveFetch(number) {
       setApiRes(false);
       setShow(false);
-      let data = await apiSearch(number);
+      const data = await apiSearch(number);
       if (data) {
         if (data.lastResult) {
           setApiRes(data);
