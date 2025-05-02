@@ -24,17 +24,12 @@ const request = async (url = '', data = {}) => {
 };
 
 export default async function handler(req, res) {
-  console.log('handler');
-  console.log('req.body', req.body);
   const result = await request(
     `${process.env.API}${req.body.item}?access_token=${process.env.ACCESS_TOKEN}`,
     { ...req.body }
   );
 
-  console.log('result', result);
-
   if (result.errors) {
-    console.log('result.errors', result.errors);
     res.status(200).json({
       ok: false,
     });
@@ -254,9 +249,7 @@ export default async function handler(req, res) {
       },
     });
 
-    console.log('transporter', transporter);
-
-    const test = await transporter.sendMail({
+    await transporter.sendMail({
       from: process.env.MAIL_SENDER,
       // to: 'andrey.kallko@gmail.com, touragency123@gmail.com',
       to: process.env.MAIL_TARGET,
@@ -281,11 +274,8 @@ export default async function handler(req, res) {
       ],
     });
 
-    console.log('await transporter.sendMail', test);
-
-    console.log('req?.body?.email', req?.body?.email);
     if (req?.body?.email) {
-      const test2 = await transporter.sendMail({
+      await transporter.sendMail({
         from: process.env.MAIL_SENDER,
         to: req.body.email,
         subject: subject(req),
@@ -308,14 +298,12 @@ export default async function handler(req, res) {
           },
         ],
       });
-
-      console.log('await transporter.sendMail2', test2);
     }
   } catch (error) {
     /* eslint-disable-next-line */
     console.log('error', error);
   }
-  console.log('res.status(200).json({ ok: true })');
+
   res.status(200).json({
     ok: true,
   });

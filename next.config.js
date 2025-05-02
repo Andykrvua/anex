@@ -8,7 +8,7 @@ const nextConfig = {
     defaultLocale: 'ru',
   },
   images: {
-    domains: ['anex-tour.com.ua', 'newimg.otpusk.com'],
+    domains: ['anex-tour.com.ua', 'newimg.otpusk.com', 'admin.anex-tour.com.ua'],
   },
   async redirects() {
     return [
@@ -402,14 +402,12 @@ const nextConfig = {
       },
       {
         source: '/ukr/krainy/dominikana/tury-v-puerto-plata/tury-v-kabarete/',
-        destination:
-          '/uk/countries/dominician-republic/tur-puerto-plata/tur-kabarete/',
+        destination: '/uk/countries/dominician-republic/tur-puerto-plata/tur-kabarete/',
         permanent: true,
       },
       {
         source: '/ukr/krainy/dominikana/tury-v-puerto-plata/tury-v-sosua/',
-        destination:
-          '/uk/countries/dominician-republic/tur-puerto-plata/tur-sosua/',
+        destination: '/uk/countries/dominician-republic/tur-puerto-plata/tur-sosua/',
         permanent: true,
       },
       {
