@@ -19,9 +19,9 @@ export default function Reviews({ data }) {
       <div className="container">
         <Breadcrumbs data={br_arr} />
         <ReviewsHeader />
-        <SessionProvider>
+        {/* <SessionProvider>
           <Auth />
-        </SessionProvider>
+        </SessionProvider> */}
         <ReviewsContent
           pagesCount={pagesCount}
           data={data}
