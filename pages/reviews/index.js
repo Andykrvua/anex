@@ -19,9 +19,9 @@ export default function Reviews({ data }) {
       <div className="container">
         <Breadcrumbs data={br_arr} />
         <ReviewsHeader />
-        {/* <SessionProvider>
+        <SessionProvider>
           <Auth />
-        </SessionProvider> */}
+        </SessionProvider>
         <ReviewsContent
           pagesCount={pagesCount}
           data={data}
@@ -40,29 +40,44 @@ export default function Reviews({ data }) {
 }
 
 export async function getServerSideProps(ctx) {
-  console.log('start');
-  const loc = ctx.locale;
+  try {
+    console.log('start');
+    console.log('ctx.locale:', ctx.locale);
+    console.log('ctx.query:', ctx.query);
+    console.log('process.env.API:', process.env.API);
 
-  const text = 'translations.content';
-  const pageSettings = await getPageSettings('reviews_page', loc, text);
-  console.log('pageSettings', pageSettings);
-  if (pageSettings.errors) {
-    // if incorrect request
-    /* eslint-disable-next-line */
-    console.log('error: ', pageSettings?.errors);
-    throw new Error('ERROR REVIEW');
+    const loc = ctx.locale;
+
+    const text = 'translations.content';
+    const pageSettings = await getPageSettings('reviews_page', loc, text);
+    console.log('pageSettings', pageSettings);
+    if (pageSettings.errors) {
+      // if incorrect request
+      /* eslint-disable-next-line */
+      console.log('error: ', pageSettings?.errors);
+      throw new Error('ERROR REVIEW');
+    }
+
+    const page = 1;
+    const limit = reviewsPerPage;
+    const filter = ctx.query.f ? ctx.query.f : null;
+    console.log('Fetching reviews with params:', { page, limit, filter });
+    const data = await getReviews(page, limit, filter);
+    console.log('datareview', data);
+    if (ctx.query.f) {
+      data.query = ctx.query.f;
+    }
+
+    data.pageSettings = pageSettings;
+
+    return { props: { data } };
+  } catch (error) {
+    console.error('Error in getServerSideProps:', error);
+    return {
+      props: {
+        error: error.message,
+        data: null,
+      },
+    };
   }
-
-  const page = 1;
-  const limit = reviewsPerPage;
-  const filter = ctx.query.f ? ctx.query.f : null;
-  const data = await getReviews(page, limit, filter);
-  console.log('datareview', data);
-  if (ctx.query.f) {
-    data.query = ctx.query.f;
-  }
-
-  data.pageSettings = pageSettings;
-
-  return { props: { data } };
 }
