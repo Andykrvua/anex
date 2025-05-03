@@ -26,7 +26,10 @@ export default function Home({
       <SeoHead content={mainPageSettings} />
       <div className="container">
         <MainForm />
-        <PopularCountry data={popularCountry} minOffer={minOffer?.data?.countries} />
+        {/* <PopularCountry
+          data={popularCountry}
+          minOffer={minOffer?.data?.countries}
+        /> */}
         <Blog data={postsList} />
         {faqData && <Faq data={faqData} length={faqDataLength} />}
         {mainPageSettings.translations && <SeoBlock text={mainPageSettings.translations[0].seo_block} />}
