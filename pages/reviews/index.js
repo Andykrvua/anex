@@ -40,10 +40,12 @@ export default function Reviews({ data }) {
 }
 
 export async function getServerSideProps(ctx) {
+  console.log('start');
   const loc = ctx.locale;
 
   const text = 'translations.content';
   const pageSettings = await getPageSettings('reviews_page', loc, text);
+  console.log('pageSettings', pageSettings);
   if (pageSettings.errors) {
     // if incorrect request
     /* eslint-disable-next-line */
@@ -55,7 +57,7 @@ export async function getServerSideProps(ctx) {
   const limit = reviewsPerPage;
   const filter = ctx.query.f ? ctx.query.f : null;
   const data = await getReviews(page, limit, filter);
-
+  console.log('datareview', data);
   if (ctx.query.f) {
     data.query = ctx.query.f;
   }
