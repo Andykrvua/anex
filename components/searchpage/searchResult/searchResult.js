@@ -361,7 +361,7 @@ export default function SearchResult({ isFilterBtnShow }) {
           <MemoCards
             hotels={apiData.hotelsArr}
             step={step}
-            countryHotelService={countryHotelService.icons}
+            countryHotelService={countryHotelService?.icons || []}
             searchParams={searchParams}
           />
         )}
