@@ -6,7 +6,9 @@ const TURNSTILE_SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js?
 export default function TurnstileWidget({ siteKey, onSuccess, onExpired, onReady, theme = 'light', size = 'normal' }) {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(
+    () => typeof window !== 'undefined' && typeof window.turnstile !== 'undefined'
+  );
 
   const reset = () => {
     if (widgetIdRef.current && typeof window.turnstile !== 'undefined') {
