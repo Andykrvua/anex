@@ -105,6 +105,7 @@
   "certificates.form.modal.cost.less": "Номінал не може бути менше 5 000",
   "certificates.form.modal.name": "Вкажіть ім'я",
   "certificates.form.modal.phone": "Перевірте номер",
+  "certificates.form.modal.captcha": "Пройдіть перевірку безпеки",
   "certificates.form.send.ok": "Отримано. Дякуємо!",
   "certificates.form.send.fail": "Помилка відправки, спробуйте пізніше",
   "contacts.br": "Контакти",

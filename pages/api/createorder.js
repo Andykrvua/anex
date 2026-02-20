@@ -1,6 +1,30 @@
 import nodemailer from 'nodemailer';
+
 const item = {
   lead_order_tour: 'lead_order_tour',
+};
+
+const validateTurnstile = async (token, remoteip) => {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret || !token) {
+    return { success: false };
+  }
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret,
+        response: token,
+        remoteip: remoteip || undefined,
+      }),
+    });
+    return response.json();
+  } catch (error) {
+    /* eslint-disable-next-line */
+    console.error('Turnstile validation error:', error);
+    return { success: false };
+  }
 };
 
 const request = async (url = '', data = {}) => {
@@ -23,10 +47,40 @@ const request = async (url = '', data = {}) => {
   return response;
 };
 
+const getCaptchaEnabled = async () => {
+  try {
+    const staticRes = await fetch(
+      `${process.env.API}static_data?fields=captcha_enabled&limit=1&filter[status]=published&access_token=${process.env.ACCESS_TOKEN}`
+    );
+    const staticJson = await staticRes.json();
+    const data = staticJson?.data;
+    const record = Array.isArray(data) ? data[0] : data;
+    return record?.captcha_enabled !== false;
+  } catch (e) {
+    return true;
+  }
+};
+
 export default async function handler(req, res) {
+  if (req.body?.item === 'lead_pick_tour' && process.env.TURNSTILE_SECRET_KEY) {
+    const captchaEnabled = await getCaptchaEnabled();
+    if (captchaEnabled) {
+      const captchaToken = req.body?.captchaToken;
+      const remoteip = req.headers['x-forwarded-for']?.split(',')[0]?.trim()
+        || req.headers['x-real-ip']
+        || req.socket?.remoteAddress;
+
+      const turnstileResult = await validateTurnstile(captchaToken, remoteip);
+      if (!turnstileResult?.success) {
+        return res.status(200).json({ ok: false });
+      }
+    }
+  }
+
+  const { captchaToken: _captchaToken, ...requestBody } = req.body || {};
   const result = await request(
     `${process.env.API}${req.body.item}?access_token=${process.env.ACCESS_TOKEN}`,
-    { ...req.body }
+    requestBody
   );
 
   if (result.errors) {

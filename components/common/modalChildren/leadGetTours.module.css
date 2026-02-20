@@ -23,6 +23,10 @@
   line-height: 16px;
 }
 
+.captchaWrapper {
+  margin: 16px 0;
+}
+
 .btn {
   width: 100%;
   margin: 20px 0 0;
