@@ -62,7 +62,8 @@ const getCaptchaEnabled = async () => {
 };
 
 export default async function handler(req, res) {
-  if (req.body?.item === 'lead_pick_tour' && process.env.TURNSTILE_SECRET_KEY) {
+  const captchaItems = ['lead_pick_tour', 'lead_request_call'];
+  if (captchaItems.includes(req.body?.item) && process.env.TURNSTILE_SECRET_KEY) {
     const captchaEnabled = await getCaptchaEnabled();
     if (captchaEnabled) {
       const captchaToken = req.body?.captchaToken;
