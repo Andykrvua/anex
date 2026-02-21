@@ -44,7 +44,9 @@ const HotelProp = ({ hotel }) => {
 };
 
 export default function Hotel({ data, hotel }) {
-  console.log('hotel', hotel);
+  if (process.env.NODE_ENV === 'development') {
+    console.log('hotel', hotel);
+  }
   const br_arr = [{ title: hotel?.n }];
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
@@ -362,7 +364,7 @@ export async function getServerSideProps(ctx) {
           }
         }
         return null;
-      }
+      },
     );
   } catch (error) {
     hotel = null;
