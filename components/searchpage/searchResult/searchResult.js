@@ -181,7 +181,7 @@ export default function SearchResult({ isFilterBtnShow }) {
     setSearchInProgress(true);
     setStartSearch(true);
     await fetch(
-      `https://api.otpusk.com/api/2.6/tours/services?countryId=${down.value}&lang=${loc}&access_token=337da-65e22-26745-a251f-77b9e`
+      `https://api.otpusk.com/api/2.6/tours/services?countryId=${down.countryValue ? down.countryValue : down.value}&lang=${loc}&access_token=337da-65e22-26745-a251f-77b9e`,
     )
       .then((response) => {
         if (response.status === 200) {
