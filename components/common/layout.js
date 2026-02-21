@@ -28,7 +28,7 @@ export default function Layout({ children, navData, staticData }) {
         <InfoModal />
         <Header navData={navData} />
         <main className="content">{children}</main>
-        <Footer />
+        <Footer staticData={staticData} />
         <Burger />
         <Modal />
         <ScrollTop />

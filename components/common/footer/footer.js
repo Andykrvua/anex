@@ -1,10 +1,33 @@
 import styles from './footer.module.css';
 import { links } from 'utils/links';
 import Link from 'next/link';
-import MessendgersLinks from 'components/common/other/messendgersLinks';
 import { FormattedMessage as FM } from 'react-intl';
 
-export default function Footer() {
+export default function Footer({ staticData }) {
+  const tgBanners = {};
+  if (staticData) {
+    tgBanners.x1 = staticData.telegram_banner
+      ? `${process.env.NEXT_PUBLIC_API_img}${staticData?.telegram_banner}`
+      : null;
+    tgBanners.x2 = staticData.telegram_banner_x2
+      ? `${process.env.NEXT_PUBLIC_API_img}${staticData?.telegram_banner_x2}`
+      : null;
+    tgBanners.x3 = staticData.telegram_banner_x_3
+      ? `${process.env.NEXT_PUBLIC_API_img}${staticData?.telegram_banner_x_3}`
+      : null;
+
+    const srcSetParts = [];
+
+    if (tgBanners.x2 || tgBanners.x3) {
+      if (tgBanners.x1) srcSetParts.push(`${tgBanners.x1} 1x`);
+      if (tgBanners.x2) srcSetParts.push(`${tgBanners.x2} 2x`);
+      if (tgBanners.x3) srcSetParts.push(`${tgBanners.x3} 3x`);
+      tgBanners.srcSet = srcSetParts.join(', ');
+    } else {
+      tgBanners.srcSet = null;
+    }
+  }
+
   return (
     <footer className={`${styles.footer} footer`}>
       <div className={styles.tg_banner_wrapper}>
@@ -40,13 +63,16 @@ export default function Footer() {
                 aria-hidden="true"
               />
             </div>
-            <img
-              className={styles.tg_banner_img}
-              src="/assets/img/tg_banner.webp"
-              width={473}
-              height={303}
-              alt="Telegram канал anex_ua"
-            />
+            {tgBanners.x1 && (
+              <img
+                className={styles.tg_banner_img}
+                src={tgBanners.x1}
+                srcSet={tgBanners.srcSet ? tgBanners.srcSet : undefined}
+                width={473}
+                height={303}
+                alt="Telegram канал anex_ua"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -273,7 +299,6 @@ export default function Footer() {
           </div>
         </div>
         <div className={styles.copyright}>
-          {/* <MessendgersLinks /> */}
           <p>
             © {new Date().getFullYear()} <FM id="footer.copyright" />
           </p>
