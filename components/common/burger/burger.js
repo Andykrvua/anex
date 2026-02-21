@@ -190,7 +190,7 @@ export default function Burger() {
             <div className={styles.burger_messendger}>{/* <MessendgersLinks /> */}</div>
           </div>
           <p className={styles.buregr_copyright}>
-            © 2026 <FM id="nav.copyright" />
+            © {new Date().getFullYear()} <FM id="nav.copyright" />
           </p>
         </div>
       </div>

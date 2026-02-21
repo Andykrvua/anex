@@ -275,7 +275,7 @@ export default function Footer() {
         <div className={styles.copyright}>
           {/* <MessendgersLinks /> */}
           <p>
-            © 2026 <FM id="footer.copyright" />
+            © {new Date().getFullYear()} <FM id="footer.copyright" />
           </p>
         </div>
       </div>
