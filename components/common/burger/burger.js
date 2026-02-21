@@ -11,7 +11,7 @@ import { links } from 'utils/links';
 import MessendgersLinks from 'components/common/other/messendgersLinks';
 import { modal } from 'utils/constants';
 
-export default function Burger() {
+export default function Burger({ logo = null }) {
   const setBurger = useSetBurger();
   const getBurger = useGetBurger();
   const setModal = useSetModal();
@@ -104,7 +104,7 @@ export default function Burger() {
       `}</style>
 
       <div className={styles.burger} style={{ top: offsetTop }}>
-        <BurgerHeader closeBurgerHandler={closeBurgerHandler} />
+        <BurgerHeader closeBurgerHandler={closeBurgerHandler} logo={logo} />
         <div className={`${styles.burger_content_wrapper} burger_content_wrapper`}>
           <ul className={styles.burger_nav}>
             <li>

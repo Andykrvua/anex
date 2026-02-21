@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import getViewport from 'utils/getViewport';
 import SubnavCountry from './subnavCountry';
 
-export default function Header({ navData }) {
+export default function Header({ navData, logo = null }) {
   // country submenu offset left
   const [offsetLeft, setOffsetLeft] = useState(null);
   // country submenu variant
@@ -31,7 +31,7 @@ export default function Header({ navData }) {
       <div className="header_wrapper">
         <div className="container header_container">
           <BurgerBtn />
-          <Logo />
+          <Logo logo={logo} />
           {!isShow && (
             <Nav
               position={location.nav.desktop}

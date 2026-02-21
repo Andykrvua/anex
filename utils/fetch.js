@@ -106,7 +106,7 @@ export const getPopularCountry = async (loc) => {
 
 export const getCountrySlugsAndSubpagesSlugs = async (
   subsubpageField = false,
-  nestingDistrictFrom = false
+  nestingDistrictFrom = false,
 ) => {
   let filter = '';
   if (subsubpageField) {
@@ -155,7 +155,7 @@ export const getAllCountriesForNav = async (loc) => {
 
 export const getStaticData = async (loc) => {
   const locale = languagesApi[loc];
-  const url = `static_data?fields=tag_manager_id,google_site_ver,no_transport,captcha_enabled,telegram_banner,telegram_banner_x2,telegram_banner_x_3,translations.filter_value,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
+  const url = `static_data?fields=tag_manager_id,google_site_ver,no_transport,captcha_enabled,logo,telegram_banner,telegram_banner_x2,telegram_banner_x_3,translations.filter_value,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
   return req(url);
 };
 
@@ -170,8 +170,8 @@ export const getToursTextPage = async (loc, slug, subpage = null, subsubpage = n
   const filter = subsubpage
     ? `&filter[subpage]=${subpage}&filter[subsubpage]=${subsubpage}`
     : subpage
-    ? `&filter[subpage]=${subpage}`
-    : '';
+      ? `&filter[subpage]=${subpage}`
+      : '';
   const url = `tours_text?fields=img,slug,subpage,subsubpage,bus,translations.languages_code,translations.name,translations.h1,translations.post_title,translations.title,translations.badge,translations.description,translations.content,translations.post_content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}${filter}&filter[status]=published`;
   return req(url);
 };

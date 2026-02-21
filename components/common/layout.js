@@ -26,10 +26,10 @@ export default function Layout({ children, navData, staticData }) {
       </Head>
       <div className="wrapper">
         <InfoModal />
-        <Header navData={navData} />
+        <Header navData={navData} logo={staticData?.logo} />
         <main className="content">{children}</main>
         <Footer staticData={staticData} />
-        <Burger />
+        <Burger logo={staticData?.logo} />
         <Modal />
         <ScrollTop />
         <MessBtn />
