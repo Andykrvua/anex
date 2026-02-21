@@ -7,25 +7,19 @@ import { links } from 'utils/links';
 import { carpathiansId, popCountryCode } from 'utils/constants';
 import { useGetSearchCountryList } from '../store/store';
 
-const List = ({
-  clickSearchResultItem,
-  code = null,
-  data = null,
-  variant = null,
-  setIsOpen = null,
-}) => {
+const List = ({ clickSearchResultItem, code = null, data = null, variant = null, setIsOpen = null }) => {
   const getSearchCountryList = useGetSearchCountryList();
   const { locale } = useRouter();
   const lang = 'name' + locale[0].toUpperCase() + locale.slice(1);
-  const countryData = data ? data : getSearchCountryList.list;
+  const rawData = data ? data : getSearchCountryList.list;
+  const countryData = variant === countryListVariants.getSearch
+    ? [...rawData].sort((a, b) => (a[lang] || '').localeCompare(b[lang] || '', locale))
+    : rawData;
 
   const Item = ({ children, slug, variant, values }) => {
     return variant === countryListVariants.getNavMenu ? (
       <Link href={`${links.countries}/${slug}`}>
-        <a
-          className={`${styles.country_item} country_item touch`}
-          onClick={() => setIsOpen(false)}
-        >
+        <a className={`${styles.country_item} country_item touch`} onClick={() => setIsOpen(false)}>
           {children}
         </a>
       </Link>
@@ -34,13 +28,7 @@ const List = ({
         variant={variant}
         className={`${styles.country_item} country_item`}
         onClick={() =>
-          clickSearchResultItem(
-            values.val,
-            values.id,
-            values.countryId,
-            values.img,
-            values.code
-          )
+          clickSearchResultItem(values.val, values.id, values.countryId, values.img, values.code)
         }
       >
         {children}
@@ -51,9 +39,7 @@ const List = ({
   return (
     <div className={`${styles.all_country_wrapper} ${styles[variant]}`}>
       {countryData.map((item, i) => {
-        if (
-          code ? code.includes(item.code) : true && item.id !== carpathiansId
-        ) {
+        if (code ? code.includes(item.code) : true && item.id !== carpathiansId) {
           return (
             <Item
               variant={variant}
@@ -84,13 +70,9 @@ const List = ({
                 />
               </div>
               <div className={styles.country_item_name}>
-                {variant === countryListVariants.getNavMenu
-                  ? item.translations[0].name
-                  : item[lang]}
+                {variant === countryListVariants.getNavMenu ? item.translations[0].name : item[lang]}
               </div>
-              <div className={styles.country_item_price}>
-                {item.uah ? item.uah.toLocaleString() : null}
-              </div>
+              <div className={styles.country_item_price}>{item.uah ? item.uah.toLocaleString() : null}</div>
             </Item>
           );
         }
@@ -101,26 +83,13 @@ const List = ({
 
 const MemoList = memo(List);
 
-export default function countryList({
-  variant,
-  clickSearchResultItem,
-  data,
-  setIsOpen,
-}) {
+export default function countryList({ variant, clickSearchResultItem, data, setIsOpen }) {
   switch (variant) {
     case countryListVariants.getSearch:
-      return (
-        <MemoList data={data} clickSearchResultItem={clickSearchResultItem} />
-      );
+      return <MemoList data={data} clickSearchResultItem={clickSearchResultItem} variant={variant} />;
 
     case countryListVariants.getSearchPopular:
-      return (
-        <MemoList
-          data={data}
-          clickSearchResultItem={clickSearchResultItem}
-          code={popCountryCode}
-        />
-      );
+      return <MemoList data={data} clickSearchResultItem={clickSearchResultItem} code={popCountryCode} />;
 
     case countryListVariants.getNavMenu:
       return <MemoList data={data} variant={variant} setIsOpen={setIsOpen} />;
