@@ -22,7 +22,9 @@ export default function ToursSubpage({
   subsubpagesLinks,
   loc,
   bus,
+  rb,
 }) {
+  // route example: /tours/charter-bus/albaniya/
   const intl = useIntl();
   const router = useRouter();
 
@@ -41,9 +43,12 @@ export default function ToursSubpage({
     { url: links.tours, title: intl.formatMessage({ id: 'tour.br' }) },
     { url: `${links.tours}/${prevToursTextPage.slug}`, title: prevToursTextPage?.translations[0].name },
     {
-      title: bus
-        ? toursTextPage?.translations[0].name
-        : intl.formatMessage({ id: 'country.tours_from_short' }) + ' ' + toursTextPage?.translations[0].name,
+      title:
+        bus || rb
+          ? toursTextPage?.translations[0].name
+          : intl.formatMessage({ id: 'country.tours_from_short' }) +
+            ' ' +
+            toursTextPage?.translations[0].name,
     },
   ];
 
@@ -81,7 +86,7 @@ export default function ToursSubpage({
           )} */}
           <Post post={toursTextPage} variant={location.postContent.countryPage} tours />
           {/* {!bus && <LinksBlock allLinks={allLinks} />} */}
-          {subpagesLinks && (
+          {subpagesLinks && bus && (
             <SubpagesLinksBlock
               allLinks={
                 bus ? subpagesLinks : subpagesLinks.filter((item) => !item.bus && item.subpage !== subpage)
@@ -125,16 +130,17 @@ export async function getStaticProps(context) {
 
   const prevToursTextPage = prevToursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
   const subpagesLinks = prevToursTextPageTemp.data.filter(
-    (nosubpage) => nosubpage.subpage && !nosubpage.subsubpage
+    (nosubpage) => nosubpage.subpage && !nosubpage.subsubpage,
   );
   const subsubpagesLinks = prevToursTextPageTemp.data.filter(
-    (nosubpage) => nosubpage.subsubpage && nosubpage.subpage === subpage
+    (nosubpage) => nosubpage.subsubpage && nosubpage.subpage === subpage,
   );
 
   const toursTextPage = await getToursTextPage(loc, slug, subpage);
   const allLinks = await getAllToursTextPages(loc);
 
   const bus = !!toursTextPage.data.filter((item) => item.bus).length;
+  const rb = !!toursTextPage.data.filter((item) => item.rb).length;
 
   // const subpagesLinks = toursTextPageTemp.data.filter((nosubpage) => nosubpage.subpage);
   // const toursTextPage = toursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
@@ -160,6 +166,7 @@ export async function getStaticProps(context) {
       subsubpagesLinks,
       loc,
       bus,
+      rb,
     },
     revalidate: 30,
   };

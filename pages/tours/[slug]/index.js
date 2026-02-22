@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import DefaultErrorPage from 'next/error';
 import DistrictList from 'components/country/districtList';
 
-export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLinks, bus }) {
+export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLinks, bus, rb }) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -58,11 +58,20 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
               variant={location.districtList.busToursPage}
             />
           )}
+          {rb && (
+            <DistrictList
+              data={subpagesLinks.filter((item) => item.rb)}
+              title={intl.formatMessage({ id: 'country.tours_pop' })}
+              country={''}
+              loc={loc}
+              variant={location.districtList.busToursPage}
+            />
+          )}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
           {/* <LinksBlock allLinks={allLinks} /> */}
-          {subpagesLinks && !!subpagesLinks.filter((item) => !item.bus).length && (
+          {subpagesLinks && !!subpagesLinks.filter((item) => !item.bus && !item.rb).length && (
             <SubpagesLinksBlock
-              allLinks={subpagesLinks.filter((item) => !item.bus)}
+              allLinks={subpagesLinks.filter((item) => !item.bus && !item.rb)}
               title={toursTextPage?.translations[0].name}
               current={slug}
               level={1}
@@ -104,6 +113,7 @@ export async function getStaticProps(context) {
 
   const toursTextPage = toursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
   const bus = !!subpagesLinks.filter((item) => item.bus).length;
+  const rb = !!subpagesLinks.filter((item) => item.rb).length;
 
   const allLinks = await getAllToursTextPages(loc);
   if (allLinks.errors || toursTextPage.errors) {
@@ -123,6 +133,7 @@ export async function getStaticProps(context) {
       loc,
       subpagesLinks: subpagesLinks.length ? subpagesLinks : null,
       bus,
+      rb,
     },
     revalidate: 30,
   };
