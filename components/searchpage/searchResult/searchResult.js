@@ -32,6 +32,13 @@ import parseUrl from '../pasteUrl/pasteUrl';
 import Cards from './cards';
 import { stringifyCrewComposition } from '../../../utils/customer-crew';
 
+const localDateStr = (d) => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 const MemoCards = memo(Cards);
 
 export default function SearchResult({ isFilterBtnShow }) {
@@ -146,8 +153,8 @@ export default function SearchResult({ isFilterBtnShow }) {
     const copiedDate = new Date(date.rawDate);
     copiedDate.setDate(copiedDate.getDate() + date.plusDays);
 
-    const checkIn = date.rawDate.toISOString().substr(0, 10);
-    const checkTo = copiedDate.toISOString().substr(0, 10);
+    const checkIn = localDateStr(date.rawDate);
+    const checkTo = localDateStr(copiedDate);
 
     const transport = up.transport ? up.transport : 'no';
 
@@ -321,8 +328,8 @@ export default function SearchResult({ isFilterBtnShow }) {
       from: up.value,
       fromname,
       to: down.value,
-      checkIn: date.rawDate.toISOString().substr(0, 10),
-      checkTo: copiedDate.toISOString().substr(0, 10),
+      checkIn: localDateStr(date.rawDate),
+      checkTo: localDateStr(copiedDate),
       nights: night.from,
       nightsTo: night.to,
       people: stringifyCrewComposition(person),
