@@ -23,6 +23,13 @@ export default function SearchButton() {
   const getSearchInProgress = useGetSearchInProgress();
   const person = useGetPerson();
 
+  const localDateStr = (d) => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const makeSearchParams = () => {
     if (getSearchInProgress) {
       return;
@@ -39,8 +46,8 @@ export default function SearchButton() {
         from: up.value,
         to: down.value,
         country: down.countryValue,
-        checkIn: date.rawDate.toISOString().substr(0, 10),
-        checkTo: copiedDate.toISOString().substr(0, 10),
+        checkIn: localDateStr(date.rawDate),
+        checkTo: localDateStr(copiedDate),
         nights: night.from,
         nightsTo: night.to,
         people: stringifyCrewComposition(person),
