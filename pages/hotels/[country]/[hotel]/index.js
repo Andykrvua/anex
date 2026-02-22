@@ -78,7 +78,7 @@ const HotelIconsPropWithoutB = ({ hotel }) => {
 };
 
 export default function Hotel({ data, hotel }) {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
     console.log('hotel', hotel);
   }
   const br_arr = [{ title: hotel?.n }];
