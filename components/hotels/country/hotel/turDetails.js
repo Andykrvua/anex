@@ -48,17 +48,18 @@ export default function TurDetails({ data, country, hotel }) {
 
   const offerOptions = () => {
     const offerAllOpt = ['transfer', 'insurance', 'noNeedVisa'];
+    const offerIncluded = offerData.o.filter((item) => item !== 'luggage');
     const offerNotIncluded = offerAllOpt.filter((item) => !offerData.o.includes(item));
     const notIncl = offerNotIncluded.length ? true : false;
     return (
       <>
-        {offerData.o.length && (
+        {offerIncluded.length > 0 && (
           <p className={styles.price_block_incl}>
             <span>Включено: </span>
-            {offerData.o.map((item, ind) => offerOptText(item, ind))}
+            {offerIncluded.map((item, ind) => offerOptText(item, ind))}
           </p>
         )}
-        {offerData.o.length < 3 && (
+        {offerNotIncluded.length > 0 && (
           <p className={styles.price_block_notincl}>
             <span>Не включено:</span> {offerNotIncluded.map((item, ind) => offerOptText(item, ind, notIncl))}
           </p>
@@ -229,7 +230,7 @@ export default function TurDetails({ data, country, hotel }) {
     const dEnd = new Date(offerData?.dt);
     const datesStr = `${dayMonthFormatDate(dStart, router.locale)} - ${dayMonthFormatDate(
       dEnd,
-      router.locale
+      router.locale,
     )}`;
 
     const orderData = {
@@ -259,7 +260,7 @@ export default function TurDetails({ data, country, hotel }) {
       setError(false);
     }
     await fetch(
-      `https://api.otpusk.com/api/2.6/tours/offer?offerId=${urlData.offer}&currencyLocal=uah&access_token=337da-65e22-26745-a251f-77b9e`
+      `https://api.otpusk.com/api/2.6/tours/offer?offerId=${urlData.offer}&currencyLocal=uah&access_token=337da-65e22-26745-a251f-77b9e`,
     )
       .then((response) => {
         if (response.status === 200) {
