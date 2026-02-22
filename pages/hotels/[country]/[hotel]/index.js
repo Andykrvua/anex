@@ -10,13 +10,47 @@ import TurDetails from 'components/hotels/country/hotel/turDetails';
 import ImgSlider from 'components/hotels/country/hotel/imgSlider';
 import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
 
-const HotelProp = ({ hotel }) => {
+const HotelIconsPropB = ({ hotel }) => {
+  return (
+    <>
+      {hotel.e?.b &&
+        Object.entries(hotel.e)
+          .sort()
+          .map(([key1, value1], ind1) => {
+            if (key1 !== 'b') return null;
+            return (
+              <div className={styles.tour_propertys} key={ind1}>
+                {Object.entries(value1).map(([key, value], ind) => {
+                  return (
+                    <div className={styles.tour_property} key={ind}>
+                      <img
+                        className={styles.tour_property__icon}
+                        src={`/assets/img/svg/tour_property/${key}.svg`}
+                        alt=""
+                      />
+                      <p className={styles.tour_property__title}>
+                        {value.name === 'год реновации' || value.name === 'Год реновации'
+                          ? `${value.name} ${key}`
+                          : `${value.name}`}
+                        <span> {value.title}</span>
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+    </>
+  );
+};
+
+const HotelIconsPropWithoutB = ({ hotel }) => {
   return (
     <>
       {Object.entries(hotel.e)
         .sort()
         .map(([key1, value1], ind1) => {
-          if (key1 === 'h' || key1 === 'r') return null;
+          if (key1 === 'h' || key1 === 'r' || key1 === 'b') return null;
           return (
             <div className={styles.tour_propertys} key={ind1}>
               {Object.entries(value1).map(([key, value], ind) => {
@@ -144,7 +178,8 @@ export default function Hotel({ data, hotel }) {
             }}
           />
         )}
-        {isReadMore && hotel?.e?.h && (
+        {isReadMore && <HotelIconsPropWithoutB hotel={hotel} />}
+        {/* {isReadMore && hotel?.e?.h && (
           <div className={`${styles.tour_propertys} ${styles.tour_inside_propertys}`}>
             {hotel?.e?.h &&
               Object.entries(hotel.e.h).map(([key, value], ind) => {
@@ -165,7 +200,7 @@ export default function Hotel({ data, hotel }) {
                 );
               })}
           </div>
-        )}
+        )} */}
 
         <p onClick={toggleReadMore} className={styles.read_or_hide}>
           {isReadMore ? <FM id="offer_page.read_more_hide" /> : <FM id="offer_page.read_more" />}
@@ -255,7 +290,7 @@ export default function Hotel({ data, hotel }) {
                 </div>
               ) : null}
             </div>
-            <HotelProp hotel={hotel} />
+            <HotelIconsPropB hotel={hotel} />
             <div className={styles.hotel_descr_wrapper}>
               {/* <h4 className={styles.hotel_descr_title}>
                 <FM id="offer_page.hotel_desc" />
