@@ -172,7 +172,7 @@ export const getToursTextPage = async (loc, slug, subpage = null, subsubpage = n
     : subpage
       ? `&filter[subpage]=${subpage}`
       : '';
-  const url = `tours_text?fields=img,slug,subpage,subsubpage,bus,rb,translations.languages_code,translations.name,translations.h1,translations.post_title,translations.title,translations.badge,translations.description,translations.content,translations.post_content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}${filter}&filter[status]=published`;
+  const url = `tours_text?fields=img,slug,subpage,subsubpage,bus,rb,translations.languages_code,translations.name,translations.h1,translations.post_title,translations.title,translations.badge,translations.description,translations.content,translations.post_content&deep[translations][_filter][languages_code][_eq]=${locale}&filter[slug]=${slug}${filter}&filter[status]=published&limit=-1`;
   return req(url);
 };
 
