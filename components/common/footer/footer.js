@@ -269,8 +269,6 @@ export default function Footer({ staticData }) {
             <ul className={styles.list}>
               <li>
                 <FM id="vs_discl" />
-                <br />
-                <FM id="vs_discl2" />
               </li>
               <li>
                 Пн - Пт: 10:00 – 19:00

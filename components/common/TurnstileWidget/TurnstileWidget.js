@@ -3,7 +3,7 @@ import { useRef, useEffect, useState } from 'react';
 
 const TURNSTILE_SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 
-export default function TurnstileWidget({ siteKey, onSuccess, onExpired, onReady, theme = 'light', size = 'normal' }) {
+export default function TurnstileWidget({ siteKey, onSuccess, onExpired, onReady, theme = 'light', size = 'normal', language }) {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
   const [scriptLoaded, setScriptLoaded] = useState(
@@ -24,6 +24,7 @@ export default function TurnstileWidget({ siteKey, onSuccess, onExpired, onReady
       sitekey: siteKey,
       theme,
       size,
+      ...(language && { language }),
       callback: (token) => {
         onSuccess?.(token);
       },
@@ -42,7 +43,7 @@ export default function TurnstileWidget({ siteKey, onSuccess, onExpired, onReady
         }
       }
     };
-  }, [scriptLoaded, siteKey, theme, size]);
+  }, [scriptLoaded, siteKey, theme, size, language]);
 
   if (!siteKey) return null;
 

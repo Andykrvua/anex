@@ -160,6 +160,7 @@ export default function LeadGetTours({ closeHandler }) {
             }}
             theme="light"
             size="normal"
+            language={intl.locale}
           />
         </div>
       )}
