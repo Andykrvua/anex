@@ -48,7 +48,7 @@ export default function TurDetails({ data, country, hotel }) {
 
   const offerOptions = () => {
     const offerAllOpt = ['transfer', 'insurance', 'noNeedVisa'];
-    const offerIncluded = offerData.o.filter((item) => item !== 'luggage');
+    const offerIncluded = offerData.o.filter((item) => item !== 'luggage' && item !== 'noluggage');
     const offerNotIncluded = offerAllOpt.filter((item) => !offerData.o.includes(item));
     const notIncl = offerNotIncluded.length ? true : false;
     return (
