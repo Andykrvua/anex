@@ -176,8 +176,8 @@
   "hotel_card.transport.ship": "на корабле",
   "hotel_card.map": "Отель на карте",
   "hotel_card.reviews": "Оценок:",
-  "hotel_card.tourstart": "заезд",
-  "hotel_card.tourend": "выезд",
+  "hotel_card.tourstart": "туда",
+  "hotel_card.tourend": "назад",
   "hotel_card.tour_time": "в пути",
   "offer_page.btn_copy": "Скопировано",
   "offer_page.offer_opt.transfer": "трансфер",
@@ -214,7 +214,6 @@
   "favorites": "Мой список",
   "error.block": "Что-то пошло не так, вернитесь позже",
   "footer.copyright": "Онлайн турагентство - ANEX Tour Украина",
-  "vs_discl": "На період дії військового стану в Україні - турагенція працює в онлайн режимі.",
-  "vs_discl2": "Працюємо заради перемоги!",
+  "vs_discl": "На період дії військового стану в Україні - турагенція працює в онлайн режимі",
   "chat.btn.txt": "Начать диалог"
 }
