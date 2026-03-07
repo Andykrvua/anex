@@ -4,7 +4,7 @@ import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import ratingColor from 'utils/ratingColor';
 import { stars, modal, languagesOperatorApi, food } from 'utils/constants';
-import { useSetModal, useSetOpenStreetMap, useGetCurrentOffer } from 'store/store';
+import { useSetModal, useSetOpenStreetMap, useGetCurrentOffer, useGetStaticData } from 'store/store';
 import { useEffect, useState } from 'react';
 import TurDetails from 'components/hotels/country/hotel/turDetails';
 import ImgSlider from 'components/hotels/country/hotel/imgSlider';
@@ -78,9 +78,6 @@ const HotelIconsPropWithoutB = ({ hotel }) => {
 };
 
 export default function Hotel({ data, hotel }) {
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
-    console.log('hotel', hotel);
-  }
   const br_arr = [{ title: hotel?.n }];
   const setOpenStreetMapData = useSetOpenStreetMap();
   const setModal = useSetModal();
@@ -89,6 +86,10 @@ export default function Hotel({ data, hotel }) {
 
   const intl = useIntl();
   const currentOffer = useGetCurrentOffer();
+  const staticData = useGetStaticData();
+  if (process.env.NODE_ENV === 'development' || staticData?.debug_mode) {
+    console.log('hotel', hotel);
+  }
 
   const OpenStreetMapBtn = () => {
     if (!hotel.g) {

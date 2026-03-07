@@ -1,8 +1,8 @@
 import styles from './turDetails.module.css';
 import { FormattedMessage as FM } from 'react-intl';
 
-export default function TransportBlock({ offerData, country, data }) {
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'production') {
+export default function TransportBlock({ offerData, country, data, debugMode }) {
+  if (process.env.NODE_ENV === 'development' || debugMode) {
     console.log('offerData', offerData);
   }
   if (offerData?.t === 'bus') {

@@ -17,6 +17,7 @@ import {
   useSetWindowInfo,
   useGetCurrentOfferMailData,
   useSetCurrentOfferMailData,
+  useGetStaticData,
 } from 'store/store';
 import { modal } from 'utils/constants';
 
@@ -27,6 +28,7 @@ export default function TurDetails({ data, country, hotel }) {
   const [loading, setLoading] = useState(true);
 
   const intl = useIntl();
+  const staticData = useGetStaticData();
   const tTxt1 = intl.formatMessage({
     id: 'common.night1',
   });
@@ -420,7 +422,7 @@ export default function TurDetails({ data, country, hotel }) {
             {loading ? (
               <Loader />
             ) : (
-              offerData && <TransportBlock offerData={offerData} country={country} data={urlData} />
+              offerData && <TransportBlock offerData={offerData} country={country} data={urlData} debugMode={staticData?.debug_mode} />
             )}
           </div>
         </div>
