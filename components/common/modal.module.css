@@ -58,6 +58,29 @@
   line-height: 18px;
 }
 
+.modal_content_map {
+  width: calc(100vw - 40px);
+  height: calc(100vh - 100px);
+  max-width: 1200px;
+  max-height: 700px;
+  margin: 0 auto;
+  margin-top: 20px;
+  font-size: 14px;
+  line-height: 18px;
+  overflow: hidden;
+  background-color: #ffd30e;
+}
+
+@media (max-width: 811px) {
+  .modal_content_map {
+    width: 100vw;
+    height: 100vh;
+    max-height: 2000px;
+    margin-top: 0;
+    background-color: red;
+  }
+}
+
 .modal .svg_btn {
   margin: 5px;
   padding: 0;

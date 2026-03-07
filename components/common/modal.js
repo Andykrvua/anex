@@ -13,7 +13,7 @@ const LeadGetTours = dynamic(
   {
     ssr: false,
     loading: () => <Loader />,
-  }
+  },
 );
 
 const LeadRequestCall = dynamic(
@@ -21,7 +21,7 @@ const LeadRequestCall = dynamic(
   {
     ssr: false,
     loading: () => <Loader />,
-  }
+  },
 );
 
 const HotelCardsMap = dynamic(
@@ -29,7 +29,7 @@ const HotelCardsMap = dynamic(
   {
     ssr: false,
     loading: () => <Loader />,
-  }
+  },
 );
 
 const OfferPageChangePerson = dynamic(
@@ -37,7 +37,7 @@ const OfferPageChangePerson = dynamic(
   {
     ssr: false,
     loading: () => <Loader />,
-  }
+  },
 );
 
 const OfferPageChangeNight = dynamic(
@@ -45,7 +45,7 @@ const OfferPageChangeNight = dynamic(
   {
     ssr: false,
     loading: () => <Loader />,
-  }
+  },
 );
 
 const OfferPageOrder = dynamic(
@@ -53,7 +53,7 @@ const OfferPageOrder = dynamic(
   {
     ssr: false,
     loading: () => <Loader />,
-  }
+  },
 );
 
 const Favorites = dynamic(() => import(/* webpackChunkName: "favorites" */ `./modalChildren/favorites`), {
@@ -66,7 +66,7 @@ const OfferPageChangeRoom = dynamic(
   {
     ssr: false,
     loading: () => <Loader />,
-  }
+  },
 );
 
 const HotelImg = dynamic(() => import(/* webpackChunkName: "hotelImg" */ `./modalChildren/hotelImg`), {
@@ -143,7 +143,7 @@ export default function Modal() {
 
   return (
     <>
-      {getModal && getModal.get !== modal.hotelimg && (
+      {getModal && getModal.get !== modal.hotelimg && getModal.get !== modal.hotelCardsMap && (
         <div
           className={isOpened ? `${styles.modal} ${styles.open} modal` : `${styles.modal} modal`}
           onClick={(e) => closeEventHandler(e)}
@@ -171,7 +171,6 @@ export default function Modal() {
             >
               {getModal.get === modal.leadGetTours && <LeadGetTours closeHandler={closeHandler} />}
               {getModal.get === modal.leadRequestCall && <LeadRequestCall closeHandler={closeHandler} />}
-              {getModal.get === modal.hotelCardsMap && <HotelCardsMap closeHandler={closeHandler} />}
               {getModal.get === modal.offerPageChangePerson && (
                 <OfferPageChangePerson closeHandler={closeHandler} />
               )}
@@ -184,6 +183,35 @@ export default function Modal() {
               {getModal.get === modal.offerPageOrder && <OfferPageOrder closeHandler={closeHandler} />}
               {getModal.get === modal.favorites && <Favorites />}
               {getModal.get === modal.hotelimg && <HotelImg />}
+            </div>
+          </div>
+        </div>
+      )}
+      {getModal && getModal.get === modal.hotelCardsMap && (
+        <div
+          className={isOpened ? `${styles.modal} ${styles.open} modal` : `${styles.modal} modal`}
+          onClick={(e) => closeEventHandler(e)}
+        >
+          <div
+            className={`${styles.modal_content} ${styles.fullscreen}`}
+            style={size.width >= maxWidth ? modal_content : modal_content_mobile}
+          >
+            <header className={styles.modal_content_header}>
+              <h5
+                className={styles.title}
+                dangerouslySetInnerHTML={{
+                  __html: modalTitle[getModal.get],
+                }}
+              ></h5>
+              <button className="svg_btn svg_btn_stroke" aria-label="Закрыть" onClick={closeHandler}>
+                <CloseSvg />
+              </button>
+            </header>
+            <div
+              className={styles.modal_content_map}
+              style={size.width >= maxWidth ? modal_content_text : modal_content_text_mobile}
+            >
+              <HotelCardsMap closeHandler={closeHandler} />
             </div>
           </div>
         </div>

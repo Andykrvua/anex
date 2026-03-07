@@ -1,15 +1,19 @@
 import { useRef, useEffect } from 'react';
-import { useGetOpenStreetMap } from 'store/store';
+import { useIntl } from 'react-intl';
+import { useGetOpenStreetMap, useGetStaticData } from 'store/store';
 import L from 'leaflet';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer, LayersControl } from 'react-leaflet';
 import ratingColor from 'utils/ratingColor';
 import styles from './hotelCardsMap.module.css';
 import 'leaflet/dist/leaflet.css';
 import { clear, disableScroll, BODY } from 'utils/useBodyScroll';
 
+const { BaseLayer } = LayersControl;
+
 export default function HotelCardsMap() {
-  const { img, hotelName, rating, foodTransMessage, price, coords, stars } =
-    useGetOpenStreetMap();
+  const intl = useIntl();
+  const { img, hotelName, rating, foodTransMessage, price, coords, stars } = useGetOpenStreetMap();
+  const staticData = useGetStaticData();
 
   const icon = L.icon({ iconUrl: '/assets/img/svg/results/map-marker.svg' });
 
@@ -35,12 +39,29 @@ export default function HotelCardsMap() {
         center={position}
         zoom={coords.z}
         scrollWheelZoom={true}
-        style={{ width: '80vw', height: '500px', zIndex: 1 }}
+        style={{ width: '100%', height: '100%', zIndex: 1 }}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <LayersControl position="topright">
+          <BaseLayer checked name={intl.formatMessage({ id: 'map.layer_map' })}>
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+          </BaseLayer>
+          <BaseLayer name={intl.formatMessage({ id: 'map.layer_satellite' })}>
+            {staticData?.google_satellite_map ? (
+              <TileLayer
+                attribution='&copy; <a href="https://maps.google.com/">Google</a>'
+                url="https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+              />
+            ) : (
+              <TileLayer
+                attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              />
+            )}
+          </BaseLayer>
+        </LayersControl>
         <CustomMarker position={position} icon={icon}>
           <Popup closeButton={false} className={styles.custom_popup}>
             <div className={styles.map}>
@@ -52,20 +73,12 @@ export default function HotelCardsMap() {
                     new Array(parseInt(stars)).fill(null).map((_, ind) => {
                       return (
                         <div className={styles.stars} key={ind}>
-                          <img
-                            src="/assets/img/svg/tour/star.svg"
-                            alt="star"
-                            width="12"
-                            height="12"
-                          />
+                          <img src="/assets/img/svg/tour/star.svg" alt="star" width="12" height="12" />
                         </div>
                       );
                     })}
                   {rating > 0 ? (
-                    <div
-                      className={styles.review}
-                      style={{ color: ratingColor(parseFloat(rating)) }}
-                    >
+                    <div className={styles.review} style={{ color: ratingColor(parseFloat(rating)) }}>
                       {rating}/10
                     </div>
                   ) : null}
