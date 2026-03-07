@@ -10,13 +10,18 @@
   column-gap: 10px;
 }
 
-.map > img {
+.img_wrapper {
+  position: relative;
+}
+
+.img_wrapper > img {
   width: 100%;
   height: 100%;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
   object-fit: cover;
   object-position: center;
+  display: block;
 }
 
 .text {
@@ -78,4 +83,14 @@
   top: 10px;
   right: 10px;
   z-index: 1000;
+}
+
+.fav_btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }

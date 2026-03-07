@@ -71,19 +71,45 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
     }
 
     const modalHandler = () => {
+      const price = new Intl.NumberFormat('uk-UA', {
+        style: 'currency',
+        currency: 'UAH',
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0,
+      }).format(data[0].pl);
+      const nightsStr = `${data[0].nh} ${decl(data[0].nh)}`;
+      const favData = {
+        img: `https://newimg.otpusk.com/2/500x375/${hotel.f}`,
+        hotelName: hotel.n,
+        stars: parseInt(hotel.s),
+        country: hotel.t.n,
+        district: hotel.c.n,
+        rating: hotel.r,
+        reviews: hotel.v,
+        description: foodTransMessage,
+        orders: [
+          {
+            end: new Date(data[0].dt).toLocaleDateString('default', { day: '2-digit', month: '2-digit' }),
+            link: `${router.locale === 'uk' ? '/uk' : ''}/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${hotel.h}?offer=${data[0].i}&transport=${searchParams.transport}&from=${searchParams.from}&fromname=${searchParams.fromname}&to=${searchParams.to}&checkIn=${searchParams.checkIn}&checkTo=${searchParams.checkTo}&nights=${searchParams.nights}&nightsTo=${searchParams.nightsTo}&people=${searchParams.people}`,
+            n: nightsStr,
+            price,
+            r: data[0].r,
+            start: new Date(data[0].d).toLocaleDateString('default', { day: '2-digit', month: '2-digit' }),
+          },
+        ],
+        id: hotel.i,
+      };
       setOpenStreetMapData({
         img: `https://newimg.otpusk.com/2/400x300/${hotel.f}`,
         hotelName: hotel.n,
         rating: hotel.r,
+        checkIn: new Date(data[0].d).toLocaleDateString(router.locale === 'uk' ? 'uk-UA' : 'ru-RU', { day: 'numeric', month: 'long' }),
+        nights: nightsStr,
         foodTransMessage,
-        price: new Intl.NumberFormat('uk-UA', {
-          style: 'currency',
-          currency: 'UAH',
-          maximumFractionDigits: 0,
-          minimumFractionDigits: 0,
-        }).format(data[0].pl),
+        price,
         coords: hotel.g,
         stars: hotel.s,
+        favData,
       });
       setModal({ get: modal.hotelCardsMap });
     };

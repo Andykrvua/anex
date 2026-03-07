@@ -6,6 +6,8 @@ import ratingColor from 'utils/ratingColor';
 import { stars, modal, languagesOperatorApi, food } from 'utils/constants';
 import { useSetModal, useSetOpenStreetMap, useGetCurrentOffer, useGetStaticData } from 'store/store';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import declension from 'utils/declension';
 import TurDetails from 'components/hotels/country/hotel/turDetails';
 import ImgSlider from 'components/hotels/country/hotel/imgSlider';
 import SwitchMenu from '/components/common/switchMenu/switchMenu.js';
@@ -84,6 +86,7 @@ export default function Hotel({ data, hotel }) {
 
   const [hotelRat, setHotelRat] = useState([]);
 
+  const router = useRouter();
   const intl = useIntl();
   const currentOffer = useGetCurrentOffer();
   const staticData = useGetStaticData();
@@ -120,14 +123,53 @@ export default function Hotel({ data, hotel }) {
           }).format(currentOffer.pl)
         : '';
 
+      const checkIn = currentOffer?.d
+        ? new Date(currentOffer.d).toLocaleDateString(intl.locale === 'uk' ? 'uk-UA' : 'ru-RU', { day: 'numeric', month: 'long' })
+        : '';
+      const nights = currentOffer?.nh
+        ? `${currentOffer.nh} ${declension(
+            currentOffer.nh,
+            intl.formatMessage({ id: 'common.night1' }),
+            intl.formatMessage({ id: 'common.night2' }),
+            intl.formatMessage({ id: 'common.night5' })
+          )}`
+        : '';
+
+      const favData = currentOffer?.pl
+        ? {
+            img: `https://newimg.otpusk.com/2/500x375/${hotel.fh[0].src}`,
+            hotelName: hotel.n,
+            stars: parseInt(hotel.s.n),
+            country: hotel.t.n,
+            district: hotel.c.n,
+            rating: hotel.r,
+            reviews: hotel.v,
+            description: foodTransMessage,
+            orders: [
+              {
+                end: new Date(currentOffer.dt).toLocaleDateString('default', { day: '2-digit', month: '2-digit' }),
+                link: router.asPath,
+                n: nights,
+                price,
+                r: currentOffer.r,
+                start: new Date(currentOffer.d).toLocaleDateString('default', { day: '2-digit', month: '2-digit' }),
+              },
+            ],
+            id: hotel.i,
+          }
+        : null;
+
       setOpenStreetMapData({
         img: `https://newimg.otpusk.com/2/400x300/${hotel.fh[0].src}`,
         hotelName: hotel.n,
         rating: hotel.r,
+        checkIn,
+        nights,
         foodTransMessage,
         price,
         coords: hotel.g,
         stars: Number(stars[hotel.s.s]) ? stars[hotel.s.s] : 0,
+        favData,
       });
       setModal({ get: modal.hotelCardsMap });
     };
