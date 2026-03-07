@@ -2,7 +2,7 @@ import styles from './switchMenu.module.css';
 import { useRef, useEffect, useState, Fragment } from 'react';
 import { switchMenuMargins } from '../../../utils/constants';
 
-export default function SwitchMenu({ items, name, callback = null }) {
+export default function SwitchMenu({ items, name, callback = null, style = {} }) {
   const [width, setWidth] = useState([]);
   const [strJsx, setStrJsx] = useState('');
 
@@ -42,14 +42,14 @@ export default function SwitchMenu({ items, name, callback = null }) {
               .switch input.${
                 items[i].value
               }:checked ~ .switch_indicator_${name}{transform: translate3d(${step(
-              arr,
-              i
-            )}px, 0, 0); width: ${item}px;}        
+                arr,
+                i,
+              )}px, 0, 0); width: ${item}px;}        
               .switch input.${items[i].value}:checked ~ .switch_label.${
-              items[i].value
-            }{color: var(--font-white);}`;
+                items[i].value
+              }{color: var(--font-white);}`;
           })
-          .join(' ')
+          .join(' '),
       );
     }
   }, [width]);
@@ -61,7 +61,7 @@ export default function SwitchMenu({ items, name, callback = null }) {
   };
 
   return (
-    <div className={`${styles.switch} switch`}>
+    <div className={`${styles.switch} switch`} style={style}>
       {items.map((item, i) => {
         return (
           <Fragment key={i}>
@@ -84,9 +84,7 @@ export default function SwitchMenu({ items, name, callback = null }) {
           </Fragment>
         );
       })}
-      <div
-        className={`${styles.switch_indicator} switch_indicator_${name} `}
-      ></div>
+      <div className={`${styles.switch_indicator} switch_indicator_${name} `}></div>
       {strJsx && <style>{strJsx}</style>}
     </div>
   );
