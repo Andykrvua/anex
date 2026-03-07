@@ -1,10 +1,10 @@
 import styles from 'components/hotels/country/hotel/hotel.module.css';
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 import SeoHead from 'components/common/seoHead/seoHead.js';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import ratingColor from 'utils/ratingColor';
-import { stars, modal, languagesOperatorApi } from 'utils/constants';
-import { useSetModal, useSetOpenStreetMap } from 'store/store';
+import { stars, modal, languagesOperatorApi, food } from 'utils/constants';
+import { useSetModal, useSetOpenStreetMap, useGetCurrentOffer } from 'store/store';
 import { useEffect, useState } from 'react';
 import TurDetails from 'components/hotels/country/hotel/turDetails';
 import ImgSlider from 'components/hotels/country/hotel/imgSlider';
@@ -87,18 +87,44 @@ export default function Hotel({ data, hotel }) {
 
   const [hotelRat, setHotelRat] = useState([]);
 
+  const intl = useIntl();
+  const currentOffer = useGetCurrentOffer();
+
   const OpenStreetMapBtn = () => {
     if (!hotel.g) {
       return null;
     }
 
     const modalHandler = () => {
+      const transports = {
+        bus: 'hotel_card.transport.bus',
+        air: 'hotel_card.transport.air',
+        train: 'hotel_card.transport.train',
+        ship: 'hotel_card.transport.ship',
+      };
+
+      let foodTransMessage = '';
+      if (currentOffer?.f) {
+        foodTransMessage = `${intl.formatMessage({ id: food[currentOffer.f] })}, за ${currentOffer.a + currentOffer.h} ${
+          transports[currentOffer.t] ? intl.formatMessage({ id: transports[currentOffer.t] }) : ''
+        }`;
+      }
+
+      const price = currentOffer?.pl
+        ? new Intl.NumberFormat('uk-UA', {
+            style: 'currency',
+            currency: 'UAH',
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0,
+          }).format(currentOffer.pl)
+        : '';
+
       setOpenStreetMapData({
         img: `https://newimg.otpusk.com/2/400x300/${hotel.fh[0].src}`,
         hotelName: hotel.n,
         rating: hotel.r,
-        foodTransMessage: '',
-        price: '',
+        foodTransMessage,
+        price,
         coords: hotel.g,
         stars: Number(stars[hotel.s.s]) ? stars[hotel.s.s] : 0,
       });
