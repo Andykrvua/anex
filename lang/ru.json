@@ -217,5 +217,6 @@
   "vs_discl": "На період дії військового стану в Україні - турагенція працює в онлайн режимі",
   "chat.btn.txt": "Начать диалог",
   "map.layer_map": "Карта",
-  "map.layer_satellite": "Спутник"
+  "map.layer_satellite": "Спутник",
+  "map.find_tours": "Найти туры"
 }

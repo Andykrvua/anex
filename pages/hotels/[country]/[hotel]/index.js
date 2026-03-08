@@ -169,6 +169,9 @@ export default function Hotel({ data, hotel }) {
         price,
         coords: hotel.g,
         stars: Number(stars[hotel.s.s]) ? stars[hotel.s.s] : 0,
+        cityId: hotel.c?.i,
+        countryId: hotel.t?.i,
+        hotelId: hotel.i,
         favData,
       });
       setModal({ get: modal.hotelCardsMap });

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { shimmer, toBase64 } from '/utils/blurImage';
-import { useSetModal, useGetPerson, useSetOpenStreetMap, useSetWindowInfo } from 'store/store';
+import { useSetModal, useGetPerson, useSetOpenStreetMap, useSetWindowInfo, useGetDown } from 'store/store';
 import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
 import { food, modal, infoModal } from 'utils/constants';
@@ -13,6 +13,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
   const setModal = useSetModal();
   const person = useGetPerson();
   const setOpenStreetMapData = useSetOpenStreetMap();
+  const down = useGetDown();
 
   const intl = useIntl();
   const tTxt1 = intl.formatMessage({
@@ -103,12 +104,18 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
         img: `https://newimg.otpusk.com/2/400x300/${hotel.f}`,
         hotelName: hotel.n,
         rating: hotel.r,
-        checkIn: new Date(data[0].d).toLocaleDateString(router.locale === 'uk' ? 'uk-UA' : 'ru-RU', { day: 'numeric', month: 'long' }),
+        checkIn: new Date(data[0].d).toLocaleDateString(router.locale === 'uk' ? 'uk-UA' : 'ru-RU', {
+          day: 'numeric',
+          month: 'long',
+        }),
         nights: nightsStr,
         foodTransMessage,
         price,
         coords: hotel.g,
         stars: hotel.s,
+        cityId: hotel.c?.i,
+        countryId: down.countryValue,
+        hotelId: hotel.i,
         favData,
       });
       setModal({ get: modal.hotelCardsMap });
@@ -421,7 +428,7 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
                                     <p className={styles.tour_property__title}>{searched[1]}</p>
                                   </div>
                                 ) : null;
-                              })
+                              }),
                             );
                         }
                       });

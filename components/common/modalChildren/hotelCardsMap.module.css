@@ -72,6 +72,12 @@
   font-weight: 700;
 }
 
+.nearby_btn {
+  margin: 15px 0 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
 .map_wrapper {
   position: relative;
   width: 100%;
