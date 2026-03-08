@@ -116,6 +116,8 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
         cityId: hotel.c?.i,
         countryId: down.countryValue,
         hotelId: hotel.i,
+        mapContext: 'search',
+        mapSearchParams: searchParams,
         favData,
       });
       setModal({ get: modal.hotelCardsMap });

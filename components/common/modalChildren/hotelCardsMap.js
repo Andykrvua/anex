@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useIntl } from 'react-intl';
-import { useGetOpenStreetMap, useGetStaticData, useSetWindowInfo } from 'store/store';
+import { useGetOpenStreetMap, useGetStaticData, useSetWindowInfo, useSetModal } from 'store/store';
 import { infoModal, languagesOperatorApi } from 'utils/constants';
 import L from 'leaflet';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
@@ -12,6 +13,7 @@ import SwitchMenu from 'components/common/switchMenu/switchMenu';
 
 export default function HotelCardsMap() {
   const intl = useIntl();
+  const router = useRouter();
   const [activeLayer, setActiveLayer] = useState('osm');
   const {
     img,
@@ -27,9 +29,12 @@ export default function HotelCardsMap() {
     countryId,
     hotelId,
     favData,
+    mapContext,
+    mapSearchParams,
   } = useGetOpenStreetMap();
   const staticData = useGetStaticData();
   const setWindowInfo = useSetWindowInfo();
+  const setModal = useSetModal();
   const [nearbyHotels, setNearbyHotels] = useState([]);
 
   useEffect(() => {
@@ -51,6 +56,18 @@ export default function HotelCardsMap() {
       })
       .catch(() => {});
   }, [coords?.a, coords?.o]);
+
+  const findTours = (nearbyHotelId) => {
+    const p = { ...mapSearchParams, to: nearbyHotelId, country: countryId };
+    const query = new URLSearchParams(p).toString();
+    if (mapContext === 'search') {
+      const locale = router.locale === 'uk' ? '/uk' : '';
+      window.location.href = `${locale}/search?${query}`;
+    } else {
+      setModal(false);
+      router.push(`/search?${query}`);
+    }
+  };
 
   const saveToFavorites = () => {
     if (!favData) return;
@@ -176,7 +193,10 @@ export default function HotelCardsMap() {
                       ))}
                     </div>
                     {/* <button className={styles.nearby_btn}> */}
-                    <button className={`main_form_btn ${styles.nearby_btn}`}>
+                    <button
+                      className={`main_form_btn ${styles.nearby_btn}`}
+                      onClick={() => findTours(hotel.id)}
+                    >
                       {intl.formatMessage({ id: 'map.find_tours' })}
                     </button>
                   </div>

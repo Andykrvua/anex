@@ -172,6 +172,18 @@ export default function Hotel({ data, hotel }) {
         cityId: hotel.c?.i,
         countryId: hotel.t?.i,
         hotelId: hotel.i,
+        mapContext: 'hotel',
+        mapSearchParams: {
+          transport: data.transport,
+          from: data.from,
+          fromname: data.fromname,
+          to: data.to,
+          checkIn: data.checkIn,
+          checkTo: data.checkTo,
+          nights: data.nights,
+          nightsTo: data.nightsTo,
+          people: data.people,
+        },
         favData,
       });
       setModal({ get: modal.hotelCardsMap });

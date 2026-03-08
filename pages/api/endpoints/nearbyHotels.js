@@ -15,14 +15,12 @@ export default async function handler(req, res) {
   if (countryId) params.set('countryId', countryId);
   if (cityId) params.set('cityId', cityId);
 
-  console.log('params', params);
   const result = await fetch(`${process.env.OPERATOR_API}${api_version}/tours/hotels?${params}`)
     .then((response) => {
       if (response.status === 200) return response.json();
       throw new Error('Bad response');
     })
     .catch(() => ({ errors: true }));
-  console.log('result', result);
 
   if (result.errors) {
     return res.status(200).json({ ok: false, hotels: [] });

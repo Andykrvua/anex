@@ -16,7 +16,8 @@ export default function InputRange({ min, max, reset }) {
     if (currentPrice && currentPriceTo) {
       return [Number(currentPrice), Number(currentPriceTo)];
     }
-    return filterData.default.cost;
+    // return filterData.default.cost;
+    return [filterData.costMin, filterData.costMax];
   };
 
   const [values, setValues] = useState(initValues());
