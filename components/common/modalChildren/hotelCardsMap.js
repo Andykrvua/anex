@@ -14,7 +14,7 @@ import SwitchMenu from 'components/common/switchMenu/switchMenu';
 export default function HotelCardsMap() {
   const intl = useIntl();
   const router = useRouter();
-  const [activeLayer, setActiveLayer] = useState('osm');
+  const [activeLayer, setActiveLayer] = useState('satellite');
   const {
     img,
     hotelName,
@@ -128,8 +128,8 @@ export default function HotelCardsMap() {
   const position = [coords.a, coords.o];
 
   const layerItems = [
-    { name: intl.formatMessage({ id: 'map.layer_map' }), value: 'osm' },
     { name: intl.formatMessage({ id: 'map.layer_satellite' }), value: 'satellite' },
+    { name: intl.formatMessage({ id: 'map.layer_map' }), value: 'osm' },
   ];
 
   return (
