@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import FacebookProvider from 'next-auth/providers/facebook';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 const options = {
   providers: [
@@ -8,10 +8,25 @@ const options = {
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
-    // FacebookProvider({
-    //   clientId: process.env.FACEBOOK_ID,
-    //   clientSecret: process.env.FACEBOOK_SECRET,
-    // }),
+    CredentialsProvider({
+      id: 'googleonetap',
+      credentials: { credential: { type: 'text' } },
+      async authorize(credentials) {
+        const res = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${credentials.credential}`);
+        const payload = await res.json();
+
+        if (!res.ok || payload.aud !== process.env.GOOGLE_ID) {
+          throw new Error('Invalid Google token');
+        }
+
+        return {
+          id: payload.sub,
+          name: payload.name,
+          email: payload.email,
+          image: payload.picture,
+        };
+      },
+    }),
   ],
 };
 
