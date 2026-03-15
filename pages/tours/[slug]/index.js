@@ -5,14 +5,23 @@ import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import { useIntl } from 'react-intl';
 import Post from '/components/blog/post.js';
 import { location } from 'utils/constants';
-import LinksBlock from 'components/tours/tours-text/links';
 import SubpagesLinksBlock from 'components/tours/subpages-links/subpageslinks';
+import CountryToursMonth from 'components/country/countryToursMonth';
 import { links } from 'utils/links';
 import { useRouter } from 'next/router';
 import DefaultErrorPage from 'next/error';
 import DistrictList from 'components/country/districtList';
 
-export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLinks, bus, rb }) {
+export default function Tours({
+  toursTextPage,
+  allLinks,
+  slug,
+  loc,
+  subpagesLinks,
+  monthSubpagesLinks,
+  bus,
+  rb,
+}) {
   const intl = useIntl();
   const router = useRouter();
 
@@ -29,7 +38,7 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
 
   const br_arr = [
     { url: links.tours, title: intl.formatMessage({ id: 'tour.br' }) },
-    { title: toursTextPage?.translations[0].name },
+    { title: toursTextPage?.translations[0]?.name },
   ];
 
   const style = {
@@ -47,7 +56,7 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
       ) : (
         <div className="container">
           <Breadcrumbs data={br_arr} beforeMainFrom />
-          <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
+          <h2 style={style}>{toursTextPage.translations[0]?.h1}</h2>
           <MainForm />
           {bus && (
             <DistrictList
@@ -68,14 +77,22 @@ export default function Tours({ toursTextPage, allLinks, slug, loc, subpagesLink
             />
           )}
           <Post post={toursTextPage} variant={location.postContent.countryPage} />
-          {/* <LinksBlock allLinks={allLinks} /> */}
           {subpagesLinks && !!subpagesLinks.filter((item) => !item.bus && !item.rb).length && (
             <SubpagesLinksBlock
               allLinks={subpagesLinks.filter((item) => !item.bus && !item.rb)}
-              title={toursTextPage?.translations[0].name}
+              title={toursTextPage?.translations[0]?.name}
               current={slug}
               level={1}
               bus={bus}
+            />
+          )}
+          {monthSubpagesLinks && monthSubpagesLinks.length > 0 && (
+            <CountryToursMonth
+              data={monthSubpagesLinks}
+              current={null}
+              title={toursTextPage?.translations[0]?.name}
+              getSlug={(item) => item.subpage}
+              getHref={(item) => `${links.tours}/${item.slug}/${item.subpage}/`}
             />
           )}
         </div>
@@ -107,9 +124,11 @@ export async function getStaticProps(context) {
   const slug = context.params.slug;
 
   const toursTextPageTemp = await getToursTextPage(loc, slug);
-  const subpagesLinks = toursTextPageTemp.data.filter(
-    (nosubpage) => nosubpage.subpage && !nosubpage.subsubpage
+  const allSubpagesLinks = toursTextPageTemp.data.filter(
+    (nosubpage) => nosubpage.subpage && !nosubpage.subsubpage,
   );
+  const monthSubpagesLinks = allSubpagesLinks.filter((item) => item.time_of_year);
+  const subpagesLinks = allSubpagesLinks.filter((item) => !item.time_of_year);
 
   const toursTextPage = toursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
   const bus = !!subpagesLinks.filter((item) => item.bus).length;
@@ -128,10 +147,11 @@ export async function getStaticProps(context) {
   return {
     props: {
       toursTextPage: toursTextPage[0] || null,
-      allLinks: allLinks.data.filter((nosubpage) => !nosubpage.subpage),
+      allLinks: allLinks.data.filter((nosubpage) => !nosubpage.subpage && !nosubpage.time_of_year_slug),
       slug,
       loc,
       subpagesLinks: subpagesLinks.length ? subpagesLinks : null,
+      monthSubpagesLinks: monthSubpagesLinks.length ? monthSubpagesLinks : null,
       bus,
       rb,
     },

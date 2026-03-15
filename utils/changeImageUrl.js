@@ -15,11 +15,11 @@ export default function ChangeImageUrl(str, variant) {
   let content;
 
   if (variant === location.postContent.countryPage) {
-    content = Change(str.translations[0].post_content);
+    content = Change(str.translations[0]?.post_content);
   } else if (variant === 'default') {
     content = Change(str);
   } else {
-    content = Change(str.translations[0].content);
+    content = Change(str.translations[0]?.content);
   }
 
   return content;

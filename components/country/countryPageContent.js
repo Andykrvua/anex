@@ -6,6 +6,7 @@ import { location } from 'utils/constants';
 import CountryToursFrom from 'components/country/countryToursFrom';
 import CountryToursMonth from 'components/country/countryToursMonth';
 import { useIntl } from 'react-intl';
+import { links } from 'utils/links';
 
 const CountryPropertys = ({ country }) => {
   return (
@@ -72,7 +73,12 @@ const SubpagesLinks = ({
             <span className="mark">{countryName}</span>
             {intl.formatMessage({ id: 'country.month_2' })}
           </h2>
-          <CountryToursMonth data={month} current={current} />
+          <CountryToursMonth
+            data={month}
+            current={current}
+            getSlug={(item) => item.subpage_slug}
+            getHref={(item) => `${links.countries}/${item.country_slug.slug}/${item.subpage_slug}`}
+          />
         </>
       ) : null}
     </>

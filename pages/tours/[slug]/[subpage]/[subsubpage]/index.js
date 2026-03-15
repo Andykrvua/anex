@@ -70,7 +70,7 @@ export default function ToursSubsubpage({
       ) : (
         <div className="container">
           <Breadcrumbs data={br_arr} beforeMainFrom />
-          <h2 style={style}>{toursTextPage.translations[0].h1}</h2>
+          <h2 style={style}>{toursTextPage.translations[0]?.h1}</h2>
           <MainForm />
           {/* {bus && (
             <DistrictList
@@ -93,7 +93,8 @@ export default function ToursSubsubpage({
             <SubpagesLinksBlock
               allLinks={subpagesLinks}
               level3links={subsubpagesLinks.filter(
-                (item) => item.subsubpage !== router.query.subsubpage && item.subpage === router.query.subpage
+                (item) =>
+                  item.subsubpage !== router.query.subsubpage && item.subpage === router.query.subpage,
               )}
               title={prevToursTextPage?.translations[0].h1}
               current={subpage}
@@ -134,7 +135,7 @@ export async function getStaticProps(context) {
 
   const prevPrevToursTextPage = prevToursTextPageTemp.data.filter((nosubpage) => !nosubpage.subpage);
   const prevToursTextPage = prevToursTextPageTemp.data.filter(
-    (nosubpage) => nosubpage.subpage === subpage && !nosubpage.subsubpage
+    (nosubpage) => nosubpage.subpage === subpage && !nosubpage.subsubpage,
   );
 
   const subpagesLinks = prevToursTextPageTemp.data.filter((nosubpage) => nosubpage.subpage);
