@@ -102,13 +102,14 @@ export default function CountryPageContent({
           data={
             isDistrict
               ? subpagesSlugs.filter(
-                  (item) => item.is_district && item.subsubpage && item.subpage_slug === subpageSlug
+                  (item) => item.is_district && item.subsubpage && item.subpage_slug === subpageSlug,
                 )
               : country.district_from_cities
-              ? subpagesSlugs.filter(
-                  (item) => item.subpage_slug === country.subpage_slug && item.is_district && item.subsubpage
-                )
-              : subpagesSlugs.filter((item) => item.is_district && !item.subsubpage)
+                ? subpagesSlugs.filter(
+                    (item) =>
+                      item.subpage_slug === country.subpage_slug && item.is_district && item.subsubpage,
+                  )
+                : subpagesSlugs.filter((item) => item.is_district && !item.subsubpage)
           }
           title={country.translations[0].country_district_title}
           country={country.slug ? country.slug : country.country_slug.slug}
