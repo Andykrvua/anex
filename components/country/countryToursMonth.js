@@ -24,6 +24,8 @@ const colors = {
 
 const AContent = ({ item, current, timeYear = false, getSlug }) => {
   const slug = getSlug(item);
+  const noTemp = !item.temp_from && !item.temp_to;
+  const centered = timeYear || noTemp;
   return (
     <>
       <span
@@ -32,11 +34,15 @@ const AContent = ({ item, current, timeYear = false, getSlug }) => {
             ? `${styles.toursmonth_item_title}`
             : `${styles.toursmonth_item_title} ${styles.toursmonth_item_title__current}`
         }
+        style={centered ? { textAlign: 'center' } : undefined}
       >
         <FM id={`month.${slug}`} />
       </span>
-      <span className={styles.toursmonth_temp}>
-        <span className={styles.toursmonth_temp_img_wrapper}>
+      <span className={styles.toursmonth_temp} style={centered ? { justifyContent: 'center' } : undefined}>
+        <span
+          className={styles.toursmonth_temp_img_wrapper}
+          style={centered ? { marginRight: 0 } : undefined}
+        >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M1 12H2M12 18C13.5913 18 15.1174 17.3679 16.2426 16.2426C17.3679 15.1174 18 13.5913 18 12C18 10.4087 17.3679 8.88258 16.2426 7.75736C15.1174 6.63214 13.5913 6 12 6C10.4087 6 8.88258 6.63214 7.75736 7.75736C6.63214 8.88258 6 10.4087 6 12C6 13.5913 6.63214 15.1174 7.75736 16.2426C8.88258 17.3679 10.4087 18 12 18V18ZM22 12H23H22ZM12 2V1V2ZM12 23V22V23ZM20 20L19 19L20 20ZM20 4L19 5L20 4ZM4 20L5 19L4 20ZM4 4L5 5L4 4Z"
@@ -47,10 +53,13 @@ const AContent = ({ item, current, timeYear = false, getSlug }) => {
             />
           </svg>
         </span>
-        {timeYear ? '' : `${item.temp_from}°`}
+        {timeYear ? '' : item.temp_from ? `${item.temp_from}°` : ''}
       </span>
-      <span className={styles.toursmonth_temp}>
-        <span className={styles.toursmonth_temp_img_wrapper}>
+      <span className={styles.toursmonth_temp} style={centered ? { justifyContent: 'center' } : undefined}>
+        <span
+          className={styles.toursmonth_temp_img_wrapper}
+          style={centered ? { marginRight: 0 } : undefined}
+        >
           <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M1 13C3.483 13 5.345 10 5.345 10C5.345 10 7.207 13 9.69 13C12.172 13 14.655 10 14.655 10C14.655 10 17.138 13 19 13"
@@ -75,7 +84,7 @@ const AContent = ({ item, current, timeYear = false, getSlug }) => {
             />
           </svg>
         </span>
-        {timeYear ? '' : `${item.temp_to}°`}
+        {timeYear ? '' : item.temp_to ? `${item.temp_to}°` : ''}
       </span>
     </>
   );
@@ -135,9 +144,7 @@ export default function CountryToursMonth({ data, current, getSlug, getHref, tit
         </h2>
       )}
       <div className={styles.toursmonth_andtimeyears_items}>
-        <div className={styles.toursmonth_items}>
-          {month.map((item, ind) => renderItem(item, ind))}
-        </div>
+        <div className={styles.toursmonth_items}>{month.map((item, ind) => renderItem(item, ind))}</div>
         <div className={`${styles.toursmonth_items} ${styles.timeyeras_items}`}>
           {timeOfYear.map((item, ind) => renderItem(item, ind, true))}
         </div>
