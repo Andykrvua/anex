@@ -42,6 +42,7 @@ export default function Country({ country, countrySlugs, slug, loc, subpagesSlug
     },
     { title: country?.translations[0].name },
   ];
+  console.log('country', subpagesSlugs);
   return (
     <>
       <SeoHead content={country} />

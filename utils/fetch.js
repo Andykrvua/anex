@@ -66,7 +66,7 @@ export const getCountries = async () => {
 };
 
 export const getPostsSlugs = async () => {
-  const url = `posts?fields=slug,status&filter[status][_eq]=published`;
+  const url = `posts?fields=slug,status&filter[status][_eq]=published&limit=-1`;
   return req(url);
 };
 
@@ -77,7 +77,7 @@ export const getPostFromSlug = async (slug, loc) => {
 };
 
 export const getAPICountryList = async () => {
-  const url = `api_countries?fields=date_created,slug,img,translations.name,translations.languages_code&filter[status][_eq]=published`;
+  const url = `api_countries?fields=date_created,slug,img,translations.name,translations.languages_code&filter[status][_eq]=published&limit=-1`;
   return req(url);
 };
 
@@ -88,7 +88,7 @@ export const getPageSettings = async (item, loc, data) => {
 };
 
 export const getAPICountryListSlugs = async () => {
-  const url = `api_countries?fields=slug,status&filter[status][_eq]=published`;
+  const url = `api_countries?fields=slug,status&filter[status][_eq]=published&limit=-1`;
   return req(url);
 };
 
@@ -115,41 +115,41 @@ export const getCountrySlugsAndSubpagesSlugs = async (
   if (nestingDistrictFrom) {
     filter = '&filter[subdistrict_slug][_neq]=null';
   }
-  const url = `api_countries_subpage?fields=country_slug.slug,status,subpage_slug,subdistrict_slug,subsubpage,subsubpage_slug&filter[status]=published${filter}`;
+  const url = `api_countries_subpage?fields=country_slug.slug,status,subpage_slug,subdistrict_slug,subsubpage,subsubpage_slug&filter[status]=published${filter}&limit=-1`;
   return req(url);
 };
 
 export const getSubpagesSlugsFromCountry = async (slug) => {
-  const url = `api_countries_subpage?fields=subsubpage,district_from_cities,country_slug.slug,popular,img,translations.languages_code,translations.name,translations.br,isNewCity,is_district,status,subpage_slug,temp_from,temp_to&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
+  const url = `api_countries_subpage?fields=subsubpage,district_from_cities,country_slug.slug,popular,img,translations.languages_code,translations.name,translations.br,isNewCity,is_district,status,subpage_slug,temp_from,temp_to&filter[country_slug][slug][_eq]=${slug}&filter[status]=published&limit=-1`;
   return req(url);
 };
 
 export const getCountrySubpageSlug = async (slug, subpage, loc) => {
   const locale = languagesApi[loc];
-  const url = `api_countries_subpage?fields=country_slug.slug,isNewCity,status,is_district,img,subpage_slug,subsubpage_slug,temp_from,temp_to,translations.languages_code,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br,translations.country_district_title&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[status]=published`;
+  const url = `api_countries_subpage?fields=country_slug.slug,isNewCity,status,is_district,img,subpage_slug,subsubpage_slug,temp_from,temp_to,translations.languages_code,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br,translations.country_district_title&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[status]=published&limit=-1`;
   return req(url);
 };
 
 export const getCountrySubSubpageSlug = async (slug, subpage, subsubpage, loc) => {
   const locale = languagesApi[loc];
-  const url = `api_countries_subpage?fields=subsubpage,subsubpage_slug,subdistrict_slug,district_from_cities,country_slug.slug,isNewCity,status,is_district,img,subpage_slug,temp_from,temp_to,translations.languages_code,translations.country_district_title,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[subsubpage]=true&filter[subsubpage_slug]=${subsubpage}&filter[status]=published`;
+  const url = `api_countries_subpage?fields=subsubpage,subsubpage_slug,subdistrict_slug,district_from_cities,country_slug.slug,isNewCity,status,is_district,img,subpage_slug,temp_from,temp_to,translations.languages_code,translations.country_district_title,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[subsubpage]=true&filter[subsubpage_slug]=${subsubpage}&filter[status]=published&limit=-1`;
   return req(url);
 };
 
 export const getCountrySubSubpageNestingSlug = async (slug, subpage, subsubpage, nesting, loc) => {
   const locale = languagesApi[loc];
-  const url = `api_countries_subpage?fields=subsubpage,subsubpage_slug,subdistrict_slug,district_from_cities,country_slug.slug,isNewCity,status,is_district,img,subpage_slug,temp_from,temp_to,translations.languages_code,translations.country_district_title,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[subsubpage]=true&filter[subsubpage_slug]=${subsubpage}&filter[subdistrict_slug]=${nesting}&filter[status]=published`;
+  const url = `api_countries_subpage?fields=subsubpage,subsubpage_slug,subdistrict_slug,district_from_cities,country_slug.slug,isNewCity,status,is_district,img,subpage_slug,temp_from,temp_to,translations.languages_code,translations.country_district_title,translations.title,translations.description,translations.post_title,translations.post_content,translations.name,translations.badge,translations.from_month_country_name,translations.h1,translations.br&deep[translations][_filter][languages_code][_eq]=${locale}&filter[country_slug][slug][_eq]=${slug}&filter[subpage_slug]=${subpage}&filter[subsubpage]=true&filter[subsubpage_slug]=${subsubpage}&filter[subdistrict_slug]=${nesting}&filter[status]=published&limit=-1`;
   return req(url);
 };
 
 export const getCountrySubpagesSlugs = async (slug) => {
-  const url = `api_countries_subpage?fields=country_slug.slug,img,popular,subdistrict_slug,district_from_cities,subsubpage,subsubpage_slug,status,isNewCity,is_district,subpage_slug,temp_from,temp_to,translations.languages_code,translations.name,translations.br&filter[country_slug][slug][_eq]=${slug}&filter[status]=published`;
+  const url = `api_countries_subpage?fields=country_slug.slug,img,popular,subdistrict_slug,district_from_cities,subsubpage,subsubpage_slug,status,isNewCity,is_district,subpage_slug,temp_from,temp_to,translations.languages_code,translations.name,translations.br&filter[country_slug][slug][_eq]=${slug}&filter[status]=published&limit=-1`;
   return req(url);
 };
 
 export const getAllCountriesForNav = async (loc) => {
   const locale = languagesApi[loc];
-  const url = `api_countries?fields=slug,code,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published&sort[translations.name]=sort`;
+  const url = `api_countries?fields=slug,code,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published&sort[translations.name]=sort&limit=-1`;
   return req(url);
 };
 
@@ -161,7 +161,7 @@ export const getStaticData = async (loc) => {
 
 export const getAllToursTextPages = async (loc = languagesApi.ru) => {
   const locale = languagesApi[loc];
-  const url = `tours_text?fields=slug,subpage,subsubpage,img,popular,time_of_year,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published`;
+  const url = `tours_text?fields=slug,subpage,subsubpage,img,popular,time_of_year,translations.languages_code,translations.name&deep[translations][_filter][languages_code][_eq]=${locale}&filter[status]=published&limit=-1`;
   return req(url);
 };
 
