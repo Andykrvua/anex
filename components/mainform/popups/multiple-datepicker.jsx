@@ -13,7 +13,7 @@ import useOutsideClick from '../../../utils/clickOutside';
 import { useGetDate, useGetInitialDate, useSetDate } from '../../../store/store';
 import usePrevious from '../../../common/hooks/usePrevious';
 import DatePickerGlobalStyle from '../../../styles/datePickerGlobalStyle';
-import { DATE_TYPES, addLocalDays, isSameLocalDate, normalizeDateValue } from '../../../utils/dateRange';
+import { DATE_TYPES, DEFAULT_PLUS_DAYS, addLocalDays, isSameLocalDate, normalizeDateValue } from '../../../utils/dateRange';
 import styles from './multiple-datepicker.module.css';
 
 const MAX_ALLOWED_DAYS = 14;
@@ -105,7 +105,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
 
   useEffect(() => {
     if (prevDateType === DATE_TYPES.RANGE && dateType === DATE_TYPES.DATE) {
-      const nextPlusDays = ALLOWED_PLUS_MINUS_DAYS.includes(plusDays) ? plusDays : ALLOWED_PLUS_MINUS_DAYS[0];
+      const nextPlusDays = ALLOWED_PLUS_MINUS_DAYS.includes(activePlusDay) ? activePlusDay : DEFAULT_PLUS_DAYS;
       const baseDate = startDate || initialDate;
       const calculated = calcDateSelection({
         date: middleDate || baseDate,
@@ -128,7 +128,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
         dateType: DATE_TYPES.DATE,
       });
     }
-  }, [dateType, initialDate, middleDate, plusDays, prevDateType, selectedDate, startDate]);
+  }, [activePlusDay, dateType, initialDate, middleDate, prevDateType, selectedDate, startDate]);
 
   useEffect(() => {
     registerLocale('ru', ru);
@@ -236,7 +236,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
       return;
     }
 
-    const nextPlusDays = ALLOWED_PLUS_MINUS_DAYS.includes(plusDays) ? plusDays : ALLOWED_PLUS_MINUS_DAYS[0];
+    const nextPlusDays = ALLOWED_PLUS_MINUS_DAYS.includes(activePlusDay) ? activePlusDay : DEFAULT_PLUS_DAYS;
     const calculated = calcDateSelection({
       date: middleDate || startDate || initialDate,
       plusDays: nextPlusDays,
