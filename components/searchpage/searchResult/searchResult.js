@@ -26,18 +26,13 @@ import {
   useSetSearchResultSort,
   useSetDate,
   useGetSearchResultSort,
+  useGetInitialDate,
 } from 'store/store';
 import { useRouter } from 'next/router';
 import parseUrl from '../pasteUrl/pasteUrl';
 import Cards from './cards';
 import { stringifyCrewComposition } from '../../../utils/customer-crew';
-
-const localDateStr = (d) => {
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
+import { buildDateSearchQuery, normalizeDateValue } from '../../../utils/dateRange';
 
 const MemoCards = memo(Cards);
 
@@ -71,6 +66,7 @@ export default function SearchResult({ isFilterBtnShow }) {
   const getSearchResultSort = useGetSearchResultSort();
   const setSearchResultSort = useSetSearchResultSort();
   const setFilterData = useSetSearchFilter();
+  const initialDate = useGetInitialDate();
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -149,12 +145,7 @@ export default function SearchResult({ isFilterBtnShow }) {
 
   async function getUrl(number) {
     const people = stringifyCrewComposition(person);
-
-    const copiedDate = new Date(date.rawDate);
-    copiedDate.setDate(copiedDate.getDate() + date.plusDays);
-
-    const checkIn = localDateStr(date.rawDate);
-    const checkTo = localDateStr(copiedDate);
+    const { checkIn, checkTo } = buildDateSearchQuery(date, initialDate);
 
     const transport = up.transport ? up.transport : 'no';
 
@@ -285,7 +276,7 @@ export default function SearchResult({ isFilterBtnShow }) {
       setDown({ ...res.to });
       setUp({ ...res.from });
       setNight({ from: res.nights, to: res.nightsTo });
-      setDate({ ...res.date });
+      setDate(normalizeDateValue(res.date, initialDate));
       setPerson({ ...res.people });
       setIsLoading(false);
       setHelper(true);
@@ -313,8 +304,7 @@ export default function SearchResult({ isFilterBtnShow }) {
   }, [page]);
 
   const collectParams = () => {
-    const copiedDate = new Date(date.rawDate);
-    copiedDate.setDate(copiedDate.getDate() + date.plusDays);
+    const { checkIn, checkTo } = buildDateSearchQuery(date, initialDate);
 
     let fromname;
     if (typeof up.name === 'string') {
@@ -328,8 +318,8 @@ export default function SearchResult({ isFilterBtnShow }) {
       from: up.value,
       fromname,
       to: down.value,
-      checkIn: localDateStr(date.rawDate),
-      checkTo: localDateStr(copiedDate),
+      checkIn,
+      checkTo,
       nights: night.from,
       nightsTo: night.to,
       people: stringifyCrewComposition(person),

@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import MainFormBtn from './mainFormBtn';
 import { svgDate } from './svg';
 import Loader from 'components/common/loader';
 import { formattedDate } from '../../../utils/formattedDate';
-import declension from '../../../utils/declension';
-import { useIntl } from 'react-intl';
+import { useGetDate, useGetInitialDate } from '../../../store/store';
+import { getDateRangeLabel } from '../../../utils/dateRange';
 
 const DynamicUpWindow = dynamic(
-  () => import(/* webpackChunkName: "Date" */ '../popups/date'),
+  () => import(/* webpackChunkName: "Date" */ '../popups/multiple-datepicker'),
   {
     ssr: false,
     loading: () => {
@@ -18,48 +18,17 @@ const DynamicUpWindow = dynamic(
 );
 
 export default function DateField({
-  title,
   aria,
   modalIsOpen,
   setModalIsOpen,
   popupName,
 }) {
-  // не могу получить дату во внутреннем компоненте, хз
-  // const tomorrow = new Date();
-  // // tomorrow.setDate(tomorrow.getDate() + 1);
-  // tomorrow.setDate(tomorrow.getDate() - 15);
-  // const initialDate = tomorrow;
-  const storeDate = title.rawDate;
-  const plusDays = title.plusDays;
-
-  const intl = useIntl();
-  const dTxt1 = intl.formatMessage({
-    id: 'common.day1',
-  });
-  const dTxt2 = intl.formatMessage({
-    id: 'common.day2',
-  });
-  const dTxt5 = intl.formatMessage({
-    id: 'common.day5',
-  });
-
-  const [dayText, setDayText] = useState(dTxt2);
-
-  useEffect(() => {
-    setDayText(declension(plusDays, dTxt1, dTxt2, dTxt5));
-  }, [plusDays]);
-
-  title = formattedDate(title.rawDate);
-
-  const SecondaryBtn = () => {
-    return (
-      <div className="second_btn_date">
-        <span className="second_btn_date__text">
-          +{plusDays} {dayText}
-        </span>
-      </div>
-    );
-  };
+  const date = useGetDate();
+  const initialDate = useGetInitialDate();
+  const title = useMemo(
+    () => getDateRangeLabel(date, formattedDate, initialDate),
+    [date, initialDate],
+  );
 
   return (
     <MainFormBtn
@@ -67,8 +36,7 @@ export default function DateField({
       title={title}
       aria={aria}
       svg={svgDate}
-      SecondaryBtn={SecondaryBtn}
-      plusDays={plusDays}
+      plusDays={date.plusDays}
       modalIsOpen={modalIsOpen}
       setModalIsOpen={setModalIsOpen}
     >
@@ -77,8 +45,6 @@ export default function DateField({
         modalIsOpen={modalIsOpen}
         cName={'btn_date'}
         popupName={popupName}
-        storeDate={storeDate}
-        initialPlusDays={plusDays}
       />
     </MainFormBtn>
   );

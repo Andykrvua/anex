@@ -7,7 +7,9 @@ import {
   useSetFilterOpen,
   useSetSearchResultSort,
   useGetSearchResultSort,
+  useGetInitialDate,
 } from 'store/store';
+import { getDateRangeEndDate } from 'utils/dateRange';
 
 export default function SearchHeader() {
   const router = useRouter();
@@ -19,9 +21,8 @@ export default function SearchHeader() {
   const setFilterModale = useSetFilterOpen();
   const setSearchResultSort = useSetSearchResultSort();
   const getSearchResultSort = useGetSearchResultSort();
-
-  const copiedDate = new Date(date.rawDate);
-  copiedDate.setDate(copiedDate.getDate() + date.plusDays);
+  const initialDate = useGetInitialDate();
+  const copiedDate = getDateRangeEndDate(date, initialDate);
 
   const sortHandler = (type) => {
     if (type === 'price') {

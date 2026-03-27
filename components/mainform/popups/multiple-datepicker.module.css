@@ -1,0 +1,121 @@
+.popup_container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 15px;
+  overflow: auto;
+  background-color: var(--bg);
+}
+
+.popup_title {
+  margin-bottom: 15px;
+}
+
+.popup_nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.popup_nav_btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #eeeef1;
+  background-color: #f8f9fa;
+}
+
+.popup_datepicker {
+  min-height: 396px;
+}
+
+.popup_datepicker :global(.react-datepicker__custom-header button) {
+  display: flex;
+}
+
+.popup_datepicker :global(.react-datepicker__day--outside-month) {
+  visibility: hidden;
+}
+
+.popup_footer {
+  display: grid;
+  grid-template-columns: 100%;
+  gap: 15px;
+}
+
+.popup_plus_days_list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.popup_plus_days_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  border-radius: 5px;
+  font-weight: 700;
+  background-color: #f8f9fa;
+}
+
+.popup_plus_days_btn:global(.active) {
+  color: #fff;
+  background-color: var(--secondary);
+}
+
+.popup_apply {
+  padding: 15px;
+  border-radius: 5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: var(--secondary);
+}
+
+@media (min-width: 810px) {
+  .popup_container {
+    min-height: inherit;
+  }
+
+  .popup_nav {
+    justify-content: space-between;
+  }
+
+  .popup_nav_btn {
+    display: flex;
+  }
+
+  .popup_datepicker :global(.react-datepicker) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5%;
+  }
+
+  .popup_datepicker :global(.react-datepicker__custom-header) {
+    justify-content: center;
+  }
+
+  .popup_datepicker :global(.react-datepicker__custom-header button) {
+    display: none;
+  }
+
+  .popup_footer {
+    grid-template-columns: 2fr 1fr;
+    justify-content: space-between;
+  }
+
+  .popup_plus_days_list {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 810px) {
+  .popup_title {
+    margin-top: 0;
+  }
+}

@@ -5,6 +5,10 @@ export default function datePickerStyle() {
         position: relative;
       }
 
+      .react-datepicker__aria-live {
+        display: none;
+      }
+
       .react-datepicker__header {
         position: relative;
         text-align: center;
@@ -13,6 +17,14 @@ export default function datePickerStyle() {
       .react-datepicker__current-month {
         line-height: 50px;
         text-transform: capitalize;
+        font-weight: bold;
+      }
+
+      .react-datepicker__custom-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 5px;
       }
 
       .react-datepicker__navigation {
@@ -108,6 +120,14 @@ export default function datePickerStyle() {
         border: 1px solid var(--line);
         border-radius: var(--def-radius);
         background-color: var(--white);
+      }
+
+      .react-datepicker__day--active {
+        border: 1px solid var(--secondary);
+        border-radius: var(--def-radius);
+        font-weight: 600;
+        background-color: var(--secondary);
+        color: var(--font-white);
       }
 
       .react-datepicker__day--selected,
