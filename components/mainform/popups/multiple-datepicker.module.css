@@ -2,20 +2,15 @@
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  padding: 15px;
   overflow: auto;
-  background-color: var(--bg);
-}
-
-.popup_title {
-  margin-bottom: 15px;
 }
 
 .popup_nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 15px 0;
+  margin-bottom: 8px;
+  padding: 0 var(--cont-padding-popup);
 }
 
 .popup_nav_btn {
@@ -24,12 +19,25 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  border: 1px solid #eeeef1;
-  background-color: #f8f9fa;
+  border: 1px solid var(--line);
+  box-shadow: var(--arrow-btn-shadow);
+  overflow: hidden;
+  background: url(/assets/img/svg/arrow.svg) var(--font-white) no-repeat;
+}
+
+.popup_nav_btn__previous {
+  left: 5px;
+  transform: rotate(180deg);
+  box-shadow: var(--arrow-btn-shadow-up);
+}
+
+.popup_nav_btn__next {
+  right: 5px;
+  box-shadow: var(--arrow-btn-shadow);
 }
 
 .popup_datepicker {
-  min-height: 396px;
+  padding: 0 var(--cont-padding-popup) var(--cont-padding-popup);
 }
 
 .popup_datepicker :global(.react-datepicker__custom-header button) {
@@ -43,38 +51,14 @@
 .popup_footer {
   display: grid;
   grid-template-columns: 100%;
-  gap: 15px;
+  gap: 24px;
+  padding: 0 var(--cont-padding-popup) var(--cont-padding-popup);
 }
 
-.popup_plus_days_list {
+.popup_footer_plus_days_wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-}
-
-.popup_plus_days_btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  border-radius: 5px;
-  font-weight: 700;
-  background-color: #f8f9fa;
-}
-
-.popup_plus_days_btn:global(.active) {
-  color: #fff;
-  background-color: var(--secondary);
-}
-
-.popup_apply {
-  padding: 15px;
-  border-radius: 5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #fff;
-  background-color: var(--secondary);
 }
 
 @media (min-width: 810px) {
@@ -93,7 +77,8 @@
   .popup_datepicker :global(.react-datepicker) {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5%;
+    /* gap: 5%; */
+    gap: 24px;
   }
 
   .popup_datepicker :global(.react-datepicker__custom-header) {
@@ -105,12 +90,8 @@
   }
 
   .popup_footer {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     justify-content: space-between;
-  }
-
-  .popup_plus_days_list {
-    justify-content: flex-start;
   }
 }
 

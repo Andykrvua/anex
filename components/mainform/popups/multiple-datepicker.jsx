@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { addDays, addYears, differenceInDays, isBefore, isWithinInterval, startOfDay, subDays } from 'date-fns';
+import {
+  addDays,
+  addYears,
+  differenceInDays,
+  isBefore,
+  isWithinInterval,
+  startOfDay,
+  subDays,
+} from 'date-fns';
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
@@ -7,19 +15,33 @@ import ru from 'date-fns/locale/ru';
 import uk from 'date-fns/locale/uk';
 import Header from './header';
 import SwitchMenu from '../../common/switchMenu/switchMenu';
-import { svgDate, svgNext, svgPrev } from '../form-fields/svg';
+import { svgDate } from '../form-fields/svg';
 import { BODY, enableScroll, getSize, maxWidth, useSetBodyScroll } from '../../../utils/useBodyScroll';
 import useOutsideClick from '../../../utils/clickOutside';
 import { useGetDate, useGetInitialDate, useSetDate } from '../../../store/store';
 import usePrevious from '../../../common/hooks/usePrevious';
 import DatePickerGlobalStyle from '../../../styles/datePickerGlobalStyle';
-import { DATE_TYPES, DEFAULT_PLUS_DAYS, addLocalDays, isSameLocalDate, normalizeDateValue } from '../../../utils/dateRange';
+import {
+  DATE_TYPES,
+  DEFAULT_PLUS_DAYS,
+  addLocalDays,
+  isSameLocalDate,
+  normalizeDateValue,
+} from '../../../utils/dateRange';
 import styles from './multiple-datepicker.module.css';
 
 const MAX_ALLOWED_DAYS = 14;
 const ALLOWED_PLUS_MINUS_DAYS = [1, 3, 7];
+const PLUS_DAYS_KEY_TO_VALUE = { d1: 1, d3: 3, d7: 7 };
+const PLUS_DAYS_VALUE_TO_KEY = { 1: 'd1', 3: 'd3', 7: 'd7' };
 
-function calcDateSelection({ date, plusDays = 0, initialDate, disabledPlusBefore = false, customAdditionalDays = 0 }) {
+function calcDateSelection({
+  date,
+  plusDays = 0,
+  initialDate,
+  disabledPlusBefore = false,
+  customAdditionalDays = 0,
+}) {
   const middleDate = startOfDay(date);
   const normalizedInitialDate = startOfDay(initialDate);
 
@@ -105,7 +127,9 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
 
   useEffect(() => {
     if (prevDateType === DATE_TYPES.RANGE && dateType === DATE_TYPES.DATE) {
-      const nextPlusDays = ALLOWED_PLUS_MINUS_DAYS.includes(activePlusDay) ? activePlusDay : DEFAULT_PLUS_DAYS;
+      const nextPlusDays = ALLOWED_PLUS_MINUS_DAYS.includes(activePlusDay)
+        ? activePlusDay
+        : DEFAULT_PLUS_DAYS;
       const baseDate = startDate || initialDate;
       const calculated = calcDateSelection({
         date: middleDate || baseDate,
@@ -171,15 +195,15 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
     () => [
       {
         name: `± 1 ${intl.formatMessage({ id: 'common.day1' })}`,
-        value: ALLOWED_PLUS_MINUS_DAYS[0],
+        value: 'd1',
       },
       {
         name: `± 3 ${intl.formatMessage({ id: 'common.day2' })}`,
-        value: ALLOWED_PLUS_MINUS_DAYS[1],
+        value: 'd3',
       },
       {
         name: `± 7 ${intl.formatMessage({ id: 'common.day5' })}`,
-        value: ALLOWED_PLUS_MINUS_DAYS[2],
+        value: 'd7',
       },
     ],
     [intl],
@@ -212,6 +236,15 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
       nextPlusDays,
       nextAdditionalDays: calculated.additionalDays,
     });
+  };
+
+  const handlePlusDaysChange = (value) => {
+    const nextPlusDays = PLUS_DAYS_KEY_TO_VALUE[value];
+    const baseDate = middleDate || startDate || initialDate;
+
+    setPlusDays(nextPlusDays);
+    setActivePlusDay(nextPlusDays);
+    handleDateSelection({ date: baseDate, nextPlusDays });
   };
 
   const handleDateTypeChange = (value) => {
@@ -334,15 +367,17 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
         <button
           type="button"
           onClick={() => datepickerHandlers.current?.decreaseMonth()}
-          dangerouslySetInnerHTML={{ __html: svgPrev }}
-          className={styles.popup_nav_btn}
+          className={`${styles.popup_nav_btn} ${styles.popup_nav_btn__previous}`}
         />
-        <SwitchMenu items={dateTypesList} name="date_types_switcher" callback={[dateType, handleDateTypeChange]} />
+        <SwitchMenu
+          items={dateTypesList}
+          name="date_types_switcher"
+          callback={[dateType, handleDateTypeChange]}
+        />
         <button
           type="button"
           onClick={() => datepickerHandlers.current?.increaseMonth()}
-          dangerouslySetInnerHTML={{ __html: svgNext }}
-          className={styles.popup_nav_btn}
+          className={`${styles.popup_nav_btn} ${styles.popup_nav_btn__next}`}
         />
       </div>
       <div className={styles.popup_datepicker}>
@@ -390,8 +425,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
                 <button
                   type="button"
                   onClick={decreaseMonth}
-                  dangerouslySetInnerHTML={{ __html: svgPrev }}
-                  className={styles.popup_nav_btn}
+                  className={`${styles.popup_nav_btn} ${styles.popup_nav_btn__previous}`}
                 />
                 <span className="react-datepicker__current-month">
                   {headerDate.toLocaleString(locale, {
@@ -401,8 +435,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
                 <button
                   type="button"
                   onClick={increaseMonth}
-                  dangerouslySetInnerHTML={{ __html: svgNext }}
-                  className={styles.popup_nav_btn}
+                  className={`${styles.popup_nav_btn} ${styles.popup_nav_btn__next}`}
                 />
               </div>
             );
@@ -411,36 +444,17 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
       </div>
       <div className={styles.popup_footer}>
         {dateType === DATE_TYPES.DATE ? (
-          <div className={styles.popup_plus_days_list}>
-            {plusDaysList.map(({ name, value }) => {
-              const isActive = value === plusDays && activePlusDay === value;
-
-              return (
-                <button
-                  type="button"
-                  className={`${styles.popup_plus_days_btn} ${isActive ? 'active' : ''}`}
-                  key={value}
-                  onClick={() => {
-                    const nextPlusDays = activePlusDay !== value ? value : 0;
-                    const baseDate = middleDate || startDate || initialDate;
-
-                    setPlusDays(nextPlusDays);
-                    setActivePlusDay(activePlusDay !== value ? value : 0);
-                    handleDateSelection({
-                      date: baseDate,
-                      nextPlusDays,
-                    });
-                  }}
-                >
-                  {name}
-                </button>
-              );
-            })}
+          <div className={styles.popup_footer_plus_days_wrapper}>
+            <SwitchMenu
+              items={plusDaysList}
+              name="plus_days_switcher"
+              callback={[PLUS_DAYS_VALUE_TO_KEY[activePlusDay], handlePlusDaysChange]}
+            />
           </div>
         ) : (
           <div />
         )}
-        <button type="button" className={styles.popup_apply} onClick={selectedHandler}>
+        <button type="button" className="apply_btn" onClick={selectedHandler}>
           <FM id="common.apply" />
         </button>
       </div>
