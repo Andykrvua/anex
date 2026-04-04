@@ -1,0 +1,96 @@
+.popup_container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: auto;
+}
+
+.popup_nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  padding: 0 var(--cont-padding-popup);
+}
+
+.popup_nav_btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  box-shadow: var(--arrow-btn-shadow);
+  overflow: hidden;
+  background: url(/assets/img/svg/arrow.svg) var(--font-white) no-repeat;
+}
+
+.popup_nav_btn__previous {
+  left: 5px;
+  transform: rotate(180deg);
+  box-shadow: var(--arrow-btn-shadow-up);
+}
+
+.popup_nav_btn__next {
+  right: 5px;
+  box-shadow: var(--arrow-btn-shadow);
+}
+
+.popup_datepicker {
+  padding: 0 var(--cont-padding-popup) var(--cont-padding-popup);
+}
+
+.popup_datepicker :global(.react-datepicker__custom-header button) {
+  display: flex;
+}
+
+.popup_datepicker :global(.react-datepicker__day--outside-month) {
+  visibility: hidden;
+}
+
+.popup_footer {
+  display: grid;
+  grid-template-columns: 100%;
+  gap: 24px;
+  padding: 0 var(--cont-padding-popup) var(--cont-padding-popup);
+}
+
+.popup_footer_plus_days_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 810px) {
+  .popup_container {
+    min-height: inherit;
+  }
+
+  .popup_nav {
+    justify-content: space-between;
+  }
+
+  .popup_nav_btn {
+    display: flex;
+  }
+
+  .popup_datepicker :global(.react-datepicker) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* gap: 5%; */
+    gap: 24px;
+  }
+
+  .popup_datepicker :global(.react-datepicker__custom-header) {
+    justify-content: center;
+  }
+
+  .popup_datepicker :global(.react-datepicker__custom-header button) {
+    display: none;
+  }
+
+  .popup_footer {
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+  }
+}

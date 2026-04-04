@@ -1,4 +1,5 @@
 import { parseCrewComposition } from '../../../utils/customer-crew'
+import { getDefaultInitialDate, parseDateQuery } from '../../../utils/dateRange';
 // todo ru and ua
 // todo fetch hide token
 
@@ -148,25 +149,7 @@ const searchFrom = async (router, loc) => {
 };
 
 const searchDate = (router) => {
-  if (
-    !router.query.checkIn ||
-    !router.query.checkIn.length ||
-    !router.query.checkTo ||
-    !router.query.checkTo.length
-  )
-    return null;
-  const date1 = new Date(router.query.checkIn);
-  const date2 = new Date(router.query.checkTo);
-
-  if (!date1 || !date2) return null;
-
-  const oneDay = 1000 * 60 * 60 * 24;
-
-  const diffInTime = date2.getTime() - date1.getTime();
-
-  const plusDays = Math.round(diffInTime / oneDay);
-
-  return { rawDate: new Date(router.query.checkIn), plusDays };
+  return parseDateQuery(router.query, getDefaultInitialDate());
 };
 
 const searchPeople = (router) => {

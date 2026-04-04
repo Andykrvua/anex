@@ -5,11 +5,9 @@ import { FormattedMessage as FM } from 'react-intl';
 // import { defaultDownPoint, defaultUpPoint } from 'utils/constants';
 import { persist } from 'zustand/middleware';
 import { inputRangeData, mainFormPersonValidationRange } from '../utils/constants';
+import { DATE_TYPES, DEFAULT_PLUS_DAYS, getDefaultInitialDate } from '../utils/dateRange';
 
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-// const date = tomorrow.toISOString().slice(0, 10).split('-').reverse().join('.');
-const rawDate = tomorrow;
+const rawDate = getDefaultInitialDate();
 
 const defaultDownPoint = {
   name: {
@@ -50,7 +48,12 @@ const useStore = create(
     },
     setDown: (down) => set({ down }),
     initialDate: rawDate,
-    date: { rawDate, plusDays: 3 },
+    date: {
+      rawDate,
+      plusDays: DEFAULT_PLUS_DAYS,
+      additionalDays: DEFAULT_PLUS_DAYS + 1,
+      dateType: DATE_TYPES.DATE,
+    },
     setDate: (date) => set({ date }),
     night: { from: 7, to: 9 },
     setNight: (night) => set({ night }),

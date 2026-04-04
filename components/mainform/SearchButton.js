@@ -8,9 +8,11 @@ import {
   useGetPerson,
   useSetStartSearch,
   useGetSearchInProgress,
+  useGetInitialDate,
 } from '../../store/store';
 import { inputRangeData } from '../../utils/constants';
 import { stringifyCrewComposition } from '../../utils/customer-crew';
+import { buildDateSearchQuery } from '../../utils/dateRange';
 
 export default function SearchButton() {
   const router = useRouter();
@@ -22,20 +24,13 @@ export default function SearchButton() {
   const setStartSearch = useSetStartSearch();
   const getSearchInProgress = useGetSearchInProgress();
   const person = useGetPerson();
-
-  const localDateStr = (d) => {
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
+  const initialDate = useGetInitialDate();
 
   const makeSearchParams = () => {
     if (getSearchInProgress) {
       return;
     }
-    const copiedDate = new Date(date.rawDate);
-    copiedDate.setDate(copiedDate.getDate() + date.plusDays);
+    const { checkIn, checkTo, plusDays, dateType } = buildDateSearchQuery(date, initialDate);
 
     setStartSearch(true);
 
@@ -46,8 +41,10 @@ export default function SearchButton() {
         from: up.value,
         to: down.value,
         country: down.countryValue,
-        checkIn: localDateStr(date.rawDate),
-        checkTo: localDateStr(copiedDate),
+        checkIn,
+        checkTo,
+        plusDays,
+        dateType,
         nights: night.from,
         nightsTo: night.to,
         people: stringifyCrewComposition(person),
