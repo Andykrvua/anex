@@ -388,7 +388,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
           maxDate={maxDate}
           monthsShown={isMobile ? 1 : 2}
           inline
-          selected={middleDate || startDate || initialDate}
+          selected={dateType === DATE_TYPES.RANGE ? (startDate || initialDate) : (middleDate || startDate || initialDate)}
           disabledKeyboardNavigation
           onDayMouseEnter={(date) => setHoveredDate(date)}
           dayClassName={(date) => {

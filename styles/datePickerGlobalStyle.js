@@ -144,9 +144,18 @@ export default function datePickerStyle() {
       .react-datepicker__year-text--in-range {
         border: 1px solid var(--line);
         border-radius: var(--def-radius);
-        font-weight: 600;
         background-color: var(--white);
+      }
+
+      .react-datepicker__day--selected {
         color: var(--secondary);
+        font-weight: 600;
+      }
+
+      .react-datepicker__day--range-start,
+      .react-datepicker__day--range-end {
+        color: var(--secondary);
+        font-weight: 600;
       }
 
       .react-datepicker__day--keyboard-selected,
