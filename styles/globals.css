@@ -708,6 +708,10 @@ header.header .header_container {
     /* max-height: var(--mainform-desktop-maxheight); */
     overflow: auto;
   }
+
+  .wrapper_btn_date .main_form_popup {
+    width: 710px;
+  }
 }
 
 @media (min-width: 1110px) {

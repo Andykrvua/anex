@@ -413,7 +413,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
 
             return undefined;
           }}
-          renderCustomHeader={({ date: headerDate, decreaseMonth, increaseMonth }) => {
+          renderCustomHeader={({ monthDate: headerDate, decreaseMonth, increaseMonth }) => {
             datepickerHandlers.current = {
               decreaseMonth,
               increaseMonth,

@@ -94,9 +94,3 @@
     justify-content: space-between;
   }
 }
-
-@media (max-width: 810px) {
-  .popup_title {
-    margin-top: 0;
-  }
-}
