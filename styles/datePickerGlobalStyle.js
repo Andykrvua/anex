@@ -96,6 +96,7 @@ export default function datePickerStyle() {
         border: 1px solid var(--line);
         border-radius: var(--def-radius);
         font-weight: 600;
+        color: var(--secondary);
         background-color: var(--white);
       }
 
