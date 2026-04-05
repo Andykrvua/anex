@@ -76,6 +76,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
   const size = getSize();
   const wrapperRef = useRef(null);
   const datepickerHandlers = useRef(null);
+  const isInternalUpdate = useRef(false);
   const selectedDate = useSetDate();
   const initialDate = useGetInitialDate();
   const date = useGetDate();
@@ -99,6 +100,11 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
   useEffect(() => {
+    if (isInternalUpdate.current) {
+      isInternalUpdate.current = false;
+      return;
+    }
+
     if (dateType === DATE_TYPES.RANGE) {
       const rangeEnd = addLocalDays(storeDate.rawDate, storeDate.additionalDays - 1);
       setStartDate(storeDate.rawDate);
@@ -109,9 +115,8 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
       return;
     }
 
-    const middle = isSameLocalDate(storeDate.rawDate, initialDate)
-      ? storeDate.rawDate
-      : addLocalDays(storeDate.rawDate, storeDate.plusDays);
+    const daysBefore = storeDate.additionalDays - storeDate.plusDays - 1;
+    const middle = addLocalDays(storeDate.rawDate, Math.max(0, daysBefore));
     const calculated = calcDateSelection({
       date: middle,
       plusDays: storeDate.plusDays,
@@ -145,6 +150,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
       setAdditionalDays(calculated.additionalDays);
       setMinDate(initialDate);
       setMaxDate(addYears(initialDate, 1));
+      isInternalUpdate.current = true;
       selectedDate({
         rawDate: calculated.startDate,
         plusDays: nextPlusDays,
@@ -210,6 +216,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
   );
 
   const confirmDates = ({ nextRawDate, nextPlusDays, nextAdditionalDays, nextDateType = dateType }) => {
+    isInternalUpdate.current = true;
     selectedDate({
       rawDate: nextRawDate,
       plusDays: nextPlusDays,
