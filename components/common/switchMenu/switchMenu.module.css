@@ -27,7 +27,6 @@
   top: 4px;
   left: 0;
   height: calc(100% - 8px);
-  /* height: 28px; */
   border-radius: 50px;
   background-color: var(--primary);
   transform: translate3d(5px, 0, 0);
