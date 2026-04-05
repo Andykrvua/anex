@@ -3,7 +3,7 @@ export const DATE_TYPES = {
   RANGE: 'range',
 };
 
-export const DEFAULT_PLUS_DAYS = 3;
+export const DEFAULT_PLUS_DAYS = 0;
 
 function clampNonNegative(value, fallback = 0) {
   const normalized = Number(value);

@@ -31,9 +31,9 @@ import {
 import styles from './multiple-datepicker.module.css';
 
 const MAX_ALLOWED_DAYS = 14;
-const ALLOWED_PLUS_MINUS_DAYS = [1, 3, 7];
-const PLUS_DAYS_KEY_TO_VALUE = { d1: 1, d3: 3, d7: 7 };
-const PLUS_DAYS_VALUE_TO_KEY = { 1: 'd1', 3: 'd3', 7: 'd7' };
+const ALLOWED_PLUS_MINUS_DAYS = [0, 1, 3, 7];
+const PLUS_DAYS_KEY_TO_VALUE = { d0: 0, d1: 1, d3: 3, d7: 7 };
+const PLUS_DAYS_VALUE_TO_KEY = { 0: 'd0', 1: 'd1', 3: 'd3', 7: 'd7' };
 
 function calcDateSelection({
   date,
@@ -199,6 +199,10 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
 
   const plusDaysList = useMemo(
     () => [
+      {
+        name: intl.formatMessage({ id: 'mainform.multiple-datepicker.exact-date' }),
+        value: 'd0',
+      },
       {
         name: `± 1 ${intl.formatMessage({ id: 'common.day1' })}`,
         value: 'd1',

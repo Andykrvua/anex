@@ -30,6 +30,7 @@
   "mainform.date.t2": "Выбранная дата",
   "mainform.multiple-datepicker.types.date": "Дата",
   "mainform.multiple-datepicker.types.range": "Промежуток",
+  "mainform.multiple-datepicker.exact-date": "Точная дата",
   "mainform.night.t": "Длительность",
   "mainform.person.t": "Туристы",
   "mainform.person.adult": "Взрослые",
