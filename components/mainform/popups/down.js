@@ -21,6 +21,7 @@ import {
   useGetSearchCountryList,
   useSetSearchCountryList,
   useSetUpPointList,
+  useSetToCities,
 } from '../../../store/store';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import useDebounce from 'utils/useDebounce';
@@ -30,6 +31,7 @@ import ItemHotel from './down-results/itemHotel';
 import Loader from 'components/common/loader';
 import { useRouter } from 'next/router';
 import { languagesOperatorApi, transitionTime } from 'utils/constants';
+import ResortView from './resortView';
 
 const ResultItem = ({ data, clickHandler }) => {
   if (data.type === 'country') return <ItemCountry data={data} clickHandler={clickHandler} />;
@@ -68,11 +70,13 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
   const getSearchCountryList = useGetSearchCountryList();
   const setSearchCountryList = useSetSearchCountryList();
   const setUpPointList = useSetUpPointList();
+  const setToCities = useSetToCities();
   const { locale } = useRouter();
   const loc = languagesOperatorApi[locale];
 
   const selectDownHandler = (val, id, countryId = null, code) => {
     selectDown({ name: val, value: id, countryValue: countryId, code });
+    setToCities([]);
     // need fetch again up point list from new down point
     setUpPointList({
       active: false,
@@ -105,6 +109,7 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
   const [countryData, setCountryData] = useState({});
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [resortCountry, setResortCountry] = useState(null);
 
   const searchDelay = 500;
   const debouncedSearch = useDebounce(country, searchDelay);
@@ -197,65 +202,155 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
     }
   };
 
+  const lang = 'name' + locale[0].toUpperCase() + locale.slice(1);
+
+  const handleResortClick = (item) => {
+    setResortCountry({
+      id: item.id,
+      name: item[lang] || item.name,
+      code: item.code,
+    });
+  };
+
+  const handleResortBack = () => {
+    setResortCountry(null);
+  };
+
+  const handleResortApply = (selectedIds, resortCountryData) => {
+    if (selectedIds.length === 0) return;
+
+    const countryId = resortCountryData.id;
+    const countryName = resortCountryData.name;
+    const countryCode = resortCountryData.code;
+
+    if (selectedIds.length === 1) {
+      // Single resort: set it as district in `to`, clear toCities
+      // We don't have the resort name here easily, so set country name + resort selection
+      // Actually for single resort, the API uses to=resortId
+      setToCities([]);
+      selectDown({
+        name: { ru: countryName, uk: countryName },
+        value: selectedIds[0],
+        countryValue: countryId,
+        code: {
+          district: true,
+          hotel: false,
+          img: '',
+        },
+      });
+    } else {
+      // Multiple resorts: to=countryId, toCities=[ids]
+      setToCities(selectedIds);
+      selectDown({
+        name: { ru: countryName, uk: countryName },
+        value: countryId,
+        countryValue: countryId,
+        code: {
+          district: false,
+          hotel: false,
+          img: `/assets/img/svg/flags/code/${countryCode}.svg`,
+        },
+      });
+    }
+
+    setUpPointList({ active: false, list: [] });
+    setResortCountry(null);
+    closeModalHandler();
+  };
+
   return (
     <SimpleBarWrapper size={size}>
       <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
         <Header closeModalHandler={closeModalHandler} svg={svgDown} />
         <h3 className="title">{popupName}</h3>
-        <div className={styles.down_input_wrapper}>
-          <input
-            ref={input}
-            type="text"
-            name=""
-            id=""
-            placeholder={placeholderTxt}
-            onChange={(e) => inputOnchange(e)}
-            value={country}
-          />
-        </div>
-        <div
-          className="popup_scrollable_content"
-          ref={scrollable}
-          style={
-            iosView
-              ? {
-                  flex: `0 0 ${iosView - 243}px`,
-                }
-              : {}
-          }
-        >
-          {searchResult.length > 0 ? (
-            <div style={{ marginBottom: '30px' }}>
-              {searchResult.map((item, ind) => {
-                return <ResultItem key={ind} data={item[1]} clickHandler={clickSearchResultItem} />;
-              })}
-            </div>
-          ) : null}
-          {loading && <Loader />}
-          {country.length < 3 ? (
-            <>
-              {!loading && (
-                <>
-                  <h5 className={styles.down_content_title}>
-                    <FM id="mainform.down.t2" />
-                  </h5>
 
-                  <MemoCountryList
-                    variant={countryListVariants.getSearchPopular}
-                    clickSearchResultItem={clickSearchResultItem}
-                  />
-                  <h5 className={styles.down_content_title}>
-                    <FM id="mainform.down.t3" /> (31)
-                  </h5>
-                  <MemoCountryList
-                    variant={countryListVariants.getSearch}
-                    clickSearchResultItem={clickSearchResultItem}
-                  />
+        {resortCountry ? (
+          <div
+            className="popup_scrollable_content"
+            ref={scrollable}
+            style={
+              iosView
+                ? { flex: `0 0 ${iosView - 243}px` }
+                : {}
+            }
+          >
+            <ResortView
+              country={resortCountry}
+              loc={loc}
+              onBack={handleResortBack}
+              onApply={handleResortApply}
+            />
+          </div>
+        ) : (
+          <>
+            <div className={styles.down_input_wrapper}>
+              <input
+                ref={input}
+                type="text"
+                name=""
+                id=""
+                placeholder={placeholderTxt}
+                onChange={(e) => inputOnchange(e)}
+                value={country}
+              />
+            </div>
+            <div
+              className="popup_scrollable_content"
+              ref={scrollable}
+              style={
+                iosView
+                  ? {
+                      flex: `0 0 ${iosView - 243}px`,
+                    }
+                  : {}
+              }
+            >
+              {searchResult.length > 0 ? (
+                <div style={{ marginBottom: '30px' }}>
+                  {searchResult.map((item, ind) => {
+                    return <ResultItem key={ind} data={item[1]} clickHandler={clickSearchResultItem} />;
+                  })}
+                </div>
+              ) : null}
+              {loading && <Loader />}
+              {country.length < 3 ? (
+                <>
+                  {!loading && (
+                    <>
+                      <div className={styles.down_titles_row}>
+                        <h5 className={styles.down_content_title}>
+                          <FM id="mainform.down.t2" />
+                        </h5>
+                        <h5 className={styles.down_content_title}>
+                          <FM id="mainform.down.resorts" />
+                        </h5>
+                      </div>
+
+                      <MemoCountryList
+                        variant={countryListVariants.getSearchPopular}
+                        clickSearchResultItem={clickSearchResultItem}
+                        onResortClick={handleResortClick}
+                      />
+                      <div className={styles.down_titles_row}>
+                        <h5 className={styles.down_content_title}>
+                          <FM id="mainform.down.t3" /> (31)
+                        </h5>
+                        <h5 className={styles.down_content_title}>
+                          <FM id="mainform.down.resorts" />
+                        </h5>
+                      </div>
+                      <MemoCountryList
+                        variant={countryListVariants.getSearch}
+                        clickSearchResultItem={clickSearchResultItem}
+                        onResortClick={handleResortClick}
+                      />
+                    </>
+                  )}
                 </>
-              )}
-            </>
-          ) : null}
-        </div>
+              ) : null}
+            </div>
+          </>
+        )}
         {countryData?.id && (
           <DownApplySelected
             item={countryData}

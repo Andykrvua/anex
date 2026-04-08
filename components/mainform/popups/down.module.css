@@ -9,3 +9,13 @@
   font-weight: normal;
   color: var(--primary-light);
 }
+
+.down_titles_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.down_titles_row .down_content_title {
+  margin-bottom: 15px;
+}

@@ -27,6 +27,7 @@ import {
   useSetDate,
   useGetSearchResultSort,
   useGetInitialDate,
+  useGetToCities,
 } from 'store/store';
 import { useRouter } from 'next/router';
 import parseUrl from '../pasteUrl/pasteUrl';
@@ -67,6 +68,7 @@ export default function SearchResult({ isFilterBtnShow }) {
   const setSearchResultSort = useSetSearchResultSort();
   const setFilterData = useSetSearchFilter();
   const initialDate = useGetInitialDate();
+  const toCities = useGetToCities();
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -156,6 +158,10 @@ export default function SearchResult({ isFilterBtnShow }) {
     }&checkIn=${checkIn}&checkTo=${checkTo}&nights=${night.from}&nightsTo=${
       night.to
     }&people=${people}&access_token=337da-65e22-26745-a251f-77b9e`;
+
+    if (toCities.length > 0) {
+      url += `&toCities=${toCities.join(',')}`;
+    }
 
     const currentURL = window.location.href;
     const newURL = new URL(currentURL);
