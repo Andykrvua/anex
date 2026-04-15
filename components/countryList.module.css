@@ -67,7 +67,7 @@
 
 .resort_btn:hover {
   color: var(--primary);
-  border-color: var(--primary);
+  border-color: var(--placeholder);
   background: var(--line);
 }
 

@@ -1,5 +1,5 @@
 .resort_view {
-  padding: 0 var(--cont-padding-popup);
+  /* padding: 0 var(--cont-padding-popup); */
 }
 
 .back_btn {
@@ -29,14 +29,19 @@
 }
 
 .group_title {
-  font-size: 13px;
-  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: normal;
   color: var(--primary-light);
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .resort_item {
   padding: 8px 0;
+}
+
+.resort_item label {
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--primary);
 }
