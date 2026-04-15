@@ -209,6 +209,9 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
       id: item.id,
       name: item[lang] || item.name,
       code: item.code,
+      img: {
+        src: `/assets/img/svg/flags/code/${item.code}.svg`,
+      },
     });
   };
 

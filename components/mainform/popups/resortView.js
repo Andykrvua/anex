@@ -46,6 +46,12 @@ export default function ResortView({ country, loc, onBack, onApply }) {
     onApply(selected, country);
   };
 
+  const selectedNames = (resorts || []).flatMap((item) =>
+    item.type === 'province' && item.children
+      ? item.children.filter((c) => selected.includes(c.id)).map((c) => c.name)
+      : selected.includes(item.id) ? [item.name] : [],
+  );
+
   // Group resorts: provinces with children, and standalone cities go to "Інші"
   const provinces = [];
   const cities = [];
@@ -78,7 +84,7 @@ export default function ResortView({ country, loc, onBack, onApply }) {
       {loading && <Loader />}
 
       {!loading && resorts && (
-        <div className={styles.resort_list}>
+        <div className={`${styles.resort_list} ${selected.length > 0 ? styles.resort_list_with_selection : ''}`}>
           {provinces.map((province) => (
             <div key={province.id} className={styles.resort_group}>
               <h5 className={styles.group_title}>{province.name}</h5>
@@ -114,10 +120,25 @@ export default function ResortView({ country, loc, onBack, onApply }) {
       )}
 
       {!loading && selected.length > 0 && (
-        <div className="apply_btn_wrapper">
-          <button className="apply_btn" onClick={handleApply} type="button">
-            <FM id="common.apply" /> ({selected.length})
-          </button>
+        <div className={styles.selected_block}>
+          <div className={styles.selected_info}>
+            <div className={styles.selected_img}>
+              <img
+                src={country.img?.src}
+                alt={country.name}
+                width="60"
+                height="43"
+              />
+            </div>
+            <div className={styles.selected_names}>
+              {selectedNames.join(', ')}
+            </div>
+          </div>
+          <div className={`${styles.apply_btn_wrapper} apply_btn_wrapper`}>
+            <button className="apply_btn" onClick={handleApply} type="button">
+              <FM id="common.apply" /> ({selected.length})
+            </button>
+          </div>
         </div>
       )}
     </div>
