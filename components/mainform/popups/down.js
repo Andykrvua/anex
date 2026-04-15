@@ -11,6 +11,7 @@ import {
   BODY,
 } from '../../../utils/useBodyScroll';
 import Header from './header';
+import BackArrowSvg from 'components/common/backArrowSvg';
 import { svgDown } from '../form-fields/svg';
 import styles from './down.module.css';
 import CountryList from 'components/countryList';
@@ -264,8 +265,20 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
   return (
     <SimpleBarWrapper size={size}>
       <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
-        <Header closeModalHandler={closeModalHandler} svg={svgDown} />
-        <h3 className="title">{popupName}</h3>
+        <Header closeModalHandler={closeModalHandler} onBack={resortCountry ? handleResortBack : null} svg={svgDown} />
+        <h3 className="title">
+          {resortCountry && (
+            <button
+              className={`${styles.resort_back_btn} svg_btn`}
+              onClick={handleResortBack}
+              type="button"
+              aria-label="Back"
+            >
+              <BackArrowSvg />
+            </button>
+          )}
+          {resortCountry ? resortCountry.name : popupName}
+        </h3>
 
         {resortCountry ? (
           <div
@@ -280,7 +293,6 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
             <ResortView
               country={resortCountry}
               loc={loc}
-              onBack={handleResortBack}
               onApply={handleResortApply}
             />
           </div>

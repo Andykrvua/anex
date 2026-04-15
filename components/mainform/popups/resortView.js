@@ -4,7 +4,7 @@ import Loader from 'components/common/loader';
 import Checkbox from 'components/controls/checkbox/checkbox';
 import styles from './resortView.module.css';
 
-export default function ResortView({ country, loc, onBack, onApply }) {
+export default function ResortView({ country, loc, onApply }) {
   const [resorts, setResorts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
@@ -68,19 +68,6 @@ export default function ResortView({ country, loc, onBack, onApply }) {
 
   return (
     <div className={styles.resort_view}>
-      <button className={styles.back_btn} onClick={onBack} type="button">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M12.5 15L7.5 10L12.5 5"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        <span>{country.name}</span>
-      </button>
-
       {loading && <Loader />}
 
       {!loading && resorts && (

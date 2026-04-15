@@ -2,24 +2,6 @@
   /* padding: 0 var(--cont-padding-popup); */
 }
 
-.back_btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  margin-bottom: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.back_btn svg {
-  flex-shrink: 0;
-}
-
 .resort_list {
   margin-bottom: 20px;
 }

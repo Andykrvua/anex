@@ -1,3 +1,21 @@
+.resort_back_btn {
+  display: none;
+}
+
+@media (min-width: 810px) {
+  .resort_back_btn {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary);
+  }
+}
+
 .down_input_wrapper {
   margin: 10px var(--cont-padding-popup) 30px;
 }
