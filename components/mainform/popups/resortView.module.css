@@ -6,11 +6,6 @@
   margin-bottom: 20px;
 }
 
-@media (max-width: 809px) {
-  .resort_list_with_selection {
-    padding-bottom: 176px;
-  }
-}
 
 .resort_item_all {
   margin-bottom: 16px;
@@ -58,9 +53,8 @@
 
 @media (max-width: 809px) {
   .selected_block {
-    position: absolute;
-    right: 0;
-    left: 0;
+    margin-left: calc(-1 * var(--cont-padding-popup));
+    margin-right: calc(-1 * var(--cont-padding-popup));
   }
 }
 
