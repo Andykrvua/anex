@@ -9,6 +9,7 @@ import {
   useSetStartSearch,
   useGetSearchInProgress,
   useGetInitialDate,
+  useGetToCities,
 } from '../../store/store';
 import { inputRangeData } from '../../utils/constants';
 import { stringifyCrewComposition } from '../../utils/customer-crew';
@@ -25,6 +26,7 @@ export default function SearchButton() {
   const getSearchInProgress = useGetSearchInProgress();
   const person = useGetPerson();
   const initialDate = useGetInitialDate();
+  const toCities = useGetToCities();
 
   const makeSearchParams = () => {
     if (getSearchInProgress) {
@@ -53,6 +55,7 @@ export default function SearchButton() {
         stars: '',
         food: '',
         services: '',
+        ...(toCities.length > 0 ? { toCities: toCities.join(',') } : {}),
       },
     });
   };

@@ -82,6 +82,10 @@ const useStore = create(
       text: null,
     },
     setWindowInfo: (windowInfo) => set({ windowInfo }),
+    toCities: [],
+    setToCities: (toCities) => set({ toCities }),
+    toCitiesNames: [],
+    setToCitiesNames: (toCitiesNames) => set({ toCitiesNames }),
     searchCountryList: {
       active: false,
       list: [],
@@ -175,6 +179,12 @@ export const useSetBurger = () => useStore((state) => state.setBurger);
 // modal warning type
 export const useWindowInfo = () => useStore((state) => state.windowInfo);
 export const useSetWindowInfo = () => useStore((state) => state.setWindowInfo);
+
+// selected resort cities for multi-resort search
+export const useGetToCities = () => useStore((state) => state.toCities);
+export const useSetToCities = () => useStore((state) => state.setToCities);
+export const useGetToCitiesNames = () => useStore((state) => state.toCitiesNames);
+export const useSetToCitiesNames = () => useStore((state) => state.setToCitiesNames);
 
 // search list for current user search request
 export const useGetSearchCountryList = () => useStore((state) => state.searchCountryList);

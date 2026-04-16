@@ -4,9 +4,10 @@ import DateField from './form-fields/dateField';
 import NightField from './form-fields/nightField';
 import PersonField from './form-fields/personField';
 import { useState, memo, useRef, useEffect } from 'react';
-import { useGetUp, useGetDown, useGetNight, useGetFieldsNames } from '../../store/store';
+import { useGetUp, useGetDown, useGetNight, useGetFieldsNames, useGetToCitiesNames } from '../../store/store';
 import { useRouter } from 'next/router';
 import SearchButton from './SearchButton';
+import declension from '../../utils/declension';
 
 export default function MainForm() {
   const [modalIsOpen, setModalIsOpen] = useState('');
@@ -46,6 +47,18 @@ export default function MainForm() {
   const down = useGetDown();
   const night = useGetNight();
   const fieldsNames = useGetFieldsNames();
+  const toCitiesNames = useGetToCitiesNames();
+
+  const downTitle = (() => {
+    const name = down?.name[router.locale] || down.name;
+    if (toCitiesNames.length > 0) {
+      const resortWord = router.locale === 'uk'
+        ? declension(toCitiesNames.length, 'курорт', 'курорти', 'курортів')
+        : declension(toCitiesNames.length, 'курорт', 'курорта', 'курортов');
+      return `${name}: ${toCitiesNames.length} ${resortWord}`;
+    }
+    return name;
+  })();
 
   const MemoUpField = memo(UpField);
   const MemoDownField = memo(DownField);
@@ -70,7 +83,7 @@ export default function MainForm() {
       }
     >
       <MemoDownField
-        title={down?.name[router.locale] || down.name}
+        title={downTitle}
         aria={'Город прибытия'}
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}

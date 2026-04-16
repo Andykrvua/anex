@@ -36,7 +36,7 @@ export default function MainFormBtn({
             className="formfield_btn_icon"
             dangerouslySetInnerHTML={{ __html: svg }}
           ></span>
-          <span className="formfield_btn_title">
+          <span className="formfield_btn_title" suppressHydrationWarning>
             {title}
             {cName === 'btn_date' && (
               <span className="formfield_btn_title_plusdays">

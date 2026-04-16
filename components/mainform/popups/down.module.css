@@ -1,3 +1,21 @@
+.resort_back_btn {
+  display: none;
+}
+
+@media (min-width: 810px) {
+  .resort_back_btn {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary);
+  }
+}
+
 .down_input_wrapper {
   margin: 10px var(--cont-padding-popup) 30px;
 }
@@ -8,4 +26,45 @@
   line-height: 14px;
   font-weight: normal;
   color: var(--primary-light);
+}
+
+.down_titles_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.down_titles_row .down_content_title {
+  margin-bottom: 15px;
+}
+
+.slide_in_right,
+.slide_in_left {
+  overflow: hidden;
+}
+
+.slide_in_right > * {
+  animation: slideFromRight 0.25s ease-out;
+}
+
+.slide_in_left > * {
+  animation: slideFromLeft 0.25s ease-out;
+}
+
+@keyframes slideFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }

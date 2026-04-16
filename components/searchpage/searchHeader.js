@@ -8,6 +8,7 @@ import {
   useSetSearchResultSort,
   useGetSearchResultSort,
   useGetInitialDate,
+  useGetToCitiesNames,
 } from 'store/store';
 import { getDateRangeEndDate } from 'utils/dateRange';
 
@@ -23,6 +24,7 @@ export default function SearchHeader() {
   const getSearchResultSort = useGetSearchResultSort();
   const initialDate = useGetInitialDate();
   const copiedDate = getDateRangeEndDate(date, initialDate);
+  const toCitiesNames = useGetToCitiesNames();
 
   const sortHandler = (type) => {
     if (type === 'price') {
@@ -151,6 +153,9 @@ export default function SearchHeader() {
           })}
         </div>
       </div>
+      {toCitiesNames.length > 0 && (
+        <div className={styles.search_item_resorts}>{toCitiesNames.join(', ')}</div>
+      )}
     </div>
   );
 }
