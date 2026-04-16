@@ -114,6 +114,7 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [resortCountry, setResortCountry] = useState(null);
+  const [slideDirection, setSlideDirection] = useState(null);
 
   const searchDelay = 500;
   const debouncedSearch = useDebounce(country, searchDelay);
@@ -209,6 +210,7 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
   const lang = 'name' + locale[0].toUpperCase() + locale.slice(1);
 
   const handleResortClick = (item) => {
+    setSlideDirection('forward');
     setResortCountry({
       id: item.id,
       name: item[lang] || item.name,
@@ -220,6 +222,7 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
   };
 
   const handleResortBack = () => {
+    setSlideDirection('back');
     setResortCountry(null);
   };
 
@@ -261,6 +264,7 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
     setUpPointList({ active: false, list: [] });
     setResortCountry(null);
     closeModalHandler();
+    setModalIsOpen('btn_up');
   };
 
   return (
@@ -283,13 +287,14 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
 
         {resortCountry ? (
           <div
-            className="popup_scrollable_content"
+            className={`popup_scrollable_content ${slideDirection === 'forward' ? styles.slide_in_right : ''}`}
             ref={scrollable}
             style={
               iosView
                 ? { flex: `0 0 ${iosView - 243}px` }
                 : {}
             }
+            onAnimationEnd={() => setSlideDirection(null)}
           >
             <ResortView
               country={resortCountry}
@@ -311,8 +316,9 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
               />
             </div>
             <div
-              className="popup_scrollable_content"
+              className={`popup_scrollable_content ${slideDirection === 'back' ? styles.slide_in_left : ''}`}
               ref={scrollable}
+              onAnimationEnd={() => setSlideDirection(null)}
               style={
                 iosView
                   ? {
