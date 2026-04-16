@@ -28,6 +28,8 @@ import {
   useGetSearchResultSort,
   useGetInitialDate,
   useGetToCities,
+  useSetToCities,
+  useSetToCitiesNames,
 } from 'store/store';
 import { useRouter } from 'next/router';
 import parseUrl from '../pasteUrl/pasteUrl';
@@ -69,6 +71,8 @@ export default function SearchResult({ isFilterBtnShow }) {
   const setFilterData = useSetSearchFilter();
   const initialDate = useGetInitialDate();
   const toCities = useGetToCities();
+  const setToCities = useSetToCities();
+  const setToCitiesNames = useSetToCitiesNames();
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -284,6 +288,8 @@ export default function SearchResult({ isFilterBtnShow }) {
       setNight({ from: res.nights, to: res.nightsTo });
       setDate(normalizeDateValue(res.date, initialDate));
       setPerson({ ...res.people });
+      setToCities(res.toCities || []);
+      setToCitiesNames(res.toCitiesNames || []);
       setIsLoading(false);
       setHelper(true);
     }

@@ -29,6 +29,12 @@
   overflow: hidden;
 }
 
+.search_item_resorts {
+  padding-inline: 16px;
+  padding-top: 2px;
+  font-weight: 500;
+}
+
 .search_item_dates {
   font-size: 12px;
   line-height: 14px;

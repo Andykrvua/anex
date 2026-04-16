@@ -156,6 +156,35 @@ const searchPeople = (router) => {
   return parseCrewComposition(router.query.people);
 };
 
+const searchToCities = async (router) => {
+  if (!router.query.toCities) return { ids: [], names: [] };
+
+  const ids = router.query.toCities.split(',').map(Number);
+  if (!ids.length || !router.query.country) return { ids: [], names: [] };
+
+  try {
+    const res = await fetch(
+      `https://api.otpusk.com/api/2.6/tours/geotree?depth=city&id=${router.query.country}&access_token=337da-65e22-26745-a251f-77b9e`
+    ).then((r) => (r.ok ? r.json() : null));
+
+    if (!res?.geo) return { ids, names: [] };
+
+    const names = [];
+    for (const item of res.geo) {
+      if (item.type === 'province' && item.children) {
+        for (const child of item.children) {
+          if (ids.includes(child.id)) names.push(child.name);
+        }
+      } else if (ids.includes(item.id)) {
+        names.push(item.name);
+      }
+    }
+    return { ids, names };
+  } catch {
+    return { ids, names: [] };
+  }
+};
+
 export default async function parseUrl(router, loc) {
   const to = await searchTo(router);
   const from = await searchFrom(router, loc);
@@ -168,6 +197,7 @@ export default async function parseUrl(router, loc) {
   const date = searchDate(router);
   const people = searchPeople(router);
   const transport = router.query.transport;
+  const toCitiesData = await searchToCities(router);
 
   if (!to || !from || !nights || !nightsTo || !date || !people) return null;
 
@@ -179,5 +209,7 @@ export default async function parseUrl(router, loc) {
     nightsTo,
     date,
     people,
+    toCities: toCitiesData.ids,
+    toCitiesNames: toCitiesData.names,
   };
 }

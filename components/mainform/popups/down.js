@@ -23,6 +23,7 @@ import {
   useSetSearchCountryList,
   useSetUpPointList,
   useSetToCities,
+  useSetToCitiesNames,
 } from '../../../store/store';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import useDebounce from 'utils/useDebounce';
@@ -72,12 +73,14 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
   const setSearchCountryList = useSetSearchCountryList();
   const setUpPointList = useSetUpPointList();
   const setToCities = useSetToCities();
+  const setToCitiesNames = useSetToCitiesNames();
   const { locale } = useRouter();
   const loc = languagesOperatorApi[locale];
 
   const selectDownHandler = (val, id, countryId = null, code) => {
     selectDown({ name: val, value: id, countryValue: countryId, code });
     setToCities([]);
+    setToCitiesNames([]);
     // need fetch again up point list from new down point
     setUpPointList({
       active: false,
@@ -220,7 +223,7 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
     setResortCountry(null);
   };
 
-  const handleResortApply = (selectedIds, resortCountryData) => {
+  const handleResortApply = (selectedIds, resortCountryData, resortNames) => {
     if (selectedIds.length === 0) return;
 
     const countryId = resortCountryData.id;
@@ -228,23 +231,21 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
     const countryCode = resortCountryData.code;
 
     if (selectedIds.length === 1) {
-      // Single resort: set it as district in `to`, clear toCities
-      // We don't have the resort name here easily, so set country name + resort selection
-      // Actually for single resort, the API uses to=resortId
       setToCities([]);
+      setToCitiesNames([]);
       selectDown({
-        name: { ru: countryName, uk: countryName },
+        name: { ru: resortNames[0], uk: resortNames[0] },
         value: selectedIds[0],
         countryValue: countryId,
         code: {
           district: true,
           hotel: false,
-          img: '',
+          img: `/assets/img/svg/flags/code/${countryCode}.svg`,
         },
       });
     } else {
-      // Multiple resorts: to=countryId, toCities=[ids]
       setToCities(selectedIds);
+      setToCitiesNames(resortNames);
       selectDown({
         name: { ru: countryName, uk: countryName },
         value: countryId,

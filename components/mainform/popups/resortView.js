@@ -43,7 +43,7 @@ export default function ResortView({ country, loc, onApply }) {
   };
 
   const handleApply = () => {
-    onApply(selected, country);
+    onApply(selected, country, selectedNames);
   };
 
   const selectedNames = (resorts || []).flatMap((item) =>
