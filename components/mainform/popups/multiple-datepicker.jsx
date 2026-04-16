@@ -16,7 +16,15 @@ import uk from 'date-fns/locale/uk';
 import Header from './header';
 import SwitchMenu from '../../common/switchMenu/switchMenu';
 import { svgDate } from '../form-fields/svg';
-import { BODY, enableScroll, getSize, maxWidth, useSetBodyScroll } from '../../../utils/useBodyScroll';
+import {
+  BODY,
+  clear,
+  disableScroll,
+  enableScroll,
+  getSize,
+  maxWidth,
+  useSetBodyScroll,
+} from '../../../utils/useBodyScroll';
 import useOutsideClick from '../../../utils/clickOutside';
 import { useGetDate, useGetInitialDate, useSetDate } from '../../../store/store';
 import usePrevious from '../../../common/hooks/usePrevious';
@@ -75,6 +83,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
   const intl = useIntl();
   const size = getSize();
   const wrapperRef = useRef(null);
+  const scrollable = useRef(null);
   const datepickerHandlers = useRef(null);
   const isInternalUpdate = useRef(false);
   const selectedDate = useSetDate();
@@ -98,6 +107,18 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
 
   useOutsideClick(wrapperRef, setModalIsOpen, modalIsOpen, cName);
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
+
+  useEffect(() => {
+    if (isMobile && modalIsOpen) {
+      clear();
+      if (scrollable.current) {
+        disableScroll(scrollable.current);
+      }
+    }
+    return () => {
+      clear();
+    };
+  }, [isMobile, modalIsOpen]);
 
   useEffect(() => {
     if (isInternalUpdate.current) {
@@ -398,6 +419,10 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
     <div className={styles.popup_container} ref={wrapperRef}>
       <Header closeModalHandler={closeModalHandler} svg={svgDate} />
       <h3 className={`title ${styles.popup_title}`}>{popupName}</h3>
+      <div
+        className={`${styles.popup_scrollable_content} popup_scrollable_content`}
+        ref={scrollable}
+      >
       <div className={styles.popup_nav}>
         <button
           type="button"
@@ -492,6 +517,7 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
         <button type="button" className="apply_btn" onClick={selectedHandler}>
           <FM id="common.apply" />
         </button>
+      </div>
       </div>
       <DatePickerGlobalStyle />
     </div>

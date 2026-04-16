@@ -96,8 +96,9 @@ export default function Date({ setModalIsOpen, modalIsOpen, cName, popupName, st
   useSetBodyScroll(modalIsOpen, maxWidth, size.width);
 
   useEffect(() => {
-    if (size.width < maxWidth) {
-      if (modalIsOpen) {
+    if (size.width < maxWidth && modalIsOpen) {
+      clear();
+      if (scrollable.current) {
         disableScroll(scrollable.current);
       }
     }
@@ -139,7 +140,11 @@ export default function Date({ setModalIsOpen, modalIsOpen, cName, popupName, st
 
   return (
     <SimpleBarWrapper size={size}>
-      <div className="main_form_popup_mobile_wrapper" ref={wrapperRef}>
+      <div
+        className="main_form_popup_mobile_wrapper"
+        ref={wrapperRef}
+        style={size.width < maxWidth ? { overflow: 'hidden' } : undefined}
+      >
         <Header closeModalHandler={closeModalHandler} svg={svgDate} />
         <h3 className="title">{popupName}</h3>
         <div className={`${styles.popup_scrollable_content} popup_scrollable_content`} ref={scrollable}>
@@ -153,11 +158,11 @@ export default function Date({ setModalIsOpen, modalIsOpen, cName, popupName, st
             highlightDates={highlightWithRanges}
           />
           <PlusMinusBtns setPlusDays={setPlusDays} plusDays={plusDays} />
-        </div>
-        <div className="apply_btn_wrapper">
-          <button className="apply_btn" onClick={selectedHandler}>
-            <FM id="common.apply" />
-          </button>
+          <div className="apply_btn_wrapper">
+            <button className="apply_btn" onClick={selectedHandler}>
+              <FM id="common.apply" />
+            </button>
+          </div>
         </div>
         <DatePickerGlobalStyle />
       </div>

@@ -1,3 +1,9 @@
+@media (max-width: 809px) {
+  .popup_scrollable_content {
+    min-height: 0;
+  }
+}
+
 .plus_minus_btns {
   display: flex;
   align-items: center;
