@@ -177,15 +177,22 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
   }
 
   useEffect(() => {
-    if (size.width < maxWidth) {
-      if (modalIsOpen) {
+    if (size.width < maxWidth && modalIsOpen) {
+      clear();
+      if (scrollable.current) {
         disableScroll(scrollable.current);
       }
     }
     return () => {
       clear();
     };
-  }, [modalIsOpen, size.width]);
+  }, [modalIsOpen, size.width, resortCountry]);
+
+  useEffect(() => {
+    if (scrollable.current) {
+      scrollable.current.scrollTop = 0;
+    }
+  }, [resortCountry]);
 
   const closeModalHandler = () => {
     if (size.width < maxWidth) {
@@ -285,48 +292,39 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
           {resortCountry ? resortCountry.name : popupName}
         </h3>
 
-        {resortCountry ? (
-          <div
-            className={`popup_scrollable_content ${slideDirection === 'forward' ? styles.slide_in_right : ''}`}
-            ref={scrollable}
-            style={
-              iosView
-                ? { flex: `0 0 ${iosView - 243}px` }
-                : {}
-            }
-            onAnimationEnd={() => setSlideDirection(null)}
-          >
+        {!resortCountry && (
+          <div className={styles.down_input_wrapper}>
+            <input
+              ref={input}
+              type="text"
+              name=""
+              id=""
+              placeholder={placeholderTxt}
+              onChange={(e) => inputOnchange(e)}
+              value={country}
+            />
+          </div>
+        )}
+        <div
+          className={`popup_scrollable_content ${
+            slideDirection === 'forward'
+              ? styles.slide_in_right
+              : slideDirection === 'back'
+                ? styles.slide_in_left
+                : ''
+          }`}
+          ref={scrollable}
+          style={iosView ? { flex: `0 0 ${iosView - 243}px` } : {}}
+          onAnimationEnd={() => setSlideDirection(null)}
+        >
+          {resortCountry ? (
             <ResortView
               country={resortCountry}
               loc={loc}
               onApply={handleResortApply}
             />
-          </div>
-        ) : (
-          <>
-            <div className={styles.down_input_wrapper}>
-              <input
-                ref={input}
-                type="text"
-                name=""
-                id=""
-                placeholder={placeholderTxt}
-                onChange={(e) => inputOnchange(e)}
-                value={country}
-              />
-            </div>
-            <div
-              className={`popup_scrollable_content ${slideDirection === 'back' ? styles.slide_in_left : ''}`}
-              ref={scrollable}
-              onAnimationEnd={() => setSlideDirection(null)}
-              style={
-                iosView
-                  ? {
-                      flex: `0 0 ${iosView - 243}px`,
-                    }
-                  : {}
-              }
-            >
+          ) : (
+            <>
               {searchResult.length > 0 ? (
                 <div style={{ marginBottom: '30px' }}>
                   {searchResult.map((item, ind) => {
@@ -370,9 +368,9 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
                   )}
                 </>
               ) : null}
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
         {countryData?.id && (
           <DownApplySelected
             item={countryData}
