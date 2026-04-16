@@ -37,6 +37,9 @@
 }
 
 .country_item_name {
+  /* grid-row: 2 span and negative margin-top compensate for hidden country_item_price */
+  grid-row: 2 span;
+  margin-top: -5px;
   align-self: center;
   font-weight: 500;
   white-space: nowrap;

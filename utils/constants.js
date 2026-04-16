@@ -203,12 +203,10 @@ export const foodAll = [
 export const popCountryCode = [
   'egypt',
   'turkey',
-  'montenegro',
-  'bulgaria',
-  'uae',
   'greece',
-  'dominican_republic',
-  'maldives',
+  'bulgaria',
+  'montenegro',
+  'spain',
 ];
 
 // ignore operators

@@ -28,6 +28,13 @@
   color: var(--primary-light);
 }
 
+.down_section_title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
 .down_titles_row {
   display: flex;
   justify-content: space-between;

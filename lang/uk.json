@@ -27,6 +27,8 @@
   "mainform.down.t3": "Всі країни",
   "mainform.down.placeholder": "Країна / Курорт / Готель",
   "mainform.down.resorts": "Курорти",
+  "mainform.down.choose_country": "Обрати країну",
+  "mainform.down.choose_resorts": "Обрати курорти",
   "mainform.down.resorts_other": "Інші",
   "mainform.down.back": "Назад",
   "mainform.down.search": "Пошук",

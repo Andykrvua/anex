@@ -336,6 +336,30 @@ export default function MultipleDatepicker({ setModalIsOpen, modalIsOpen, cName,
           }
 
           const normalizedStart = startOfDay(nextStart);
+
+          // If start is already set without end, and user clicks an earlier date,
+          // swap: keep existing start as end, use the click as new start.
+          if (startDate && !endDate && isBefore(normalizedStart, startDate)) {
+            const swappedEnd = startOfDay(startDate);
+            const nextAdditionalDays = differenceInDays(swappedEnd, normalizedStart) + 1;
+            const nextPlusDays = Math.floor((nextAdditionalDays - 1) / 2);
+
+            setStartDate(normalizedStart);
+            setEndDate(swappedEnd);
+            setPlusDays(nextPlusDays);
+            setAdditionalDays(nextAdditionalDays);
+            setMiddleDate(addLocalDays(normalizedStart, nextPlusDays));
+            setMinDate(initialDate);
+            setMaxDate(addYears(initialDate, 1));
+            setViewMonth(normalizedStart);
+            confirmDates({
+              nextRawDate: normalizedStart,
+              nextPlusDays,
+              nextAdditionalDays,
+            });
+            return;
+          }
+
           const daysBeforeStart = Math.min(MAX_ALLOWED_DAYS, differenceInDays(normalizedStart, initialDate));
 
           setStartDate(normalizedStart);

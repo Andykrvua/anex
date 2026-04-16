@@ -32,7 +32,9 @@ const List = ({ clickSearchResultItem, code = null, data = null, variant = null,
   const rawData = data ? data : getSearchCountryList.list;
   const countryData = variant === countryListVariants.getSearch
     ? [...rawData].sort((a, b) => (a[lang] || '').localeCompare(b[lang] || '', locale))
-    : rawData;
+    : code
+      ? [...rawData].sort((a, b) => code.indexOf(a.code) - code.indexOf(b.code))
+      : rawData;
 
   const isSearchVariant = variant === countryListVariants.getSearch || variant === countryListVariants.getSearchPopular || !variant;
 
@@ -92,7 +94,7 @@ const List = ({ clickSearchResultItem, code = null, data = null, variant = null,
                 <div className={styles.country_item_name}>
                   {variant === countryListVariants.getNavMenu ? item.translations[0].name : item[lang]}
                 </div>
-                <div className={styles.country_item_price}>{item.uah ? item.uah.toLocaleString() : null}</div>
+                {/* <div className={styles.country_item_price}>{item.uah ? item.uah.toLocaleString() : null}</div> */}
               </Item>
               {isSearchVariant && onResortClick && (
                 <ResortButton onClick={() => onResortClick(item)} />

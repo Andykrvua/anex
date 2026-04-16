@@ -337,12 +337,15 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
                 <>
                   {!loading && (
                     <>
+                      <h5 className={`${styles.down_content_title} ${styles.down_section_title}`}>
+                        <FM id="mainform.down.t2" />
+                      </h5>
                       <div className={styles.down_titles_row}>
                         <h5 className={styles.down_content_title}>
-                          <FM id="mainform.down.t2" />
+                          <FM id="mainform.down.choose_country" />
                         </h5>
                         <h5 className={styles.down_content_title}>
-                          <FM id="mainform.down.resorts" />
+                          <FM id="mainform.down.choose_resorts" />
                         </h5>
                       </div>
 
@@ -351,12 +354,15 @@ export default function Down({ setModalIsOpen, modalIsOpen, cName, popupName }) 
                         clickSearchResultItem={clickSearchResultItem}
                         onResortClick={handleResortClick}
                       />
+                      <h5 className={`${styles.down_content_title} ${styles.down_section_title}`}>
+                        <FM id="mainform.down.t3" /> (31)
+                      </h5>
                       <div className={styles.down_titles_row}>
                         <h5 className={styles.down_content_title}>
-                          <FM id="mainform.down.t3" /> (31)
+                          <FM id="mainform.down.choose_country" />
                         </h5>
                         <h5 className={styles.down_content_title}>
-                          <FM id="mainform.down.resorts" />
+                          <FM id="mainform.down.choose_resorts" />
                         </h5>
                       </div>
                       <MemoCountryList
