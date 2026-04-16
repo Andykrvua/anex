@@ -38,6 +38,18 @@ export default function ResortView({ country, loc, onApply }) {
     };
   }, [country.id, loc]);
 
+  const allResortIds = (resorts || []).flatMap((item) =>
+    item.type === 'province' && item.children
+      ? item.children.map((c) => c.id)
+      : item.type === 'city' ? [item.id] : [],
+  );
+
+  const allSelected = allResortIds.length > 0 && allResortIds.every((id) => selected.includes(id));
+
+  const toggleAll = () => {
+    setSelected(allSelected ? [] : allResortIds);
+  };
+
   const toggleSelect = (id) => {
     setSelected((prev) => (prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]));
   };
@@ -72,6 +84,13 @@ export default function ResortView({ country, loc, onApply }) {
 
       {!loading && resorts && (
         <div className={`${styles.resort_list} ${selected.length > 0 ? styles.resort_list_with_selection : ''}`}>
+          <div className={`${styles.resort_item} ${styles.resort_item_all}`}>
+            <Checkbox
+              label={<FM id="country.all" />}
+              check={allSelected}
+              setCheck={toggleAll}
+            />
+          </div>
           {provinces.map((province) => (
             <div key={province.id} className={styles.resort_group}>
               <h5 className={styles.group_title}>{province.name}</h5>

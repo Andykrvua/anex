@@ -65,6 +65,7 @@ export default function SearchHeader() {
   };
 
   return (
+    <>
     <div className={styles.header}>
       <div className={styles.sort_items}>
         <button
@@ -153,9 +154,12 @@ export default function SearchHeader() {
           })}
         </div>
       </div>
-      {toCitiesNames.length > 0 && (
-        <div className={styles.search_item_resorts}>{toCitiesNames.join(', ')}</div>
-      )}
     </div>
+    {toCitiesNames.length > 0 && (
+      <div className={styles.search_item_resorts}>
+        <span className={styles.search_item_resorts_label}><FM id="result.search_by_resorts" /></span> {toCitiesNames.join(', ')}
+      </div>
+    )}
+    </>
   );
 }

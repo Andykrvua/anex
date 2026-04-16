@@ -30,9 +30,12 @@
 }
 
 .search_item_resorts {
-  padding-inline: 16px;
-  padding-top: 2px;
+  font-size: 14px;
   font-weight: 500;
+}
+
+.search_item_resorts_label {
+  font-weight: normal;
 }
 
 .search_item_dates {
