@@ -34,6 +34,7 @@ import {
 import { useRouter } from 'next/router';
 import parseUrl from '../pasteUrl/pasteUrl';
 import Cards from './cards';
+import DebugPanel from './debugPanel';
 import { stringifyCrewComposition } from '../../../utils/customer-crew';
 import { buildDateSearchQuery, normalizeDateValue } from '../../../utils/dateRange';
 
@@ -46,6 +47,7 @@ export default function SearchResult({ isFilterBtnShow }) {
   // help data end
   const router = useRouter();
   const loc = router.locale === 'uk' ? 'ua' : 'ru';
+  const debug = router.query.debug === '1';
 
   const up = useGetUp();
   const down = useGetDown();
@@ -365,6 +367,7 @@ export default function SearchResult({ isFilterBtnShow }) {
   return (
     <>
       <div style={isFilterBtnShow ? { opacity: '.5' } : {}}>
+        {debug && show && <DebugPanel apiData={apiData} apiRes={apiRes} />}
         {isLoading && <Loader />}
         {show && (
           <MemoCards
@@ -372,6 +375,7 @@ export default function SearchResult({ isFilterBtnShow }) {
             step={step}
             countryHotelService={countryHotelService?.icons || []}
             searchParams={searchParams}
+            debug={debug}
           />
         )}
         {apiRes.total === 0 && (

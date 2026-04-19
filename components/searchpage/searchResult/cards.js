@@ -1,5 +1,7 @@
 import styles from './cards.module.css';
+import debugStyles from './debugPanel.module.css';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { shimmer, toBase64 } from '/utils/blurImage';
@@ -8,7 +10,33 @@ import ratingColor from 'utils/ratingColor';
 import declension from 'utils/declension';
 import { food, modal, infoModal } from 'utils/constants';
 
-const CardsOffersVariants = ({ hotel, searchParams }) => {
+const DebugIdBadge = ({ label, value }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(String(value)).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1000);
+      });
+    }
+  };
+
+  return (
+    <span
+      className={debugStyles.debug_id}
+      onClick={handleClick}
+      title="Клікни щоб скопіювати ID"
+      style={{ cursor: 'copy' }}
+    >
+      {copied ? '✓ скопійовано' : `${label} ${value}`}
+    </span>
+  );
+};
+
+const CardsOffersVariants = ({ hotel, searchParams, debug }) => {
   const router = useRouter();
   const setModal = useSetModal();
   const person = useGetPerson();
@@ -126,9 +154,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
     return (
       <button onClick={() => modalHandler()} className={styles.maps}>
         <img src="/assets/img/svg/tour/map-marker.svg" alt="map" />
-        <span>
-          <FM id="hotel_card.map" />
-        </span>
+        <span>{`${hotel.t.n}, ${hotel.c.n}`}</span>
       </button>
     );
   };
@@ -217,8 +243,32 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
         <p className={styles.options}>{foodTransMessage}</p>
       </div>
 
-      {data.map((item, ind) => {
-        if (ind < 4) {
+      {(() => {
+        const nMin = Number(searchParams?.nights) || 7;
+        const nightSlots = [nMin, nMin + 1, nMin + 2];
+        return nightSlots.map((nights) => {
+          const item = hotel.actualOffers.find((o) => o.nh === nights);
+
+          if (!item) {
+            return (
+              <div
+                className={`${styles.card_order} ${styles.card_order_empty}`}
+                key={`empty-${nights}`}
+              >
+                <span className={styles.order_text_wrapper}>
+                  <span className={styles.order_text__duration}>
+                    <span>
+                      {nights} {decl(nights)}
+                    </span>
+                  </span>
+                </span>
+                <span className={styles.order_not_found}>
+                  <FM id="hotel_card.offer_not_found" />
+                </span>
+              </div>
+            );
+          }
+
           return (
             <a
               className={styles.card_order}
@@ -236,6 +286,7 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
               rel="noopener noreferrer"
               key={item.i}
             >
+              {debug && <DebugIdBadge label="offer" value={item.i} />}
               <span className={styles.order_text_wrapper}>
                 <span className={styles.order_text__duration}>
                   <span>
@@ -282,13 +333,13 @@ const CardsOffersVariants = ({ hotel, searchParams }) => {
               </span>
             </a>
           );
-        }
-      })}
+        });
+      })()}
     </>
   );
 };
 
-export default function Cards({ hotels = [], step, countryHotelService = [], searchParams }) {
+export default function Cards({ hotels = [], step, countryHotelService = [], searchParams, debug = false }) {
   const setModalInfo = useSetWindowInfo();
   const intl = useIntl();
   localStorage.removeItem('result');
@@ -399,7 +450,6 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
                 </button>
               </div>
               <div className={styles.card_text}>
-                <p className={styles.country_text}>{`${item.t.n}, ${item.c.n}`}</p>
                 <div className={styles.stars_wrapper}>
                   {new Array(parseInt(item.s)).fill(null).map((_, ind) => {
                     return (
@@ -409,7 +459,10 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
                     );
                   })}
                 </div>
-                <h4 className={styles.hotel_name}>{item.n}</h4>
+                <h4 className={styles.hotel_name}>
+                  {debug && <DebugIdBadge label="id" value={item.i} />}
+                  {item.n}
+                </h4>
                 <div className={styles.tour_propertys}>
                   {item.e.map((property, ind) => {
                     return countryHotelService
@@ -436,7 +489,7 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
                       });
                   })}
                 </div>
-                <CardsOffersVariants hotel={item} searchParams={searchParams} />
+                <CardsOffersVariants hotel={item} searchParams={searchParams} debug={debug} />
               </div>
             </div>
           );
