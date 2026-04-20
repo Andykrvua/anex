@@ -89,10 +89,10 @@ export default function SearchResult({ isFilterBtnShow }) {
     if (!apiData) return;
 
     Object.entries(apiData.hotels).map(([hotelId, item]) => {
+      item.actualOffers = [];
       Object.entries(apiData.results).map(([offerOperatorId, value]) => {
         return Object.entries(value).map(([offerHotelId, data]) => {
           if (offerHotelId === hotelId) {
-            item.actualOffers = [];
             Object.entries(data.offers).map(([offerId, value]) => {
               item.actualOffers.push(value);
             });
