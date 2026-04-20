@@ -247,7 +247,7 @@ const CardsOffersVariants = ({ hotel, searchParams, debug }) => {
         const nMin = Number(searchParams?.nights) || 7;
         const nightSlots = [nMin, nMin + 1, nMin + 2];
         return nightSlots.map((nights) => {
-          const item = hotel.actualOffers.find((o) => o.nh === nights);
+          const item = hotel.actualOffers.find((o) => o.n === nights);
 
           if (!item) {
             return (
