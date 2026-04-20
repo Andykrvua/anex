@@ -29,7 +29,7 @@ export default function DebugPanel({ apiData, apiRes }) {
 
     const nightsDistribution = {};
     allOffers.forEach((o) => {
-      nightsDistribution[o.nh] = (nightsDistribution[o.nh] || 0) + 1;
+      nightsDistribution[o.n] = (nightsDistribution[o.n] || 0) + 1;
     });
 
     const foodDistribution = {};
@@ -62,7 +62,7 @@ export default function DebugPanel({ apiData, apiRes }) {
     if (!hotel) return null;
     const nightsCounts = {};
     (hotel.actualOffers || []).forEach((o) => {
-      nightsCounts[o.nh] = (nightsCounts[o.nh] || 0) + 1;
+      nightsCounts[o.n] = (nightsCounts[o.n] || 0) + 1;
     });
     return { hotel, nightsCounts };
   }, [hotelIdInput, apiData]);

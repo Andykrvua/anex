@@ -248,7 +248,7 @@ const CardsOffersVariants = ({ hotel, searchParams, debug }) => {
         const nightSlots = [nMin, nMin + 1, nMin + 2];
         const supersededNights = hotel._supersededNights || [];
         return nightSlots.map((nights) => {
-          const item = hotel.actualOffers.find((o) => o.nh === nights);
+          const item = hotel.actualOffers.find((o) => o.n === nights);
           const isSuperseded = supersededNights.includes(nights);
 
           if (!item) {

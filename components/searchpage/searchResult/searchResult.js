@@ -103,10 +103,10 @@ export default function SearchResult({ isFilterBtnShow }) {
 
     // Build actualOffers for each hotel in the new response
     Object.entries(newApiData.hotels).map(([hotelId, item]) => {
+      item.actualOffers = [];
       Object.entries(newApiData.results).map(([offerOperatorId, value]) => {
         return Object.entries(value).map(([offerHotelId, data]) => {
           if (offerHotelId === hotelId) {
-            item.actualOffers = [];
             Object.entries(data.offers).map(([offerId, value]) => {
               item.actualOffers.push(value);
             });
@@ -173,8 +173,8 @@ export default function SearchResult({ isFilterBtnShow }) {
       let hasNewSlots = false;
       let hasBetterPrices = false;
       for (const nights of slots) {
-        const oldOffer = existing.actualOffers.find((o) => o.nh === nights);
-        const newOffer = newHotel.actualOffers.find((o) => o.nh === nights);
+        const oldOffer = existing.actualOffers.find((o) => o.n === nights);
+        const newOffer = newHotel.actualOffers.find((o) => o.n === nights);
         if (!newOffer) continue;
         if (!oldOffer) {
           hasNewSlots = true;
