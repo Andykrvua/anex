@@ -1,8 +1,8 @@
 // todo fetch hide token
 import styles from './searchResult.module.css';
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 import Loader from 'components/common/loader';
-import { useEffect, useState, memo, useRef } from 'react';
+import { useEffect, useState, memo } from 'react';
 import {
   useGetUp,
   useGetDown,
@@ -30,22 +30,31 @@ import {
   useGetToCities,
   useSetToCities,
   useSetToCitiesNames,
+  useSetListInconsistent,
+  useGetListInconsistent,
+  useSetLoadMoreSummary,
+  useGetLoadMoreSummary,
 } from 'store/store';
 import { useRouter } from 'next/router';
 import parseUrl from '../pasteUrl/pasteUrl';
 import Cards from './cards';
 import DebugPanel from './debugPanel';
+import Pagination from 'components/common/pagination/pagination';
 import { stringifyCrewComposition } from '../../../utils/customer-crew';
 import { buildDateSearchQuery, normalizeDateValue } from '../../../utils/dateRange';
+
+const PAGE_SIZE = 20;
 
 const MemoCards = memo(Cards);
 
 export default function SearchResult({ isFilterBtnShow }) {
   // help data start
-  const [step, setStep] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMoreApiResults, setHasMoreApiResults] = useState(true);
   const [helper, setHelper] = useState(false);
   // help data end
   const router = useRouter();
+  const intl = useIntl();
   const loc = router.locale === 'uk' ? 'ua' : 'ru';
   const debug = router.query.debug === '1';
 
@@ -75,6 +84,10 @@ export default function SearchResult({ isFilterBtnShow }) {
   const toCities = useGetToCities();
   const setToCities = useSetToCities();
   const setToCitiesNames = useSetToCitiesNames();
+  const listInconsistent = useGetListInconsistent();
+  const setListInconsistent = useSetListInconsistent();
+  const loadMoreSummary = useGetLoadMoreSummary();
+  const setLoadMoreSummary = useSetLoadMoreSummary();
 
   const [error, setError] = useState(false);
   const [apiRes, setApiRes] = useState(false);
@@ -85,11 +98,12 @@ export default function SearchResult({ isFilterBtnShow }) {
   const [searchParams, setSearchParams] = useState(false);
   const [page, setPage] = useState(1);
 
-  const ResultHandler = (apiData) => {
-    if (!apiData) return;
+  const ResultHandler = (newApiData, isLoadMore = false) => {
+    if (!newApiData) return;
 
-    Object.entries(apiData.hotels).map(([hotelId, item]) => {
-      Object.entries(apiData.results).map(([offerOperatorId, value]) => {
+    // Build actualOffers for each hotel in the new response
+    Object.entries(newApiData.hotels).map(([hotelId, item]) => {
+      Object.entries(newApiData.results).map(([offerOperatorId, value]) => {
         return Object.entries(value).map(([offerHotelId, data]) => {
           if (offerHotelId === hotelId) {
             item.actualOffers = [];
@@ -101,25 +115,135 @@ export default function SearchResult({ isFilterBtnShow }) {
       });
     });
 
-    apiData.hotelsArr = [];
-    Object.entries(apiData.hotels).map(([hotelId, item]) => {
-      apiData.hotelsArr.push(item);
+    newApiData.hotelsArr = [];
+    Object.entries(newApiData.hotels).map(([hotelId, item]) => {
+      newApiData.hotelsArr.push(item);
     });
 
-    apiData.hotelsArr.map((item) => {
-      item.actualOffers.sort(function (a, b) {
-        return a.pl - b.pl;
+    newApiData.hotelsArr.map((item) => {
+      item.actualOffers.sort((a, b) => a.pl - b.pl);
+    });
+
+    if (!isLoadMore || !apiData?.hotelsArr) {
+      // initial search or filter apply — replace everything
+      setApiData(newApiData);
+      setCurrentPage(1);
+      setHasMoreApiResults(true);
+      setListInconsistent(false);
+      setLoadMoreSummary(null);
+      setSearchResultSort({
+        price: { active: true, dir: 'asc' },
+        rating: { active: false, dir: getSearchResultSort.rating.dir },
       });
+      return;
+    }
+
+    // LOAD MORE: smart merge per nights slot
+    const nMin = Number(night?.from) || 7;
+    const slots = [nMin, nMin + 1, nMin + 2];
+
+    // Next batch number
+    const existingBatches = apiData.hotelsArr
+      .map((h) => h._batchNumber || 0)
+      .filter((n) => n > 0);
+    const batchNumber = existingBatches.length ? Math.max(...existingBatches) + 1 : 1;
+
+    // Index existing ORIGINAL hotels (not duplicates) by id
+    const originalsById = new Map();
+    apiData.hotelsArr.forEach((h) => {
+      if (!h._duplicateOf) originalsById.set(h.i, h);
     });
 
-    setApiData(apiData);
-    setSearchResultSort({
-      price: {
-        active: true,
-        dir: 'asc',
-      },
-      rating: { active: false, dir: getSearchResultSort.rating.dir },
+    const updatedOriginals = new Map(); // id -> updated original with extra _supersededNights
+    const additions = []; // new hotels or duplicates to append
+    let newHotelsCount = 0;
+    let betterOffersCount = 0;
+    let newSlotsHotelsCount = 0;
+
+    for (const newHotel of newApiData.hotelsArr) {
+      const existing = originalsById.get(newHotel.i);
+      if (!existing) {
+        additions.push({ ...newHotel, _batchNumber: batchNumber });
+        newHotelsCount++;
+        continue;
+      }
+
+      // Compare offers per slot
+      const superseded = [];
+      let hasNewSlots = false;
+      let hasBetterPrices = false;
+      for (const nights of slots) {
+        const oldOffer = existing.actualOffers.find((o) => o.nh === nights);
+        const newOffer = newHotel.actualOffers.find((o) => o.nh === nights);
+        if (!newOffer) continue;
+        if (!oldOffer) {
+          hasNewSlots = true;
+          superseded.push(nights);
+        } else if (newOffer.pl < oldOffer.pl) {
+          hasBetterPrices = true;
+          superseded.push(nights);
+        }
+      }
+
+      if (superseded.length === 0) continue;
+
+      // Mark original
+      const prevUpdated = updatedOriginals.get(newHotel.i);
+      const merged = {
+        ...(prevUpdated || existing),
+        _supersededNights: Array.from(
+          new Set([
+            ...((prevUpdated || existing)._supersededNights || []),
+            ...superseded,
+          ]),
+        ),
+      };
+      updatedOriginals.set(newHotel.i, merged);
+
+      // Add duplicate
+      const kind =
+        hasNewSlots && hasBetterPrices
+          ? 'mixed'
+          : hasNewSlots
+          ? 'new_slots'
+          : 'better';
+      additions.push({
+        ...newHotel,
+        _batchNumber: batchNumber,
+        _duplicateOf: newHotel.i,
+        _duplicateKind: kind,
+      });
+
+      if (hasNewSlots) newSlotsHotelsCount++;
+      else if (hasBetterPrices) betterOffersCount++;
+    }
+
+    // Rebuild hotelsArr: replace updated originals, append additions
+    const rebuilt = apiData.hotelsArr.map((h) => {
+      if (h._duplicateOf) return h;
+      const updated = updatedOriginals.get(h.i);
+      return updated || h;
     });
+    const finalHotelsArr = [...rebuilt, ...additions];
+
+    setApiData({
+      ...apiData,
+      hotels: { ...apiData.hotels, ...newApiData.hotels },
+      results: { ...apiData.results, ...newApiData.results },
+      hotelsArr: finalHotelsArr,
+    });
+
+    const summary = {
+      batchNumber,
+      newHotels: newHotelsCount,
+      betterOffers: betterOffersCount,
+      newSlotsHotels: newSlotsHotelsCount,
+    };
+    setLoadMoreSummary(summary);
+
+    if (additions.length > 0) {
+      setListInconsistent(true);
+    }
   };
 
   useEffect(() => {
@@ -177,6 +301,7 @@ export default function SearchResult({ isFilterBtnShow }) {
     url += `&stars=${newURL.searchParams.get('stars')}`;
     url += `&food=${newURL.searchParams.get('food')}`;
     url += `&services=${newURL.searchParams.get('services')}`;
+    url += `&sort=price`;
 
     if (applyFilter) {
       setApplyFilter(false);
@@ -186,7 +311,7 @@ export default function SearchResult({ isFilterBtnShow }) {
     return url;
   }
 
-  const search = async () => {
+  const search = async (isLoadMore = false) => {
     setIsLoading(true);
     setSearchInProgress(true);
     setStartSearch(true);
@@ -231,13 +356,23 @@ export default function SearchResult({ isFilterBtnShow }) {
     }
 
     async function recursiveFetch(number) {
-      setApiRes(false);
-      setShow(false);
+      if (!isLoadMore) {
+        setApiRes(false);
+        setShow(false);
+      }
       let data = await apiSearch(number);
       if (data) {
+        const hasHotels = data.hotels && Object.keys(data.hotels).length > 0;
         if (data.lastResult) {
+          if (isLoadMore && !hasHotels) {
+            setHasMoreApiResults(false);
+            setLoadMoreSummary({ newHotels: 0, betterOffers: 0, newSlotsHotels: 0 });
+            setIsLoading(false);
+            setSearchInProgress(false);
+            return;
+          }
           setApiRes(data);
-          ResultHandler(data);
+          ResultHandler(data, isLoadMore);
           setShow(true);
           setIsLoading(false);
           setSearchInProgress(false);
@@ -245,7 +380,7 @@ export default function SearchResult({ isFilterBtnShow }) {
           if (number > 12) {
             if (data.total > 0) {
               setApiRes(data);
-              ResultHandler(data);
+              ResultHandler(data, isLoadMore);
               setShow(true);
               setIsLoading(false);
               setSearchInProgress(false);
@@ -253,7 +388,12 @@ export default function SearchResult({ isFilterBtnShow }) {
             } else {
               setIsLoading(false);
               setSearchInProgress(false);
-              setError(true);
+              if (isLoadMore) {
+                setHasMoreApiResults(false);
+                setLoadMoreSummary({ newHotels: 0, betterOffers: 0, newSlotsHotels: 0 });
+              } else {
+                setError(true);
+              }
               return;
             }
           }
@@ -313,7 +453,7 @@ export default function SearchResult({ isFilterBtnShow }) {
 
   useEffect(() => {
     if (page !== 1) {
-      search();
+      search(true);
     }
   }, [page]);
 
@@ -342,23 +482,80 @@ export default function SearchResult({ isFilterBtnShow }) {
     setSearchParams(params);
   };
 
-  const ref = useRef(0);
+  const handlePageChange = (nextPage) => {
+    setCurrentPage(nextPage);
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
+  };
 
-  const loadMore = () => {
-    ref.current++;
+  const handleFetchMore = () => {
+    setPage((p) => p + 1);
+  };
 
-    const clicks = Math.ceil(apiData.hotelsArr.length / 10);
-    setStep((prev) => prev + 10);
+  const handleConsolidate = () => {
+    if (!apiData?.hotelsArr) return;
 
-    if (ref.current === clicks) {
-      ref.current = 0;
-      setPage((page) => page + 1);
-      setStep(10);
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 500);
+    const hotelsMap = new Map();
+    for (const h of apiData.hotelsArr) {
+      if (h._duplicateOf) {
+        const target = hotelsMap.get(h._duplicateOf);
+        if (!target) continue;
+        const existingOfferIds = new Set(target.actualOffers.map((o) => o.i));
+        const extraOffers = (h.actualOffers || []).filter(
+          (o) => !existingOfferIds.has(o.i),
+        );
+        target.actualOffers = [...target.actualOffers, ...extraOffers];
+      } else {
+        hotelsMap.set(h.i, {
+          ...h,
+          _supersededNights: undefined,
+          _batchNumber: null,
+          actualOffers: [...(h.actualOffers || [])],
+        });
+      }
+    }
+
+    const merged = Array.from(hotelsMap.values());
+    merged.forEach((h) => {
+      h.actualOffers.sort((a, b) => a.pl - b.pl);
+    });
+
+    // Apply current user sort (or default price asc)
+    if (getSearchResultSort.rating.active) {
+      merged.sort((a, b) =>
+        getSearchResultSort.rating.dir === 'asc' ? a.r - b.r : b.r - a.r,
+      );
+    } else {
+      const dir = getSearchResultSort.price.dir || 'asc';
+      merged.sort((a, b) =>
+        dir === 'asc'
+          ? (a.actualOffers[0]?.pl ?? 0) - (b.actualOffers[0]?.pl ?? 0)
+          : (b.actualOffers[0]?.pl ?? 0) - (a.actualOffers[0]?.pl ?? 0),
+      );
+    }
+
+    setApiData((prev) => ({ ...prev, hotelsArr: merged }));
+    setListInconsistent(false);
+    setLoadMoreSummary(null);
+
+    const newTotalPages = Math.max(1, Math.ceil(merged.length / PAGE_SIZE));
+    if (currentPage > newTotalPages) {
+      setCurrentPage(newTotalPages);
     }
   };
+
+  const totalInternalPages = apiData?.hotelsArr
+    ? Math.max(1, Math.ceil(apiData.hotelsArr.length / PAGE_SIZE))
+    : 1;
+
+  const paginatedHotels = apiData?.hotelsArr
+    ? apiData.hotelsArr.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+    : [];
+
+  const prevBatchNumber = apiData?.hotelsArr && currentPage > 1
+    ? apiData.hotelsArr[(currentPage - 1) * PAGE_SIZE - 1]?._batchNumber || null
+    : null;
 
   if (error) {
     return <h4>Error</h4>;
@@ -368,14 +565,44 @@ export default function SearchResult({ isFilterBtnShow }) {
     <>
       <div style={isFilterBtnShow ? { opacity: '.5' } : {}}>
         {debug && show && <DebugPanel apiData={apiData} apiRes={apiRes} />}
-        {isLoading && <Loader />}
+        {isLoading && !show && <Loader />}
+        {show && loadMoreSummary && (
+          <div className={styles.load_more_summary}>
+            {loadMoreSummary.newHotels === 0 &&
+            loadMoreSummary.betterOffers === 0 &&
+            loadMoreSummary.newSlotsHotels === 0 ? (
+              <FM id="result.summary.no_new" />
+            ) : (
+              <>
+                <FM id="result.summary.prefix" />{' '}
+                {[
+                  loadMoreSummary.newHotels > 0 &&
+                    `${loadMoreSummary.newHotels} ${intl.formatMessage({
+                      id: 'result.summary.new_hotels',
+                    })}`,
+                  loadMoreSummary.betterOffers > 0 &&
+                    `${loadMoreSummary.betterOffers} ${intl.formatMessage({
+                      id: 'result.summary.better_offers',
+                    })}`,
+                  loadMoreSummary.newSlotsHotels > 0 &&
+                    `${loadMoreSummary.newSlotsHotels} ${intl.formatMessage({
+                      id: 'result.summary.new_slots',
+                    })}`,
+                ]
+                  .filter(Boolean)
+                  .join(', ')}
+              </>
+            )}
+          </div>
+        )}
         {show && (
           <MemoCards
-            hotels={apiData.hotelsArr}
-            step={step}
+            hotels={paginatedHotels}
+            step={PAGE_SIZE}
             countryHotelService={countryHotelService?.icons || []}
             searchParams={searchParams}
             debug={debug}
+            prevBatchNumber={prevBatchNumber}
           />
         )}
         {apiRes.total === 0 && (
@@ -384,9 +611,23 @@ export default function SearchResult({ isFilterBtnShow }) {
           </div>
         )}
       </div>
-      {apiRes.total !== 0 && !isLoading && (
+      {show && totalInternalPages > 1 && (
+        <div className={styles.pagination_wrapper}>
+          <Pagination
+            curr={currentPage}
+            pagesCount={totalInternalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
+      {show && (hasMoreApiResults || listInconsistent) && (
         <div className={styles.load_more_wrapper}>
-          <button className={`${styles.load_more_btn} main_form_btn`} onClick={loadMore}>
+          {hasMoreApiResults && (
+          <button
+            className={`${styles.load_more_btn} ${isLoading ? styles.load_more_btn_loading : ''} main_form_btn`}
+            onClick={handleFetchMore}
+            disabled={isLoading}
+          >
             <svg width="28" height="25" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"
@@ -403,6 +644,17 @@ export default function SearchResult({ isFilterBtnShow }) {
             </svg>
             <FM id="result.load_more" />
           </button>
+          )}
+          {listInconsistent && (
+            <button
+              type="button"
+              className={styles.consolidate_btn}
+              onClick={handleConsolidate}
+              title={intl.formatMessage({ id: 'result.consolidate_hint' })}
+            >
+              <FM id="result.consolidate" />
+            </button>
+          )}
         </div>
       )}
     </>

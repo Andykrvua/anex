@@ -78,6 +78,11 @@
   margin-left: 5px;
 }
 
+.sort_btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .sort_btn img,
 .filter_btn img {
   margin-right: 7px;

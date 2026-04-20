@@ -9,6 +9,7 @@ import {
   useGetSearchResultSort,
   useGetInitialDate,
   useGetToCitiesNames,
+  useGetListInconsistent,
 } from 'store/store';
 import { getDateRangeEndDate } from 'utils/dateRange';
 
@@ -25,6 +26,7 @@ export default function SearchHeader() {
   const initialDate = useGetInitialDate();
   const copiedDate = getDateRangeEndDate(date, initialDate);
   const toCitiesNames = useGetToCitiesNames();
+  const listInconsistent = useGetListInconsistent();
 
   const sortHandler = (type) => {
     if (type === 'price') {
@@ -86,6 +88,7 @@ export default function SearchHeader() {
         <button
           className={styles.sort_btn}
           onClick={() => sortHandler('price')}
+          disabled={listInconsistent}
           style={getSearchResultSort.price.active ? { background: 'var(--placeholder)' } : {}}
         >
           <img
@@ -103,6 +106,7 @@ export default function SearchHeader() {
         <button
           className={styles.sort_btn}
           onClick={() => sortHandler('rating')}
+          disabled={listInconsistent}
           style={getSearchResultSort.rating.active ? { background: 'var(--placeholder)' } : {}}
         >
           <img

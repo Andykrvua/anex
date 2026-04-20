@@ -1,7 +1,7 @@
 import styles from './cards.module.css';
 import debugStyles from './debugPanel.module.css';
 import Image from 'next/image';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { shimmer, toBase64 } from '/utils/blurImage';
@@ -246,8 +246,10 @@ const CardsOffersVariants = ({ hotel, searchParams, debug }) => {
       {(() => {
         const nMin = Number(searchParams?.nights) || 7;
         const nightSlots = [nMin, nMin + 1, nMin + 2];
+        const supersededNights = hotel._supersededNights || [];
         return nightSlots.map((nights) => {
           const item = hotel.actualOffers.find((o) => o.nh === nights);
+          const isSuperseded = supersededNights.includes(nights);
 
           if (!item) {
             return (
@@ -263,7 +265,11 @@ const CardsOffersVariants = ({ hotel, searchParams, debug }) => {
                   </span>
                 </span>
                 <span className={styles.order_not_found}>
-                  <FM id="hotel_card.offer_not_found" />
+                  {isSuperseded ? (
+                    <FM id="hotel_card.offer_new_below" />
+                  ) : (
+                    <FM id="hotel_card.offer_not_found" />
+                  )}
                 </span>
               </div>
             );
@@ -271,7 +277,7 @@ const CardsOffersVariants = ({ hotel, searchParams, debug }) => {
 
           return (
             <a
-              className={styles.card_order}
+              className={`${styles.card_order} ${isSuperseded ? styles.card_order_superseded : ''}`}
               onClick={saveRatingCookie}
               href={`${router.locale === 'uk' ? '/uk' : ''}/hotels/${hotel.t.c}/${hotel.t.i}-${hotel.i}-${
                 hotel.h
@@ -331,6 +337,11 @@ const CardsOffersVariants = ({ hotel, searchParams, debug }) => {
                 }).format(item.pl)}
                 <img src="/assets/img/svg/arrow.svg" alt="" />
               </span>
+              {isSuperseded && (
+                <span className={styles.order_new_below}>
+                  <FM id="hotel_card.offer_new_below" />
+                </span>
+              )}
             </a>
           );
         });
@@ -339,7 +350,7 @@ const CardsOffersVariants = ({ hotel, searchParams, debug }) => {
   );
 };
 
-export default function Cards({ hotels = [], step, countryHotelService = [], searchParams, debug = false }) {
+export default function Cards({ hotels = [], step, countryHotelService = [], searchParams, debug = false, prevBatchNumber = null }) {
   const setModalInfo = useSetWindowInfo();
   const intl = useIntl();
   localStorage.removeItem('result');
@@ -402,12 +413,28 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
     );
   };
 
+  let batchCursor = prevBatchNumber;
+
   return (
     <div className={styles.cards_wrapper}>
       {hotels.map((item, j) => {
-        if (j < step) {
-          return (
-            <div className={styles.card} key={item.i}>
+        if (j >= step) return null;
+
+        const currentBatch = item._batchNumber || null;
+        const showBatchMarker = currentBatch && currentBatch !== batchCursor;
+        batchCursor = currentBatch;
+        const cardKey = item._duplicateOf
+          ? `${item.i}-dup-${item._batchNumber}`
+          : item.i;
+
+        return (
+          <Fragment key={cardKey}>
+            {showBatchMarker && (
+              <div className={styles.batch_marker}>
+                <FM id="result.new_offers_batch" /> #{currentBatch}
+              </div>
+            )}
+            <div className={styles.card}>
               <div className={styles.card_img}>
                 <Image
                   className={styles.img}
@@ -450,6 +477,19 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
                 </button>
               </div>
               <div className={styles.card_text}>
+                {item._duplicateOf && (
+                  <div className={styles.duplicate_badge}>
+                    <FM
+                      id={
+                        item._duplicateKind === 'better'
+                          ? 'hotel_card.duplicate_better'
+                          : item._duplicateKind === 'new_slots'
+                          ? 'hotel_card.duplicate_new_slots'
+                          : 'hotel_card.duplicate_mixed'
+                      }
+                    />
+                  </div>
+                )}
                 <div className={styles.stars_wrapper}>
                   {new Array(parseInt(item.s)).fill(null).map((_, ind) => {
                     return (
@@ -492,8 +532,8 @@ export default function Cards({ hotels = [], step, countryHotelService = [], sea
                 <CardsOffersVariants hotel={item} searchParams={searchParams} debug={debug} />
               </div>
             </div>
-          );
-        }
+          </Fragment>
+        );
       })}
     </div>
   );

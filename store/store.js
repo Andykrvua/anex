@@ -86,6 +86,10 @@ const useStore = create(
     setToCities: (toCities) => set({ toCities }),
     toCitiesNames: [],
     setToCitiesNames: (toCitiesNames) => set({ toCitiesNames }),
+    listInconsistent: false,
+    setListInconsistent: (listInconsistent) => set({ listInconsistent }),
+    loadMoreSummary: null,
+    setLoadMoreSummary: (loadMoreSummary) => set({ loadMoreSummary }),
     searchCountryList: {
       active: false,
       list: [],
@@ -185,6 +189,10 @@ export const useGetToCities = () => useStore((state) => state.toCities);
 export const useSetToCities = () => useStore((state) => state.setToCities);
 export const useGetToCitiesNames = () => useStore((state) => state.toCitiesNames);
 export const useSetToCitiesNames = () => useStore((state) => state.setToCitiesNames);
+export const useGetListInconsistent = () => useStore((state) => state.listInconsistent);
+export const useSetListInconsistent = () => useStore((state) => state.setListInconsistent);
+export const useGetLoadMoreSummary = () => useStore((state) => state.loadMoreSummary);
+export const useSetLoadMoreSummary = () => useStore((state) => state.setLoadMoreSummary);
 
 // search list for current user search request
 export const useGetSearchCountryList = () => useStore((state) => state.searchCountryList);

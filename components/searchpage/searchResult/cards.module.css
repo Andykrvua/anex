@@ -217,10 +217,51 @@
   cursor: default;
 }
 
+.card_order_superseded {
+  flex-wrap: wrap;
+  opacity: 0.75;
+}
+
+.card_order_superseded .order_price {
+  text-decoration: line-through;
+  color: var(--primary-light);
+}
+
+.order_new_below {
+  flex: 1 0 100%;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--red-btn, #d32f2f);
+  text-align: right;
+}
+
 .order_not_found {
   font-size: 14px;
   font-weight: 500;
   color: var(--primary-light);
+}
+
+.duplicate_badge {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: var(--def-radius);
+  background: var(--line);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.batch_marker {
+  grid-column: 1 / -1;
+  margin-top: 20px;
+  padding: 12px 16px;
+  border-radius: var(--def-radius);
+  background: linear-gradient(95.77deg, #006bd6 -23.84%, #0080ff 145.99%);
+  color: var(--font-white);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
 }
 
 .order_price > span {

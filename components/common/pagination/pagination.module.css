@@ -17,16 +17,28 @@
   margin-left: 20px;
 }
 
-.pagination a {
+.pagination a,
+.pagination button {
   text-decoration: underline;
   color: var(--primary-light);
   line-height: 1;
   font-weight: 700;
   overflow: hidden;
+  font-family: inherit;
+  font-size: inherit;
 }
 
-a.current {
+.pagination button:not(.next_page):not(.prev_page) {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+a.current,
+button.current {
   text-decoration: none;
+  cursor: default;
 }
 
 .next_page,

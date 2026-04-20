@@ -1,6 +1,6 @@
 import styles from './content.module.css';
 import ReviewsFilter from 'components/reviews/filter';
-import Pagination from 'components/blog/pagination';
+import Pagination from 'components/common/pagination/pagination';
 import { links } from 'utils/links';
 import { useLayoutEffect } from 'react';
 import { useState } from 'react';

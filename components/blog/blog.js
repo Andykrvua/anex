@@ -2,7 +2,7 @@ import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import CategoryList from './categoryList';
 import TagsCountryList from './tagsCountryList';
 import PostList from './postList';
-import Pagination from './pagination';
+import Pagination from 'components/common/pagination/pagination';
 import { blogApi } from 'utils/constants';
 
 export default function BlogContent({
