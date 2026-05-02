@@ -86,10 +86,6 @@ const useStore = create(
     setToCities: (toCities) => set({ toCities }),
     toCitiesNames: [],
     setToCitiesNames: (toCitiesNames) => set({ toCitiesNames }),
-    listInconsistent: false,
-    setListInconsistent: (listInconsistent) => set({ listInconsistent }),
-    loadMoreSummary: null,
-    setLoadMoreSummary: (loadMoreSummary) => set({ loadMoreSummary }),
     searchCountryList: {
       active: false,
       list: [],
@@ -108,14 +104,7 @@ const useStore = create(
     },
     setSearchFilter: (data) => set((state) => ({ searchFilter: { ...state.searchFilter, ...data } })),
     applyFilter: false,
-    setApplyFilter: (applyFilter) =>
-      set({
-        applyFilter,
-        searchResultSort: {
-          price: { active: false, dir: 'asc' },
-          rating: { active: false, dir: 'desc' },
-        },
-      }),
+    setApplyFilter: (applyFilter) => set({ applyFilter }),
     openStreetMap: {},
     setOpenStreetMap: (openStreetMap) => set({ openStreetMap }),
     hotelImg: {},
@@ -123,21 +112,9 @@ const useStore = create(
     startSearch: false,
     setStartSearch: (startSearch) => set({ startSearch }),
     searchInProgress: false,
-    setSearchInProgress: (searchInProgress) =>
-      set({
-        searchInProgress,
-        searchResultSort: {
-          price: { active: false, dir: 'asc' },
-          rating: { active: false, dir: 'desc' },
-        },
-      }),
+    setSearchInProgress: (searchInProgress) => set({ searchInProgress }),
     hotelService: {},
     setHotelService: (hotelService) => set({ hotelService }),
-    searchResultSort: {
-      price: { active: false, dir: 'asc' },
-      rating: { active: false, dir: 'desc' },
-    },
-    setSearchResultSort: (searchResultSort) => set({ searchResultSort }),
     offerParams: {},
     setOfferParams: (offerParams) => set({ offerParams }),
     currentOffer: {},
@@ -189,10 +166,6 @@ export const useGetToCities = () => useStore((state) => state.toCities);
 export const useSetToCities = () => useStore((state) => state.setToCities);
 export const useGetToCitiesNames = () => useStore((state) => state.toCitiesNames);
 export const useSetToCitiesNames = () => useStore((state) => state.setToCitiesNames);
-export const useGetListInconsistent = () => useStore((state) => state.listInconsistent);
-export const useSetListInconsistent = () => useStore((state) => state.setListInconsistent);
-export const useGetLoadMoreSummary = () => useStore((state) => state.loadMoreSummary);
-export const useSetLoadMoreSummary = () => useStore((state) => state.setLoadMoreSummary);
 
 // search list for current user search request
 export const useGetSearchCountryList = () => useStore((state) => state.searchCountryList);
@@ -232,8 +205,6 @@ export const useGetHotelService = () => useStore((state) => state.hotelService);
 export const useSetHotelService = () => useStore((state) => state.setHotelService);
 
 // sort control
-export const useGetSearchResultSort = () => useStore((state) => state.searchResultSort);
-export const useSetSearchResultSort = () => useStore((state) => state.setSearchResultSort);
 // offer page req params
 export const useGetOfferParams = () => useStore((state) => state.offerParams);
 export const useSetOfferParams = () => useStore((state) => state.setOfferParams);

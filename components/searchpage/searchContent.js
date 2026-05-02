@@ -7,12 +7,12 @@ import {
   useGetFilterOpen,
   useSetFilterOpen,
   useGetSearchFilter,
-  useSetSearchFilter,
   useSetApplyFilter,
+  useGetStartSearch,
 } from 'store/store';
 import FilterMobileTemplate from './filter/filterMobileTemplate';
 import FilterContent from './filter/filterContent';
-import SearchResult from './searchResult/searchResult';
+import SearchResultV2 from './v2/SearchResultV2';
 import getViewport from 'utils/getViewport';
 import { isBrowser } from 'utils/utils';
 
@@ -20,8 +20,8 @@ export default function SearchContent() {
   const getFilterModale = useGetFilterOpen();
   const setFilterModale = useSetFilterOpen();
   const filterData = useGetSearchFilter();
-  const setFilterData = useSetSearchFilter();
   const setApplyFilter = useSetApplyFilter();
+  const startSearch = useGetStartSearch();
   const windowSize = getViewport();
 
   const getParams = () => {
@@ -56,6 +56,18 @@ export default function SearchContent() {
       setUrlParams(getParams());
     }
   }, [filterData]);
+
+  // Кнопка "Применить фильтры" появляется когда live-getParams() расходится
+  // с локально закешированным urlParams. SearchButton делает router.push
+  // с новой query (включая stars/food/services='' — обнуление legacy-фильтров),
+  // и без этого ефекта закеш остаётся прежним → diff → ложная кнопка.
+  // Синхронизируем urlParams сразу как только Zustand-флаг startSearch=true
+  // (его ставит SearchButton перед router.push).
+  useEffect(() => {
+    if (startSearch) {
+      setUrlParams(getParams());
+    }
+  }, [startSearch]);
 
   useEffect(() => {
     if (windowSize.width > 809) {
@@ -115,7 +127,7 @@ export default function SearchContent() {
           </StickyBox>
         </div>
       )}
-      <SearchResult isFilterBtnShow={isButtonShow} />
+      <SearchResultV2 isFilterBtnShow={isButtonShow} />
     </div>
   );
 }

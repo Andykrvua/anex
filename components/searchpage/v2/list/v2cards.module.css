@@ -1,0 +1,186 @@
+/* v2-only стили — бейджи, индикаторы, рамка обновлённой карточки.
+   Базовые стили карточки берутся из legacy cards.module.css. */
+
+.cardUpdated {
+  position: relative;
+}
+
+.cardUpdated::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 1.5px solid #ff9400;
+  border-radius: var(--def-radius, 8px);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.cardBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14px;
+  border-radius: 4px;
+  color: #fff;
+  background: #ff9400;
+}
+
+.cardBadge_newHotel {
+  background: #ff9400;
+}
+
+.cardBadge_priceDrop {
+  background: #1e9c5a;
+}
+
+.cardBadge_slotFilled {
+  background: #3b82f6;
+}
+
+.cardBadge_mixed {
+  background: #ff9400;
+}
+
+/* Per-slot индикатор обновления (price_drop / slot_filled).
+   Ставится отдельным рядом ВНУТРИ <a> или <div> ячейки слота. */
+.slotIndicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #fff;
+  align-self: flex-start;
+}
+
+.slotIndicator_priceDrop {
+  background: #1e9c5a;
+}
+
+.slotIndicator_slotFilled {
+  background: #3b82f6;
+}
+
+.slotIndicator_oldPrice {
+  text-decoration: line-through;
+  opacity: 0.85;
+  font-weight: normal;
+}
+
+/* Highlight-анимация для jump-to (используется в Phase 6). */
+@keyframes cardHighlight {
+  0% {
+    box-shadow: 0 0 0 4px rgba(255, 148, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 148, 0, 0);
+  }
+}
+
+.cardHighlight {
+  animation: cardHighlight 2s ease-out;
+}
+
+/* Price history (Phase 9) */
+
+.historyTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid #888;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  font-style: italic;
+  font-family: serif;
+  line-height: 1;
+}
+
+.historyTrigger:hover {
+  background: #ff9400;
+  border-color: #ff9400;
+  color: #fff;
+}
+
+.historyAnchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.historyPopover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 240px;
+  background: #fff;
+  border: 1px solid var(--placeholder, #e3e3e3);
+  border-radius: var(--def-radius, 8px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  padding: 12px 14px;
+  font-size: 12px;
+  color: #333;
+  text-align: left;
+}
+
+.historyTitle {
+  font-weight: 600;
+  font-size: 13px;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--placeholder, #e3e3e3);
+}
+
+.historyList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.historyRow,
+.historyRowCurrent {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.historyRowCurrent {
+  font-weight: 600;
+  color: #1e9c5a;
+}
+
+.historyLabel {
+  color: #888;
+  font-size: 11px;
+}
+
+.historyRowCurrent .historyLabel {
+  color: #1e9c5a;
+}
+
+.historyPrice {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.historyBatch {
+  color: #888;
+  font-size: 11px;
+}

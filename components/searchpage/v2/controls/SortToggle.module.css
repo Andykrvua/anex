@@ -1,0 +1,67 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  background: #fff;
+  border: 1px solid var(--placeholder, #e3e3e3);
+  border-radius: var(--def-radius, 8px);
+  font-size: 13px;
+}
+
+.label {
+  font-weight: 600;
+  color: #555;
+}
+
+.options {
+  display: flex;
+  gap: 4px;
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--placeholder, #e3e3e3);
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.option input {
+  display: none;
+}
+
+.option:hover {
+  background: rgba(255, 168, 0, 0.06);
+}
+
+.optionActive {
+  background: #ff9400;
+  color: #fff;
+  border-color: #ff9400;
+}
+
+.optionActive:hover {
+  background: #ff9400;
+}
+
+.applyToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+  color: #555;
+}
+
+.applyToggle input {
+  cursor: pointer;
+}

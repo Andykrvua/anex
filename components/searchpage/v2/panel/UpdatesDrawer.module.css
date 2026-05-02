@@ -1,0 +1,131 @@
+/*
+ * Drawer (FAB + sheet + backdrop) — оболочка для панели "Обновления".
+ * Внутреннее тело (PanelContent) продолжает использовать UpdatesPanel.module.css —
+ * там общие стили rows/sections/actions/etc.
+ *
+ * Mobile: sheet выезжает снизу (классическое bottom-sheet).
+ * Desktop: sheet выезжает справа, ширина 420px.
+ * Управление через variantMobile / variantDesktop классы.
+ */
+
+.fab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ff9400;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.fab:hover {
+  background: #ff8400;
+}
+
+.fabCount {
+  background: #fff;
+  color: #ff9400;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 60;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.drawer {
+  position: fixed;
+  z-index: 61;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile: sheet from bottom */
+.variantMobile {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--def-radius, 12px) var(--def-radius, 12px) 0 0;
+  max-height: 85vh;
+  animation: slideUp 0.22s ease-out;
+}
+
+/* Desktop: sheet from right */
+.variantDesktop {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 420px;
+  max-width: 90vw;
+  box-shadow: -4px 0 18px rgba(0, 0, 0, 0.12);
+  animation: slideLeft 0.22s ease-out;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--placeholder, #e3e3e3);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.headerCount {
+  margin-left: 6px;
+  color: #888;
+  font-weight: normal;
+}
+
+.headerClose {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: #888;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.headerClose:hover {
+  color: #333;
+}
+
+.drawerBody {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes slideLeft {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}

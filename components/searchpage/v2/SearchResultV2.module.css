@@ -1,0 +1,29 @@
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.listColumn {
+  width: 100%;
+  min-width: 0;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+/*
+ * "Грязный" фильтр (юзер изменил, но не нажал "Применить") — приглушаем
+ * список, чтобы юзер видел: данные не отвечают текущему выбору фильтров.
+ * Раньше эту визуальную подсказку выдавал legacy SearchResult — он
+ * принимал isFilterBtnShow и переключал opacity на listе. После замены
+ * на v2 prop стал игнорироваться, эффект потерялся. pointer-events
+ * не блокируем — клики по карточкам/слотам остаются рабочими, юзер
+ * может всё ещё перейти на отель.
+ */
+.listStale {
+  opacity: 0.5;
+  filter: saturate(0.7);
+}
+
+.paginationWrapper {
+  margin-top: 16px;
+}

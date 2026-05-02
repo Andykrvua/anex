@@ -293,21 +293,13 @@ export default function Hotel({ data, hotel }) {
     );
   };
 
-  function getCookie(name) {
-    var nameEQ = name + '=';
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-  }
-
   useEffect(() => {
-    const x = getCookie(hotel?.i);
-    if (x) {
-      setHotelRat(JSON.parse(x));
+    if (!hotel?.i) return;
+    try {
+      const map = JSON.parse(localStorage.getItem('hotelRatings') || '{}');
+      if (map[hotel.i]) setHotelRat(map[hotel.i]);
+    } catch (e) {
+      // ignore — storage may be unavailable.
     }
   }, []);
 

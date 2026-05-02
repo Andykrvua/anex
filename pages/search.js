@@ -1,53 +1,26 @@
 import MainForm from '/components/mainform/mainForm.js';
 import { useIntl } from 'react-intl';
 import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
-import {
-  useGetUp,
-  useGetDown,
-  useGetDate,
-  useGetNight,
-  useGetPerson,
-} from 'store/store';
 import dynamic from 'next/dynamic';
 import Loader from 'components/common/loader';
-import { useRouter } from 'next/router';
-import { memo, useEffect } from 'react';
 
-export default function Search({ loc }) {
+// dynamic(...) ОБОВ'ЯЗКОВО на module-level. Якщо описати всередині Search,
+// при кожному ре-рендері створюється новий обгортковий тип → React unmount
+// + mount Content → SearchResultV2 теряє session, ремаунт-ефекти знову
+// тягнуть parseUrl + getResults + tours/services. Через це любий
+// router.push({shallow:true}) (toggle filter, sort у URL) перестартовував
+// поиск з нуля та обнуляв виданий список.
+const Content = dynamic(
+  () => import(/* webpackChunkName: "result" */ 'components/searchpage/search'),
+  {
+    ssr: false,
+    loading: () => <Loader />,
+  },
+);
+
+export default function Search() {
   const intl = useIntl();
   const br_arr = [{ title: intl.formatMessage({ id: 'search.br' }) }];
-  // const up = useGetUp();
-  // const down = useGetDown();
-  // const date = useGetDate();
-  // const night = useGetNight();
-  // const person = useGetPerson();
-
-  const router = useRouter();
-  // const loc = router.locale;
-
-  // useEffect(() => {
-  //   router.push(
-  //     {
-  //       pathname: '/search',
-  //       query: { sortBy: up.value },
-  //     },
-  //     undefined,
-  //     { shallow: true }
-  //   );
-  // }, [up.value]);
-
-  const Content = dynamic(
-    () =>
-      import(/* webpackChunkName: "result" */ 'components/searchpage/search'),
-    {
-      ssr: false,
-      loading: () => {
-        return <Loader />;
-      },
-    }
-  );
-
-  // const MemoContent = memo(Content);
 
   return (
     <>

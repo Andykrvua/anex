@@ -34,6 +34,26 @@ export default function SearchButton() {
     }
     const { checkIn, checkTo, plusDays, dateType } = buildDateSearchQuery(date, initialDate);
 
+    // Preserve already-applied filter params from URL so that changing main-form
+    // values (people, dates, etc.) и тычок «Поиск» не сбрасывает примененные фильтры.
+    // Без этого URL терял фильтры → searchContent видел diff с кэшем urlParams →
+    // лишняя кнопка «Применить фильтры», хотя фильтры ещё активны (чекбоксы / range on).
+    let preservedStars = '';
+    let preservedFood = '';
+    let preservedServices = '';
+    let preservedPrice = inputRangeData.costMin;
+    let preservedPriceTo = inputRangeData.costMax;
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      preservedStars = sp.get('stars') || '';
+      preservedFood = sp.get('food') || '';
+      preservedServices = sp.get('services') || '';
+      const priceFromUrl = sp.get('price');
+      const priceToFromUrl = sp.get('priceTo');
+      if (priceFromUrl !== null && priceFromUrl !== '') preservedPrice = priceFromUrl;
+      if (priceToFromUrl !== null && priceToFromUrl !== '') preservedPriceTo = priceToFromUrl;
+    }
+
     setStartSearch(true);
 
     router.push({
@@ -50,11 +70,11 @@ export default function SearchButton() {
         nights: night.from,
         nightsTo: night.to,
         people: stringifyCrewComposition(person),
-        price: inputRangeData.costMin,
-        priceTo: inputRangeData.costMax,
-        stars: '',
-        food: '',
-        services: '',
+        price: preservedPrice,
+        priceTo: preservedPriceTo,
+        stars: preservedStars,
+        food: preservedFood,
+        services: preservedServices,
         ...(toCities.length > 0 ? { toCities: toCities.join(',') } : {}),
       },
     });

@@ -1,0 +1,177 @@
+/*
+ * Стили для PanelContent / UpdateRow / LoadMoreCallout — внутреннее тело
+ * панели "Обновления". Сама оболочка (FAB+drawer+backdrop) переехала в
+ * UpdatesDrawer.module.css. Раньше здесь жил ещё desktop sticky-sidebar
+ * (.panel, .collapsedStrip), но он удалён вместе с двухколоночным layout.
+ */
+
+/* Inner content (shared) */
+.panelContent {
+  padding: 8px 12px 16px;
+  position: relative;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 4px 0 12px;
+}
+
+.actionBtn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--placeholder, #e3e3e3);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.actionBtn:hover {
+  background: var(--placeholder, #e3e3e3);
+}
+
+.section {
+  border-top: 1px solid var(--placeholder, #e3e3e3);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  padding: 4px 0;
+  color: #333;
+}
+
+.sectionCount {
+  margin-left: auto;
+  color: #888;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.caret {
+  font-size: 10px;
+  color: #888;
+}
+
+.sectionBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+/* Update row */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.row:hover {
+  background: rgba(255, 168, 0, 0.06);
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.rowText {
+  flex: 1;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.rowContext {
+  font-size: 11px;
+  color: #555;
+  margin-top: 2px;
+}
+
+.rowPage {
+  font-size: 11px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.rowJump {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid #ff9400;
+  color: #ff9400;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.rowJump:hover {
+  background: #ff9400;
+  color: #fff;
+}
+
+.empty {
+  text-align: center;
+  padding: 24px 16px;
+  color: #999;
+  font-size: 13px;
+}
+
+.closeBtnInline {
+  display: none;
+}
+
+/* LoadMoreCallout */
+.callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  margin: 12px 0;
+  background: rgba(255, 168, 0, 0.08);
+  border: 1px dashed #ff9400;
+  border-radius: var(--def-radius, 8px);
+  font-size: 13px;
+  color: #553600;
+}
+
+.calloutBtn {
+  flex-shrink: 0;
+  background: #ff9400;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}

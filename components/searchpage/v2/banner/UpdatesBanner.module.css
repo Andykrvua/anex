@@ -1,0 +1,55 @@
+.banner {
+  position: sticky;
+  /* SearchProgress занимает примерно 64-76px сверху; баннер крепится под него.
+     При необходимости можно вынести в общий CSS-token. */
+  top: 76px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  background: rgba(255, 168, 0, 0.12);
+  border: 1px solid rgba(255, 148, 0, 0.5);
+  border-radius: var(--def-radius, 8px);
+  font-size: 13px;
+  line-height: 18px;
+  color: #553600;
+}
+
+.text {
+  flex: 1;
+  white-space: normal;
+}
+
+.detailsBtn {
+  flex-shrink: 0;
+  background: #ff9400;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.detailsBtn:hover {
+  opacity: 0.9;
+}
+
+.closeBtn {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: #553600;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 6px;
+  text-decoration: underline;
+}
+
+.closeBtn:hover {
+  color: #2a1d00;
+}
