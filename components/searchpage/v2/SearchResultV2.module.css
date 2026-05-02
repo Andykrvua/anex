@@ -24,6 +24,24 @@
   filter: saturate(0.7);
 }
 
+/*
+ * Все справочные/управляющие элементы перед списком — UpdatesBanner +
+ * SortToggle + QualityFilters — слиты в один sticky-контейнер. Раньше
+ * sticky был только на UpdatesBanner (top:76px), теперь весь блок
+ * целиком прилипает под SearchProgress.
+ */
+.controlsBar {
+  position: sticky;
+  top: 76px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 0;
+  margin-bottom: 12px;
+  background: var(--bg, #f5f5f5);
+}
+
 .paginationWrapper {
   margin-top: 16px;
 }

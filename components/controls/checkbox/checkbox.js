@@ -1,14 +1,17 @@
 import styles from './checkbox.module.css';
 
-export default function Checkbox({ label, check, setCheck }) {
+export default function Checkbox({ label, check, setCheck, disabled = false, title }) {
   return (
-    <label className={styles.checkbox_container}>
+    <label
+      className={`${styles.checkbox_container} ${disabled ? styles.disabled : ''}`}
+      title={title}
+    >
       {label}
       <input
         type="checkbox"
-        // defaultChecked={check}
         checked={check}
-        onChange={() => setCheck(!check)}
+        disabled={disabled}
+        onChange={() => !disabled && setCheck(!check)}
       />
       <span className={styles.checkmark}>
         <svg

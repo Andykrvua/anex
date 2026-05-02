@@ -47,7 +47,6 @@ import SearchProgress from './progress/SearchProgress';
 import ContinueSearchButton from './progress/ContinueSearchButton';
 import UpdatesBanner from './banner/UpdatesBanner';
 import UpdatesDrawer from './panel/UpdatesDrawer';
-import LoadMoreCallout from './panel/LoadMoreCallout';
 import SortToggle from './controls/SortToggle';
 import QualityFilters from './controls/QualityFilters';
 import HotelList from './list/HotelList';
@@ -298,18 +297,23 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   return (
     <div className={styles.root}>
       {isDebug && <DebugPanel />}
-      <SearchProgress />
-      <UpdatesBanner hotelsOnPage={hotels} onShowDetails={handleShowDetails} />
       <section
         className={`${styles.listColumn} ${isFilterBtnShow ? styles.listStale : ''}`}
         aria-busy={isFilterBtnShow ? 'true' : undefined}
       >
-        {totalHotels > 0 && (
-          <>
-            <SortToggle />
-            <QualityFilters />
-          </>
-        )}
+        <div className={styles.controlsBar}>
+          <SearchProgress />
+          {totalHotels > 0 && (
+            <>
+              <UpdatesBanner
+                hotelsOnPage={hotels}
+                onShowDetails={handleShowDetails}
+              />
+              <SortToggle />
+              <QualityFilters />
+            </>
+          )}
+        </div>
         {showLoader && <Loader />}
         {totalHotels === 0 && status === 'done' && (
           <div>
@@ -340,10 +344,6 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
         )}
         {totalHotels > 0 && (
           <>
-            <LoadMoreCallout
-              hotelsOnPage={hotels}
-              onOpenPanel={handleShowDetails}
-            />
             <ContinueSearchButton
               onContinue={() => {
                 run({ continueSearch: true });

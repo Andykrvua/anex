@@ -262,8 +262,6 @@
   "updates.action.mark_all_viewed": "Отметить всё просмотренным",
   "updates.action.collapse_all": "Свернуть всё",
   "updates.fab_label": "{count} обновлений",
-  "updates.callout_below": "↑ {count} обновлений на других страницах",
-  "updates.callout_open": "Открыть панель",
   "sort.title": "Сортировать",
   "sort.stable": "По умолчанию",
   "sort.price_asc": "Цена ↑",

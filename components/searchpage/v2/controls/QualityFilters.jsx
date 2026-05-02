@@ -5,6 +5,7 @@ import {
   useFreezeUpdatedOnly,
   useUnfreezeUpdatedOnly,
 } from 'store/searchStore';
+import Checkbox from 'components/controls/checkbox/checkbox';
 import styles from './QualityFilters.module.css';
 
 /**
@@ -37,30 +38,22 @@ export default function QualityFilters() {
 
   return (
     <div className={styles.root}>
-      <label className={styles.option}>
-        <input
-          type="checkbox"
-          checked={fullOnly}
-          onChange={(e) => setFilter('fullOnly', e.target.checked)}
-        />
-        <FM id="filter.full_only" />
-      </label>
-      <label
-        className={`${styles.option} ${updatedOnlyDisabled ? styles.optionDisabled : ''}`}
+      <Checkbox
+        label={<FM id="filter.full_only" />}
+        check={fullOnly}
+        setCheck={(v) => setFilter('fullOnly', v)}
+      />
+      <Checkbox
+        label={<FM id="filter.updated_only" />}
+        check={updatedOnly}
+        setCheck={handleUpdatedOnlyChange}
+        disabled={updatedOnlyDisabled}
         title={
           updatedOnlyDisabled
             ? intl.formatMessage({ id: 'filter.updated_only_empty_hint' })
             : undefined
         }
-      >
-        <input
-          type="checkbox"
-          checked={updatedOnly}
-          disabled={updatedOnlyDisabled}
-          onChange={(e) => handleUpdatedOnlyChange(e.target.checked)}
-        />
-        <FM id="filter.updated_only" />
-      </label>
+      />
     </div>
   );
 }

@@ -262,8 +262,6 @@
   "updates.action.mark_all_viewed": "Позначити все переглянутим",
   "updates.action.collapse_all": "Згорнути все",
   "updates.fab_label": "{count} оновлень",
-  "updates.callout_below": "↑ {count} оновлень на інших сторінках",
-  "updates.callout_open": "Відкрити панель",
   "sort.title": "Сортувати",
   "sort.stable": "За замовчуванням",
   "sort.price_asc": "Ціна ↑",

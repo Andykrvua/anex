@@ -1,14 +1,10 @@
 .banner {
-  position: sticky;
-  /* SearchProgress занимает примерно 64-76px сверху; баннер крепится под него.
-     При необходимости можно вынести в общий CSS-token. */
-  top: 76px;
-  z-index: 4;
+  /* Sticky position теперь у общего .controlsBar (SearchResultV2.module.css) —
+     UpdatesBanner стал просто содержимым этого блока. */
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  margin-bottom: 12px;
   background: rgba(255, 168, 0, 0.12);
   border: 1px solid rgba(255, 148, 0, 0.5);
   border-radius: var(--def-radius, 8px);

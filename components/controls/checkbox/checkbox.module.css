@@ -53,3 +53,12 @@
   stroke: var(--white);
   opacity: 1;
 }
+
+.checkbox_container.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.checkbox_container.disabled input {
+  cursor: not-allowed;
+}

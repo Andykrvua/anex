@@ -1,36 +1,40 @@
+/*
+ * Стиль radio-кнопок взят из /blog .categoryList .category_item:
+ * белый фон, line-border, primary при hover/active, mobile/desktop padding+font.
+ * .root убрали свои border/background — sticky-контейнер controlsBar их даёт.
+ */
 .root {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
-  background: #fff;
-  border: 1px solid var(--placeholder, #e3e3e3);
-  border-radius: var(--def-radius, 8px);
   font-size: 13px;
 }
 
 .label {
-  font-weight: 600;
+  font-weight: 700;
   color: #555;
 }
 
 .options {
   display: flex;
-  gap: 4px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .option {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  border: 1px solid var(--placeholder, #e3e3e3);
-  border-radius: 4px;
+  display: inline-block;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--def-radius);
+  background-color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
   cursor: pointer;
   user-select: none;
-  transition: background 0.15s, border-color 0.15s;
+  transition: color var(--base-transition),
+    background-color var(--base-transition);
 }
 
 .option input {
@@ -38,30 +42,18 @@
 }
 
 .option:hover {
-  background: rgba(255, 168, 0, 0.06);
+  color: var(--font-white);
+  background-color: var(--primary);
 }
 
 .optionActive {
-  background: #ff9400;
-  color: #fff;
-  border-color: #ff9400;
+  color: var(--font-white);
+  background-color: var(--primary);
 }
 
-.optionActive:hover {
-  background: #ff9400;
-}
-
-.applyToggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: auto;
-  cursor: pointer;
-  user-select: none;
-  font-size: 12px;
-  color: #555;
-}
-
-.applyToggle input {
-  cursor: pointer;
+@media (min-width: 810px) {
+  .option {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
 }
