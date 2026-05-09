@@ -3,10 +3,9 @@
  * SearchProgress стал частью обёртки рядом с UpdatesBanner и Sort/QualityFilters.
  */
 .progress {
-  background: #fff;
-  padding: 12px 16px;
-  border: 1px solid var(--placeholder, #e3e3e3);
-  border-radius: var(--def-radius, 8px);
+  margin-top: 4px;
+  margin-bottom: 12px;
+  padding-right: 55px;
 }
 
 .header {
@@ -22,17 +21,38 @@
 }
 
 .bar {
+  position: relative;
   flex: 1;
-  height: 6px;
+  height: 4px;
   background: var(--placeholder, #e3e3e3);
   border-radius: 3px;
   overflow: hidden;
 }
 
+/*
+ * Indeterminate progress: 40%-wide segment slides off-left → off-right and
+ * repeats while polling. ETA from the API is too noisy to drive a real %
+ * accurately — continuous motion communicates "still working" without faking
+ * certainty.
+ */
 .barFill {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
+  width: 40%;
   background: linear-gradient(95.77deg, #006bd6 -23.84%, #0080ff 145.99%);
-  transition: width 0.3s ease-out;
+  border-radius: 3px;
+  animation: searchProgressIndeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes searchProgressIndeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
 }
 
 .meta {

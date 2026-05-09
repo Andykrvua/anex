@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 import {
   useGetUp,
   useGetDown,
@@ -29,6 +29,7 @@ import useUrlFilters from 'hooks/useUrlFilters';
 import {
   useSearchSession,
   useSearchStatus,
+  useSearchProgress,
   useHotelsForPage,
   useSortMode,
   useFrozenUpdatedOnlyIds,
@@ -67,10 +68,12 @@ const ACCESS_TOKEN = '337da-65e22-26745-a251f-77b9e';
  */
 export default function SearchResultV2({ isFilterBtnShow = false }) {
   const router = useRouter();
+  const intl = useIntl();
   const loc = router.locale === 'uk' ? 'ua' : 'ru';
   const apiLoc = router.locale === 'uk' ? 'ua' : 'ru';
   const status = useSearchStatus();
   const session = useSearchSession();
+  const progress = useSearchProgress();
   const { run } = useSearchPolling();
   const sortMode = useSortMode();
   const frozenUpdatedOnlyIds = useFrozenUpdatedOnlyIds();
@@ -114,6 +117,8 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   // и ломалось на 810-1100px (карточки сжимались, элементы не помещались).
   // Теперь FAB+drawer — единый паттерн, не конкурирует с карточками за место.
   const [panelOpen, setPanelOpen] = useState(false);
+  // controlsBar pin/unpin: дефолт sticky-залипает, юзер может отключить.
+  const [stickyPinned, setStickyPinned] = useState(true);
   // ID карточки, которой прокидываем highlight-анимацию (после jump-to).
   const [highlightedId, setHighlightedId] = useState(null);
 
@@ -129,6 +134,12 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   ).length;
   const totalHotels = Object.keys(session.hotelsById).length;
   const totalPages = Math.max(1, Math.ceil(filteredCount / PAGE_SIZE));
+  // hasProgress gates the whole controlsBar: при первом mount (или refresh
+  // страницы) progress.operatorsTotal === 0 пока не пришёл первый ответ
+  // от getResults — рендерить пустую обвязку (один pin-button) бессмысленно.
+  // Когда контент готов (текст SearchProgress есть, или хотя бы одна карточка),
+  // controlsBar появляется целиком.
+  const hasProgress = !!(progress && progress.operatorsTotal > 0);
 
   // searchParams — для построения ссылок на hotel-страницу из карточек/слотов.
   const searchParams = (() => {
@@ -240,6 +251,23 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
 
+  // Mobile <810px: globals.css добавляет `.wrapper { overflow: hidden }` —
+  // overflow:hidden на предке создаёт scroll-containing block, который сам
+  // НЕ скроллится, что ломает `position: sticky` для .controlsBar. Снимаем
+  // overflow только когда юзер реально пользуется sticky (pinned). На unpin
+  // или unmount возвращаем исходное значение, чтобы не сломать чужие
+  // горизонтально-обрезающие места страницы.
+  useEffect(() => {
+    if (!stickyPinned) return undefined;
+    const wrapperEl = document.querySelector('.wrapper');
+    if (!wrapperEl) return undefined;
+    const prev = wrapperEl.style.overflow;
+    wrapperEl.style.overflow = 'visible';
+    return () => {
+      wrapperEl.style.overflow = prev;
+    };
+  }, [stickyPinned]);
+
   // Auto-sync frozen-snapshot для updatedOnly. Покрывает кейс перезагрузки
   // страницы с ?updatedOnly=1 в URL — там freeze() не вызывался, потому что
   // user-handler в QualityFilters не отрабатывал. Без этого фильтр снова
@@ -256,8 +284,13 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   }, [updatedOnly, frozenUpdatedOnlyIds, unviewedCount, freezeUpdatedOnly, unfreezeUpdatedOnly]);
 
   const handlePageChange = (next) => {
+    // Scroll FIRST, switch page SECOND. Если делать наоборот, Chrome scroll
+    // anchoring пытается удержать визуальный anchor рядом с текущим scrollY
+    // во время DOM-свопа списка — выглядит как стрибок униз 150-300px перед
+    // плавным скролом вгору. При scroll → state browser к моменту коммита
+    // уже движется к top:0, anchor стабильный (header/верхняя часть документа).
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(next);
-    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
   };
 
   const handleShowDetails = () => setPanelOpen(true);
@@ -292,7 +325,14 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     return <h4>Error</h4>;
   }
 
-  const showLoader = status === 'idle' || (status === 'searching' && totalHotels === 0);
+  // Loader показываем только в idle-фазу (mount + parseUrl до run()).
+  // После run() status='searching' — индикатор берёт на себя SearchProgress
+  // внутри controlsBar (в т.ч. до прихода первого ответа).
+  const showLoader = status === 'idle';
+  // controlsBar появляется как только начался поиск, чтобы кеш-ответ
+  // не вставал "Поиск завершён" мгновенно: SearchProgress с минимальной
+  // 1s-анимацией удержит "Идёт поиск" даже при lastResult=true в первом батче.
+  const showControlsBar = status === 'searching' || hasProgress || totalHotels > 0;
 
   return (
     <div className={styles.root}>
@@ -301,19 +341,51 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
         className={`${styles.listColumn} ${isFilterBtnShow ? styles.listStale : ''}`}
         aria-busy={isFilterBtnShow ? 'true' : undefined}
       >
-        <div className={styles.controlsBar}>
-          <SearchProgress />
-          {totalHotels > 0 && (
-            <>
-              <UpdatesBanner
-                hotelsOnPage={hotels}
-                onShowDetails={handleShowDetails}
-              />
-              <SortToggle />
-              <QualityFilters />
-            </>
-          )}
-        </div>
+        {showControlsBar && (
+          <div
+            className={`${styles.controlsBar} ${
+              stickyPinned ? '' : styles.controlsBarUnpinned
+            }`}
+          >
+            <button
+              type="button"
+              className={`${styles.pinBtn} ${stickyPinned ? styles.pinBtnActive : ''}`}
+              onClick={() => setStickyPinned((v) => !v)}
+              aria-label={intl.formatMessage({
+                id: stickyPinned ? 'controls.unpin' : 'controls.pin',
+              })}
+              aria-pressed={stickyPinned}
+              title={intl.formatMessage({
+                id: stickyPinned ? 'controls.unpin' : 'controls.pin',
+              })}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{
+                  transform: stickyPinned ? 'rotate(0deg)' : 'rotate(45deg)',
+                  transition: 'transform 0.2s ease',
+                }}
+              >
+                <path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z" />
+              </svg>
+            </button>
+            <SearchProgress />
+            {totalHotels > 0 && (
+              <>
+                <SortToggle />
+                <QualityFilters />
+                <UpdatesBanner
+                  hotelsOnPage={hotels}
+                  onShowDetails={handleShowDetails}
+                />
+              </>
+            )}
+          </div>
+        )}
         {showLoader && <Loader />}
         {totalHotels === 0 && status === 'done' && (
           <div>
@@ -346,11 +418,11 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
           <>
             <ContinueSearchButton
               onContinue={() => {
+                // Scroll first, run() second — same reasoning as handlePageChange:
+                // avoid Chrome scroll anchoring jolting the page during the DOM
+                // diff that follows a new search cycle.
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 run({ continueSearch: true });
-                // Скрол наверх — параллельно с пагинацией (см. handlePageChange).
-                // Юзер должен увидеть прогресс/первые результаты continuation,
-                // а не остаться внизу под старым списком.
-                setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
               }}
             />
           </>

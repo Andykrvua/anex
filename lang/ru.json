@@ -269,5 +269,7 @@
   "sort.rating_desc": "Рейтинг",
   "filter.full_only": "Только с предложениями на все ночи",
   "filter.updated_only": "Только с обновлениями",
-  "filter.updated_only_empty_hint": "Сейчас обновлений нет — нечего фильтровать"
+  "filter.updated_only_empty_hint": "Сейчас обновлений нет — нечего фильтровать",
+  "controls.pin": "Закрепить",
+  "controls.unpin": "Открепить"
 }

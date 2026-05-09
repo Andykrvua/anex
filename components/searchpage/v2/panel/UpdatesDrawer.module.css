@@ -10,31 +10,39 @@
 
 .fab {
   position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 50;
+  right: 25px;
+  bottom: 190px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: #ff9400;
-  color: #fff;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border-radius: var(--def-radius);
   border: none;
-  border-radius: 24px;
-  padding: 12px 18px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  background: var(--secondary);
+  color: #fff;
   cursor: pointer;
   font-weight: 600;
+  z-index: 50;
 }
 
 .fab:hover {
-  background: #ff8400;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .fab {
+    right: 8px;
+    bottom: 150px;
+  }
 }
 
 .fabCount {
   background: #fff;
-  color: #ff9400;
+  color: var(--secondary);
   border-radius: 12px;
-  padding: 2px 8px;
+  padding: 2px 6px;
   font-size: 12px;
 }
 

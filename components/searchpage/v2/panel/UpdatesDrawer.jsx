@@ -41,7 +41,6 @@ export default function UpdatesDrawer({ open, onOpenToggle, onJump, isMobile }) 
           className={styles.fab}
           onClick={() => onOpenToggle(true)}
         >
-          <FM id="updates.title" />
           <span className={styles.fabCount}>{count}</span>
         </button>
       )}

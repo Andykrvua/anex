@@ -338,12 +338,14 @@ export default function HotelCard({
           blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(500, 375))}`}
         />
         <Rating hotel={hotel} />
-        <button
-          className={styles.favorites_btn}
-          onClick={() => addToFavorites(hotel.i)}
-          aria-label="favorites"
-        >
-          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className={styles.card_img_overlay}>
+          <CardBadge updates={unviewed} />
+          <button
+            className={styles.favorites_btn}
+            onClick={() => addToFavorites(hotel.i)}
+            aria-label="favorites"
+          >
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M4.98456 14.4375L13.1659 22.7838L21.3394 14.4375L21.3413 14.4355C22.2281 13.5189 22.7239 12.2935 22.7239 11.018C22.7239 9.74207 22.2277 8.51616 21.3402 7.59944C20.9096 7.15681 20.3946 6.80494 19.8256 6.56462C19.2565 6.3242 18.6448 6.20029 18.027 6.2002C17.4091 6.20029 16.7976 6.3242 16.2285 6.56462C15.6595 6.80496 15.144 7.15741 14.7133 7.60009L13.8839 8.45483L13.1698 9.19067L12.4521 8.45845L11.6134 7.60289L11.6108 7.6002C11.1799 7.15735 10.6647 6.80534 10.0955 6.56498C9.52633 6.32463 8.91475 6.20079 8.29689 6.20079C7.67904 6.20079 7.06745 6.32463 6.49827 6.56498C5.92942 6.8052 5.41446 7.15692 4.98378 7.59939C4.0963 8.51612 3.6001 9.74205 3.6001 11.018C3.6001 12.2934 4.09584 13.5188 4.98254 14.4354L4.98456 14.4375Z"
               stroke="url(#paint0_linear_v2_card)"
@@ -363,10 +365,10 @@ export default function HotelCard({
               </linearGradient>
             </defs>
           </svg>
-        </button>
+          </button>
+        </div>
       </div>
       <div className={styles.card_text}>
-        <CardBadge updates={unviewed} />
         <div className={styles.stars_wrapper}>
           {new Array(parseInt(hotel.s) || 0).fill(null).map((_, ind) => (
             <div className={styles.stars} key={ind}>

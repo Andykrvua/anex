@@ -53,7 +53,7 @@
 
 @media (min-width: 810px) {
   .option {
-    padding: 14px 20px;
-    font-size: 16px;
+    padding: 12px 18px;
+    /* font-size: 14px; */
   }
 }

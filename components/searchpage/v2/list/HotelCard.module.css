@@ -158,10 +158,11 @@
 }
 
 .card_order {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 5px;
+  margin-top: 12px;
   padding: 10px 10px 10px 20px;
   border-radius: var(--def-radius);
   background-color: var(--white);
@@ -269,10 +270,18 @@
   line-height: 18px;
 }
 
-.favorites_btn {
+.card_img_overlay {
   position: absolute;
   top: 20px;
   left: 20px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.favorites_btn {
   background-color: transparent;
   transition: opacity var(--base-transition);
 }

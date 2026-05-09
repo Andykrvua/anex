@@ -269,5 +269,7 @@
   "sort.rating_desc": "Рейтинг",
   "filter.full_only": "Лише з пропозиціями на всі ночі",
   "filter.updated_only": "Лише з оновленнями",
-  "filter.updated_only_empty_hint": "Зараз оновлень немає — нічого фільтрувати"
+  "filter.updated_only_empty_hint": "Зараз оновлень немає — нічого фільтрувати",
+  "controls.pin": "Закріпити",
+  "controls.unpin": "Відкріпити"
 }
