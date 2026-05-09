@@ -34,9 +34,6 @@
   position: sticky;
   top: 76px;
   z-index: 4;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
   padding: 15px;
   margin-bottom: 25px;
   background: var(--white);
@@ -53,10 +50,20 @@
   top: auto;
 }
 
-.pinBtn {
+/*
+ * Tool buttons (pin / collapse) — расположены в правом верхнем углу
+ * controlsBar в один ряд с фиксированным gap.
+ */
+.toolButtons {
   position: absolute;
   top: 15px;
   right: 15px;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.toolBtn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,7 +72,6 @@
   padding: 0;
   border: 1px solid var(--line);
   border-radius: var(--def-radius);
-  z-index: 1;
   color: #888;
   background-color: var(--white);
   cursor: pointer;
@@ -74,12 +80,46 @@
     border-color var(--base-transition);
 }
 
-.pinBtn:hover {
+.toolBtn:hover {
   color: var(--primary);
 }
 
-.pinBtnActive {
+.toolBtnActive {
   color: var(--primary);
+}
+
+/*
+ * Group: SortToggle + QualityFilters. Анимация collapse/expand через
+ * grid-template-rows 1fr ↔ 0fr — браузер интерполирует высоту без знания
+ * natural-height. Inner-обёртка с overflow:hidden обрезает контент при
+ * 0fr. Поддержка: Chrome 117+, Firefox 116+, Safari 17+ — в старых
+ * браузерах анимации нет, но collapse/expand работает (snap).
+ */
+/*
+ * margin-top анимируем синхронно с grid-template-rows: оба становятся 0
+ * при collapsed → видимая высота блока (включая отступ сверху) интерполируется
+ * к 0 без торчащих остатков.
+ */
+.toolsGroup {
+  display: grid;
+  grid-template-rows: 1fr;
+  margin-top: 16px;
+  opacity: 1;
+  transition: grid-template-rows 0.25s ease, opacity 0.2s ease,
+    margin-top 0.25s ease;
+}
+
+.toolsGroupCollapsed {
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  opacity: 0;
+}
+
+.toolsGroupInner {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .paginationWrapper {

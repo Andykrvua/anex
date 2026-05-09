@@ -44,13 +44,25 @@ export default function SearchProgress() {
   // before the user noticed any progress at all).
   if (!hasMeta && !displaySearching) return null;
 
-  const totalHotels = Object.keys(session.hotelsById).length;
-
-  const runningNames = (progress && progress.operatorsRunning) || [];
-  const showEta =
-    displaySearching && hasMeta && progress.etaSeconds != null && progress.etaSeconds > 1;
-  const showRunning =
-    displaySearching && runningNames.length > 0 && runningNames.length <= 2;
+  // session.batches накапливается каждый snapshot ТЕКУЩЕГО цикла
+  // (resetSession очищает массив на startNewSearch).
+  //   counts.slotOffers — реальное число оферов, видимых юзеру (≤3 на
+  //     отель), используем для всех текстов в meta.
+  //   counts.offers — operator×nights total, не показываем (раздут).
+  // Используем slotOffers для:
+  //   1. cycleStarted — гейт meta-блока (не показываем «0 оферов в 802»
+  //      пока не пришёл первый осмысленный батч новой сессии).
+  //   2. lastDeltaSlotOffers — «+N в последнем обновлении» только со 2-го
+  //      батча (для первого разница и абсолют совпадают).
+  const batches = session.batches || [];
+  const cycleStarted = batches.length > 0;
+  const lastBatch = cycleStarted ? batches[batches.length - 1] : null;
+  const prevBatch = batches.length >= 2 ? batches[batches.length - 2] : null;
+  const lastDeltaSlotOffers =
+    lastBatch && prevBatch
+      ? (lastBatch.counts.slotOffers || 0) - (prevBatch.counts.slotOffers || 0)
+      : 0;
+  const showLastDelta = displaySearching && lastDeltaSlotOffers > 0;
 
   return (
     <div className={styles.progress}>
@@ -64,48 +76,45 @@ export default function SearchProgress() {
           </div>
         )}
       </div>
-      {hasMeta && (
-        <div className={styles.meta}>
-          {displaySearching && (
-            <>
-              <span>
+      {/*
+        Завжди рендеримо .meta (з min-height в CSS), щоб у стартовій фазі
+        (cycleStarted=false) висота controlsBar лишалась стабільною — інакше
+        кнопки pin/collapse справа (40×40) пробивали б обвертку. Текст
+        вкладаємо тільки коли є батчі поточного циклу — без цього після
+        кліку "новий пошук" коротко видно "0 оферов в 802 отелях" поки не
+        прийшов нормальний батч.
+      */}
+      <div className={styles.meta}>
+        {cycleStarted && (
+          <>
+            <span>
+              {displaySearching ? (
                 <FM
-                  id="progress.operators_done"
+                  id="progress.cycle_received"
                   values={{
-                    done: progress.operatorsDone,
-                    total: progress.operatorsTotal,
+                    hotels: lastBatch.counts.hotels,
+                    offers: lastBatch.counts.slotOffers || 0,
                   }}
                 />
-              </span>
-              {showEta && (
-                <span>
-                  {' · '}
-                  <FM
-                    id="progress.eta_seconds"
-                    values={{ sec: progress.etaSeconds }}
-                  />
-                </span>
+              ) : (
+                <FM
+                  id="progress.found_summary"
+                  values={{
+                    offers: lastBatch.counts.slotOffers || 0,
+                    hotels: lastBatch.counts.hotels,
+                  }}
+                />
               )}
-              {' · '}
-            </>
-          )}
-          <span>
-            <FM
-              id="progress.found_summary"
-              values={{ offers: progress.totalOffers, hotels: totalHotels }}
-            />
-          </span>
-          {showRunning && (
-            <span title={runningNames.join(', ')}>
-              {' · '}
-              <FM
-                id="progress.still_running"
-                values={{ names: runningNames.join(', ') }}
-              />
             </span>
-          )}
-        </div>
-      )}
+            {showLastDelta && (
+              <span>
+                {' · '}
+                <FM id="progress.last_delta" values={{ delta: lastDeltaSlotOffers }} />
+              </span>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

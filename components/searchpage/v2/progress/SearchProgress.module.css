@@ -4,8 +4,7 @@
  */
 .progress {
   margin-top: 4px;
-  margin-bottom: 12px;
-  padding-right: 55px;
+  padding-right: 118px;
 }
 
 .header {
@@ -16,7 +15,7 @@
 }
 
 .title {
-  font-size: 14px;
+  font-size: 16px;
   white-space: nowrap;
 }
 
@@ -59,4 +58,8 @@
   font-size: 12px;
   color: #666;
   line-height: 1.4;
+  /* min-height резервирует одну строку даже если контента нет — кнопки
+     pin/collapse справа имеют height:40px и без этого пробивали бы
+     обвёртку controlsBar в стартовой фазе (cycleStarted=false). */
+  min-height: 1.4em;
 }

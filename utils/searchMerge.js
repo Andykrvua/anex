@@ -389,9 +389,19 @@ export function applySnapshot(session, payload, slots) {
 
   const progress = computeProgress(payload.workProgress || {});
 
-  // batch для отладки. hotels — из обновлённого hotelsById,
-  // offers — из progress.totalOffers (не из payload.total — там
-  // operator×hotel пары).
+  // slotOffers — фактическое число оферов, которые покажет UI: для каждого
+  // отеля максимум 1 на каждый запрашиваемый ночь-слот (n, n+1, n+2),
+  // т.е. итог в диапазоне [hotels, hotels*3]. progress.totalOffers (Σ
+  // workProgress[op].offers) — operator×nights валовый счётчик и не
+  // соответствует видимому списку (раздут в разы), поэтому держим оба.
+  let slotOffersCount = 0;
+  for (const h of Object.values(nextHotelsById)) {
+    if (!h || !h.offers) continue;
+    for (const o of Object.values(h.offers)) {
+      if (o) slotOffersCount++;
+    }
+  }
+
   const batches = [
     ...session.batches,
     {
@@ -400,6 +410,7 @@ export function applySnapshot(session, payload, slots) {
       counts: {
         hotels: Object.keys(nextHotelsById).length,
         offers: progress.totalOffers,
+        slotOffers: slotOffersCount,
       },
     },
   ];

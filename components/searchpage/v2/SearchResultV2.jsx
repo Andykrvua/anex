@@ -119,6 +119,8 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   const [panelOpen, setPanelOpen] = useState(false);
   // controlsBar pin/unpin: дефолт sticky-залипает, юзер может отключить.
   const [stickyPinned, setStickyPinned] = useState(true);
+  // SortToggle + QualityFilters group: юзер может свернуть/раскрыть.
+  const [controlsCollapsed, setControlsCollapsed] = useState(false);
   // ID карточки, которой прокидываем highlight-анимацию (после jump-to).
   const [highlightedId, setHighlightedId] = useState(null);
 
@@ -347,37 +349,75 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
               stickyPinned ? '' : styles.controlsBarUnpinned
             }`}
           >
-            <button
-              type="button"
-              className={`${styles.pinBtn} ${stickyPinned ? styles.pinBtnActive : ''}`}
-              onClick={() => setStickyPinned((v) => !v)}
-              aria-label={intl.formatMessage({
-                id: stickyPinned ? 'controls.unpin' : 'controls.pin',
-              })}
-              aria-pressed={stickyPinned}
-              title={intl.formatMessage({
-                id: stickyPinned ? 'controls.unpin' : 'controls.pin',
-              })}
-            >
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{
-                  transform: stickyPinned ? 'rotate(0deg)' : 'rotate(45deg)',
-                  transition: 'transform 0.2s ease',
-                }}
+            <div className={styles.toolButtons}>
+              <button
+                type="button"
+                className={`${styles.toolBtn} ${
+                  !controlsCollapsed ? styles.toolBtnActive : ''
+                }`}
+                onClick={() => setControlsCollapsed((v) => !v)}
+                aria-label={intl.formatMessage({
+                  id: controlsCollapsed ? 'controls.expand' : 'controls.collapse',
+                })}
+                aria-expanded={!controlsCollapsed}
+                title={intl.formatMessage({
+                  id: controlsCollapsed ? 'controls.expand' : 'controls.collapse',
+                })}
               >
-                <path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z" />
-              </svg>
-            </button>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {controlsCollapsed ? (
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                  ) : (
+                    <path d="M19 13H5v-2h14v2z" />
+                  )}
+                </svg>
+              </button>
+              <button
+                type="button"
+                className={`${styles.toolBtn} ${stickyPinned ? styles.toolBtnActive : ''}`}
+                onClick={() => setStickyPinned((v) => !v)}
+                aria-label={intl.formatMessage({
+                  id: stickyPinned ? 'controls.unpin' : 'controls.pin',
+                })}
+                aria-pressed={stickyPinned}
+                title={intl.formatMessage({
+                  id: stickyPinned ? 'controls.unpin' : 'controls.pin',
+                })}
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{
+                    transform: stickyPinned ? 'rotate(0deg)' : 'rotate(45deg)',
+                    transition: 'transform 0.2s ease',
+                  }}
+                >
+                  <path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z" />
+                </svg>
+              </button>
+            </div>
             <SearchProgress />
             {totalHotels > 0 && (
               <>
-                <SortToggle />
-                <QualityFilters />
+                <div
+                  className={`${styles.toolsGroup} ${
+                    controlsCollapsed ? styles.toolsGroupCollapsed : ''
+                  }`}
+                >
+                  <div className={styles.toolsGroupInner}>
+                    <SortToggle />
+                    <QualityFilters />
+                  </div>
+                </div>
                 <UpdatesBanner
                   hotelsOnPage={hotels}
                   onShowDetails={handleShowDetails}

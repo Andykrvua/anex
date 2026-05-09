@@ -228,10 +228,9 @@
   "map.find_tours": "Знайти тури",
   "progress.searching": "Триває пошук",
   "progress.done": "Пошук завершено",
-  "progress.operators_done": "{done} з {total} операторів",
-  "progress.eta_seconds": "~{sec} с",
   "progress.found_summary": "{offers} оферів у {hotels} готелях",
-  "progress.still_running": "Ще шукають: {names}",
+  "progress.cycle_received": "Отримано: {hotels} готелів, {offers} оферів",
+  "progress.last_delta": "+{delta} в останньому оновленні",
   "progress.continue_search": "Продовжити пошук",
   "progress.continue_search_hint": "+ оновимо вже знайдені",
   "progress.continue_search_timeout_hint": "Сервер відповідає довше за звичайне — спробуйте продовжити",
@@ -271,5 +270,7 @@
   "filter.updated_only": "Лише з оновленнями",
   "filter.updated_only_empty_hint": "Зараз оновлень немає — нічого фільтрувати",
   "controls.pin": "Закріпити",
-  "controls.unpin": "Відкріпити"
+  "controls.unpin": "Відкріпити",
+  "controls.collapse": "Згорнути фільтри",
+  "controls.expand": "Розгорнути фільтри"
 }

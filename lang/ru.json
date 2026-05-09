@@ -228,10 +228,9 @@
   "map.find_tours": "Найти туры",
   "progress.searching": "Идёт поиск",
   "progress.done": "Поиск завершён",
-  "progress.operators_done": "{done} из {total} операторов",
-  "progress.eta_seconds": "~{sec} с",
   "progress.found_summary": "{offers} оферов в {hotels} отелях",
-  "progress.still_running": "Ещё ищут: {names}",
+  "progress.cycle_received": "Получено: {hotels} отелей, {offers} оферов",
+  "progress.last_delta": "+{delta} в последнем обновлении",
   "progress.continue_search": "Продолжить поиск",
   "progress.continue_search_hint": "+ обновим уже найденные",
   "progress.continue_search_timeout_hint": "Сервер отвечает дольше обычного — попробуйте продолжить",
@@ -271,5 +270,7 @@
   "filter.updated_only": "Только с обновлениями",
   "filter.updated_only_empty_hint": "Сейчас обновлений нет — нечего фильтровать",
   "controls.pin": "Закрепить",
-  "controls.unpin": "Открепить"
+  "controls.unpin": "Открепить",
+  "controls.collapse": "Свернуть фильтры",
+  "controls.expand": "Развернуть фильтры"
 }
