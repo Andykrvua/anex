@@ -20,7 +20,6 @@ import {
   useSetToCitiesNames,
   useGetInitialDate,
 } from 'store/store';
-import getViewport from 'utils/getViewport';
 import {
   selectHotelPageIndex,
   selectOrderedHotelIds,
@@ -82,8 +81,6 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   const unfreezeUpdatedOnly = useUnfreezeUpdatedOnly();
   const { fullOnly, updatedOnly } = useUrlFilters();
   const filters = { fullOnly, updatedOnly };
-  const viewport = getViewport();
-  const isMobile = viewport && viewport.width < 810;
   const isDebug =
     typeof window !== 'undefined' &&
     new URL(window.location.href).searchParams.get('debug') === '1';
@@ -472,7 +469,6 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
         open={panelOpen}
         onOpenToggle={setPanelOpen}
         onJump={handleJump}
-        isMobile={isMobile}
       />
     </div>
   );

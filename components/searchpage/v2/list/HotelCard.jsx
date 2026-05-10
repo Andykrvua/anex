@@ -396,7 +396,6 @@ export default function HotelCard({
             isSearching={isSearching}
             searchParams={searchParams}
             slotUpdate={updatesByNights[nights] || null}
-            history={hotel.history ? hotel.history[nights] : null}
           />
         ))}
       </div>

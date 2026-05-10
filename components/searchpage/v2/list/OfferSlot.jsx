@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { FormattedMessage as FM, useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
 import declension from 'utils/declension';
-import PriceHistoryPopover from './PriceHistoryPopover';
 import styles from './HotelCard.module.css';
 import v2styles from './v2cards.module.css';
 
@@ -35,7 +33,6 @@ export default function OfferSlot({
   isSearching,
   searchParams,
   slotUpdate,
-  history,
 }) {
   const router = useRouter();
   const intl = useIntl();
@@ -43,19 +40,6 @@ export default function OfferSlot({
   const tTxt2 = intl.formatMessage({ id: 'common.night2' });
   const tTxt5 = intl.formatMessage({ id: 'common.night5' });
   const decl = (val) => declension(val, tTxt1, tTxt2, tTxt5);
-
-  const [historyOpen, setHistoryOpen] = useState(false);
-  const hasHistory = !!history && history.length > 0;
-  // Current offer был поставлен в момент последней замены (max snapshotVersion
-  // в history). Если history пустая — точного значения нет, и иконку не показываем.
-  const currentSnapshot = hasHistory
-    ? Math.max(...history.map((h) => h.snapshotVersion))
-    : null;
-  const handleInfoClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setHistoryOpen((v) => !v);
-  };
 
   if (!offer) {
     return (
@@ -161,26 +145,6 @@ export default function OfferSlot({
       </span>
       <span className={styles.order_price}>
         {formatPrice(offer.pl)}
-        {hasHistory && (
-          <span className={v2styles.historyAnchor}>
-            <button
-              type="button"
-              className={v2styles.historyTrigger}
-              onClick={handleInfoClick}
-              aria-label="price history"
-            >
-              i
-            </button>
-            <PriceHistoryPopover
-              open={historyOpen}
-              onClose={() => setHistoryOpen(false)}
-              nights={nights}
-              currentOffer={offer}
-              currentSnapshot={currentSnapshot}
-              history={history}
-            />
-          </span>
-        )}
         <img src="/assets/img/svg/arrow.svg" alt="" />
       </span>
     </a>

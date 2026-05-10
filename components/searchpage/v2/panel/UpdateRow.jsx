@@ -53,11 +53,11 @@ export default function UpdateRow({ update, hotel, pageIndex, onJump }) {
       {hotel.f && (
         <img
           className={styles.thumb}
-          src={`https://newimg.otpusk.com/2/80x80/${hotel.f}`}
+          src={`https://newimg.otpusk.com/2/60x60/${hotel.f}`}
           alt=""
           loading="lazy"
-          width="48"
-          height="48"
+          width="60"
+          height="60"
         />
       )}
       <div className={styles.rowText}>
