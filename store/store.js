@@ -192,7 +192,7 @@ export const useGetHotelImg = () => useStore((state) => state.hotelImg);
 export const useSetHotelImg = () => useStore((state) => state.setHotelImg);
 
 // flag true after make search params
-// потрібен щоб визначити прийшов користувач з іншої стоірнки чи ввів урл запит в браузер
+// needed to determine whether the user arrived from another page or typed a URL in the browser
 export const useGetStartSearch = () => useStore((state) => state.startSearch);
 export const useSetStartSearch = () => useStore((state) => state.setStartSearch);
 

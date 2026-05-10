@@ -10,12 +10,12 @@ const formatPrice = (uah) =>
   }).format(uah);
 
 /**
- * Один update в панели обновлений: миниатюра + название + контекст + кнопка.
+ * Single update row in the updates panel: thumbnail + name + context + button.
  *
- * Контекст зависит от типа:
- *  - new_hotel   → страна / курорт.
- *  - price_drop  → "{nights} ноч.: {old} → {new}".
- *  - slot_filled → "Найден офер на {nights} ноч.: {price}".
+ * Context depends on type:
+ *  - new_hotel   → country / resort.
+ *  - price_drop  → "{nights} nights: {old} → {new}".
+ *  - slot_filled → "Offer found for {nights} nights: {price}".
  */
 export default function UpdateRow({ update, hotel, pageIndex, onJump }) {
   const intl = useIntl();

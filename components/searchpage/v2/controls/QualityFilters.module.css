@@ -1,7 +1,7 @@
 /*
- * sticky-фон даёт общий .controlsBar (SearchResultV2.module.css).
- * Чекбоксы — shared <Checkbox> компонент (controls/checkbox), стилевые
- * детали внутри него.
+ * Sticky background is provided by the shared .controlsBar (SearchResultV2.module.css).
+ * Checkboxes — shared <Checkbox> component (controls/checkbox), style
+ * details are inside it.
  */
 .root {
   display: flex;

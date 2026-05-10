@@ -4,21 +4,21 @@ const VISIBILITY_THRESHOLD = 0.4;
 const DWELL_MS = 1500;
 
 /**
- * Помечает updates просмотренными, когда элемент непрерывно виден ≥1.5 с.
+ * Marks updates as viewed when the element is continuously visible for ≥1.5 s.
  *
- *   - threshold 0.4 — карточка считается видимой, если 40% в viewport.
- *   - DWELL_MS 1500 — пользователь должен реально на ней задержаться.
- *   - Если карточка прокручивается мимо быстрее → таймер сбрасывается,
- *     updates остаются непросмотренными.
+ *   - threshold 0.4 — card is considered visible when 40% is in the viewport.
+ *   - DWELL_MS 1500 — the user must actually dwell on it.
+ *   - If the card scrolls past faster → timer is reset,
+ *     updates remain unviewed.
  *
  * @param {React.RefObject<HTMLElement>} ref
- * @param {string[]} updateIds  unviewed update ids этой карточки
- * @param {(ids: string[]) => void} onSeen  обычно — markUpdatesViewed
+ * @param {string[]} updateIds  unviewed update ids for this card
+ * @param {(ids: string[]) => void} onSeen  typically — markUpdatesViewed
  */
 export default function useViewedObserver(ref, updateIds, onSeen) {
   const timerRef = useRef(null);
-  // Ссылка на актуальные ids, чтобы не пересоздавать observer при каждом
-  // изменении массива (часто пересоздаётся даже при ref-equality).
+  // Ref to the current ids to avoid recreating the observer on every
+  // array change (often recreated even with ref-equality).
   const idsRef = useRef(updateIds);
   idsRef.current = updateIds;
 
@@ -57,8 +57,8 @@ export default function useViewedObserver(ref, updateIds, onSeen) {
         timerRef.current = null;
       }
     };
-    // updateIds.join — стабильный ключ, чтобы не пересоздавать observer
-    // при reference-инстанс-разнице, но реагировать на реальные изменения.
+    // updateIds.join — stable key to avoid recreating the observer on
+    // reference-instance differences while still reacting to real changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, updateIds.join(','), onSeen]);
 }

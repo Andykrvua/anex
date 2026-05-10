@@ -25,8 +25,8 @@ const ENDPOINT = 'https://api.otpusk.com/api/2.6/tours/getResults';
 const POLL_INTERVAL_MS = 5000;
 const MAX_POLL_ATTEMPTS = 12;
 
-// sleep с поддержкой AbortSignal — иначе старый цикл будет висеть в setTimeout
-// 5 секунд после применения фильтра / continueSearch и потом всё равно вернётся.
+// sleep with AbortSignal support — otherwise the old cycle would hang in setTimeout
+// for 5 seconds after applying a filter / continueSearch and then resume anyway.
 const sleep = (ms, signal) =>
   new Promise((resolve, reject) => {
     if (signal && signal.aborted) {
@@ -78,7 +78,7 @@ function buildUrl(params, page, number) {
   url += `&stars=${filters.stars}`;
   url += `&food=${filters.food}`;
   url += `&services=${filters.services}`;
-  url += `&sort=price`; // placeholder из API-доки, фактически не работает
+  url += `&sort=price`; // placeholder from API docs, does not actually work
 
   return url;
 }
@@ -91,16 +91,16 @@ async function fetchGetResults(params, page, number, signal) {
 }
 
 /**
- * Единая точка входа в polling-поиск.
- * - Берёт параметры из store/store.js (legacy form state).
- * - Конвертит locale 'uk' → 'ua' (legacy convention для otpusk API).
- * - slots всегда `[from, from+1, from+2]` — форма выбирает блок длительности целиком.
- * - URL: page (server page) + number (poll attempt counter, сбрасывается на 0
- *   в начале каждого цикла).
- * - На каждый ответ — `ingestSnapshot` в searchStore.
- * - Continuation search не сбрасывает session, инкрементит pageNumber.
+ * Single entry point for polling search.
+ * - Takes parameters from store/store.js (legacy form state).
+ * - Converts locale 'uk' → 'ua' (legacy convention for the otpusk API).
+ * - slots are always `[from, from+1, from+2]` — the form selects a duration block as a whole.
+ * - URL: page (server page) + number (poll attempt counter, reset to 0
+ *   at the start of each cycle).
+ * - On each response — `ingestSnapshot` into searchStore.
+ * - Continuation search does not reset the session, increments pageNumber.
  *
- * См. docs/search-ux-redesign/04-phases.md, Фаза 2.
+ * See docs/search-ux-redesign/04-phases.md, Phase 2.
  */
 export default function useSearchPolling() {
   const router = useRouter();
@@ -119,22 +119,22 @@ export default function useSearchPolling() {
   const finishByTimeout = useFinishCycleByTimeout();
   const requestNextServerPage = useRequestNextServerPage();
 
-  // Защита от race-condition. Каждый вызов run() инкрементит runIdRef и
-  // абортит in-flight fetch/sleep предыдущего цикла. После каждого await
-  // сравниваем myRunId с runIdRef.current — если не совпадает, мы устарели
-  // (юзер применил фильтр / нажал "Продолжить") и НЕ должны писать в store.
+  // Race-condition guard. Each run() call increments runIdRef and
+  // aborts the in-flight fetch/sleep of the previous cycle. After each await
+  // we compare myRunId with runIdRef.current — if they differ we are stale
+  // (user applied a filter / pressed "Continue") and MUST NOT write to store.
   const runIdRef = useRef(0);
   const abortRef = useRef(null);
 
-  // Unmount cleanup. Без него юзер уходит со страницы во время polling —
-  // setTimeout/fetch продолжают жить, через 5s loop делает ingestSnapshot
-  // в Zustand store, состояние "висит" между сессиями. abort() будит
-  // sleep() и обрывает fetch → AbortError → return до записи в store.
+  // Unmount cleanup. Without it the user navigates away during polling —
+  // setTimeout/fetch keep running, after 5s the loop calls ingestSnapshot
+  // in the Zustand store, and state "lingers" between sessions. abort() wakes
+  // sleep() and cancels fetch → AbortError → return before writing to store.
   useEffect(
     () => () => {
       if (abortRef.current) abortRef.current.abort();
-      // Бамп runId на всякий случай — если что-то проскочило между
-      // abort и unmount, isStale() вернёт true и заблокирует запись.
+      // Bump runId as a safety measure — if something slipped through between
+      // abort and unmount, isStale() returns true and blocks the write.
       runIdRef.current += 1;
     },
     [],
@@ -152,8 +152,8 @@ export default function useSearchPolling() {
       const slots = [night.from, night.from + 1, night.from + 2];
       const loc = router.locale === 'uk' ? 'ua' : 'ru';
 
-      // Считаем nextPage синхронно ДО обновления store. Локальный nextPage
-      // стабилен на протяжении одного run() — никаких race с Zustand-set.
+      // Compute nextPage synchronously BEFORE updating the store. Local nextPage
+      // is stable throughout one run() call — no race with Zustand-set.
       const nextPage = continueSearch
         ? useSearchStore.getState().session.pageNumber + 1
         : 1;
@@ -187,11 +187,11 @@ export default function useSearchPolling() {
         if (data.lastResult) break;
 
         if (attempt > MAX_POLL_ATTEMPTS) {
-          // hard timeout — последний ingest не имел lastResult, поэтому
-          // applySnapshot оставил isLastResult=false. ContinueSearchButton
-          // в этом состоянии не рендерится → юзер в тупике.
-          // finishByTimeout ставит status='done' + isLastResult=true +
-          // timedOut=true одной транзакцией.
+          // hard timeout — the last ingest had no lastResult, so
+          // applySnapshot left isLastResult=false. ContinueSearchButton
+          // does not render in this state → user is stuck.
+          // finishByTimeout sets status='done' + isLastResult=true +
+          // timedOut=true in one transaction.
           finishByTimeout();
           break;
         }

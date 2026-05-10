@@ -57,12 +57,12 @@ export default function SearchContent() {
     }
   }, [filterData]);
 
-  // Кнопка "Применить фильтры" появляется когда live-getParams() расходится
-  // с локально закешированным urlParams. SearchButton делает router.push
-  // с новой query (включая stars/food/services='' — обнуление legacy-фильтров),
-  // и без этого ефекта закеш остаётся прежним → diff → ложная кнопка.
-  // Синхронизируем urlParams сразу как только Zustand-флаг startSearch=true
-  // (его ставит SearchButton перед router.push).
+  // The "Apply filters" button appears when live-getParams() diverges
+  // from the locally cached urlParams. SearchButton does a router.push
+  // with the new query (including stars/food/services='' — resetting legacy filters),
+  // and without this effect the cache stays unchanged → diff → spurious button.
+  // Sync urlParams as soon as the Zustand flag startSearch=true
+  // (set by SearchButton before router.push).
   useEffect(() => {
     if (startSearch) {
       setUrlParams(getParams());

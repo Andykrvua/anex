@@ -16,10 +16,10 @@ const TYPE_TO_VARIANT = {
 };
 
 /**
- * Бейдж сверху карточки — суммарный индикатор unviewed updates.
+ * Badge at the top of a card — summary indicator of unviewed updates.
  *
- * Если все updates одного типа → специфичный label/цвет.
- * Если смешанные → "Обновлено".
+ * If all updates are of one type → type-specific label/color.
+ * If mixed → "Updated".
  */
 export default function CardBadge({ updates }) {
   if (!updates || !updates.length) return null;

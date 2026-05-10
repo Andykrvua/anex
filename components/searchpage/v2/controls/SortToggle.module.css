@@ -1,7 +1,7 @@
 /*
- * Стиль radio-кнопок взят из /blog .categoryList .category_item:
- * белый фон, line-border, primary при hover/active, mobile/desktop padding+font.
- * .root убрали свои border/background — sticky-контейнер controlsBar их даёт.
+ * Radio button style taken from /blog .categoryList .category_item:
+ * white background, line-border, primary on hover/active, mobile/desktop padding+font.
+ * .root has its own border/background removed — the sticky controlsBar container provides them.
  */
 .root {
   display: flex;

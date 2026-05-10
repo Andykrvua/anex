@@ -2,10 +2,10 @@ import { FormattedMessage as FM } from 'react-intl';
 import { useSortMode, useSetSortMode } from 'store/searchStore';
 import styles from './SortToggle.module.css';
 
-// 'stable' — первая опция и дефолт. Без неё юзер видит "Цена ↑" выбранной,
-// а список сортируется в порядке появления — это вводило в заблуждение.
-// Раньше для этого был чекбокс applyOnUpdates, но он лишь маскировал
-// конфликт между UI-выбором и реальным порядком. Убрали.
+// 'stable' — first option and default. Without it the user sees "Price ↑" selected
+// while the list is sorted by arrival order — this was misleading.
+// Previously there was a checkbox applyOnUpdates, but it only masked
+// the conflict between the UI choice and actual order. Removed.
 const OPTIONS = [
   { value: 'stable', labelKey: 'sort.stable' },
   { value: 'price_asc', labelKey: 'sort.price_asc' },
@@ -17,8 +17,8 @@ export default function SortToggle() {
   const sortMode = useSortMode();
   const setSortMode = useSetSortMode();
 
-  // Анимация смены сортировки — централизованно в HotelList (fade-in
-  // при изменении orderKey). Здесь просто диспатчим setSortMode.
+  // Sort change animation — centralized in HotelList (fade-in
+  // on orderKey change). Here we simply dispatch setSortMode.
   return (
     <div className={styles.root}>
       <span className={styles.label}>

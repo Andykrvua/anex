@@ -101,9 +101,9 @@ export default function HotelCard({
   const unviewedIds = useMemo(() => unviewed.map((u) => u.id), [unviewed]);
   useViewedObserver(cardRef, unviewedIds, markUpdatesViewed);
 
-  // Per-slot updates: 1 update на (hotel, type, nights). Если их несколько
-  // на один слот (теоретически возможно при двух snapshot подряд) —
-  // показываем самый свежий.
+  // Per-slot updates: 1 update per (hotel, type, nights). If there are several
+  // for one slot (theoretically possible with two snapshots back-to-back) —
+  // show the most recent one.
   const updatesByNights = useMemo(() => {
     const out = {};
     for (const u of unviewed) {
@@ -121,7 +121,7 @@ export default function HotelCard({
   const tTxt5 = intl.formatMessage({ id: 'common.night5' });
   const decl = (val) => declension(val, tTxt1, tTxt2, tTxt5);
 
-  // Дедуп по pl как в legacy CardsOffersVariants — нужно для food message.
+  // Dedup by pl as in legacy CardsOffersVariants — needed for food message.
   const dedupedByPrice = (hotel.allOffers || []).reduce((acc, val, ind, arr) => {
     if (ind === 0) acc.push(val);
     else if (val.pl !== arr[ind - 1].pl) acc.push(val);
@@ -140,10 +140,10 @@ export default function HotelCard({
 
   const cheapest = hotel.allOffers && hotel.allOffers[0];
 
-  // Side effects for feature parity с legacy:
-  //   - localStorage 'result' — read by favorites модал и hotel-страница.
-  //   - cookie с рейтингами TA/Booking — read hotel-страницей при заходе.
-  // Делаем в effect (не на render), чтобы не плодить SSR-проблем.
+  // Side effects for feature parity with legacy:
+  //   - localStorage 'result' — read by favorites modal and hotel page.
+  //   - ratings TA/Booking — read by hotel page on entry.
+  // Done in effect (not on render) to avoid SSR issues.
   useEffect(() => {
     if (!cheapest) return;
     const localePrefix = router.locale === 'uk' ? '/uk' : '';
@@ -290,7 +290,7 @@ export default function HotelCard({
     setModal({ get: modal.hotelCardsMap });
   };
 
-  // Properties → svg-icon (как в legacy `tour_propertys`).
+  // Properties → svg-icon (as in legacy `tour_propertys`).
   const renderProperties = () => {
     if (!hotel.e || !countryHotelService.length) return null;
     const out = [];

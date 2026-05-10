@@ -19,12 +19,12 @@ const formatPrice = (uah) =>
   }).format(uah);
 
 /**
- * Один nights-слот карточки. Phase 3 — три состояния:
- *   1. searching && !offer       → "Ещё ищем…" (placeholder, пока polling)
- *   2. !searching && !offer      → "Не найдено" (lastResult пришёл, оффера нет)
- *   3. offer есть                 → дата, ночи, комната, цена, ссылка
+ * Single nights-slot of a card. Phase 3 — three states:
+ *   1. searching && !offer       → "Still searching…" (placeholder while polling)
+ *   2. !searching && !offer      → "Not found" (lastResult received, no offer)
+ *   3. offer present              → date, nights, room, price, link
  *
- * Phase 4 добавит price_drop / slot_filled индикаторы.
+ * Phase 4 adds price_drop / slot_filled indicators.
  */
 export default function OfferSlot({
   hotel,

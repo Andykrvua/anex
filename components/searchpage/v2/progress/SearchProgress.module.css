@@ -1,6 +1,6 @@
 /*
- * Sticky positioning теперь у общего .controlsBar (SearchResultV2.module.css).
- * SearchProgress стал частью обёртки рядом с UpdatesBanner и Sort/QualityFilters.
+ * Sticky positioning now belongs to the shared .controlsBar (SearchResultV2.module.css).
+ * SearchProgress has become part of the wrapper alongside UpdatesBanner and Sort/QualityFilters.
  */
 .progress {
   margin-top: 4px;
@@ -58,8 +58,9 @@
   font-size: 12px;
   color: #666;
   line-height: 1.4;
-  /* min-height резервирует одну строку даже если контента нет — кнопки
-     pin/collapse справа имеют height:40px и без этого пробивали бы
-     обвёртку controlsBar в стартовой фазе (cycleStarted=false). */
+  /* min-height reserves one line even when there is no content — the
+     pin/collapse buttons on the right have height:40px and without this
+     they would poke through the controlsBar wrapper in the start phase
+     (cycleStarted=false). */
   min-height: 1.4em;
 }

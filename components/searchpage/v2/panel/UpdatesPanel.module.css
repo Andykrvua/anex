@@ -1,12 +1,13 @@
 /*
- * Стили для PanelContent / UpdateRow / LoadMoreCallout — внутреннее тело
- * панели "Обновления". Сама оболочка (FAB+drawer+backdrop) переехала в
- * UpdatesDrawer.module.css. Раньше здесь жил ещё desktop sticky-sidebar
- * (.panel, .collapsedStrip), но он удалён вместе с двухколоночным layout.
+ * Styles for PanelContent / UpdateRow / LoadMoreCallout — inner body of
+ * the "Updates" panel. The shell (FAB+drawer+backdrop) has moved to
+ * UpdatesDrawer.module.css. The desktop sticky-sidebar
+ * (.panel, .collapsedStrip) was also here previously but was removed
+ * along with the two-column layout.
  */
 
-/* Inner content (shared). Горизонтальный padding теперь даёт drawerBody
- * (UpdatesDrawer.module.css) — единый отступ 20px/40px как в burger menu. */
+/* Inner content (shared). Horizontal padding is now provided by drawerBody
+ * (UpdatesDrawer.module.css) — unified 20px/40px margin as in burger menu. */
 .panelContent {
   padding: 8px 0 16px;
   position: relative;
@@ -19,8 +20,8 @@
   padding: 4px 0 12px;
 }
 
-/* actionBtn — стиль blog .category_item / SortToggle .option:
-   white bg + line border, primary при hover (как остальные кнопки сайта). */
+/* actionBtn — style from blog .category_item / SortToggle .option:
+   white bg + line border, primary on hover (like other site buttons). */
 .actionBtn {
   flex: 1;
   display: inline-block;
@@ -135,7 +136,7 @@
   margin-top: 2px;
 }
 
-/* rowJump — единый стиль с actionBtn (blog .category_item). */
+/* rowJump — same style as actionBtn (blog .category_item). */
 .rowJump {
   flex-shrink: 0;
   padding: 8px 10px;

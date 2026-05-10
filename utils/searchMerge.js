@@ -1,6 +1,6 @@
-// Чистая логика merge polling-snapshot-ов поиска.
-// Без React, без zustand — чтобы можно было тестировать в DevTools.
-// Полная модель — docs/search-ux-redesign/02-store-and-merge.md.
+// Pure logic for merging search polling snapshots.
+// No React, no zustand — so it can be tested in DevTools.
+// Full model — docs/search-ux-redesign/02-store-and-merge.md.
 
 /**
  * @typedef {Object} Offer
@@ -8,7 +8,7 @@
  * @property {number} oi     operator id
  * @property {number} n      total nights (slot)
  * @property {number} nh     hotel nights
- * @property {number} pl     UAH price (для сортировки и сравнения)
+ * @property {number} pl     UAH price (for sorting and comparison)
  * @property {number} p      price in operator currency
  * @property {string} d      start ISO
  * @property {string} dt     end ISO
@@ -18,10 +18,10 @@
 
 /**
  * @typedef {Object} Hotel
- * Поля API hotels[id] (i,n,s,t,c,e,f,g,r,v,rb,...) + computed:
+ * API hotels[id] fields (i,n,s,t,c,e,f,g,r,v,rb,...) + computed:
  * @property {Record<number, Offer|null>} offers       offers[7], offers[8], offers[9]
  * @property {Offer[]}                    allOffers    cumulative dedup-by-id, sorted by pl asc
- * @property {Record<number, Offer[]>}    history      вытесненные оферы при price_drop
+ * @property {Record<number, Offer[]>}    history      offers displaced on price_drop
  * @property {number}                     firstSeenSnapshot
  * @property {number|null}                lastUpdatedSnapshot
  */
@@ -43,7 +43,7 @@
  * @property {number}    operatorsDone
  * @property {number}    operatorsTotal
  * @property {string[]}  operatorsRunning
- * @property {number|null} etaSeconds      null до ≥3 завершённых таймингов (median)
+ * @property {number|null} etaSeconds      null until ≥3 completed timings (median)
  * @property {number}    totalOffers       Σ workProgress[op].offers
  */
 
@@ -88,10 +88,10 @@ export function createEmptySession(params = null) {
     snapshotVersion: 0,
     baselineEstablished: false,
     isLastResult: false,
-    // true когда цикл закрыли по hard-timeout (12 attempts × 5s = 60s).
-    // ContinueSearchButton использует этот флаг чтобы поменять hint-текст:
-    // юзер должен понимать, что закончилось не "сервер сказал стоп",
-    // а "мы устали ждать".
+    // true when the cycle was closed by hard-timeout (12 attempts × 5s = 60s).
+    // ContinueSearchButton uses this flag to change the hint text:
+    // the user should understand that it ended not because "the server said stop",
+    // but because "we timed out waiting".
     timedOut: false,
     progress: null,
     pageNumber: 1,
@@ -122,16 +122,16 @@ function emptyHistory(slots) {
 }
 
 /**
- * Один проход по results — строим оба индекса:
+ * Single pass over results — builds both indexes:
  *   - cheapestPerSlot: hotelId -> { n: cheapestOffer | null }
- *   - allByHotel:      hotelId -> Offer[] (отсортированы по pl asc)
+ *   - allByHotel:      hotelId -> Offer[] (sorted by pl asc)
  *
- * `allByHotel` нужен компонентам карточки (favorites, OpenStreetMap modal,
- * food/transport message), которые читают полный список оферов отеля —
- * как `actualOffers` в legacy `cards.js`. Хранить отдельно от слот-офферов
- * легче, чем потом восстанавливать из results.
+ * `allByHotel` is needed by card components (favorites, OpenStreetMap modal,
+ * food/transport message) that read the full offer list for a hotel —
+ * like `actualOffers` in legacy `cards.js`. Storing separately from slot offers
+ * is easier than reconstructing from results later.
  *
- * O(N_offers) вместо O(N_hotels × N_offers).
+ * O(N_offers) instead of O(N_hotels × N_offers).
  */
 export function buildOffersIndex(results, slots) {
   /** @type {Record<string, Record<number, Offer|null>>} */
@@ -173,17 +173,17 @@ export function buildOffersIndex(results, slots) {
 }
 
 /**
- * Merge кумулятивного списка оферов готелю по offer.i.
- * `allOffers` нужен карточке для карты, favorites, food-message и для
- * `cheapest = allOffers[0]`. Если просто перезаписывать его текущим
- * `newAllOffers` (как было раньше), на continuation-page server вернёт
- * другой набор оферов — `cheapest`/карта/favorites уезжают в "снимок
- * последней страницы", даже если в `offers[slot]` уже сохранён лучший
- * офер с прошлой страницы. Поэтому копим cumulative.
+ * Merge cumulative offer list for a hotel by offer.i.
+ * `allOffers` is needed by the card for the map, favorites, food-message and for
+ * `cheapest = allOffers[0]`. Simply overwriting it with the current
+ * `newAllOffers` (as before) means on a continuation-page the server returns
+ * a different set of offers — `cheapest`/map/favorites drift to the "last page
+ * snapshot", even if `offers[slot]` already holds the best offer from a
+ * previous page. So we accumulate cumulatively.
  *
- * Dedupe by offer.i — Map.set перезапишет тот же id, если пришла обновлённая
- * версия (price update). Сортировка по pl asc нужна потребителям —
- * `allOffers[0]` повсеместно трактуется как cheapest.
+ * Dedupe by offer.i — Map.set overwrites the same id if an updated version
+ * arrives (price update). Sorting by pl asc is needed by consumers —
+ * `allOffers[0]` is universally treated as cheapest.
  */
 function mergeAllOffers(prevAll, newAll) {
   const map = new Map();
@@ -196,12 +196,12 @@ function mergeAllOffers(prevAll, newAll) {
 }
 
 /**
- * Прогресс. ETA через МЕДИАНУ времени завершённых операторов
- * (среднее портится выбросами типа Coral 306с при остальных по 1-10с).
- * etaSeconds = null до накопления ≥3 завершённых таймингов.
+ * Progress. ETA via MEDIAN of completed operator times
+ * (mean is distorted by outliers like Coral 306s while others take 1-10s).
+ * etaSeconds = null until ≥3 completed timings have accumulated.
  *
- * totalHotels НЕ берём отсюда — это `Σ workProgress[op].hotels` =
- * operator×hotel пары, не уникальные отели. Уникальные — из
+ * totalHotels is NOT taken from here — that is `Σ workProgress[op].hotels` =
+ * operator×hotel pairs, not unique hotels. Unique count comes from
  * `Object.keys(session.hotelsById).length`.
  *
  * @returns {Progress}
@@ -233,17 +233,17 @@ export function computeProgress(workProgress) {
 }
 
 /**
- * Главная функция merge.
+ * Main merge function.
  *
- * INITIAL BASELINE: первый snapshot, который ВПЕРВЫЕ принёс непустой
- * набор отелей. До него (и в его рамках) updates НЕ генерируются —
- * пользователь только что открыл выдачу, помечать каждую карточку
- * "новой" — UX-шум. Логика — флаг `session.baselineEstablished`.
- * `getr1.md` (пустой) → флаг false → следующий getr4.md установит
- * baseline БЕЗ 74 ложных new_hotel.
+ * INITIAL BASELINE: the first snapshot that FIRST brings a non-empty
+ * set of hotels. Before it (and within it) updates are NOT generated —
+ * the user just opened the results, marking every card as "new" is UX noise.
+ * Logic controlled by flag `session.baselineEstablished`.
+ * `getr1.md` (empty) → flag false → the next getr4.md sets
+ * baseline WITHOUT 74 false new_hotel events.
  *
- * Continuation search (run({ continueSearch: true })) НЕ сбрасывает
- * флаг — новые отели в продолжении корректно дают `new_hotel`.
+ * Continuation search (run({ continueSearch: true })) does NOT reset
+ * the flag — new hotels in continuation correctly produce `new_hotel`.
  *
  * @param {SearchSession} session
  * @param {Object}        payload
@@ -261,14 +261,14 @@ export function applySnapshot(session, payload, slots) {
 
   const apiHotelIds = Object.keys(payload.hotels || {});
 
-  // baseline — это ВСЯ первая выдача (page=1 от первого snapshot до lastResult).
-  // Раньше baseline закрывался на первом же непустом snapshot, и уже на
-  // snapshot #2 polling-цикла (того же page=1) каждое появление нового
-  // оператора (Coral/Alf/etc.) выдавало "+27 новых отелей" и "45 обновлений".
-  // Юзер видел banner про updates, не успев увидеть полную выдачу.
-  // Теперь baseline закрывается только когда сервер сказал lastResult=true
-  // на page=1 → весь первый цикл polling собирается без emitов.
-  // Continuation (pageNumber>=2) и пост-baseline polling — emit нормально.
+  // baseline is the ENTIRE first result set (page=1 from the first snapshot to lastResult).
+  // Previously baseline closed on the very first non-empty snapshot, and already on
+  // snapshot #2 of the polling cycle (same page=1) each new operator appearance
+  // (Coral/Alf/etc.) produced "+27 new hotels" and "45 updates".
+  // The user saw the updates banner before seeing the full result set.
+  // Now baseline closes only when the server says lastResult=true
+  // on page=1 → the entire first polling cycle is collected without emitting.
+  // Continuation (pageNumber>=2) and post-baseline polling — emit normally.
   const baselineJustClosed =
     !session.baselineEstablished && payload.lastResult && session.pageNumber === 1;
   const shouldEmitUpdates = session.baselineEstablished;
@@ -280,14 +280,14 @@ export function applySnapshot(session, payload, slots) {
     const prevHotel = session.hotelsById[hotelId];
 
     if (!prevHotel) {
-      // НОВЫЙ ОТЕЛЬ
+      // NEW HOTEL
       nextHotelsById[hotelId] = {
         ...apiHotel,
         offers: newOffers,
-        // dedupe внутри одного snapshot тоже нужен — buildOffersIndex
-        // делает push без dedupe, и один offer.i может прийти от двух
-        // operatorId (для нового отеля mergeAllOffers(null, newAll) берёт
-        // newAll и dedup-ит по Map).
+        // dedupe within a single snapshot is also needed — buildOffersIndex
+        // does push without dedupe, and one offer.i can arrive from two
+        // operatorIds (for a new hotel mergeAllOffers(null, newAll) takes
+        // newAll and dedupes via Map).
         allOffers: mergeAllOffers(null, newAllOffers),
         history: emptyHistory(slots),
         firstSeenSnapshot: nextVersion,
@@ -306,7 +306,7 @@ export function applySnapshot(session, payload, slots) {
       continue;
     }
 
-    // СУЩЕСТВУЮЩИЙ ОТЕЛЬ — diff per-slot.
+    // EXISTING HOTEL — diff per-slot.
     const mergedOffers = { ...prevHotel.offers };
     const mergedHistory = { ...prevHotel.history };
     let touched = false;
@@ -314,13 +314,13 @@ export function applySnapshot(session, payload, slots) {
     for (const nights of slots) {
       const oldOffer = prevHotel.offers[nights];
       const newOffer = newOffers[nights];
-      if (!newOffer) continue; // в новом snapshot нет — оставляем старый
+      if (!newOffer) continue; // not in new snapshot — keep the old one
 
       if (!oldOffer) {
-        // SLOT FILLED — данные мерджим всегда (юзер должен видеть лучший офер),
-        // но update emit-им только после baseline. Иначе baseline-цикл
-        // polling-а выдаст "Найден офер" по каждому слоту каждого нового
-        // оператора, что для юзера — шум, а не "обновление".
+        // SLOT FILLED — data is always merged (user must see the best offer),
+        // but update is emitted only after baseline. Otherwise the baseline
+        // polling cycle would produce "Offer found" for every slot of every new
+        // operator, which is noise for the user, not an "update".
         mergedOffers[nights] = newOffer;
         touched = true;
         if (shouldEmitUpdates) {
@@ -335,8 +335,8 @@ export function applySnapshot(session, payload, slots) {
           });
         }
       } else if (newOffer.pl < oldOffer.pl) {
-        // PRICE DROP — данные (mergedOffers + history) мерджим всегда,
-        // emit gate-им baseline-флагом по той же причине что и slot_filled.
+        // PRICE DROP — data (mergedOffers + history) is always merged,
+        // emit is gated by baseline flag for the same reason as slot_filled.
         mergedOffers[nights] = newOffer;
         mergedHistory[nights] = [
           ...(mergedHistory[nights] || []),
@@ -356,12 +356,12 @@ export function applySnapshot(session, payload, slots) {
           });
         }
       }
-      // newOffer.pl >= oldOffer.pl — не трогаем (НЕ показываем "цена выросла").
+      // newOffer.pl >= oldOffer.pl — leave it (do NOT show "price went up").
     }
 
-    // Cumulative merge для allOffers — НЕ заменяем на newAllOffers, иначе
-    // карта/favorites/cheapest-link уезжают в "снимок последней страницы"
-    // и расходятся с тем, что показано в слотах (которые держат лучший офер).
+    // Cumulative merge for allOffers — do NOT replace with newAllOffers, otherwise
+    // map/favorites/cheapest-link drift to the "last page snapshot"
+    // and diverge from what is shown in slots (which hold the best offer).
     const mergedAllOffers = mergeAllOffers(prevHotel.allOffers, newAllOffers);
 
     if (touched) {
@@ -389,11 +389,11 @@ export function applySnapshot(session, payload, slots) {
 
   const progress = computeProgress(payload.workProgress || {});
 
-  // slotOffers — фактическое число оферов, которые покажет UI: для каждого
-  // отеля максимум 1 на каждый запрашиваемый ночь-слот (n, n+1, n+2),
-  // т.е. итог в диапазоне [hotels, hotels*3]. progress.totalOffers (Σ
-  // workProgress[op].offers) — operator×nights валовый счётчик и не
-  // соответствует видимому списку (раздут в разы), поэтому держим оба.
+  // slotOffers — actual number of offers the UI will show: for each hotel
+  // at most 1 per requested night-slot (n, n+1, n+2),
+  // i.e. total in range [hotels, hotels*3]. progress.totalOffers (Σ
+  // workProgress[op].offers) is an operator×nights gross counter and does not
+  // correspond to the visible list (inflated several times), so we keep both.
   let slotOffersCount = 0;
   for (const h of Object.values(nextHotelsById)) {
     if (!h || !h.offers) continue;
@@ -415,20 +415,20 @@ export function applySnapshot(session, payload, slots) {
     },
   ];
 
-  // hasMoreServerPages — выключаем консервативно. Одна "бесполезная"
-  // continuation-страница НЕ означает, что дальше тоже ничего нет.
-  // Триггеры false (любой из):
-  //   A. lastResult+page=1 с пустым accumulated списком — сервер сразу
-  //      сказал "ничего нет по этим параметрам", continuation бессмысленна.
-  //   B. lastResult continuation с РЕАЛЬНО пустым payload.hotels.
-  //   C. UNHELPFUL_CONTINUATION_LIMIT подряд "бесполезных" циклов.
+  // hasMoreServerPages — disable conservatively. One "unhelpful"
+  // continuation page does NOT mean there is nothing further.
+  // Triggers for false (any of):
+  //   A. lastResult+page=1 with empty accumulated list — server immediately
+  //      said "nothing found for these params", continuation is pointless.
+  //   B. lastResult continuation with genuinely empty payload.hotels.
+  //   C. UNHELPFUL_CONTINUATION_LIMIT consecutive "unhelpful" cycles.
   let nextHasMore = session.hasMoreServerPages;
   let nextUnhelpful = session.unhelpfulContinuationCount;
   if (payload.lastResult) {
     const accumulatedEmpty = Object.keys(nextHotelsById).length === 0;
     if (session.pageNumber === 1 && accumulatedEmpty) {
-      // Триггер A — "по запросу ничего не найдено". Без этого пользователь
-      // видел бы кнопку "Продолжить поиск" вместе с текстом "0 туров найдено".
+      // Trigger A — "nothing found for this query". Without this the user
+      // would see the "Continue search" button alongside "0 tours found".
       nextHasMore = false;
     } else if (session.pageNumber > 1 && session.continuationMark) {
       const grewHotels =
@@ -463,7 +463,7 @@ export function applySnapshot(session, payload, slots) {
 }
 
 // ---------------------------------------------------------------------
-// Селекторы
+// Selectors
 // ---------------------------------------------------------------------
 
 const PAGE_SIZE = 20;
@@ -483,16 +483,16 @@ function ratingValue(hotel) {
 }
 
 /**
- * Единая точка входа для упорядочивания + фильтрации.
- * Все остальные page/index-селекторы строятся ПОВЕРХ неё —
- * чтобы `selectHotelsForPage` и `selectHotelPageIndex` не разъезжались
- * (иначе jump-to из панели обновлений попадал бы не на ту страницу).
+ * Single entry point for ordering + filtering.
+ * All other page/index selectors are built ON TOP of this one —
+ * so that `selectHotelsForPage` and `selectHotelPageIndex` stay in sync
+ * (otherwise jump-to from the updates panel would land on the wrong page).
  *
- * `frozenUpdatedOnlyIds` (если передан и filters.updatedOnly=true) — snapshot
- * id-шников на момент включения чекбокса. Без него фильтр самопустошался:
- * observer markViewed снимал unviewed-updates → `selectHotelHasUnviewedUpdate`
- * возвращал false → карточка вылетала из выборки. Frozen-набор стабилен,
- * пока юзер сам не снимет чекбокс.
+ * `frozenUpdatedOnlyIds` (if passed and filters.updatedOnly=true) — snapshot
+ * of hotel ids at the moment the checkbox was turned on. Without it the filter
+ * self-emptied: observer markViewed cleared unviewed-updates →
+ * `selectHotelHasUnviewedUpdate` returned false → card dropped from the set.
+ * The frozen set is stable until the user unchecks the checkbox.
  *
  * @param {SearchSession} session
  * @param {{fullOnly?:boolean, updatedOnly?:boolean}} [filters]
@@ -612,8 +612,8 @@ export function selectHotelHasUnviewedUpdate(session, hotelId) {
 }
 
 /**
- * Все unviewed updates одного отеля. Используется CardBadge (доминирующий
- * тип) и OfferSlot (per-slot price_drop/slot_filled индикатор).
+ * All unviewed updates for a single hotel. Used by CardBadge (dominant
+ * type) and OfferSlot (per-slot price_drop/slot_filled indicator).
  */
 export function selectHotelUnviewedUpdates(session, hotelId) {
   const target = String(hotelId);

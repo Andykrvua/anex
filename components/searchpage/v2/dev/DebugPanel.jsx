@@ -4,8 +4,8 @@ import styles from './DebugPanel.module.css';
 
 /**
  * v2 debug panel (?debug=1).
- * Показывает внутреннее состояние session — для QA/devs.
- * Не локализуется (dev-only). Унаследовал стили от legacy debugPanel.module.css.
+ * Shows internal session state — for QA/devs.
+ * Not localized (dev-only). Inherited styles from legacy debugPanel.module.css.
  */
 export default function DebugPanel() {
   const session = useSearchSession();

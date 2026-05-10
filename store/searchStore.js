@@ -11,29 +11,29 @@ import {
   selectUnviewedCount,
 } from '../utils/searchMerge';
 
-// Изолированный slice сессии поиска. Живёт отдельно от store/store.js,
-// чтобы не цеплять остальное приложение и чтобы Фаза 10 могла удалить
-// часть legacy полей без миграций. Persist НЕ применяем — search session
-// эфемерна, не хочется восстанавливать её из localStorage.
+// Isolated search session slice. Lives separately from store/store.js
+// to avoid coupling the rest of the app and so Phase 10 can remove
+// some legacy fields without migrations. Persist is NOT applied — the search
+// session is ephemeral, we don't want to restore it from localStorage.
 
 export const useSearchStore = create(
   devtools(
     (set) => ({
       session: createEmptySession(),
 
-      // UI-preference: режим сортировки.
+      // UI preference: sort mode.
       // sortMode: 'stable' | 'price_asc' | 'price_desc' | 'rating_desc'.
-      // Дефолт 'stable' — список держит порядок появления, новые отели в хвост.
-      // Это выполняет Phase 7-acceptance "позиции не скачут при тиках".
-      // Юзер, выбирая не-stable, осознанно соглашается на reordering при ingest.
+      // Default 'stable' — list keeps arrival order, new hotels appended to the end.
+      // This satisfies Phase 7 acceptance "positions don't jump on ticks".
+      // A user choosing non-stable consciously accepts reordering on ingest.
       sortMode: 'stable',
 
-      // Snapshot id-шников для фильтра "Только с обновлениями".
-      // null — фильтр выключен. Массив — заморожённый список на момент включения.
-      // Без этого observer markViewed снимал бейджи и фильтр самопустошался:
-      // карточки одна за одной вылетали из выборки, как только в viewport
-      // отрабатывал 1.5s dwell. Frozen — стабильный набор, скрол по нему
-      // нормально снимает viewed без побочных эффектов на сам список.
+      // Snapshot of hotel ids for the "Updated only" filter.
+      // null — filter is off. Array — frozen list at the moment the filter was enabled.
+      // Without this the observer markViewed cleared badges and the filter self-emptied:
+      // cards dropped from the set one by one as soon as the 1.5s dwell
+      // fired in the viewport. Frozen set is stable, scrolling through it
+      // correctly clears viewed without side effects on the list itself.
       frozenUpdatedOnlyIds: null,
 
       setSortMode: (mode) =>
@@ -58,8 +58,8 @@ export const useSearchStore = create(
         set(
           () => ({
             session: resetSession({ params }),
-            // Новый поиск — обнуляем заморозку фильтра. Иначе старый
-            // массив id-шников переживёт reset и станет невалидным.
+            // New search — reset the filter freeze. Otherwise the old
+            // array of ids would survive the reset and become invalid.
             frozenUpdatedOnlyIds: null,
           }),
           false,
@@ -80,11 +80,11 @@ export const useSearchStore = create(
           'setStatus',
         ),
 
-      // Hard-timeout polling-цикла. Просто status='done' недостаточно:
-      // ContinueSearchButton показывается только при isLastResult=true
-      // (легитимный сигнал от сервера "это всё на этой странице").
-      // Без timedOut/isLastResult-сигнала юзер оставался бы в тупике —
-      // ни кнопки "Продолжить", ни сообщения о таймауте.
+      // Hard-timeout of the polling cycle. Just status='done' is not enough:
+      // ContinueSearchButton is shown only when isLastResult=true
+      // (a legitimate server signal "this is everything on this page").
+      // Without the timedOut/isLastResult signal the user would be stuck —
+      // no "Continue" button and no timeout message.
       finishCycleByTimeout: () =>
         set(
           (state) => ({
@@ -129,8 +129,8 @@ export const useSearchStore = create(
               ...state.session,
               pageNumber: state.session.pageNumber + 1,
               status: 'searching',
-              // Сбрасываем сигналы прошлого цикла, иначе ContinueSearchButton
-              // не уйдёт в "searching"-режим, а timeout-hint всплывёт повторно.
+              // Reset signals from the previous cycle, otherwise ContinueSearchButton
+              // won't enter "searching" mode and the timeout hint will re-appear.
               isLastResult: false,
               timedOut: false,
               continuationMark: {
@@ -148,7 +148,7 @@ export const useSearchStore = create(
 );
 
 // ---------------------------------------------------------------------
-// Selector hooks — единый стиль с store/store.js (use* + Get/Set).
+// Selector hooks — same style as store/store.js (use* + Get/Set).
 // ---------------------------------------------------------------------
 
 export const useSearchSession = () => useSearchStore((s) => s.session);

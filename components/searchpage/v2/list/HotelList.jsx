@@ -5,21 +5,21 @@ import styles from './HotelCard.module.css';
 const FADE_IN_MS = 220;
 
 /**
- * Fade-in списка при смене порядка id-шников. FLIP убрали потому что он
- * не работает при cross-page reorder (картки уезжают на другую страницу
- * пагинации, их id-шников нет ни в prevRects, ни в newRects, FLIP их
- * пропускает — анимация выглядит как телепорт).
+ * Fade-in of the list when the order of hotel ids changes. FLIP was removed
+ * because it does not work with cross-page reorder (cards move to another
+ * pagination page, their ids are in neither prevRects nor newRects, FLIP
+ * skips them — animation looks like a teleport).
  *
- * Стратегия:
- *   - useLayoutEffect runs после commit, новый DOM уже есть.
- *   - Сравниваем prevOrderKey с newOrderKey.
- *   - Если изменился И это не append-only (polling добавляет hotels в хвост) —
- *     запускаем fade-in: opacity 0 → 1 with transition.
- *   - Append-only пропускаем, иначе список бы blink-ал каждые 5s polling.
+ * Strategy:
+ *   - useLayoutEffect runs after commit, new DOM is already present.
+ *   - Compare prevOrderKey with newOrderKey.
+ *   - If changed AND it is not append-only (polling adds hotels to the tail) —
+ *     trigger fade-in: opacity 0 → 1 with transition.
+ *   - Skip append-only, otherwise the list would blink every 5s of polling.
  *
- * Покрывает: sortMode toggle, quality-filter toggle, pagination, freeze
- * updatedOnly, любой ingest, который реально пересортирует существующие
- * card-ы. НЕ блимает на чистое расширение списка снизу.
+ * Covers: sortMode toggle, quality-filter toggle, pagination, freeze
+ * updatedOnly, any ingest that genuinely re-sorts existing cards.
+ * Does NOT blink on a pure list extension from below.
  */
 export default function HotelList({
   hotels,
@@ -41,8 +41,8 @@ export default function HotelList({
 
     if (prevOrder === '' || prevOrder === orderKey) return;
 
-    // Append-only: новый orderKey = старый + "|new1|new2…". Polling добавляет
-    // отели в хвост — это не reorder, без fade.
+    // Append-only: new orderKey = old + "|new1|new2…". Polling adds
+    // hotels to the tail — this is not a reorder, skip fade.
     const isAppendOnly =
       orderKey.startsWith(`${prevOrder}|`) && orderKey.length > prevOrder.length;
     if (isAppendOnly) return;

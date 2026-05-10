@@ -40,20 +40,20 @@ export default function SearchProgress() {
   const hasMeta = !!(progress && progress.operatorsTotal > 0);
 
   // Render the searching indicator even before the first response arrives
-  // (cached result + lastResult=true would otherwise flip "Поиск завершён"
+  // (cached result + lastResult=true would otherwise flip to "Search complete"
   // before the user noticed any progress at all).
   if (!hasMeta && !displaySearching) return null;
 
-  // session.batches накапливается каждый snapshot ТЕКУЩЕГО цикла
-  // (resetSession очищает массив на startNewSearch).
-  //   counts.slotOffers — реальное число оферов, видимых юзеру (≤3 на
-  //     отель), используем для всех текстов в meta.
-  //   counts.offers — operator×nights total, не показываем (раздут).
-  // Используем slotOffers для:
-  //   1. cycleStarted — гейт meta-блока (не показываем «0 оферов в 802»
-  //      пока не пришёл первый осмысленный батч новой сессии).
-  //   2. lastDeltaSlotOffers — «+N в последнем обновлении» только со 2-го
-  //      батча (для первого разница и абсолют совпадают).
+  // session.batches accumulates every snapshot of the CURRENT cycle
+  // (resetSession clears the array on startNewSearch).
+  //   counts.slotOffers — actual number of offers visible to the user (≤3 per
+  //     hotel), used for all texts in meta.
+  //   counts.offers — operator×nights total, not shown (inflated).
+  // We use slotOffers for:
+  //   1. cycleStarted — meta-block gate (don't show "0 offers in 802 hotels"
+  //      until the first meaningful batch of the new session arrives).
+  //   2. lastDeltaSlotOffers — "+N in last update" only from the 2nd batch
+  //      (for the first one the delta and the absolute are the same).
   const batches = session.batches || [];
   const cycleStarted = batches.length > 0;
   const lastBatch = cycleStarted ? batches[batches.length - 1] : null;
@@ -77,12 +77,12 @@ export default function SearchProgress() {
         )}
       </div>
       {/*
-        Завжди рендеримо .meta (з min-height в CSS), щоб у стартовій фазі
-        (cycleStarted=false) висота controlsBar лишалась стабільною — інакше
-        кнопки pin/collapse справа (40×40) пробивали б обвертку. Текст
-        вкладаємо тільки коли є батчі поточного циклу — без цього після
-        кліку "новий пошук" коротко видно "0 оферов в 802 отелях" поки не
-        прийшов нормальний батч.
+        Always render .meta (with min-height in CSS) so that in the start phase
+        (cycleStarted=false) the controlsBar height stays stable — otherwise
+        the pin/collapse buttons on the right (40×40) would poke through the
+        wrapper. Text is rendered only when there are batches for the current
+        cycle — without this after clicking "new search" you briefly see
+        "0 offers in 802 hotels" before a proper batch arrives.
       */}
       <div className={styles.meta}>
         {cycleStarted && (

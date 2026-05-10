@@ -4,14 +4,14 @@ import { useSearchSession, useUnviewedUpdatesCount } from 'store/searchStore';
 import styles from './UpdatesBanner.module.css';
 
 /**
- * Sticky-баннер сводки. Появляется при увеличении `snapshotVersion`,
- * если есть unviewed updates. Скрывается по клику `×` (локально, до
- * следующего ingest-а) или автоматически когда `selectUnviewedCount === 0`.
+ * Summary banner. Appears when `snapshotVersion` increases
+ * and there are unviewed updates. Dismissed by clicking `×` (locally, until
+ * the next ingest) or automatically when `selectUnviewedCount === 0`.
  *
- *   - "+{newHotels} новых отелей · {others} обновлений на других страницах"
- *   - "{others} обновлений на других страницах" — если новых отелей нет
- *   - "+{newHotels} новых отелей" — если все остальные на текущей странице
- *   - Если все updates на текущей странице и нет new_hotel → не показываем
+ *   - "+{newHotels} new hotels · {others} updates on other pages"
+ *   - "{others} updates on other pages" — if there are no new hotels
+ *   - "+{newHotels} new hotels" — if all others are on the current page
+ *   - If all updates are on the current page and there is no new_hotel → don't show
  *
  * @param {{ hotelsOnPage: Array, onShowDetails: () => void }} props
  */

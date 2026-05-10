@@ -10,9 +10,9 @@ import {
 import { getDateRangeEndDate } from 'utils/dateRange';
 import styles from './searchHeader.module.css';
 
-// v2 заменил legacy sort кнопки (price/rating, useSearchResultSort) на
-// собственный <SortToggle /> в `v2/controls/`. Здесь оставлен только
-// filter-trigger + destination/dates блок — общая шапка над списком.
+// v2 replaced legacy sort buttons (price/rating, useSearchResultSort) with
+// its own <SortToggle /> in `v2/controls/`. This file now only contains
+// the filter-trigger + destination/dates block — the shared header above the list.
 
 export default function SearchHeader() {
   const router = useRouter();

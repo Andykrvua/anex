@@ -11,13 +11,13 @@
 }
 
 /*
- * "Грязный" фильтр (юзер изменил, но не нажал "Применить") — приглушаем
- * список, чтобы юзер видел: данные не отвечают текущему выбору фильтров.
- * Раньше эту визуальную подсказку выдавал legacy SearchResult — он
- * принимал isFilterBtnShow и переключал opacity на listе. После замены
- * на v2 prop стал игнорироваться, эффект потерялся. pointer-events
- * не блокируем — клики по карточкам/слотам остаются рабочими, юзер
- * может всё ещё перейти на отель.
+ * "Dirty" filter (user changed it but didn't press "Apply") — dim the
+ * list so the user sees that the data does not reflect the current filter
+ * selection. Previously this visual hint was provided by legacy SearchResult —
+ * it accepted isFilterBtnShow and toggled opacity on the list. After switching
+ * to v2 the prop was ignored and the effect was lost. pointer-events are not
+ * blocked — clicks on cards/slots remain functional, the user can still
+ * navigate to a hotel.
  */
 .listStale {
   opacity: 0.5;
@@ -25,10 +25,10 @@
 }
 
 /*
- * Все справочные/управляющие элементы перед списком — UpdatesBanner +
- * SortToggle + QualityFilters — слиты в один sticky-контейнер. Раньше
- * sticky был только на UpdatesBanner (top:76px), теперь весь блок
- * целиком прилипает под SearchProgress.
+ * All informational/control elements before the list — UpdatesBanner +
+ * SortToggle + QualityFilters — merged into one sticky container. Previously
+ * only UpdatesBanner was sticky (top:76px); now the whole block sticks
+ * together below SearchProgress.
  */
 .controlsBar {
   position: sticky;
@@ -42,8 +42,8 @@
 }
 
 /*
- * Юзер открепил sticky — controlsBar остаётся в потоке, не залипает.
- * position: relative нужен, чтобы pinBtn (absolute) ссылался на этот же блок.
+ * User unpinned sticky — controlsBar stays in flow, does not stick.
+ * position: relative is needed so pinBtn (absolute) references this same block.
  */
 .controlsBarUnpinned {
   position: relative;
@@ -51,8 +51,8 @@
 }
 
 /*
- * Tool buttons (pin / collapse) — расположены в правом верхнем углу
- * controlsBar в один ряд с фиксированным gap.
+ * Tool buttons (pin / collapse) — positioned in the top-right corner of
+ * controlsBar in a single row with a fixed gap.
  */
 .toolButtons {
   position: absolute;
@@ -89,16 +89,16 @@
 }
 
 /*
- * Group: SortToggle + QualityFilters. Анимация collapse/expand через
- * grid-template-rows 1fr ↔ 0fr — браузер интерполирует высоту без знания
- * natural-height. Inner-обёртка с overflow:hidden обрезает контент при
- * 0fr. Поддержка: Chrome 117+, Firefox 116+, Safari 17+ — в старых
- * браузерах анимации нет, но collapse/expand работает (snap).
+ * Group: SortToggle + QualityFilters. Collapse/expand animation via
+ * grid-template-rows 1fr ↔ 0fr — the browser interpolates height without
+ * knowing the natural height. The inner wrapper with overflow:hidden clips
+ * content at 0fr. Support: Chrome 117+, Firefox 116+, Safari 17+ — in older
+ * browsers there is no animation but collapse/expand works (snap).
  */
 /*
- * margin-top анимируем синхронно с grid-template-rows: оба становятся 0
- * при collapsed → видимая высота блока (включая отступ сверху) интерполируется
- * к 0 без торчащих остатков.
+ * margin-top is animated in sync with grid-template-rows: both become 0
+ * when collapsed → the visible block height (including top margin) interpolates
+ * to 0 without leftover gaps.
  */
 .toolsGroup {
   display: grid;

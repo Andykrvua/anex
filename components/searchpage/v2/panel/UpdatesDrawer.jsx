@@ -6,24 +6,24 @@ import PanelContent from './PanelContent';
 import styles from './UpdatesDrawer.module.css';
 
 /**
- * Универсальный drawer для панели "Обновления".
+ * Universal drawer for the "Updates" panel.
  *
- * Раньше desktop имел отдельный sticky-sidebar (UpdatesPanel) в layout-сетке,
- * который съедал 360px рядом с карточками и ломал верстку на 810-1100px.
- * Mobile имел свой drawer (UpdatesPanelMobile). Сейчас один паттерн:
- *   - FAB справа-снизу всегда (когда unviewedCount > 0 и drawer закрыт)
- *   - mobile (<810): sheet выезжает снизу
- *   - desktop (>=810): sheet выезжает справа, ширина 420px
- * CSS-разделение через media-query, JSX единый.
+ * Previously desktop had a separate sticky-sidebar (UpdatesPanel) in the layout
+ * grid, consuming 360px next to cards and breaking layout at 810-1100px.
+ * Mobile had its own drawer (UpdatesPanelMobile). Now there is one pattern:
+ *   - FAB bottom-right always visible (when unviewedCount > 0 and drawer is closed)
+ *   - mobile (<810): sheet slides up from the bottom
+ *   - desktop (>=810): sheet slides in from the right, width 420px
+ * CSS split via media-query, JSX is unified.
  *
- * `isMobile` приходит из родителя (getViewport), используется только для
- * добавления класса — самой логики drawer не меняет.
+ * `isMobile` comes from the parent (getViewport), used only to add a class —
+ * does not change the drawer logic itself.
  */
 export default function UpdatesDrawer({ open, onOpenToggle, onJump }) {
   const intl = useIntl();
   const count = useUnviewedUpdatesCount();
 
-  // Body scroll lock при открытии — независим от viewport.
+  // Body scroll lock on open — viewport-independent.
   useEffect(() => {
     if (!open) return undefined;
     const prev = document.body.style.overflow;
@@ -66,9 +66,9 @@ export default function UpdatesDrawer({ open, onOpenToggle, onJump }) {
                   <span className={styles.headerCount}>({count})</span>
                 )}
               </span>
-              {/* Mobile: arrow + line (как в burger, но зеркально — закрытие
-                  тащит panel вправо). Desktop: X stroke (CloseSvg). Совпадает
-                  с разделением .burger_close / .burger_close_not_mobile. */}
+              {/* Mobile: arrow + line (like the burger, but mirrored — closing
+                  pulls the panel right). Desktop: X stroke (CloseSvg). Matches
+                  the .burger_close / .burger_close_not_mobile split. */}
               <button
                 type="button"
                 className={`svg_btn ${styles.headerClose} ${styles.headerCloseMobile}`}

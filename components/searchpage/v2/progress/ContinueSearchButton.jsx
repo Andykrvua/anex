@@ -15,12 +15,12 @@ export default function ContinueSearchButton({ onContinue }) {
   const timedOut = useSearchTimedOut();
   const pageNumber = useSearchPageNumber();
 
-  // Показываем кнопку, если:
-  //   - первый цикл закончился (isLastResult=true), или
-  //   - мы уже в continuation (pageNumber > 1) — тогда после клика
-  //     "Продолжить" requestNextServerPage сбрасывает isLastResult=false,
-  //     но кнопка должна оставаться видимой в disabled-состоянии,
-  //     иначе она "пропадает" пока идёт новый цикл polling.
+  // Show the button if:
+  //   - the first cycle has finished (isLastResult=true), or
+  //   - we are already in continuation (pageNumber > 1) — in that case after
+  //     clicking "Continue" requestNextServerPage resets isLastResult=false,
+  //     but the button must remain visible in disabled state,
+  //     otherwise it "disappears" while the new polling cycle is running.
   const continuationActive = pageNumber > 1;
   if (!isLastResult && !continuationActive) return null;
 
@@ -32,8 +32,8 @@ export default function ContinueSearchButton({ onContinue }) {
     );
   }
 
-  // Hard-timeout: разрешаем "Продолжить", но текст hint меняется —
-  // юзер должен понимать, что это не нормальное завершение, а лимит ожидания.
+  // Hard-timeout: we allow "Continue", but the hint text changes —
+  // the user should understand this is not a normal completion but a wait limit.
   const hintId = timedOut
     ? 'progress.continue_search_timeout_hint'
     : 'progress.continue_search_hint';

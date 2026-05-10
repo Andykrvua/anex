@@ -9,17 +9,17 @@ import Checkbox from 'components/controls/checkbox/checkbox';
 import styles from './QualityFilters.module.css';
 
 /**
- * Per-list quality filters (поверх уже найденных результатов):
- *   - fullOnly: только отели, у которых заполнены ВСЕ слоты `[n, n+1, n+2]`.
- *   - updatedOnly: только отели с unviewed updates.
+ * Per-list quality filters (applied on top of already found results):
+ *   - fullOnly: only hotels with ALL slots `[n, n+1, n+2]` filled.
+ *   - updatedOnly: only hotels with unviewed updates.
  *
- * Состояние в URL (`?fullOnly=1`, `?updatedOnly=1`) — чтобы перезагрузка
- * страницы сохраняла выбор. Логика фильтрации — в `selectOrderedHotelIds`.
+ * State in URL (`?fullOnly=1`, `?updatedOnly=1`) — so a page reload preserves
+ * the selection. Filtering logic lives in `selectOrderedHotelIds`.
  *
- * updatedOnly требует freeze/unfreeze: на toggle ON фиксируем snapshot
- * id-шников, иначе observer markViewed выпиливал карточки одну за другой
- * прямо во время скрола. Чекбокс disabled, пока в выдаче нет unviewed
- * updates — чтобы юзер не получал пустой список вместо feedback.
+ * updatedOnly requires freeze/unfreeze: on toggle ON we snapshot the set of
+ * hotel ids, otherwise observer markViewed would drop cards one by one while
+ * scrolling. Checkbox is disabled while there are no unviewed updates in the
+ * results — to prevent the user from getting an empty list instead of feedback.
  */
 export default function QualityFilters() {
   const intl = useIntl();

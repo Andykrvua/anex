@@ -35,9 +35,9 @@ export default function SearchButton() {
     const { checkIn, checkTo, plusDays, dateType } = buildDateSearchQuery(date, initialDate);
 
     // Preserve already-applied filter params from URL so that changing main-form
-    // values (people, dates, etc.) и тычок «Поиск» не сбрасывает примененные фильтры.
-    // Без этого URL терял фильтры → searchContent видел diff с кэшем urlParams →
-    // лишняя кнопка «Применить фильтры», хотя фильтры ещё активны (чекбоксы / range on).
+    // values (people, dates, etc.) and pressing "Search" does not reset applied filters.
+    // Without this the URL lost filters → searchContent saw a diff with cached urlParams →
+    // spurious "Apply filters" button, even though filters are still active (checkboxes / range on).
     let preservedStars = '';
     let preservedFood = '';
     let preservedServices = '';

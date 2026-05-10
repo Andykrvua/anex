@@ -57,13 +57,13 @@ const PAGE_SIZE = 20;
 const ACCESS_TOKEN = '337da-65e22-26745-a251f-77b9e';
 
 /**
- * v2 точка монтирования. Phase 3 — добавлен список + пагинация.
+ * v2 mount point. Phase 3 — list + pagination added.
  *
- * Триггеры запуска копируем из legacy <SearchResult />:
- *  - mount + startSearch=true → run() сразу.
- *  - mount + startSearch=false → parseUrl, заливаем в store, run().
- *  - applyFilter=true → run() (новый цикл).
- *  - "Продолжить" → run({ continueSearch: true }).
+ * Search triggers copied from legacy <SearchResult />:
+ *  - mount + startSearch=true → run() immediately.
+ *  - mount + startSearch=false → parseUrl, populate store, run().
+ *  - applyFilter=true → run() (new cycle).
+ *  - "Continue" → run({ continueSearch: true }).
  */
 export default function SearchResultV2({ isFilterBtnShow = false }) {
   const router = useRouter();
@@ -109,22 +109,22 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   const [hydrationError, setHydrationError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [countryHotelService, setCountryHotelService] = useState(null);
-  // Drawer открыт/закрыт. Один state на все viewport — раньше desktop
-  // имел sticky-sidebar в layout-сетке, что съедало 360px рядом с карточками
-  // и ломалось на 810-1100px (карточки сжимались, элементы не помещались).
-  // Теперь FAB+drawer — единый паттерн, не конкурирует с карточками за место.
+  // Drawer open/closed. Single state for all viewports — previously desktop
+  // had a sticky-sidebar in the layout grid, consuming 360px next to cards
+  // and breaking at 810-1100px (cards shrank, elements didn't fit).
+  // Now FAB+drawer is a unified pattern, not competing with cards for space.
   const [panelOpen, setPanelOpen] = useState(false);
-  // controlsBar pin/unpin: дефолт sticky-залипает, юзер может отключить.
+  // controlsBar pin/unpin: default is sticky, user can unpin.
   const [stickyPinned, setStickyPinned] = useState(true);
-  // SortToggle + QualityFilters group: юзер может свернуть/раскрыть.
+  // SortToggle + QualityFilters group: user can collapse/expand.
   const [controlsCollapsed, setControlsCollapsed] = useState(false);
-  // ID карточки, которой прокидываем highlight-анимацию (после jump-to).
+  // ID of the card to which we pass the highlight animation (after jump-to).
   const [highlightedId, setHighlightedId] = useState(null);
 
   const slots = [night.from, night.from + 1, night.from + 2];
   const hotels = useHotelsForPage(currentPage, PAGE_SIZE, filters, sortMode);
-  // Пагинация считается от ОТФИЛЬТРОВАННОГО списка, иначе при включении
-  // фильтра остаются страницы, на которых нет ни одной карточки.
+  // Pagination is counted from the FILTERED list, otherwise when a filter
+  // is enabled pages remain that have no cards on them.
   const filteredCount = selectOrderedHotelIds(
     session,
     filters,
@@ -133,14 +133,14 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   ).length;
   const totalHotels = Object.keys(session.hotelsById).length;
   const totalPages = Math.max(1, Math.ceil(filteredCount / PAGE_SIZE));
-  // hasProgress gates the whole controlsBar: при первом mount (или refresh
-  // страницы) progress.operatorsTotal === 0 пока не пришёл первый ответ
-  // от getResults — рендерить пустую обвязку (один pin-button) бессмысленно.
-  // Когда контент готов (текст SearchProgress есть, или хотя бы одна карточка),
-  // controlsBar появляется целиком.
+  // hasProgress gates the whole controlsBar: on first mount (or page refresh)
+  // progress.operatorsTotal === 0 until the first getResults response arrives —
+  // rendering an empty wrapper (just the pin button) is pointless.
+  // When content is ready (SearchProgress text exists, or at least one card),
+  // controlsBar appears in full.
   const hasProgress = !!(progress && progress.operatorsTotal > 0);
 
-  // searchParams — для построения ссылок на hotel-страницу из карточек/слотов.
+  // searchParams — for building links to the hotel page from cards/slots.
   const searchParams = (() => {
     if (!up || !down || !date) return null;
     const { checkIn, checkTo } = buildDateSearchQuery(date, initialDate);
@@ -159,7 +159,7 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     };
   })();
 
-  // Hotel services (для tour_propertys) — отдельный fetch как в legacy.
+  // Hotel services (for tour_propertys) — separate fetch as in legacy.
   useEffect(() => {
     if (!down || !down.value) return;
     let cancelled = false;
@@ -179,10 +179,9 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     };
   }, [down && down.value, down && down.countryValue, apiLoc]);
 
-  // Mount-only: parseUrl flow когда зашли по URL без формы (direct link
-  // или refresh страницы). Если startSearch=true — мы пришли по клику
-  // SearchButton, store уже наполнен; pass-through, ниже отработает
-  // startSearch-эффект.
+  // Mount-only: parseUrl flow when arriving via URL without the form (direct link
+  // or page refresh). If startSearch=true — we came via SearchButton click,
+  // store is already populated; pass-through, the startSearch effect below will fire.
   useEffect(() => {
     if (startSearch) return undefined;
     let cancelled = false;
@@ -208,20 +207,20 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // После гидрации store из URL — стартуем поиск.
+  // After hydrating the store from URL — start the search.
   useEffect(() => {
     if (hydrated) run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated]);
 
-  // SearchButton flow: setStartSearch(true) + router.push. Раньше работало
-  // только на mount (через [] deps), а на уже открытой странице результатов
-  // повторный клик "Поиск" ничего не делал — ремаунта SearchResultV2 нет
-  // (после фикса dynamic на module-level). Теперь отдельный эффект слушает
-  // startSearch и запускает чистый цикл: run() → startNewSearch() →
-  // resetSession() сбрасывает hotelsById, updates, viewedUpdateIds, frozenIds.
-  // setStartSearch(false) ставим ДО run() чтобы повторный setStartSearch(true)
-  // от следующего клика снова отработал.
+  // SearchButton flow: setStartSearch(true) + router.push. Previously worked
+  // only on mount (via [] deps), so on an already-open results page a second
+  // "Search" click did nothing — no SearchResultV2 remount
+  // (after the dynamic fix at module-level). Now a separate effect listens to
+  // startSearch and starts a clean cycle: run() → startNewSearch() →
+  // resetSession() resets hotelsById, updates, viewedUpdateIds, frozenIds.
+  // setStartSearch(false) is set BEFORE run() so the next setStartSearch(true)
+  // from the following click fires again.
   useEffect(() => {
     if (!startSearch) return;
     setStartSearch(false);
@@ -229,7 +228,7 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startSearch]);
 
-  // Apply filter — новый цикл (без continueSearch).
+  // Apply filter — new cycle (without continueSearch).
   useEffect(() => {
     if (applyFilter) {
       setApplyFilter(false);
@@ -238,24 +237,24 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applyFilter]);
 
-  // При получении первого batch'а — обнуляем currentPage, чтобы юзер
-  // не оставался на странице, которой больше нет (после нового search).
+  // When the first batch arrives — reset currentPage so the user
+  // doesn't stay on a page that no longer exists (after a new search).
   useEffect(() => {
     if (session.snapshotVersion === 1) setCurrentPage(1);
   }, [session.snapshotVersion]);
 
-  // Clamp currentPage при сжатии списка (включили фильтр / пометили
-  // последние unviewed просмотренными и updatedOnly выкинул отель).
+  // Clamp currentPage when the list shrinks (filter enabled / last unviewed
+  // cards marked viewed and updatedOnly dropped a hotel).
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
 
-  // Mobile <810px: globals.css добавляет `.wrapper { overflow: hidden }` —
-  // overflow:hidden на предке создаёт scroll-containing block, который сам
-  // НЕ скроллится, что ломает `position: sticky` для .controlsBar. Снимаем
-  // overflow только когда юзер реально пользуется sticky (pinned). На unpin
-  // или unmount возвращаем исходное значение, чтобы не сломать чужие
-  // горизонтально-обрезающие места страницы.
+  // Mobile <810px: globals.css adds `.wrapper { overflow: hidden }` —
+  // overflow:hidden on an ancestor creates a scroll-containing block that does
+  // NOT itself scroll, which breaks `position: sticky` for .controlsBar. We
+  // remove overflow only when the user is actually using sticky (pinned). On
+  // unpin or unmount we restore the original value to avoid breaking other
+  // horizontally-clipping parts of the page.
   useEffect(() => {
     if (!stickyPinned) return undefined;
     const wrapperEl = document.querySelector('.wrapper');
@@ -267,13 +266,13 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     };
   }, [stickyPinned]);
 
-  // Auto-sync frozen-snapshot для updatedOnly. Покрывает кейс перезагрузки
-  // страницы с ?updatedOnly=1 в URL — там freeze() не вызывался, потому что
-  // user-handler в QualityFilters не отрабатывал. Без этого фильтр снова
-  // self-empties: observer markViewed снимает unviewed → карточка вылетает.
-  // Условия:
-  //   - updatedOnly=true + frozen=null + есть unviewed → freeze (snapshot текущего набора)
-  //   - updatedOnly=false + frozen!=null → unfreeze (юзер выключил фильтр через manual toggle / shallow push)
+  // Auto-sync frozen-snapshot for updatedOnly. Covers the page-reload case
+  // with ?updatedOnly=1 in the URL — there freeze() was never called because
+  // the user-handler in QualityFilters didn't run. Without this the filter
+  // self-empties again: observer markViewed clears unviewed → card drops out.
+  // Conditions:
+  //   - updatedOnly=true + frozen=null + unviewed exist → freeze (snapshot current set)
+  //   - updatedOnly=false + frozen!=null → unfreeze (user disabled filter via manual toggle / shallow push)
   useEffect(() => {
     if (updatedOnly && frozenUpdatedOnlyIds === null && unviewedCount > 0) {
       freezeUpdatedOnly();
@@ -283,20 +282,20 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   }, [updatedOnly, frozenUpdatedOnlyIds, unviewedCount, freezeUpdatedOnly, unfreezeUpdatedOnly]);
 
   const handlePageChange = (next) => {
-    // Scroll FIRST, switch page SECOND. Если делать наоборот, Chrome scroll
-    // anchoring пытается удержать визуальный anchor рядом с текущим scrollY
-    // во время DOM-свопа списка — выглядит как стрибок униз 150-300px перед
-    // плавным скролом вгору. При scroll → state browser к моменту коммита
-    // уже движется к top:0, anchor стабильный (header/верхняя часть документа).
+    // Scroll FIRST, switch page SECOND. Doing it the other way round, Chrome
+    // scroll anchoring tries to keep the visual anchor near the current scrollY
+    // during the list DOM swap — looks like a jump down 150-300px before the
+    // smooth scroll back up. With scroll → state the browser is already moving
+    // to top:0 by the time of commit, anchor is stable (header/top of document).
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(next);
   };
 
   const handleShowDetails = () => setPanelOpen(true);
 
-  // Jump-to из панели: переключаем страницу, скроллим к карточке,
-  // подсвечиваем 2с (через highlightedId → cardHighlight CSS-класс).
-  // Observer из Phase 4 пометит updates просмотренными после 1.5с.
+  // Jump-to from the panel: switch page, scroll to the card,
+  // highlight for 2s (via highlightedId → cardHighlight CSS class).
+  // The Phase 4 observer will mark updates as viewed after 1.5s.
   const handleJump = (hotelId) => {
     const target = selectHotelPageIndex(
       session,
@@ -310,7 +309,7 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     if (target !== currentPage) setCurrentPage(target);
     setPanelOpen(false);
     setHighlightedId(String(hotelId));
-    // requestAnimationFrame ×2 — после реального reflow со списком новой страницы.
+    // requestAnimationFrame ×2 — after the actual reflow with the new page list.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         const el = document.getElementById(`hotel-${hotelId}`);
@@ -324,13 +323,13 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     return <h4>Error</h4>;
   }
 
-  // Loader показываем только в idle-фазу (mount + parseUrl до run()).
-  // После run() status='searching' — индикатор берёт на себя SearchProgress
-  // внутри controlsBar (в т.ч. до прихода первого ответа).
+  // Loader is shown only in the idle phase (mount + parseUrl before run()).
+  // After run() status='searching' — the indicator is taken over by SearchProgress
+  // inside controlsBar (including before the first response arrives).
   const showLoader = status === 'idle';
-  // controlsBar появляется как только начался поиск, чтобы кеш-ответ
-  // не вставал "Поиск завершён" мгновенно: SearchProgress с минимальной
-  // 1s-анимацией удержит "Идёт поиск" даже при lastResult=true в первом батче.
+  // controlsBar appears as soon as search starts, so a cached response
+  // doesn't instantly show "Search complete": SearchProgress with its minimum
+  // 1s animation will keep "Searching" even when lastResult=true in the first batch.
   const showControlsBar = status === 'searching' || hasProgress || totalHotels > 0;
 
   return (

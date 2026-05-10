@@ -1,5 +1,5 @@
-/* v2-only стили — бейджи, индикаторы, рамка обновлённой карточки.
-   Базовые стили карточки берутся из legacy cards.module.css. */
+/* v2-only styles — badges, indicators, border for updated card.
+   Base card styles come from legacy cards.module.css. */
 
 .cardUpdated {
   position: relative;
@@ -36,9 +36,9 @@
   background: #ff9400;
 }
 
-/* Per-slot индикатор обновления (price_drop / slot_filled).
-   Позиционируется абсолютно над верхним краем .card_order (sticker pattern),
-   чтобы не ломать flex-layout слота с датой/ночами/ценой. */
+/* Per-slot update indicator (price_drop / slot_filled).
+   Absolutely positioned above the top edge of .card_order (sticker pattern),
+   so it does not break the flex-layout of the slot with date/nights/price. */
 .slotIndicator {
   position: absolute;
   top: 0;
@@ -72,7 +72,7 @@
   font-weight: normal;
 }
 
-/* Highlight-анимация для jump-to (используется в Phase 6). */
+/* Highlight animation for jump-to (used in Phase 6). */
 @keyframes cardHighlight {
   0% {
     box-shadow: 0 0 0 4px rgba(255, 148, 0, 0.5);

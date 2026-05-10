@@ -4,12 +4,12 @@ import Breadcrumbs from 'components/common/breadcrumbs/breadcrumbs';
 import dynamic from 'next/dynamic';
 import Loader from 'components/common/loader';
 
-// dynamic(...) ОБОВ'ЯЗКОВО на module-level. Якщо описати всередині Search,
-// при кожному ре-рендері створюється новий обгортковий тип → React unmount
-// + mount Content → SearchResultV2 теряє session, ремаунт-ефекти знову
-// тягнуть parseUrl + getResults + tours/services. Через це любий
-// router.push({shallow:true}) (toggle filter, sort у URL) перестартовував
-// поиск з нуля та обнуляв виданий список.
+// dynamic(...) MUST be at module-level. If defined inside Search,
+// a new wrapper type is created on every re-render → React unmount
+// + mount Content → SearchResultV2 loses its session, mount effects re-run
+// parseUrl + getResults + tours/services. Because of this, any
+// router.push({shallow:true}) (toggle filter, sort in URL) would restart
+// the search from scratch and reset the result list.
 const Content = dynamic(
   () => import(/* webpackChunkName: "result" */ 'components/searchpage/search'),
   {

@@ -1,7 +1,7 @@
 /*
- * Стили взяты из legacy `.load_more_btn` (searchResult.module.css до рефакторинга).
- * SVG-спиннер крутится при isSearching через `.btn_loading svg`.
- * `main_form_btn` (глобальный) даёт градиент-фон, мы лишь дополняем layout/анимацию.
+ * Styles taken from legacy `.load_more_btn` (searchResult.module.css pre-refactor).
+ * SVG spinner rotates when isSearching via `.btn_loading svg`.
+ * `main_form_btn` (global) provides the gradient background; we only add layout/animation.
  */
 .btn {
   display: flex;
@@ -40,8 +40,8 @@
   font-size: 12px;
   font-weight: normal;
   opacity: 0.85;
-  /* main_form_btn задаёт uppercase для всего содержимого; hint должен
-     остаться "+ обновим уже найденные" в естественной форме. */
+  /* main_form_btn sets uppercase for all content; the hint should
+     remain in its natural case form. */
   text-transform: none;
 }
 

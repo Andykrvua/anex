@@ -1,6 +1,6 @@
 .banner {
-  /* Sticky position теперь у общего .controlsBar (SearchResultV2.module.css) —
-     UpdatesBanner стал просто содержимым этого блока. */
+  /* Sticky position now belongs to the shared .controlsBar (SearchResultV2.module.css) —
+     UpdatesBanner has become just content inside that block. */
   display: flex;
   align-items: center;
   gap: 12px;
@@ -20,8 +20,8 @@
 }
 
 /*
- * detailsBtn — стиль radio-кнопок сортировки (.option в SortToggle:
- * blog category_item), но с secondary-фоном вместо primary.
+ * detailsBtn — style of the sort radio buttons (.option in SortToggle:
+ * blog category_item), but with secondary background instead of primary.
  */
 .detailsBtn {
   flex-shrink: 0;
@@ -49,7 +49,7 @@
   }
 }
 
-/* closeBtn — стиль .reset_btn из filterContent: transparent + underline. */
+/* closeBtn — style of .reset_btn from filterContent: transparent + underline. */
 .closeBtn {
   flex-shrink: 0;
   display: flex;
@@ -70,8 +70,8 @@
 }
 
 /*
- * Mobile <500px: текст на всю ширину, кнопки переносятся на новую строку
- * с выравниванием вправо (margin-left:auto на первой пушит обе вправо).
+ * Mobile <500px: text takes full width, buttons wrap to a new line
+ * aligned to the right (margin-left:auto on the first one pushes both right).
  */
 @media (max-width: 499px) {
   .banner {

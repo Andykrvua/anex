@@ -568,8 +568,8 @@ header.header .header_container {
     margin-right: 0;
   }
 
-  /* фікс багу в сафарі потрібно всім кнопкап прибрати ширину,
-  а головній зробити flex 1 0 auto */
+  /* Safari bug fix: remove width from all buttons,
+  set flex 1 0 auto on the main one */
 
   .main_formfield {
     min-width: max-content;

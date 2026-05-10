@@ -22,8 +22,8 @@ const SECTIONS = [
 ];
 
 /**
- * Внутреннее тело панели обновлений (общее для desktop sidebar и
- * mobile bottom-sheet). Снаружи передаётся `onJump(hotelId, pageIndex)`.
+ * Inner body of the updates panel (shared for desktop sidebar and
+ * mobile bottom-sheet). `onJump(hotelId, pageIndex)` is passed from outside.
  */
 export default function PanelContent({ onJump, onClose }) {
   const session = useSearchSession();
@@ -35,7 +35,7 @@ export default function PanelContent({ onJump, onClose }) {
   const { fullOnly, updatedOnly } = useUrlFilters();
   const filters = { fullOnly, updatedOnly };
 
-  // Локальное "свернуть всё" — управляется кнопкой и кликом по заголовку.
+  // Local "collapse all" — controlled by button and header click.
   const [collapsed, setCollapsed] = useState({});
   const allCollapsed = SECTIONS.every((s) => collapsed[s.key]);
   const toggleCollapsed = (key) =>

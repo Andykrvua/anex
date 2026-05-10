@@ -1,11 +1,11 @@
 /*
- * Drawer (FAB + side panel + backdrop) для панели "Обновления".
- * Стилистика повторяет main burger menu (см. components/common/burger):
- * фон var(--bg), border-bottom на header, svg-кнопка закрытия;
- * единственное отличие — slide справа (а не слева как burger).
+ * Drawer (FAB + side panel + backdrop) for the "Updates" panel.
+ * Styling mirrors the main burger menu (see components/common/burger):
+ * var(--bg) background, border-bottom on header, svg close button;
+ * the only difference is slide from the right (not left like the burger).
  *
- * И mobile, и desktop используют одинаковый right-side panel; разница
- * только в ширине (320px ↔ 420px на >=810px), как в burger.
+ * Both mobile and desktop use the same right-side panel; the only difference
+ * is width (320px ↔ 420px on >=810px), same as the burger.
  */
 
 .fab {
@@ -47,7 +47,7 @@
 }
 
 /*
- * Backdrop — копия burger overlay: var(--primary-03), fade-in.
+ * Backdrop — copy of burger overlay: var(--primary-03), fade-in.
  */
 .backdrop {
   position: fixed;
@@ -58,7 +58,7 @@
 }
 
 /*
- * Side panel — bg как у burger, full-height, overflow-y auto.
+ * Side panel — same bg as burger, full-height, overflow-y auto.
  * Slide from right.
  */
 .drawer {
@@ -115,9 +115,9 @@
 }
 
 /*
- * Mobile/desktop варианты кнопки закрытия копируют burger:
- * <810 — стрелка-линия, >=810 — X stroke. Скрываем второй вариант
- * через display:none в нужном брейкпойнте.
+ * Mobile/desktop close button variants mirror the burger:
+ * <810 — arrow + line, >=810 — X stroke. The inactive variant is hidden
+ * via display:none at the appropriate breakpoint.
  */
 .headerCloseMobile {
   display: flex;
