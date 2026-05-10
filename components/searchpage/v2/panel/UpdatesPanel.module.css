@@ -19,52 +19,66 @@
   padding: 4px 0 12px;
 }
 
+/* actionBtn — стиль blog .category_item / SortToggle .option:
+   white bg + line border, primary при hover (как остальные кнопки сайта). */
 .actionBtn {
   flex: 1;
-  background: transparent;
-  border: 1px solid var(--placeholder, #e3e3e3);
-  border-radius: 4px;
-  padding: 6px 10px;
+  display: inline-block;
+  padding: 10px 12px;
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--def-radius);
+  color: var(--primary);
   font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: color var(--base-transition),
+    background-color var(--base-transition);
 }
 
 .actionBtn:hover {
-  background: var(--placeholder, #e3e3e3);
+  color: var(--font-white);
+  background-color: var(--primary);
 }
 
 .section {
-  border-top: 1px solid var(--placeholder, #e3e3e3);
-  padding-top: 8px;
+  padding-top: 4px;
   margin-top: 8px;
 }
 
 .sectionHeader {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   background: transparent;
   border: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-align: left;
   cursor: pointer;
-  padding: 4px 0;
-  color: #333;
+  padding: 6px 0;
+  color: var(--primary);
 }
 
 .sectionCount {
   margin-left: auto;
-  color: #888;
+  color: var(--primary-light, #888);
   font-weight: normal;
   font-size: 12px;
 }
 
 .caret {
-  font-size: 10px;
-  color: #888;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  transition: transform 0.2s ease;
+}
+
+.caretCollapsed {
+  transform: rotate(-90deg);
 }
 
 .sectionBody {
@@ -121,22 +135,32 @@
   margin-top: 2px;
 }
 
+/* rowJump — единый стиль с actionBtn (blog .category_item). */
 .rowJump {
   flex-shrink: 0;
-  background: transparent;
-  border: 1px solid #ff9400;
-  color: #ff9400;
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 11px;
+  padding: 8px 10px;
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--def-radius);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
   cursor: pointer;
-  font-weight: 600;
-  transition: background 0.15s;
+  transition: color var(--base-transition),
+    background-color var(--base-transition);
 }
 
 .rowJump:hover {
-  background: #ff9400;
-  color: #fff;
+  color: var(--font-white);
+  background-color: var(--primary);
+}
+
+.rowJump:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  color: var(--primary);
+  background-color: var(--white);
 }
 
 .empty {

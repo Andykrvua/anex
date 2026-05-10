@@ -80,8 +80,24 @@ export default function PanelContent({ onJump, onClose }) {
               type="button"
               className={styles.sectionHeader}
               onClick={() => toggleCollapsed(section.key)}
+              aria-expanded={!isCollapsed}
             >
-              <span className={styles.caret}>{isCollapsed ? '▶' : '▼'}</span>
+              <span
+                className={`${styles.caret} ${
+                  isCollapsed ? styles.caretCollapsed : ''
+                }`}
+                aria-hidden
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M7 10l5 5 5-5z" />
+                </svg>
+              </span>
               <FM id={section.titleKey} />
               <span className={styles.sectionCount}>({items.length})</span>
             </button>

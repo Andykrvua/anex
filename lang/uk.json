@@ -256,6 +256,7 @@
   "updates.section.price_drops": "Ціна знизилась",
   "updates.section.slots_filled": "Заповнено слот",
   "updates.row.go_to": "Перейти →",
+  "updates.row.hidden_by_filter": "Прихований поточним фільтром",
   "updates.row.page": "Стор. {n}",
   "updates.row.price_change": "{nights} ноч.: {oldPrice} → {newPrice}",
   "updates.row.slot_filled": "Знайдено офер на {nights} ноч.: {price}",

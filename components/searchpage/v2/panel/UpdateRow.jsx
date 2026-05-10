@@ -1,4 +1,4 @@
-import { FormattedMessage as FM } from 'react-intl';
+import { FormattedMessage as FM, useIntl } from 'react-intl';
 import styles from './UpdatesPanel.module.css';
 
 const formatPrice = (uah) =>
@@ -18,6 +18,7 @@ const formatPrice = (uah) =>
  *  - slot_filled → "Найден офер на {nights} ноч.: {price}".
  */
 export default function UpdateRow({ update, hotel, pageIndex, onJump }) {
+  const intl = useIntl();
   if (!hotel) return null;
 
   let context = null;
@@ -75,6 +76,12 @@ export default function UpdateRow({ update, hotel, pageIndex, onJump }) {
         type="button"
         className={styles.rowJump}
         onClick={() => onJump(hotel.i, pageIndex)}
+        disabled={!pageIndex}
+        title={
+          !pageIndex
+            ? intl.formatMessage({ id: 'updates.row.hidden_by_filter' })
+            : undefined
+        }
       >
         <FM id="updates.row.go_to" />
       </button>
