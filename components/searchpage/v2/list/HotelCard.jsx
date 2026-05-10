@@ -382,7 +382,7 @@ export default function HotelCard({
           {hotel.g && cheapest && (
             <button onClick={openMap} className={styles.maps}>
               <img src="/assets/img/svg/tour/map-marker.svg" alt="map" />
-              <span>{`${hotel.t.n}, ${hotel.c.n}`}</span>
+              <span>{hotel.c.n}</span>
             </button>
           )}
           <p className={styles.options}>{foodTransMessage}</p>

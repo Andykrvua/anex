@@ -39,6 +39,7 @@ a.current,
 button.current {
   text-decoration: none;
   cursor: default;
+  color: var(--secondary);
 }
 
 .next_page,

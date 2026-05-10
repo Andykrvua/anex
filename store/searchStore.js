@@ -28,38 +28,45 @@ export const useSearchStore = create(
       // A user choosing non-stable consciously accepts reordering on ingest.
       sortMode: 'stable',
 
-      // Snapshot of hotel ids for the "Updated only" filter.
-      // null — filter is off. Array — frozen list at the moment the filter was enabled.
-      // Without this the observer markViewed cleared badges and the filter self-emptied:
-      // cards dropped from the set one by one as soon as the 1.5s dwell
-      // fired in the viewport. Frozen set is stable, scrolling through it
-      // correctly clears viewed without side effects on the list itself.
+      // "Updated only" client filter (in-memory, NOT URL-persisted): updates
+      // appear only after "Continue search" / poll cycles, so on a fresh
+      // page load there are never any updates and persisting this in URL
+      // serves no purpose — checkbox would always start disabled.
+      updatedOnly: false,
+
+      // Snapshot of hotel ids paired with `updatedOnly`. null when off,
+      // array of frozen ids when on. Without this the observer markViewed
+      // cleared badges and the filter self-emptied: cards dropped from the
+      // set one by one as the 1.5s dwell fired in the viewport.
       frozenUpdatedOnlyIds: null,
 
       setSortMode: (mode) =>
         set(() => ({ sortMode: mode }), false, 'setSortMode'),
 
-      freezeUpdatedOnly: () =>
+      // Toggle the "Updated only" filter atomically with its frozen snapshot.
+      // ON: capture current ids of hotels that have unviewed updates.
+      // OFF: clear the snapshot.
+      setUpdatedOnly: (value) =>
         set(
           (state) => {
-            const ids = state.session.order.filter((id) =>
-              selectHotelHasUnviewedUpdate(state.session, id),
-            );
-            return { frozenUpdatedOnlyIds: ids };
+            if (value) {
+              const ids = state.session.order.filter((id) =>
+                selectHotelHasUnviewedUpdate(state.session, id),
+              );
+              return { updatedOnly: true, frozenUpdatedOnlyIds: ids };
+            }
+            return { updatedOnly: false, frozenUpdatedOnlyIds: null };
           },
           false,
-          'freezeUpdatedOnly',
+          'setUpdatedOnly',
         ),
-
-      unfreezeUpdatedOnly: () =>
-        set({ frozenUpdatedOnlyIds: null }, false, 'unfreezeUpdatedOnly'),
 
       startNewSearch: (params) =>
         set(
           () => ({
             session: resetSession({ params }),
-            // New search — reset the filter freeze. Otherwise the old
-            // array of ids would survive the reset and become invalid.
+            // New search — reset the filter and its freeze snapshot.
+            updatedOnly: false,
             frozenUpdatedOnlyIds: null,
           }),
           false,
@@ -174,6 +181,8 @@ export const useHotelsForPage = (page, pageSize, filters, sortMode) =>
     ),
   );
 
+export const useUpdatedOnly = () => useSearchStore((s) => s.updatedOnly);
+
 export const useFrozenUpdatedOnlyIds = () =>
   useSearchStore((s) => s.frozenUpdatedOnlyIds);
 
@@ -199,7 +208,5 @@ export const useMarkAllViewed = () => useSearchStore((s) => s.markAllViewed);
 export const useRequestNextServerPage = () =>
   useSearchStore((s) => s.requestNextServerPage);
 export const useSetSortMode = () => useSearchStore((s) => s.setSortMode);
-export const useFreezeUpdatedOnly = () =>
-  useSearchStore((s) => s.freezeUpdatedOnly);
-export const useUnfreezeUpdatedOnly = () =>
-  useSearchStore((s) => s.unfreezeUpdatedOnly);
+export const useSetUpdatedOnly = () =>
+  useSearchStore((s) => s.setUpdatedOnly);

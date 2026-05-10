@@ -19,6 +19,7 @@ import {
   useSetToCities,
   useSetToCitiesNames,
   useGetInitialDate,
+  useSetHotelService,
 } from 'store/store';
 import {
   selectHotelPageIndex,
@@ -32,9 +33,7 @@ import {
   useHotelsForPage,
   useSortMode,
   useFrozenUpdatedOnlyIds,
-  useUnviewedUpdatesCount,
-  useFreezeUpdatedOnly,
-  useUnfreezeUpdatedOnly,
+  useUpdatedOnly,
 } from 'store/searchStore';
 import useSearchPolling from 'hooks/useSearchPolling';
 import { stringifyCrewComposition } from 'utils/customer-crew';
@@ -76,10 +75,8 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   const { run } = useSearchPolling();
   const sortMode = useSortMode();
   const frozenUpdatedOnlyIds = useFrozenUpdatedOnlyIds();
-  const unviewedCount = useUnviewedUpdatesCount();
-  const freezeUpdatedOnly = useFreezeUpdatedOnly();
-  const unfreezeUpdatedOnly = useUnfreezeUpdatedOnly();
-  const { fullOnly, updatedOnly } = useUrlFilters();
+  const updatedOnly = useUpdatedOnly();
+  const { fullOnly } = useUrlFilters();
   const filters = { fullOnly, updatedOnly };
   const isDebug =
     typeof window !== 'undefined' &&
@@ -104,6 +101,7 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
   const setPerson = useSetPerson();
   const setToCities = useSetToCities();
   const setToCitiesNames = useSetToCitiesNames();
+  const setHotelService = useSetHotelService();
 
   const [hydrated, setHydrated] = useState(false);
   const [hydrationError, setHydrationError] = useState(false);
@@ -159,7 +157,11 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     };
   })();
 
-  // Hotel services (for tour_propertys) — separate fetch as in legacy.
+  // Hotel services (for tour_propertys + filter panel API filters).
+  // Local state powers card properties (icons inside HotelCard);
+  // global store (setHotelService) powers FilterContent's API filter section
+  // — without this call the panel never shows API filters, since
+  // useGetHotelService stays at its default {}.
   useEffect(() => {
     if (!down || !down.value) return;
     let cancelled = false;
@@ -170,7 +172,9 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     )
       .then((r) => (r.status === 200 ? r.json() : null))
       .then((data) => {
-        if (!cancelled && data) setCountryHotelService(data);
+        if (cancelled || !data) return;
+        setCountryHotelService(data);
+        setHotelService(data);
       })
       // eslint-disable-next-line no-console
       .catch((e) => console.log('hotel services fetch failed', e));
@@ -266,21 +270,6 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     };
   }, [stickyPinned]);
 
-  // Auto-sync frozen-snapshot for updatedOnly. Covers the page-reload case
-  // with ?updatedOnly=1 in the URL — there freeze() was never called because
-  // the user-handler in QualityFilters didn't run. Without this the filter
-  // self-empties again: observer markViewed clears unviewed → card drops out.
-  // Conditions:
-  //   - updatedOnly=true + frozen=null + unviewed exist → freeze (snapshot current set)
-  //   - updatedOnly=false + frozen!=null → unfreeze (user disabled filter via manual toggle / shallow push)
-  useEffect(() => {
-    if (updatedOnly && frozenUpdatedOnlyIds === null && unviewedCount > 0) {
-      freezeUpdatedOnly();
-    } else if (!updatedOnly && frozenUpdatedOnlyIds !== null) {
-      unfreezeUpdatedOnly();
-    }
-  }, [updatedOnly, frozenUpdatedOnlyIds, unviewedCount, freezeUpdatedOnly, unfreezeUpdatedOnly]);
-
   const handlePageChange = (next) => {
     // Scroll FIRST, switch page SECOND. Doing it the other way round, Chrome
     // scroll anchoring tries to keep the visual anchor near the current scrollY
@@ -309,11 +298,38 @@ export default function SearchResultV2({ isFilterBtnShow = false }) {
     if (target !== currentPage) setCurrentPage(target);
     setPanelOpen(false);
     setHighlightedId(String(hotelId));
-    // requestAnimationFrame ×2 — after the actual reflow with the new page list.
+    // Manual scrollTo so the target card lands BELOW whatever covers the
+    // viewport top:
+    //   - pinned: sticky .controlsBar covers the area from the fixed header
+    //     down to its own bottom — use bar.bottom (already includes header).
+    //   - unpinned: bar is in flow (scrolls away), only the fixed
+    //     .header_wrapper covers the top — use header.bottom (~81px).
+    // Extra 18px gives a small breathing space above the card.
+    //
+    // Timing: when target page differs from currentPage, React must commit
+    // the new card list AND the layout must settle before we measure card
+    // position. rAF×2 races with HotelList's own fade rAF + image layout —
+    // we observed scroll firing on stale measurements when crossing pages.
+    // setTimeout(50) after rAF×2 puts us safely after the next paint cycle.
+    const PAD = 18;
+    const measureAndScroll = () => {
+      const el = document.getElementById(`hotel-${hotelId}`);
+      if (!el) return;
+      let topCover = 0;
+      if (stickyPinned) {
+        const bar = document.querySelector(`.${styles.controlsBar}`);
+        if (bar) topCover = bar.getBoundingClientRect().bottom;
+      } else {
+        const header = document.querySelector('.header_wrapper');
+        if (header) topCover = header.getBoundingClientRect().bottom;
+      }
+      const top =
+        el.getBoundingClientRect().top + window.scrollY - topCover - PAD;
+      window.scrollTo({ top, behavior: 'smooth' });
+    };
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        const el = document.getElementById(`hotel-${hotelId}`);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(measureAndScroll, 50);
       });
     });
     setTimeout(() => setHighlightedId(null), 2200);
