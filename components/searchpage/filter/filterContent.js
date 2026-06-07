@@ -270,7 +270,11 @@ export default function FilterContent({ mobile }) {
 
       {getHotelService?.search &&
         getHotelService?.nameServices &&
-        Object.entries(getHotelService?.search).map(([name, detailArr]) => {
+        Object.entries(getHotelService?.search)
+          // Hide the "recommendService" ("Рекомендуемые отели") category —
+          // product decision, it isn't a useful filter for users.
+          .filter(([name]) => name !== 'recommendService')
+          .map(([name, detailArr]) => {
           return (
             <div key={name} className={mobile ? `${styles.filter_parts_mobile}` : `${styles.filter_parts}`}>
               {name === 'renovation' ? (

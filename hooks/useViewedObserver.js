@@ -1,13 +1,15 @@
 import { useEffect, useRef } from 'react';
 
 const VISIBILITY_THRESHOLD = 0.4;
-const DWELL_MS = 1500;
+const DWELL_MS = 2500;
 
 /**
- * Marks updates as viewed when the element is continuously visible for ≥1.5 s.
+ * Marks updates as viewed when the element is continuously visible for ≥2.5 s.
  *
  *   - threshold 0.4 — card is considered visible when 40% is in the viewport.
- *   - DWELL_MS 1500 — the user must actually dwell on it.
+ *   - DWELL_MS 2500 — the user must actually dwell on it. Upper-bounded:
+ *     longer dwell risks losing auto-mark during steady slow scrolling
+ *     (the card may never stay 40%-visible long enough).
  *   - If the card scrolls past faster → timer is reset,
  *     updates remain unviewed.
  *
