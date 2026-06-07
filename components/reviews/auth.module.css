@@ -12,6 +12,11 @@
   text-decoration: underline;
 }
 
+.fallback {
+  display: inline-block;
+  margin-top: 15px;
+}
+
 .credentials {
   display: flex;
   flex-wrap: wrap;
